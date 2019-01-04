@@ -27,9 +27,14 @@
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search Projects" aria-label="Search Projects">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
+    <div class="ml-3">
+      <% if current_account %>
+        Signed in as <%= link_to current_account.email, edit_account_registration_path(current_account) %>.
+        <%= link_to "Sign Out", destroy_account_session_path, method: :delete, class: "btn btn-primary" %>
+      <% else %>
+        <%= link_to "Sign In", new_account_session_path, class: "btn btn-primary" %>
+        <%= link_to "Register", new_account_registration_path, class: "btn btn-primary" %>
+      <% end %>
+    </div>
   </div>
 </nav>
