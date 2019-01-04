@@ -1,0 +1,30 @@
+<h2>Register a Project</h2>
+
+<p>Use this form to register a new project on Beacon. You will be able to configure
+settings for managing your project after it is created.</p>
+
+<%= form_for @project do |f| %>
+  <div class="form-group col-sm-6">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label 'Project URL' %><br />
+    <%= f.text_field :url, class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label "Code of Conduct URL" %><br />
+    <%= f.text_field :coc_url, class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label "Description" %><br />
+    <%= f.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Create Project", class: "btn btn-primary" %>
+  </div>
+<% end %>
