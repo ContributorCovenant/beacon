@@ -1,0 +1,43 @@
+<div class="row">
+
+  <div class="col">
+    <h2><%= @project.name %></h2>
+    <p><%= @project.description %></p>
+
+    <h3 class="mt-5">Project Governance</h3>
+    <p><%= @project.name %> is managed by a single individual.</p>
+
+    <h3>Issue Guidelines</h3>
+    <p>The project maintainers have the following requirements for opening an issue:</p>
+    <ul>
+      <li>You must have a verified account on Beacon</li>
+      <li>You must have a valid linked account on Github</li>
+    </ul>
+
+    <h4>Important:</h4>
+    <p>Your email will be hidden from project maintainers when you open an issue.</p>
+
+    <%= link_to "Open an Issue", "#", class: "btn btn-primary" %>
+
+    <h3 class="mt-5">3-Month Activity</h3>
+    <p>Issues opened: 2</p>
+    <p>Issues resolved: 2</p>
+    <p>Average time to resolve an issue: 3 days</p>
+
+  </div>
+
+  <div class="col-sm">
+    <div class="card" style="width: 18rem;">
+      <div class="card-body">
+        <h5 class="card-title">Links</h5>
+        <div class="card-text">
+          <ul>
+            <li><%= link_to "Home page", @project.url, target: "_new" %></li>
+            <li><%= link_to "Code of conduct", @project.coc_url, target: "_new" %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
