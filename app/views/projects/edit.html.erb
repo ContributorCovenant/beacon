@@ -1,0 +1,27 @@
+<h2><%= @project.name %></h2>
+
+<%= form_for @project do |f| %>
+  <div class="form-group col-sm-6">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label 'Project URL' %><br />
+    <%= f.text_field :url, class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label "Code of Conduct URL" %><br />
+    <%= f.text_field :coc_url, class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label "Description" %><br />
+    <%= f.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Update Project", class: "btn btn-primary" %>
+  </div>
+<% end %>

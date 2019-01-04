@@ -8,4 +8,6 @@ class Account < ApplicationRecord
          :database_authenticatable, :registerable, :recoverable, :rememberable,
          :validatable
 
+  has_many :projects
+
 end

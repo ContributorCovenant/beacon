@@ -5,6 +5,8 @@ class Project < ApplicationRecord
   validates_uniqueness_of :slug
   validates_presence_of :name, :url, :coc_url
 
+  belongs_to :account
+
   before_create :set_slug
 
   def to_param
