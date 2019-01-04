@@ -8,9 +8,9 @@
 
 <div class="card float-left mr-5" style="width: 30%; height: 15rem;">
   <div class="card-body">
-    <h5 class="card-title">Sign Up</h5>
+    <h5 class="card-title">Register</h5>
     <p class="card-text">Create an account to file a code of conduct issue or to set up your project on Beacon.</p>
-    <a href="#" class="btn btn-primary">Create an Account</a>
+    <%= link_to "Create an Account", new_account_registration_path, class: "btn btn-primary" %>
   </div>
 </div>
 
@@ -18,7 +18,7 @@
   <div class="card-body">
     <h5 class="card-title">Sign In</h5>
     <p class="card-text">If you already have an account, sign in to access your projects or to open a code of conduct issue.</p>
-    <a href="#" class="btn btn-primary">Sign In</a>
+    <%= link_to "Sign In", new_account_session_path, class: "btn btn-primary" %>
   </div>
 </div>
 
