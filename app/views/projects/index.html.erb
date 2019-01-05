@@ -1,8 +1,9 @@
 <h2>My Projects</h2>
 
-<% @projects.each do |project| %>
+<% @projects.each_with_index do |project,i| %>
 
-  <div class="card mt-3" style="width: 50%;">
+  <% float_class = i < @projects.count - 1 ? "float-left" : "float-none" %>
+  <div class="card mb-3 mr-3 <%= float_class %>" style="width: 45%; height: 12rem">
     <div class="card-body">
       <h5 class="card-title"><%= link_to project.name, project %></h5>
       <div class="card-text">

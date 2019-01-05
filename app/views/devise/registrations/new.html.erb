@@ -5,7 +5,7 @@
   <div class="row">
     <div class="col-sm">
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-        <%= devise_error_messages! %>
+        <%= devise_error_messages!.gsub(/^.+\^/,'').html_safe %>
 
         <div class="form-group">
           <%= f.label :email %><br />
