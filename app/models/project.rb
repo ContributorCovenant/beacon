@@ -9,6 +9,7 @@ class Project < ApplicationRecord
   has_one :project_setting
 
   before_create :set_slug
+  after_create :make_settings
 
   def to_param
     self.slug
@@ -22,6 +23,11 @@ class Project < ApplicationRecord
 
   def set_slug
     self.slug = self.name.downcase.gsub(" ", "-")
+  end
+
+  # Eventually this will inherit from an org's project template
+  def make_settings
+    create_project_setting
   end
 
 end
