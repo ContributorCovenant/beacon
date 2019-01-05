@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 2019_01_05_175056) do
   create_table "issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "description"
     t.string "reporter_encrypted_id"
+    t.integer "issue_number"
     t.string "project_encrypted_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

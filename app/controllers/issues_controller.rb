@@ -10,7 +10,7 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new(issue_params.merge(project_id: @project.id, account_id: current_account.id))
     if @issue.save
-      redirect_to @issue
+      redirect_to project_issue_path(@project, @issue)
     else
       flash[:error] = @issues.errors.full_messages
       render :new
@@ -23,7 +23,7 @@ class IssuesController < ApplicationController
   private
 
   def issue_params
-    params.require(:issue).allow(:description)
+    params.require(:issue).permit(:description)
   end
 
   def scope_issue
