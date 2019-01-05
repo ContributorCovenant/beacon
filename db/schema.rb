@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_05_175056) do
+ActiveRecord::Schema.define(version: 2019_01_05_201324) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -49,11 +49,34 @@ ActiveRecord::Schema.define(version: 2019_01_05_175056) do
     t.index ["unlock_token"], name: "index_accounts_on_unlock_token", unique: true
   end
 
+  create_table "issue_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "event"
+    t.string "actor_encrypted_id"
+    t.uuid "issue_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_issue_events_on_issue_id"
+  end
+
+  create_table "issue_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "event"
+    t.uuid "issue_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_issue_logs_on_issue_id"
+  end
+
   create_table "issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "description"
     t.string "reporter_encrypted_id"
     t.integer "issue_number"
     t.string "project_encrypted_id"
+    t.string "aasm_state"
+    t.text "urls", default: [], array: true
+    t.boolean "is_spam", default: false
+    t.boolean "is_abusive", default: false
+    t.datetime "acknowledged_at"
+    t.datetime "closed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -85,6 +108,8 @@ ActiveRecord::Schema.define(version: 2019_01_05_175056) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
+  add_foreign_key "issue_events", "issues"
+  add_foreign_key "issue_logs", "issues"
   add_foreign_key "project_settings", "projects"
   add_foreign_key "projects", "accounts"
 end

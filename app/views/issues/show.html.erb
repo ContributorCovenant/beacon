@@ -1,1 +1,14 @@
 <h2><%= @project.name %>: Issue <%= @issue.issue_number %></h2>
+
+<h3 class="mt-5">Description</h3>
+<p><%= @issue.description %></p>
+
+<h3>Supporting Links</h3>
+<ul>
+  <% @issue.urls.reject(&:empty?).each do |url| %>
+    <li><%= link_to url, url, target: "_new" %></li>
+  <% end %>
+</ul>
+
+<h3>Status</h3>
+<%= @issue.aasm_state.titleize %> (<%= @issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
