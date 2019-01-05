@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
   before_action :scope_project, only: [:show, :edit, :delete, :update]
 
   def index
-    @projects = current_account && current_account.projects.order(:name)
+    @projects = Project.all.order(:name)
   end
 
   def new
@@ -14,6 +14,7 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params.merge(account_id: current_account.id))
     if @project.save
+      @project.create_project_setting
       redirect_to @project
     else
      flash[:error] = @project.errors.full_messages
@@ -22,11 +23,10 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    redirect_to @project unless @project.account == current_account
+    redirect_to :show unless @project.account == current_account
   end
 
   def show
-    @settings = @project.project_setting
   end
 
   def update
@@ -45,7 +45,8 @@ class ProjectsController < ApplicationController
   end
 
   def scope_project
-    @project = current_account.projects.find_by(slug: params[:slug])
+    @project = Project.find_by(slug: params[:slug])
+    @settings = @project.project_setting
   end
 
 end
