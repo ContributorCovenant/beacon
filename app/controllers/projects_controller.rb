@@ -14,7 +14,6 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new(project_params.merge(account_id: current_account.id))
     if @project.save
-      @project.create_project_setting
       redirect_to @project
     else
      flash[:error] = @project.errors.full_messages
