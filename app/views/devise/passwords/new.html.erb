@@ -12,6 +12,11 @@
           <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
         </div>
 
+        <div class="form-group">
+          <%= flash[:recaptcha_error] %>
+          <%= recaptcha_tags %>
+        </div>
+
         <div class="actions">
           <%= f.submit "Reset Password", class: "btn btn-primary" %>
         </div>
