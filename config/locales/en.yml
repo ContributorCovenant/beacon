@@ -30,4 +30,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    errors:
+      models:
+        account:
+          attributes:
+            normalized_email:
+              taken: "^Email address must be unique."
