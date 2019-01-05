@@ -23,10 +23,12 @@
     <h4>Important:</h4>
     <p>Your email will be hidden from project maintainers when you open an issue.</p>
 
-    <% if @project.project_setting.paused? %>
-      <p class="btn btn-danger">This Project is Temporarily Not Accepting New Issues</p>
-    <% else %>
-      <%= link_to "Open an Issue", "#", class: "btn btn-primary" %>
+    <% if current_account %>
+      <% if @project.project_setting.paused? %>
+        <p class="btn btn-danger">This Project is Temporarily Not Accepting New Issues</p>
+      <% else %>
+        <%= link_to "Open an Issue", "#", class: "btn btn-primary" %>
+      <% end %>
     <% end %>
 
     <% if @project.project_setting.publish_stats? %>
