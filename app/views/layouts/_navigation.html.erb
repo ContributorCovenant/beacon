@@ -7,8 +7,15 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <%= link_to "Project Directory", projects_path, class: "nav-link" %>
+        <%= link_to "Project Directory", directory_path, class: "nav-link" %>
       </li>
+
+      <% if current_account && current_account.projects.any? %>
+        <li class="nav-item">
+          <%= link_to "Manage My Projects", projects_path, class: "nav-link" %>
+        </li>
+      <% end %>
+
       <li class="nav-item">
         <%= link_to "FAQ", "#", class: "nav-link" %>
       </li>

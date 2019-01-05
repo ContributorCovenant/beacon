@@ -6,11 +6,16 @@ class Project < ApplicationRecord
   validates_presence_of :name, :url, :coc_url
 
   belongs_to :account
+  has_one :project_setting
 
   before_create :set_slug
 
   def to_param
     self.slug
+  end
+
+  def public?
+    self.project_setting.include_in_directory
   end
 
   private

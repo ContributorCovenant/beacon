@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_04_011228) do
+ActiveRecord::Schema.define(version: 2019_01_04_220705) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -42,6 +42,20 @@ ActiveRecord::Schema.define(version: 2019_01_04_011228) do
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_accounts_on_unlock_token", unique: true
+  end
+
+  create_table "project_settings", force: :cascade do |t|
+    t.datetime "paused_at"
+    t.integer "rate_per_day", default: 5
+    t.boolean "require_3rd_party_auth", default: false
+    t.integer "minimum_3rd_party_auth_age_in_days", default: 30
+    t.boolean "allow_anonymous_issues", default: false
+    t.boolean "publish_stats", default: true
+    t.boolean "include_in_directory", default: true
+    t.bigint "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_project_settings_on_project_id"
   end
 
   create_table "projects", force: :cascade do |t|

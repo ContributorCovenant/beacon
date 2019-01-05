@@ -4,7 +4,7 @@ class ProjectsController < ApplicationController
   before_action :scope_project, only: [:show, :edit, :delete, :update]
 
   def index
-    @projects = Project.all.order(:name)
+    @projects = current_account && current_account.projects.order(:name)
   end
 
   def new
@@ -26,6 +26,7 @@ class ProjectsController < ApplicationController
   end
 
   def show
+    @settings = @project.project_setting
   end
 
   def update
@@ -44,7 +45,7 @@ class ProjectsController < ApplicationController
   end
 
   def scope_project
-    @project = Project.find_by(slug: params[:slug])
+    @project = current_account.projects.find_by(slug: params[:slug])
   end
 
 end

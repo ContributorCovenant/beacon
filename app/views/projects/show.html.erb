@@ -3,30 +3,7 @@
   <div class="col">
     <h2><%= @project.name %></h2>
     <p><%= @project.description %></p>
-
-    <% if @project.account == current_account %>
-      <%= link_to "Manage Project", edit_project_path(@project), class: "btn btn-warning" %>
-    <% end %>
-
-    <h3 class="mt-5">Project Governance</h3>
-    <p><%= @project.name %> is managed by a single individual.</p>
-
-    <h3>Issue Guidelines</h3>
-    <p>The project maintainers have the following requirements for opening an issue:</p>
-    <ul>
-      <li>You must have a verified account on Beacon</li>
-      <li>You must have a valid linked account on Github</li>
-    </ul>
-
-    <h4>Important:</h4>
-    <p>Your email will be hidden from project maintainers when you open an issue.</p>
-
-    <%= link_to "Open an Issue", "#", class: "btn btn-primary" %>
-
-    <h3 class="mt-5">3-Month Activity</h3>
-    <p>Issues opened: 2</p>
-    <p>Issues resolved: 2</p>
-    <p>Average time to resolve an issue: 3 days</p>
+    <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning" %>
 
   </div>
 
@@ -38,10 +15,94 @@
           <ul>
             <li><%= link_to "Home page", @project.url, target: "_new" %></li>
             <li><%= link_to "Code of conduct", @project.coc_url, target: "_new" %></li>
+            <% if @project.public? %>
+              <li><%= link_to "View in Directory", directory_path(@project) %></li>
+            <% end %>
           </ul>
         </div>
       </div>
     </div>
   </div>
-
 </div>
+
+<h3 class="mt-5">Settings</h3>
+
+<table class="table" style="width: 50%">
+  <tr>
+    <th scope="row">Show in Project Directory</th>
+    <td>
+      <% if @project.public? %>
+        <span class="badge badge-success">Yes</span>
+      <% else %>
+        <span class="badge badge-danger">No</span>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th scope="row">Show Issues Report in Project Directory</th>
+    <td>
+      <% if @settings.publish_stats? %>
+        <span class="badge badge-success">Yes</span>
+      <% else %>
+        <span class="badge badge-danger">No</span>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th scope="row">
+      Accepting Issues
+      <% if @settings.paused? %>
+        <p><i>Paused on <%= @settings.paused_at.strftime("%F") %></i></p>
+      <% end %>
+    </th>
+    <td>
+      <% if @settings.paused? %>
+        <span class="badge badge-danger">No</span>
+      <% else %>
+        <span class="badge badge-success">Yes</span>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th scope="row">Allow Anonymous Reporting</th>
+    <td>
+      <% if @settings.allow_anonymous_issues? %>
+        <span class="badge badge-success">Yes</span>
+      <% else %>
+        <span class="badge badge-danger">No</span>
+      <% end %>
+    </td>
+  </tr>
+  <tr>
+    <th scope="row">Maximum Issues/Day</th>
+    <td>
+      <%= @settings.rate_per_day %>
+    </td>
+  </tr>
+  <tr>
+    <th scope="row">Require 3rd Party Account Verification</th>
+    <td>
+      <% if @settings.require_3rd_party_auth? %>
+        <span class="badge badge-success">Yes</span>
+      <% else %>
+        <span class="badge badge-danger">No</span>
+      <% end %>
+    </td>
+  </tr>
+  <% if @settings.require_3rd_party_auth? %>
+    <tr>
+      <th scope="row">Minimum 3rd Party Account Age</th>
+      <td>
+        <%= @settings.minimum_3rd_party_auth_age_in_days %> days
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<%= link_to "Edit Settings", project_settings_path(@project), class: "btn btn-warning float-left mr-5" %>
+<% if @settings.paused? %>
+  <%= button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-warning" %>
+<% else %>
+  <%= button_to "Pause Issue Reporting for 24 Hours", project_toggle_pause_path(@project), class: "btn btn-danger" %>
+<% end %>
+

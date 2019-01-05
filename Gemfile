@@ -9,6 +9,7 @@ gem 'autoprefixer-rails'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'coffee-rails', '~> 4.2'
 gem 'bootstrap'
+gem 'bootstrap-toggle-rails'
 gem 'bootswatch'
 gem 'devise'
 gem 'jbuilder', '~> 2.5'
@@ -27,17 +28,20 @@ group :development, :test do
 end
 
 group :development do
-  gem 'web-console', '>= 3.3.0'
-  gem 'rails_layout', github: 'RailsApps/rails_layout'
   gem 'listen', '>= 3.0.5', '< 3.2'
+  gem 'pry'
+  gem 'rails_layout', github: 'RailsApps/rails_layout'
+  gem 'rspec-rails'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
+  gem 'web-console', '>= 3.3.0'
 end
 
 group :test do
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
   gem 'chromedriver-helper'
+  gem 'rspec-rails'
 end
 
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
