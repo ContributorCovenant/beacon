@@ -13,9 +13,11 @@
 ActiveRecord::Schema.define(version: 2019_01_05_175056) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
-  create_table "accounts", force: :cascade do |t|
+  create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
     t.string "temp_2fa_code"
@@ -38,16 +40,13 @@ ActiveRecord::Schema.define(version: 2019_01_05_175056) do
     t.integer "failed_attempts", default: 0, null: false
     t.string "unlock_token"
     t.datetime "locked_at"
-    t.string "normalized_email"
-    t.string "hashed_email"
     t.index ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true
-    t.index ["normalized_email"], name: "index_accounts_on_normalized_email", unique: true
     t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_accounts_on_unlock_token", unique: true
   end
 
-  create_table "issues", force: :cascade do |t|
+  create_table "issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "description"
     t.string "reporter_encrypted_id"
     t.string "project_encrypted_id"
@@ -55,7 +54,7 @@ ActiveRecord::Schema.define(version: 2019_01_05_175056) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "project_settings", force: :cascade do |t|
+  create_table "project_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "paused_at"
     t.integer "rate_per_day", default: 5
     t.boolean "require_3rd_party_auth", default: false
@@ -69,7 +68,7 @@ ActiveRecord::Schema.define(version: 2019_01_05_175056) do
     t.index ["project_id"], name: "index_project_settings_on_project_id"
   end
 
-  create_table "projects", force: :cascade do |t|
+  create_table "projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
     t.string "url", null: false

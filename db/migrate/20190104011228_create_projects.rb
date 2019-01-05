@@ -1,6 +1,6 @@
 class CreateProjects < ActiveRecord::Migration[5.2]
   def change
-    create_table :projects do |t|
+    create_table :projects, id: :uuid do |t|
       t.string :name, null: false, unique: true
       t.string :slug, null: false
       t.string :url, null: false, unique: true

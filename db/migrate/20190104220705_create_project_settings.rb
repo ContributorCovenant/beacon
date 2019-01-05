@@ -1,6 +1,6 @@
 class CreateProjectSettings < ActiveRecord::Migration[5.2]
   def change
-    create_table :project_settings do |t|
+    create_table :project_settings, id: :uuid do |t|
       t.datetime :paused_at
       t.integer :rate_per_day, default: 5
       t.boolean :require_3rd_party_auth, default: false
