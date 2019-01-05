@@ -3,11 +3,15 @@
   <div class="col">
     <h2><%= @project.name %></h2>
     <p><%= @project.description %></p>
-    <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning" %>
-
+    <%= link_to "Edit Project", edit_project_path(@project), class: "float-left btn btn-warning mr-3" %>
+    <% if @settings.paused? %>
+      <%= button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "float-left btn btn-warning" %>
+    <% else %>
+      <%= button_to "Pause Issue Reporting for 24 Hours", project_toggle_pause_path(@project), class: "float-left btn btn-danger" %>
+    <% end %>
   </div>
 
-  <div class="col-sm">
+  <div class="col">
     <div class="card" style="width: 18rem;">
       <div class="card-body">
         <h5 class="card-title">Links</h5>
@@ -25,84 +29,147 @@
   </div>
 </div>
 
-<h3 class="mt-5">Settings</h3>
+<div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+  <a class="nav-link active" id="nav-issues-tab" data-toggle="pill" href="#nav-issues" role="tab" aria-controls="nav-issues" aria-selected="true">
+  Issues
+    <span class="badge badge-pill badge-danger"><%= @issues.submitted.count %></span>
+    <span class="badge badge-pill badge-warning"><%= @issues.acknowledged.count %></span>
+    <span class="badge badge-pill badge-light"><%= @issues.resolved.count %></span>
+  </a>
+  <a class="nav-link" id="nav-settings-tab" data-toggle="pill" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">Settings</a>
+</div>
 
-<table class="table" style="width: 50%">
-  <tr>
-    <th scope="row">Show in Project Directory</th>
-    <td>
-      <% if @project.public? %>
-        <span class="badge badge-success">Yes</span>
-      <% else %>
-        <span class="badge badge-danger">No</span>
-      <% end %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">Show Issues Report in Project Directory</th>
-    <td>
-      <% if @settings.publish_stats? %>
-        <span class="badge badge-success">Yes</span>
-      <% else %>
-        <span class="badge badge-danger">No</span>
-      <% end %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">
-      Accepting Issues
-      <% if @settings.paused? %>
-        <p><i>Paused on <%= @settings.paused_at.strftime("%F") %></i></p>
-      <% end %>
-    </th>
-    <td>
-      <% if @settings.paused? %>
-        <span class="badge badge-danger">No</span>
-      <% else %>
-        <span class="badge badge-success">Yes</span>
-      <% end %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">Allow Anonymous Reporting</th>
-    <td>
-      <% if @settings.allow_anonymous_issues? %>
-        <span class="badge badge-success">Yes</span>
-      <% else %>
-        <span class="badge badge-danger">No</span>
-      <% end %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">Maximum Issues/Day</th>
-    <td>
-      <%= @settings.rate_per_day %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">Require 3rd Party Account Verification</th>
-    <td>
+<div class="tab-content" id="nav-tabContent">
+
+  <div class="tab-pane fade show active" id="nav-issues" role="tabpanel" aria-labelledby="nav-issues-tab">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Issue #</th>
+          <th>Description</th>
+          <th>Opened</th>
+          <th>Updated</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @issues.submitted.each do |issue| %>
+          <tr>
+            <td><%= link_to issue.issue_number, project_issue_path(@project, issue) %></td>
+            <td><%= truncate(issue.description, length: 20) %></td>
+            <td><%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
+            <td><%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
+            <td><%= issue.aasm_state.titleize %></td>
+          </tr>
+        <% end %>
+        <% @issues.acknowledged.each do |issue| %>
+          <tr>
+            <td><%= link_to issue.issue_number, project_issue_path(@project, issue) %></td>
+            <td><%= truncate(issue.description, length: 20) %></td>
+            <td><%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
+            <td><%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
+            <td><%= issue.aasm_state.titleize %></td>
+          </tr>
+        <% end %>
+        <% @issues.resolved.each do |issue| %>
+          <tr>
+            <td><%= link_to issue.issue_number, project_issue_path(@project, issue) %></td>
+            <td><%= truncate(issue.description, length: 20) %></td>
+            <td><%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
+            <td><%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
+            <td><%= issue.aasm_state.titleize %></td>
+          </tr>
+        <% end %>
+        <% @issues.dismissed.each do |issue| %>
+          <tr>
+            <td><%= link_to issue.issue_number, project_issue_path(@project, issue) %></td>
+            <td><%= truncate(issue.description, length: 20) %></td>
+            <td><%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
+            <td><%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
+            <td><%= issue.aasm_state.titleize %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+  </div>
+
+  <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-profile-tab">
+    <table class="table" style="width: 50%">
+      <tr>
+        <th scope="row">Show in Project Directory</th>
+        <td>
+          <% if @project.public? %>
+            <span class="badge badge-success">Yes</span>
+          <% else %>
+            <span class="badge badge-danger">No</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Show Issues Report in Project Directory</th>
+        <td>
+          <% if @settings.publish_stats? %>
+            <span class="badge badge-success">Yes</span>
+          <% else %>
+            <span class="badge badge-danger">No</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          Accepting Issues
+          <% if @settings.paused? %>
+            <p><i>Paused on <%= @settings.paused_at.strftime("%F") %></i></p>
+          <% end %>
+        </th>
+        <td>
+          <% if @settings.paused? %>
+            <span class="badge badge-danger">No</span>
+          <% else %>
+            <span class="badge badge-success">Yes</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Allow Anonymous Reporting</th>
+        <td>
+          <% if @settings.allow_anonymous_issues? %>
+            <span class="badge badge-success">Yes</span>
+          <% else %>
+            <span class="badge badge-danger">No</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Maximum Issues/Day</th>
+        <td>
+          <%= @settings.rate_per_day %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Require 3rd Party Account Verification</th>
+        <td>
+          <% if @settings.require_3rd_party_auth? %>
+            <span class="badge badge-success">Yes</span>
+          <% else %>
+            <span class="badge badge-danger">No</span>
+          <% end %>
+        </td>
+      </tr>
       <% if @settings.require_3rd_party_auth? %>
-        <span class="badge badge-success">Yes</span>
-      <% else %>
-        <span class="badge badge-danger">No</span>
+        <tr>
+          <th scope="row">Minimum 3rd Party Account Age</th>
+          <td>
+            <%= @settings.minimum_3rd_party_auth_age_in_days %> days
+          </td>
+        </tr>
       <% end %>
-    </td>
-  </tr>
-  <% if @settings.require_3rd_party_auth? %>
-    <tr>
-      <th scope="row">Minimum 3rd Party Account Age</th>
-      <td>
-        <%= @settings.minimum_3rd_party_auth_age_in_days %> days
-      </td>
-    </tr>
-  <% end %>
-</table>
+    </table>
 
-<%= link_to "Edit Settings", project_settings_path(@project), class: "btn btn-warning float-left mr-5" %>
-<% if @settings.paused? %>
-  <%= button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-warning" %>
-<% else %>
-  <%= button_to "Pause Issue Reporting for 24 Hours", project_toggle_pause_path(@project), class: "btn btn-danger" %>
-<% end %>
+    <%= link_to "Edit Settings", project_settings_path(@project), class: "btn btn-warning float-left mr-5" %>
 
+  </div>
+</div>
+
+</div>
