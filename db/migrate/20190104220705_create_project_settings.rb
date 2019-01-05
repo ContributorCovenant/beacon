@@ -8,7 +8,7 @@ class CreateProjectSettings < ActiveRecord::Migration[5.2]
       t.boolean :allow_anonymous_issues, default: false
       t.boolean :publish_stats, default: true
       t.boolean :include_in_directory, default: true
-      t.references :project
+      t.references :project, type: :uuid, foreign_key: true
       t.timestamps
     end
   end

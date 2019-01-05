@@ -6,7 +6,7 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       t.string :url, null: false, unique: true
       t.string :coc_url, null: false
       t.text :description, null: false
-      t.references :account
+      t.references :account, type: :uuid, foreign_key: true
       t.timestamps
     end
     add_index :projects, :slug, unique: true

@@ -12,6 +12,7 @@ module Beacon
     config.load_defaults 5.2
     config.generators do |g|
       g.orm :active_record, primary_key_type: :uuid
+      g.orm :active_record, foreign_key_type: :uuid
     end
 
     # Settings in config/environments/* take precedence over those specified here.

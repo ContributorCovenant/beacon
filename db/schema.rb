@@ -9,7 +9,8 @@
 # you'll amass, the slower it'll run and the greater likelihood for issues).
 #
 # It's strongly recommended that you check this file into your version control system.
-ActiveRecord::Schema.define(version: 2019_01_05_172729) do
+
+ActiveRecord::Schema.define(version: 2019_01_05_175056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -64,7 +65,7 @@ ActiveRecord::Schema.define(version: 2019_01_05_172729) do
     t.boolean "allow_anonymous_issues", default: false
     t.boolean "publish_stats", default: true
     t.boolean "include_in_directory", default: true
-    t.bigint "project_id"
+    t.uuid "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_project_settings_on_project_id"
@@ -76,11 +77,13 @@ ActiveRecord::Schema.define(version: 2019_01_05_172729) do
     t.string "url", null: false
     t.string "coc_url", null: false
     t.text "description", null: false
-    t.bigint "account_id"
+    t.uuid "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_projects_on_account_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
+  add_foreign_key "project_settings", "projects"
+  add_foreign_key "projects", "accounts"
 end

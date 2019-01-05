@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   root to: 'static_content#main'
 
+  resources :accounts
+
   resources :projects, param: :slug do
     resources :issues
     get 'settings', to: "project_settings#edit"

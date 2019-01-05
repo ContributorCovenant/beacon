@@ -1,4 +1,5 @@
 require 'digest'
+require 'normailize'
 
 class Account < ApplicationRecord
 
