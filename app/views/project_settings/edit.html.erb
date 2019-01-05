@@ -1,0 +1,39 @@
+<h2><%= @project.name %></h2>
+
+<%= form_for @settings, url: project_settings_path do |f| %>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :include_in_directory, "Make Project Public in Project Directory" %>
+    <%= f.check_box :include_in_directory, class: "toggle", :data => { :toggle => 'toggle' } %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :publish_stats, "Publish Issue Statistics in Directory" %>
+    <%= f.check_box :publish_stats, class: "toggle", :data => { :toggle => 'toggle' } %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :allow_anonymous_issues, "Allow Anonymous Reporting" %>
+    <%= f.check_box :allow_anonymous_issues, class: "toggle", :data => { :toggle => 'toggle' } %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :rate_per_day, "Maximum Issues / Day" %><br />
+    <%= f.text_field :rate_per_day, autofocus: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :rate_per_day, "Require 3rd Party Account Verification" %>
+    <%= f.check_box :require_3rd_party_auth, class: "toggle", :data => { :toggle => 'toggle' } %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :rate_per_day, "Minimum 3rd Party Account Age (days)" %><br />
+    <%= f.text_field :minimum_3rd_party_auth_age_in_days, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Update Settings", class: "btn btn-primary" %>
+  </div>
+
+<% end %>

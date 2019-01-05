@@ -83,6 +83,7 @@ GEM
       autoprefixer-rails (>= 9.1.0)
       popper_js (>= 1.14.3, < 2)
       sassc-rails (>= 2.0.0)
+    bootstrap-toggle-rails (2.2.1.0)
     bootswatch (4.2.1)
       autoprefixer-rails (>= 6.0.3)
     builder (3.2.3)
@@ -100,6 +101,7 @@ GEM
     chromedriver-helper (2.1.0)
       archive-zip (~> 0.10)
       nokogiri (~> 1.8)
+    coderay (1.1.2)
     coffee-rails (4.2.2)
       coffee-script (>= 2.2.0)
       railties (>= 4.0.0)
@@ -115,6 +117,7 @@ GEM
       railties (>= 4.1.0, < 6.0)
       responders
       warden (~> 1.2.3)
+    diff-lcs (1.3)
     erubi (1.8.0)
     execjs (2.7.0)
     faraday (0.15.4)
@@ -172,6 +175,9 @@ GEM
     orm_adapter (0.5.0)
     pg (1.1.3)
     popper_js (1.14.5)
+    pry (0.12.2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
     public_suffix (3.0.3)
     puma (3.12.0)
     rack (2.0.6)
@@ -209,6 +215,23 @@ GEM
     responders (2.4.0)
       actionpack (>= 4.2.0, < 5.3)
       railties (>= 4.2.0, < 5.3)
+    rspec-core (3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-expectations (3.8.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-mocks (3.8.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.8.0)
+    rspec-rails (3.8.1)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 3.8.0)
+      rspec-expectations (~> 3.8.0)
+      rspec-mocks (~> 3.8.0)
+      rspec-support (~> 3.8.0)
+    rspec-support (3.8.0)
     ruby_dep (1.5.0)
     rubyzip (1.2.2)
     sass (3.7.2)
@@ -280,6 +303,7 @@ DEPENDENCIES
   autoprefixer-rails
   bootsnap (>= 1.1.0)
   bootstrap
+  bootstrap-toggle-rails
   bootswatch
   byebug
   capybara (>= 2.15)
@@ -292,9 +316,11 @@ DEPENDENCIES
   omniauth-github!
   omniauth-gitlab!
   pg
+  pry
   puma (~> 3.11)
   rails (~> 5.2.2)
   rails_layout!
+  rspec-rails
   sass-rails (~> 5.0)
   selenium-webdriver
   spring
