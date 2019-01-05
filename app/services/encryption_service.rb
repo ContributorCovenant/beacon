@@ -1,5 +1,11 @@
 class EncryptionService
 
+  require 'digest'
+
+  def self.hash(text)
+    Digest::MD5.hexdigest(text)
+  end
+
   def self.encrypt(text)
     len   = ActiveSupport::MessageEncryptor.key_len
     salt  = SecureRandom.hex len

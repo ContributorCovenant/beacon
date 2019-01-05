@@ -6,9 +6,9 @@ class Issue < ApplicationRecord
 
   has_many :issue_events
 
-  before_create :set_reporter_encrypted_id
-  before_create :set_project_encrypted_id
   before_create :set_issue_number
+  after_create :set_reporter_encrypted_id
+  after_create :set_project_encrypted_id
 
   aasm do
     state :submitted, initial: true
@@ -45,11 +45,13 @@ class Issue < ApplicationRecord
   end
 
   def set_reporter_encrypted_id
-    self.reporter_encrypted_id = EncryptionService.encrypt(self.account_id)
+    update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(self.account_id))
   end
 
   def set_project_encrypted_id
-    self.project_encrypted_id = EncryptionService.encrypt(self.project_id)
+    update_attribute(:project_encrypted_id, EncryptionService.encrypt(self.project_id))
+    project.issues_encrypted_ids << EncryptionService.encrypt(self.id)
+    project.save
   end
 
   def log_event(args)

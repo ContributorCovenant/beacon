@@ -46,6 +46,7 @@ class ProjectsController < ApplicationController
   def scope_project
     @project = Project.find_by(slug: params[:slug])
     @settings = @project.project_setting
+    @issues = @project.issues
   end
 
 end
