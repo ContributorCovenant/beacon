@@ -29,69 +29,41 @@
   </div>
 </div>
 
-<div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
-  <a class="nav-link active" id="nav-issues-tab" data-toggle="pill" href="#nav-issues" role="tab" aria-controls="nav-issues" aria-selected="true">
-  Issues
-    <span class="badge badge-pill badge-danger"><%= @issues.submitted.count %></span>
-    <span class="badge badge-pill badge-warning"><%= @issues.acknowledged.count %></span>
-    <span class="badge badge-pill badge-light"><%= @issues.resolved.count %></span>
+<div class="nav nav-tabs mt-5 mb-3" id="nav-tab" role="tablist">
+  <a class="nav-link active" id="nav-newissues-tab" data-toggle="pill" href="#nav-newissues" role="tab" aria-controls="nav-newissues" aria-selected="true">
+    New Issues <span class="badge badge-pill badge-danger"><%= @issues.submitted.count %></span>
   </a>
-  <a class="nav-link" id="nav-settings-tab" data-toggle="pill" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">Settings</a>
+  <a class="nav-link " id="nav-acknowledgedissues-tab" data-toggle="pill" href="#nav-acknowledgedissues" role="tab" aria-controls="nav-acknowledgedissues" aria-selected="false">
+    In Progress <span class="badge badge-pill badge-warning"><%= @issues.acknowledged.count %></span>
+  </a>
+  <a class="nav-link " id="nav-resolvedissues-tab" data-toggle="pill" href="#nav-resolvedissues" role="tab" aria-controls="nav-resolvedissues" aria-selected="false">
+    Resolved <span class="badge badge-pill badge-light"><%= @issues.resolved.count %></span>
+  </a>
+  <a class="nav-link " id="nav-dismissedissues-tab" data-toggle="pill" href="#nav-dismissedissues" role="tab" aria-controls="nav-dismissedissues" aria-selected="false">
+    Dismissed <span class="badge badge-pill badge-dark"><%= @issues.dismissed.count %></span>
+  </a>
+
+  <a class="nav-link" id="nav-settings-tab" data-toggle="pill" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">
+    Settings
+  </a>
 </div>
 
 <div class="tab-content" id="nav-tabContent">
 
-  <div class="tab-pane fade show active" id="nav-issues" role="tabpanel" aria-labelledby="nav-issues-tab">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Issue #</th>
-          <th>Description</th>
-          <th>Opened</th>
-          <th>Updated</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @issues.submitted.each do |issue| %>
-          <tr>
-            <td><%= link_to issue.issue_number, project_issue_path(@project, issue) %></td>
-            <td><%= truncate(issue.description, length: 20) %></td>
-            <td><%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
-            <td><%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
-            <td><%= issue.aasm_state.titleize %></td>
-          </tr>
-        <% end %>
-        <% @issues.acknowledged.each do |issue| %>
-          <tr>
-            <td><%= link_to issue.issue_number, project_issue_path(@project, issue) %></td>
-            <td><%= truncate(issue.description, length: 20) %></td>
-            <td><%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
-            <td><%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
-            <td><%= issue.aasm_state.titleize %></td>
-          </tr>
-        <% end %>
-        <% @issues.resolved.each do |issue| %>
-          <tr>
-            <td><%= link_to issue.issue_number, project_issue_path(@project, issue) %></td>
-            <td><%= truncate(issue.description, length: 20) %></td>
-            <td><%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
-            <td><%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
-            <td><%= issue.aasm_state.titleize %></td>
-          </tr>
-        <% end %>
-        <% @issues.dismissed.each do |issue| %>
-          <tr>
-            <td><%= link_to issue.issue_number, project_issue_path(@project, issue) %></td>
-            <td><%= truncate(issue.description, length: 20) %></td>
-            <td><%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
-            <td><%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
-            <td><%= issue.aasm_state.titleize %></td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+  <div class="tab-pane fade show active" id="nav-newissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
+    <%= render partial: "issues", locals: { issues: @issues.submitted } %>
+  </div>
 
+  <div class="tab-pane fade" id="nav-acknowledgedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
+    <%= render partial: "issues", locals: { issues: @issues.acknowledged } %>
+  </div>
+
+  <div class="tab-pane fade" id="nav-resolvedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
+    <%= render partial: "issues", locals: { issues: @issues.resolved } %>
+  </div>
+
+  <div class="tab-pane fade" id="nav-dismissedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
+    <%= render partial: "issues", locals: { issues: @issues.dismissed } %>
   </div>
 
   <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-profile-tab">
