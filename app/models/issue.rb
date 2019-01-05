@@ -46,6 +46,8 @@ class Issue < ApplicationRecord
 
   def set_reporter_encrypted_id
     update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(self.account_id))
+    reporter.issues_encrypted_ids << EncryptionService.encrypt(self.id)
+    reporter.save
   end
 
   def set_project_encrypted_id

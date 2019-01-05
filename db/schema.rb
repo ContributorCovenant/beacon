@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_05_210601) do
+ActiveRecord::Schema.define(version: 2019_01_05_213058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 2019_01_05_210601) do
     t.datetime "locked_at"
     t.string "normalized_email"
     t.string "hashed_email"
+    t.text "issues_encrypted_ids", default: [], array: true
     t.index ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["normalized_email"], name: "index_accounts_on_normalized_email", unique: true
