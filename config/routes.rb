@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  devise_for :accounts
+
+  devise_for :accounts, controllers: {
+    registrations: 'accounts/registrations',
+    passwords: 'accounts/passwords'
+  }
+
   root to: 'static_content#main'
 
   resources :projects, param: :slug do
