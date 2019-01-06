@@ -11,16 +11,16 @@
         <p>
           Visibility:
           <% if project.public? %>
-            <span class="badge badge-success">Public</span>
+            <span class="badge badge-pill badge-success">Public</span>
           <% else %>
-            <span class="badge badge-danger">Private</span>
+            <span class="badge badge-pill badge-danger">Private</span>
           <% end %>
         </p>
         <p>
           Issues:
-          <span class="badge badge-pill badge-danger"><%= project.issues.submitted.count %></span>
-          <span class="badge badge-pill badge-warning"><%= project.issues.acknowledged.count + project.issues.reopened.count %></span>
-          <span class="badge badge-pill badge-light"><%= project.issues.resolved.count %></span>
+          <span class="badge badge-pill badge-danger"><%= project.issues.submitted.count %> New</span>
+          <span class="badge badge-pill badge-warning"><%= project.issues.acknowledged.count + project.issues.reopened.count %> In Progress</span>
+          <span class="badge badge-pill badge-light"><%= project.issues.resolved.count %> Resolved</span>
         </p>
       </div>
     </div>
