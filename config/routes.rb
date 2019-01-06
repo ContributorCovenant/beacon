@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   resources :accounts
 
+  get 'watermark.svg', to: "watermarks#show", format: :xml
+
   resources :projects, param: :slug do
     resources :issues
     get 'settings', to: "project_settings#edit"
