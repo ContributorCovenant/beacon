@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_05_213058) do
+ActiveRecord::Schema.define(version: 2019_01_06_013142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -48,6 +48,16 @@ ActiveRecord::Schema.define(version: 2019_01_05_213058) do
     t.index ["normalized_email"], name: "index_accounts_on_normalized_email", unique: true
     t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
     t.index ["unlock_token"], name: "index_accounts_on_unlock_token", unique: true
+  end
+
+  create_table "issue_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "text"
+    t.string "commenter_encrypted_id"
+    t.boolean "visible_to_reporter", default: false
+    t.uuid "issue_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_issue_comments_on_issue_id"
   end
 
   create_table "issue_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -110,6 +120,7 @@ ActiveRecord::Schema.define(version: 2019_01_05_213058) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
+  add_foreign_key "issue_comments", "issues"
   add_foreign_key "issue_events", "issues"
   add_foreign_key "issue_logs", "issues"
   add_foreign_key "project_settings", "projects"

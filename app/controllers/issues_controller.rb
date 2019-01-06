@@ -18,6 +18,8 @@ class IssuesController < ApplicationController
   end
 
   def show
+    @comments = @issue.issue_comments.order(:created_at)
+    @comment = IssueComment.new
   end
 
   def acknowledge

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
 
   resources :projects, param: :slug do
     resources :issues do
+      resources :issue_comments, only: [:create, :new]
       post 'acknowledge', to: "issues#acknowledge"
       post 'dismiss', to: "issues#dismiss"
       post 'resolve', to: "issues#resolve"

@@ -5,6 +5,7 @@ class Issue < ApplicationRecord
   attr_accessor :account_id, :project_id
 
   has_many :issue_events
+  has_many :issue_comments
 
   before_create :set_issue_number
   after_create :set_reporter_encrypted_id
