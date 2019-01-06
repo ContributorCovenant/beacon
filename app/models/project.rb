@@ -24,6 +24,10 @@ class Project < ApplicationRecord
     self.project_setting.include_in_directory
   end
 
+  def user_is_admin?(account)
+    account == self.account
+  end
+
   private
 
   def set_slug
