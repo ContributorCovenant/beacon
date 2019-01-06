@@ -12,21 +12,27 @@ class Issue < ApplicationRecord
 
   aasm do
     state :submitted, initial: true
-    state :acknowledged, before_enter: Proc.new { |*args| log_event(args) }
-    state :dismissed, before_enter: Proc.new { |*args| log_event(args) }
-    state :resolved, before_enter: Proc.new { |*args| log_event(args) }
+    state :acknowledged, before_enter: Proc.new { |args| log_event(args) }
+    state :dismissed, before_enter: Proc.new { |args| log_event(args) }
+    state :resolved, before_enter: Proc.new { |args| log_event(args) }
+    state :reopened, before_enter: Proc.new { |args| log_event(args) }
 
     event :acknowledge do
       transitions from: :submitted, to: :acknowledged
     end
 
     event :dismiss do
-      transitions from: :acknowledged, to: :dismissed
+      transitions from: [:acknowledged, :reopened], to: :dismissed
     end
 
-    event :resolved do
-      transitions from: :acknowledged, to: :resolved
+    event :resolve do
+      transitions from: [:acknowledged, :reopened], to: :resolved
     end
+
+    event :reopen do
+      transitions from: [:dismissed, :resolved], to: :reopened
+    end
+
   end
 
   def reporter

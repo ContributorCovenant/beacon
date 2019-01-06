@@ -1,7 +1,7 @@
-<h2><%= @project.name %>: Issue <%= @issue.issue_number %></h2>
+<h2><%= link_to @project.name, @project %>: Issue <%= @issue.issue_number %></h2>
 
 <h4 class="mt-3">Description</h4>
-<div style="background-image: url('/watermark.svg'); background-repeat: no-repeat; background-position: right top;">
+<div style="background-image: url('/watermark.svg'); background-repeat: no-repeat; background-position: left top;">
   <div style="mix-blend-mode: exclusion; padding: 1em;">
     <%= @issue.description %>
   </div>
@@ -25,7 +25,16 @@
   <h4>History</h4>
   <ul>
     <% @issue.issue_events.each do |event| %>
-      <li><%= event.event %> (<%= event.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
+      <li><%= event.event %> by <%= event.actor.email %> (<%= event.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
     <% end %>
   </ul>
+<% end %>
+
+<% if @issue.submitted? %>
+  <%= button_to "Acknowledge", project_issue_acknowledge_path(@project, @issue), class: "float-left btn btn-warning mr-3 float-left" %>
+<% elsif @issue.acknowledged? || @issue.reopened? %>
+  <%= button_to "Dismiss", project_issue_dismiss_path(@project, @issue), class: "float-left btn btn-warning mr-3 float-left" %>
+  <%= button_to "Resolve", project_issue_resolve_path(@project, @issue), class: "float-left btn btn-warning mr-3 float-left" %>
+<% elsif @issue.dismissed? || @issue.resolved? %>
+  <%= button_to "Re-Open", project_issue_reopen_path(@project, @issue), class: "float-left btn btn-warning mr-3 float-left" %>
 <% end %>

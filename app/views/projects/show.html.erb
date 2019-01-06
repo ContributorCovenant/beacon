@@ -34,7 +34,7 @@
     New Issues <span class="badge badge-pill badge-danger"><%= @issues.submitted.count %></span>
   </a>
   <a class="nav-link " id="nav-acknowledgedissues-tab" data-toggle="pill" href="#nav-acknowledgedissues" role="tab" aria-controls="nav-acknowledgedissues" aria-selected="false">
-    In Progress <span class="badge badge-pill badge-warning"><%= @issues.acknowledged.count %></span>
+    In Progress <span class="badge badge-pill badge-warning"><%= @issues.acknowledged.count + @issues.reopened.count %></span>
   </a>
   <a class="nav-link " id="nav-resolvedissues-tab" data-toggle="pill" href="#nav-resolvedissues" role="tab" aria-controls="nav-resolvedissues" aria-selected="false">
     Resolved <span class="badge badge-pill badge-light"><%= @issues.resolved.count %></span>
@@ -55,7 +55,7 @@
   </div>
 
   <div class="tab-pane fade" id="nav-acknowledgedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
-    <%= render partial: "issues", locals: { issues: @issues.acknowledged } %>
+    <%= render partial: "issues", locals: { issues: @issues.acknowledged + @issues.reopened } %>
   </div>
 
   <div class="tab-pane fade" id="nav-resolvedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">

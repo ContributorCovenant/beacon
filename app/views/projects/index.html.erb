@@ -19,7 +19,7 @@
         <p>
           Issues:
           <span class="badge badge-pill badge-danger"><%= project.issues.submitted.count %></span>
-          <span class="badge badge-pill badge-warning"><%= project.issues.acknowledged.count %></span>
+          <span class="badge badge-pill badge-warning"><%= project.issues.acknowledged.count + project.issues.reopened.count %></span>
           <span class="badge badge-pill badge-light"><%= project.issues.resolved.count %></span>
         </p>
       </div>
