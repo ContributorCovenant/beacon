@@ -1,4 +1,5 @@
 require 'digest'
+require 'normailize'
 
 class Account < ApplicationRecord
 
@@ -15,6 +16,11 @@ class Account < ApplicationRecord
 
   before_create :normalize_email
   before_create :hash_email
+
+  def issues
+    decrypted_issue_ids = self.issues_encrypted_ids.map{ |id| EncryptionService.decrypt(id) }
+    @issues ||= Issue.where(id: decrypted_issue_ids)
+  end
 
   private
 

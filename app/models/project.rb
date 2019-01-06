@@ -11,6 +11,11 @@ class Project < ApplicationRecord
   before_create :set_slug
   after_create :make_settings
 
+  def issues
+    decrypted_issue_ids = self.issues_encrypted_ids.map{ |id| EncryptionService.decrypt(id) }
+    @issues ||= Issue.where(id: decrypted_issue_ids)
+  end
+
   def to_param
     self.slug
   end

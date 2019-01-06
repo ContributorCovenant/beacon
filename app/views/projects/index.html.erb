@@ -16,6 +16,12 @@
             <span class="badge badge-danger">Private</span>
           <% end %>
         </p>
+        <p>
+          Issues:
+          <span class="badge badge-pill badge-danger"><%= project.issues.submitted.count %></span>
+          <span class="badge badge-pill badge-warning"><%= project.issues.acknowledged.count %></span>
+          <span class="badge badge-pill badge-light"><%= project.issues.resolved.count %></span>
+        </p>
       </div>
     </div>
   </div>

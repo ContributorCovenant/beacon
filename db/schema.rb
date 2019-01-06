@@ -10,12 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_05_172729) do
+ActiveRecord::Schema.define(version: 2019_01_05_213058) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
-  create_table "accounts", force: :cascade do |t|
+  create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", default: "", null: false
     t.string "email", default: "", null: false
     t.string "temp_2fa_code"
@@ -40,6 +42,7 @@ ActiveRecord::Schema.define(version: 2019_01_05_172729) do
     t.datetime "locked_at"
     t.string "normalized_email"
     t.string "hashed_email"
+    t.text "issues_encrypted_ids", default: [], array: true
     t.index ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["normalized_email"], name: "index_accounts_on_normalized_email", unique: true
@@ -47,7 +50,39 @@ ActiveRecord::Schema.define(version: 2019_01_05_172729) do
     t.index ["unlock_token"], name: "index_accounts_on_unlock_token", unique: true
   end
 
-  create_table "project_settings", force: :cascade do |t|
+  create_table "issue_events", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "event"
+    t.string "actor_encrypted_id"
+    t.uuid "issue_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_issue_events_on_issue_id"
+  end
+
+  create_table "issue_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "event"
+    t.uuid "issue_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["issue_id"], name: "index_issue_logs_on_issue_id"
+  end
+
+  create_table "issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "description"
+    t.string "reporter_encrypted_id"
+    t.integer "issue_number"
+    t.string "project_encrypted_id"
+    t.string "aasm_state"
+    t.text "urls", default: [], array: true
+    t.boolean "is_spam", default: false
+    t.boolean "is_abusive", default: false
+    t.datetime "acknowledged_at"
+    t.datetime "closed_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "project_settings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.datetime "paused_at"
     t.integer "rate_per_day", default: 5
     t.boolean "require_3rd_party_auth", default: false
@@ -55,23 +90,28 @@ ActiveRecord::Schema.define(version: 2019_01_05_172729) do
     t.boolean "allow_anonymous_issues", default: false
     t.boolean "publish_stats", default: true
     t.boolean "include_in_directory", default: true
-    t.bigint "project_id"
+    t.uuid "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["project_id"], name: "index_project_settings_on_project_id"
   end
 
-  create_table "projects", force: :cascade do |t|
+  create_table "projects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", null: false
     t.string "slug", null: false
     t.string "url", null: false
     t.string "coc_url", null: false
     t.text "description", null: false
-    t.bigint "account_id"
+    t.uuid "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "issues_encrypted_ids", default: [], array: true
     t.index ["account_id"], name: "index_projects_on_account_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
+  add_foreign_key "issue_events", "issues"
+  add_foreign_key "issue_logs", "issues"
+  add_foreign_key "project_settings", "projects"
+  add_foreign_key "projects", "accounts"
 end

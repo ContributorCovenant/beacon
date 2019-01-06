@@ -3,11 +3,15 @@
   <div class="col">
     <h2><%= @project.name %></h2>
     <p><%= @project.description %></p>
-    <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning" %>
-
+    <%= link_to "Edit Project", edit_project_path(@project), class: "float-left btn btn-warning mr-3" %>
+    <% if @settings.paused? %>
+      <%= button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "float-left btn btn-warning" %>
+    <% else %>
+      <%= button_to "Pause Issue Reporting for 24 Hours", project_toggle_pause_path(@project), class: "float-left btn btn-danger" %>
+    <% end %>
   </div>
 
-  <div class="col-sm">
+  <div class="col">
     <div class="card" style="width: 18rem;">
       <div class="card-body">
         <h5 class="card-title">Links</h5>
@@ -25,84 +29,119 @@
   </div>
 </div>
 
-<h3 class="mt-5">Settings</h3>
+<div class="nav nav-tabs mt-5 mb-3" id="nav-tab" role="tablist">
+  <a class="nav-link active" id="nav-newissues-tab" data-toggle="pill" href="#nav-newissues" role="tab" aria-controls="nav-newissues" aria-selected="true">
+    New Issues <span class="badge badge-pill badge-danger"><%= @issues.submitted.count %></span>
+  </a>
+  <a class="nav-link " id="nav-acknowledgedissues-tab" data-toggle="pill" href="#nav-acknowledgedissues" role="tab" aria-controls="nav-acknowledgedissues" aria-selected="false">
+    In Progress <span class="badge badge-pill badge-warning"><%= @issues.acknowledged.count %></span>
+  </a>
+  <a class="nav-link " id="nav-resolvedissues-tab" data-toggle="pill" href="#nav-resolvedissues" role="tab" aria-controls="nav-resolvedissues" aria-selected="false">
+    Resolved <span class="badge badge-pill badge-light"><%= @issues.resolved.count %></span>
+  </a>
+  <a class="nav-link " id="nav-dismissedissues-tab" data-toggle="pill" href="#nav-dismissedissues" role="tab" aria-controls="nav-dismissedissues" aria-selected="false">
+    Dismissed <span class="badge badge-pill badge-dark"><%= @issues.dismissed.count %></span>
+  </a>
 
-<table class="table" style="width: 50%">
-  <tr>
-    <th scope="row">Show in Project Directory</th>
-    <td>
-      <% if @project.public? %>
-        <span class="badge badge-success">Yes</span>
-      <% else %>
-        <span class="badge badge-danger">No</span>
-      <% end %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">Show Issues Report in Project Directory</th>
-    <td>
-      <% if @settings.publish_stats? %>
-        <span class="badge badge-success">Yes</span>
-      <% else %>
-        <span class="badge badge-danger">No</span>
-      <% end %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">
-      Accepting Issues
-      <% if @settings.paused? %>
-        <p><i>Paused on <%= @settings.paused_at.strftime("%F") %></i></p>
-      <% end %>
-    </th>
-    <td>
-      <% if @settings.paused? %>
-        <span class="badge badge-danger">No</span>
-      <% else %>
-        <span class="badge badge-success">Yes</span>
-      <% end %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">Allow Anonymous Reporting</th>
-    <td>
-      <% if @settings.allow_anonymous_issues? %>
-        <span class="badge badge-success">Yes</span>
-      <% else %>
-        <span class="badge badge-danger">No</span>
-      <% end %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">Maximum Issues/Day</th>
-    <td>
-      <%= @settings.rate_per_day %>
-    </td>
-  </tr>
-  <tr>
-    <th scope="row">Require 3rd Party Account Verification</th>
-    <td>
+  <a class="nav-link" id="nav-settings-tab" data-toggle="pill" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">
+    Settings
+  </a>
+</div>
+
+<div class="tab-content" id="nav-tabContent">
+
+  <div class="tab-pane fade show active" id="nav-newissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
+    <%= render partial: "issues", locals: { issues: @issues.submitted } %>
+  </div>
+
+  <div class="tab-pane fade" id="nav-acknowledgedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
+    <%= render partial: "issues", locals: { issues: @issues.acknowledged } %>
+  </div>
+
+  <div class="tab-pane fade" id="nav-resolvedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
+    <%= render partial: "issues", locals: { issues: @issues.resolved } %>
+  </div>
+
+  <div class="tab-pane fade" id="nav-dismissedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
+    <%= render partial: "issues", locals: { issues: @issues.dismissed } %>
+  </div>
+
+  <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-profile-tab">
+    <table class="table" style="width: 50%">
+      <tr>
+        <th scope="row">Show in Project Directory</th>
+        <td>
+          <% if @project.public? %>
+            <span class="badge badge-success">Yes</span>
+          <% else %>
+            <span class="badge badge-danger">No</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Show Issues Report in Project Directory</th>
+        <td>
+          <% if @settings.publish_stats? %>
+            <span class="badge badge-success">Yes</span>
+          <% else %>
+            <span class="badge badge-danger">No</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">
+          Accepting Issues
+          <% if @settings.paused? %>
+            <p><i>Paused on <%= @settings.paused_at.strftime("%F") %></i></p>
+          <% end %>
+        </th>
+        <td>
+          <% if @settings.paused? %>
+            <span class="badge badge-danger">No</span>
+          <% else %>
+            <span class="badge badge-success">Yes</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Allow Anonymous Reporting</th>
+        <td>
+          <% if @settings.allow_anonymous_issues? %>
+            <span class="badge badge-success">Yes</span>
+          <% else %>
+            <span class="badge badge-danger">No</span>
+          <% end %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Maximum Issues/Day</th>
+        <td>
+          <%= @settings.rate_per_day %>
+        </td>
+      </tr>
+      <tr>
+        <th scope="row">Require 3rd Party Account Verification</th>
+        <td>
+          <% if @settings.require_3rd_party_auth? %>
+            <span class="badge badge-success">Yes</span>
+          <% else %>
+            <span class="badge badge-danger">No</span>
+          <% end %>
+        </td>
+      </tr>
       <% if @settings.require_3rd_party_auth? %>
-        <span class="badge badge-success">Yes</span>
-      <% else %>
-        <span class="badge badge-danger">No</span>
+        <tr>
+          <th scope="row">Minimum 3rd Party Account Age</th>
+          <td>
+            <%= @settings.minimum_3rd_party_auth_age_in_days %> days
+          </td>
+        </tr>
       <% end %>
-    </td>
-  </tr>
-  <% if @settings.require_3rd_party_auth? %>
-    <tr>
-      <th scope="row">Minimum 3rd Party Account Age</th>
-      <td>
-        <%= @settings.minimum_3rd_party_auth_age_in_days %> days
-      </td>
-    </tr>
-  <% end %>
-</table>
+    </table>
 
-<%= link_to "Edit Settings", project_settings_path(@project), class: "btn btn-warning float-left mr-5" %>
-<% if @settings.paused? %>
-  <%= button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-warning" %>
-<% else %>
-  <%= button_to "Pause Issue Reporting for 24 Hours", project_toggle_pause_path(@project), class: "btn btn-danger" %>
-<% end %>
+    <%= link_to "Edit Settings", project_settings_path(@project), class: "btn btn-warning float-left mr-5" %>
 
+  </div>
+</div>
+
+</div>

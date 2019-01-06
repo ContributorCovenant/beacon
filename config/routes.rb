@@ -7,7 +7,12 @@ Rails.application.routes.draw do
 
   root to: 'static_content#main'
 
+  resources :accounts
+
+  get 'watermark.svg', to: "watermarks#show", format: :xml
+
   resources :projects, param: :slug do
+    resources :issues
     get 'settings', to: "project_settings#edit"
     patch 'settings', to: "project_settings#update"
     post 'toggle_pause', to: "project_settings#toggle_pause"
