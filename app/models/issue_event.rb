@@ -2,6 +2,8 @@ class IssueEvent < ApplicationRecord
 
   attr_accessor :actor_id
 
+  belongs_to :issue
+
   before_create :set_actor_encrypted_id
 
   def actor

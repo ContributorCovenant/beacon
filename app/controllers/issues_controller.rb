@@ -1,7 +1,7 @@
 class IssuesController < ApplicationController
 
   before_action :scope_project
-  before_action :scope_issue, only: [:show]
+  before_action :scope_issue, except: [:new, :create]
 
   def new
     @issue = Issue.new(project_id: @project.id, account_id: current_account.id)
@@ -18,6 +18,30 @@ class IssuesController < ApplicationController
   end
 
   def show
+    comments = @issue.issue_comments.order(:created_at)
+    @reporter_discussion_comments = comments.select{|comment| (comment.commenter == @issue.reporter) || comment.visible_to_reporter? }
+    @internal_comments = comments - @reporter_discussion_comments
+    @comment = IssueComment.new
+  end
+
+  def acknowledge
+    @issue.acknowledge!(account_id: current_account.id)
+    redirect_to [@project, @issue]
+  end
+
+  def dismiss
+    @issue.dismiss!(account_id: current_account.id)
+    redirect_to [@project, @issue]
+  end
+
+  def resolve
+    @issue.resolve!(account_id: current_account.id)
+    redirect_to [@project, @issue]
+  end
+
+  def reopen
+    @issue.reopen!(account_id: current_account.id)
+    redirect_to [@project, @issue]
   end
 
   private
@@ -27,7 +51,8 @@ class IssuesController < ApplicationController
   end
 
   def scope_issue
-    @issue = Issue.find(params[:id])
+    @issue = Issue.find_by(id: params[:id])
+    @issue ||= Issue.find_by(id: params[:issue_id])
     redirect_to :root unless @issue.reporter == current_account || @issue.project.account == current_account
   end
 

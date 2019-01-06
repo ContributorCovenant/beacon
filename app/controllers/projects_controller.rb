@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
 
-  before_action :authenticate_account!, except: [:index, :show]
+  before_action :authenticate_account!
   before_action :scope_project, only: [:show, :edit, :delete, :update]
 
   def index
@@ -22,13 +22,15 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    redirect_to :show unless @project.account == current_account
+    redirect_to directory_project_path(@project) unless @project.user_is_admin?(current_account)
   end
 
   def show
+    redirect_to directory_project_path(@project) unless @project.user_is_admin?(current_account)
   end
 
   def update
+    redirect_to directory_project_path(@project) unless @project.user_is_admin?(current_account)
     if @project.update_attributes(project_params)
       flash[:notice] = "The project was successfully updated."
       redirect_to @project

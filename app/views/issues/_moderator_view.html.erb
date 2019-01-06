@@ -1,0 +1,98 @@
+<div class="row mt-3" style="border-top: 2px solid #444">
+
+  <div class="col">
+    <h4 class="mt-3">Supporting Links</h4>
+    <% if issue.urls.reject(&:empty?).any? %>
+      <ul>
+        <% issue.urls.reject(&:empty?).each do |url| %>
+          <li><%= link_to url, url, target: "_new" %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>No links provided.</p>
+    <% end %>
+
+    <h4>Internal Discussion</h4>
+
+    <% internal_comments.each do |comment| %>
+      <div class="card mb-3 mr-3" style="width: 100%">
+        <div class="card-body">
+          <h5 class="card-title">
+            <%= comment.commenter.email %> on <%= comment.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>
+          </h5>
+          <div class="card-text">
+            <p><%= comment.text %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= form_for comment, url: project_issue_issue_comments_path(project, issue) do |f| %>
+      <div class="form-group">
+        <%= f.label "Comment" %><br />
+        <%= f.text_area :text, class: "form-control" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Save Comment", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+    <h4 class="mt-5">Discussion with Reporter</h4>
+
+    <% reporter_discussion_comments.each do |comment| %>
+      <% card_bg = comment.commenter == issue.reporter ? "bg-warning" : "bg-success" %>
+      <div class="card mb-3 mr-3 <%= card_bg %>" style="width: 100%">
+        <div class="card-body">
+          <h5 class="card-title">
+            <% if comment.commenter == issue.reporter %>
+              <% email = project.project_setting.allow_anonymous_issues? ? "Anonymous Reporter" : issue.reporter.email %>
+            <% else %>
+              <% email = comment.commenter.email %>
+            <% end %>
+            <%= email %> on <%= comment.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>
+          </h5>
+          <div class="card-text">
+            <p><%= comment.text %></p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <%= link_to "Contact Reporter", new_project_issue_issue_comment_path(project, issue), class: "float-left btn btn-dark mr-3 float-left" %>
+
+  </div>
+
+  <div class="col">
+    <h4 class="mt-3">Status</h4>
+    <p><%= issue.aasm_state.titleize %> (<%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)</p>
+
+    <% if issue.submitted? %>
+      <%= button_to "Acknowledge", project_issue_acknowledge_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
+    <% elsif issue.acknowledged? || issue.reopened? %>
+      <%= button_to "Dismiss", project_issue_dismiss_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
+      <%= button_to "Resolve", project_issue_resolve_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
+    <% elsif issue.dismissed? || issue.resolved? %>
+      <%= button_to "Re-Open", project_issue_reopen_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
+    <% end %>
+
+    <br clear="both">
+
+    <h4 class="mt-5">History</h4>
+    <ul>
+      <li>
+        Submitted
+        <% if project.project_setting.allow_anonymous_issues? %>
+          by anonymous
+        <% else %>
+          by <%= issue.reporter.email %>
+        <% end %>
+        (<%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
+      </li>
+      <% issue.issue_events.each do |event| %>
+        <li><%= event.event %> by <%= event.actor.email %> (<%= event.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
+      <% end %>
+    </ul>
+  </div>
+</div>
+
