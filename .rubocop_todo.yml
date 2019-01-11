@@ -12,19 +12,6 @@ Lint/AssignmentInCondition:
   Exclude:
     - 'app/controllers/project_settings_controller.rb'
 
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle.
-# SupportedStyles: nested, compact
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'app/controllers/accounts/confirmations_controller.rb'
-    - 'app/controllers/accounts/omniauth_callbacks_controller.rb'
-    - 'app/controllers/accounts/passwords_controller.rb'
-    - 'app/controllers/accounts/registrations_controller.rb'
-    - 'app/controllers/accounts/sessions_controller.rb'
-    - 'app/controllers/accounts/unlocks_controller.rb'
-
 # Offense count: 1
 Style/DoubleNegation:
   Exclude:
