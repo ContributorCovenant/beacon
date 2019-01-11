@@ -30,20 +30,6 @@ Style/DoubleNegation:
   Exclude:
     - 'app/models/project_setting.rb'
 
-# Offense count: 3
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'app/controllers/accounts/passwords_controller.rb'
-    - 'app/controllers/accounts/registrations_controller.rb'
-    - 'app/controllers/project_settings_controller.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/IfUnlessModifier:
-  Exclude:
-    - 'app/controllers/project_settings_controller.rb'
-
 # Offense count: 2
 Style/MixinUsage:
   Exclude:

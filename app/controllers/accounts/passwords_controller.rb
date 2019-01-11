@@ -37,10 +37,10 @@ class Accounts::PasswordsController < Devise::PasswordsController
   private
 
   def check_captcha
-    unless verify_recaptcha
-      self.resource = resource_class.new
-      resource.validate
-      respond_with_navigational(resource) { render :new }
-    end
+    return if verify_recaptcha
+
+    self.resource = resource_class.new
+    resource.validate
+    respond_with_navigational(resource) { render :new }
   end
 end

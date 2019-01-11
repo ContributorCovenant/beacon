@@ -26,9 +26,9 @@ class ProjectSettingsController < ApplicationController
   private
 
   def scope_project_and_settings
-    if @project = current_account.projects.find_by(slug: params[:project_slug])
-      @settings = @project.project_setting
-    end
+    return unless @project = current_account.projects.find_by(slug: params[:project_slug])
+
+    @settings = @project.project_setting
   end
 
   def settings_params
