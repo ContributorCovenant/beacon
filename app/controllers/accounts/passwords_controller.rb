@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Accounts::PasswordsController < Devise::PasswordsController
-
   prepend_before_action :check_captcha, only: [:create]
 
   # GET /resource/password/new
@@ -44,5 +43,4 @@ class Accounts::PasswordsController < Devise::PasswordsController
       respond_with_navigational(resource) { render :new }
     end
   end
-
 end

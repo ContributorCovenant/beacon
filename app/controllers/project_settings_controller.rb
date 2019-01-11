@@ -1,18 +1,19 @@
-class ProjectSettingsController < ApplicationController
+# frozen_string_literal: true
 
+class ProjectSettingsController < ApplicationController
   before_action :scope_project_and_settings
 
   def edit
-    redirect_to "/" unless @settings
+    redirect_to '/' unless @settings
   end
 
   def update
-    redirect_to "/" unless @settings
+    redirect_to '/' unless @settings
     @settings.update_attributes(settings_params)
     if @settings.save
       redirect_to project_path(@project)
     else
-     flash[:error] = @settings.errors.full_messages
+      flash[:error] = @settings.errors.full_messages
       render :edit
     end
   end
@@ -37,8 +38,7 @@ class ProjectSettingsController < ApplicationController
       :minimum_3rd_party_auth_age_in_days,
       :allow_anonymous_issues,
       :publish_stats,
-      :include_in_directory,
+      :include_in_directory
     )
   end
-
 end

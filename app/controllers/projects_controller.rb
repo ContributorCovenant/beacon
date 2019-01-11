@@ -1,14 +1,15 @@
-class ProjectsController < ApplicationController
+# frozen_string_literal: true
 
+class ProjectsController < ApplicationController
   before_action :authenticate_account!
-  before_action :scope_project, only: [:show, :edit, :delete, :update]
+  before_action :scope_project, only: %i[show edit delete update]
 
   def index
     @projects = current_account.projects.order(:name)
   end
 
   def new
-    @project = Project.new(name: "My Project")
+    @project = Project.new(name: 'My Project')
   end
 
   def create
@@ -16,8 +17,8 @@ class ProjectsController < ApplicationController
     if @project.save
       redirect_to @project
     else
-     flash[:error] = @project.errors.full_messages
-     render :new
+      flash[:error] = @project.errors.full_messages
+      render :new
     end
   end
 
@@ -32,7 +33,7 @@ class ProjectsController < ApplicationController
   def update
     redirect_to directory_project_path(@project) unless @project.user_is_admin?(current_account)
     if @project.update_attributes(project_params)
-      flash[:notice] = "The project was successfully updated."
+      flash[:notice] = 'The project was successfully updated.'
       redirect_to @project
     else
       render :edit
@@ -50,5 +51,4 @@ class ProjectsController < ApplicationController
     @settings = @project.project_setting
     @issues = @project.issues
   end
-
 end

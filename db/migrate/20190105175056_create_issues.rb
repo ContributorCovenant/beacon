@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateIssues < ActiveRecord::Migration[5.2]
   def up
     create_table :issues, id: :uuid do |t|
@@ -13,12 +15,11 @@ class CreateIssues < ActiveRecord::Migration[5.2]
       t.datetime :closed_at
       t.timestamps
     end
-    execute "CREATE SEQUENCE issues_issue_number_seq START 101"
+    execute 'CREATE SEQUENCE issues_issue_number_seq START 101'
   end
 
   def down
     drop_table :issues
-    execute "DROP SEQUENCE issues_issue_number_seq"
+    execute 'DROP SEQUENCE issues_issue_number_seq'
   end
-
 end

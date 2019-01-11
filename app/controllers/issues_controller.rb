@@ -1,7 +1,8 @@
-class IssuesController < ApplicationController
+# frozen_string_literal: true
 
+class IssuesController < ApplicationController
   before_action :scope_project
-  before_action :scope_issue, except: [:index, :new, :create]
+  before_action :scope_issue, except: %i[index new create]
 
   def index
     issues = current_account.issues
@@ -25,7 +26,7 @@ class IssuesController < ApplicationController
 
   def show
     comments = @issue.issue_comments.order(:created_at)
-    @reporter_discussion_comments = comments.select{|comment| (comment.commenter == @issue.reporter) || comment.visible_to_reporter? }
+    @reporter_discussion_comments = comments.select { |comment| (comment.commenter == @issue.reporter) || comment.visible_to_reporter? }
     @internal_comments = comments - @reporter_discussion_comments
     @comment = IssueComment.new
   end
@@ -65,5 +66,4 @@ class IssuesController < ApplicationController
   def scope_project
     @project = Project.find_by(slug: params[:project_slug])
   end
-
 end

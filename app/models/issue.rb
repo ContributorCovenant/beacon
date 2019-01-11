@@ -1,5 +1,6 @@
-class Issue < ApplicationRecord
+# frozen_string_literal: true
 
+class Issue < ApplicationRecord
   include AASM
 
   attr_accessor :account_id, :project_id
@@ -15,27 +16,26 @@ class Issue < ApplicationRecord
 
   aasm do
     state :submitted, initial: true
-    state :acknowledged, before_enter: Proc.new { |args| log_event(args) }
-    state :dismissed, before_enter: Proc.new { |args| log_event(args) }
-    state :resolved, before_enter: Proc.new { |args| log_event(args) }
-    state :reopened, before_enter: Proc.new { |args| log_event(args) }
+    state :acknowledged, before_enter: proc { |args| log_event(args) }
+    state :dismissed, before_enter: proc { |args| log_event(args) }
+    state :resolved, before_enter: proc { |args| log_event(args) }
+    state :reopened, before_enter: proc { |args| log_event(args) }
 
     event :acknowledge do
       transitions from: :submitted, to: :acknowledged
     end
 
     event :dismiss do
-      transitions from: [:acknowledged, :reopened], to: :dismissed
+      transitions from: %i[acknowledged reopened], to: :dismissed
     end
 
     event :resolve do
-      transitions from: [:acknowledged, :reopened], to: :resolved
+      transitions from: %i[acknowledged reopened], to: :resolved
     end
 
     event :reopen do
-      transitions from: [:dismissed, :resolved], to: :reopened
+      transitions from: %i[dismissed resolved], to: :reopened
     end
-
   end
 
   def open?
@@ -43,11 +43,11 @@ class Issue < ApplicationRecord
   end
 
   def reporter
-    @reporter ||= Account.find(EncryptionService.decrypt(self.reporter_encrypted_id))
+    @reporter ||= Account.find(EncryptionService.decrypt(reporter_encrypted_id))
   end
 
   def project
-    @project ||= Project.find(EncryptionService.decrypt(self.project_encrypted_id))
+    @project ||= Project.find(EncryptionService.decrypt(project_encrypted_id))
   end
 
   private
@@ -69,10 +69,9 @@ class Issue < ApplicationRecord
 
   def log_event(args)
     IssueEvent.create(
-      issue_id: self.id,
+      issue_id: id,
       actor_id: args[:account_id],
       event: "Status changed to #{aasm.to_state}"
     )
   end
-
 end
