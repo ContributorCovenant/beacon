@@ -11,13 +11,21 @@ CoC Beacon is an open source project with the goal of bringing this potential to
 CoC Beacon will be provided in a software-as-a-service (SaaS) model to reduce friction for getting started, so that maintainers can focus on managing their projects and communities with a minimum of setup.
 
 ## Contribution notes
+### Fork and create prs
+In both dockerized and non-dockerized environments
+
+* Start by copying env sample to .env.development 
+    `cp .env.development.sample .env.development`
+
 To use the dockerized environment:
 
 ### To setup
-
+* Set the following values in your .env.development 
+    - DATABASE_HOST=db
+    - DATABASE_USERNAME=postgres
+    - DATABASE_PASSWORD=postgres
 * After cloning the repo
 * copy the env sample
-    `cp .env.development-docker.sample .env.development`
 * run `make setup`
 
 ### To run locally
