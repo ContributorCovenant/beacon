@@ -12,7 +12,6 @@ usage:
 	@echo "  * tear-down    - Removes all the containers and tears down the setup"
 	@echo "  * stop         - Stops the server"
 	@echo "  * test         - Runs rspec"
-	@echo "  * guard   			- Runs guard"
 
 setup: build update-deps db-create db-migrate
 
@@ -37,6 +36,3 @@ stop:
 .PHONY: rspec
 rspec:
 	$(call dc-run, bundle exec rspec)
-.PHONY: guard
-guard:
-	$(call dc-run, bundle exec guard)
