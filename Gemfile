@@ -31,14 +31,13 @@ gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
+  gem 'rspec-rails'
 end
 
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
-  gem 'listen', '>= 3.0.5', '< 3.2'
   gem 'pry'
   gem 'rails_layout', github: 'RailsApps/rails_layout'
-  gem 'rspec-rails'
   gem 'rubocop', '~> 0.62.0'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
@@ -48,7 +47,6 @@ end
 group :test do
   gem 'capybara', '>= 2.15'
   gem 'chromedriver-helper'
-  gem 'rspec-rails'
   gem 'selenium-webdriver'
 end
 
