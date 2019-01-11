@@ -11,7 +11,7 @@ usage:
 	@echo "  * run          - Runs the server"
 	@echo "  * tear-down    - Removes all the containers and tears down the setup"
 	@echo "  * stop         - Stops the server"
-	@echo "  * test         - Runs rspec"
+	@echo "  * rspec        - Runs rspec"
 
 setup: build update-deps db-create db-migrate
 
