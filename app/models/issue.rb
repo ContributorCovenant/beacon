@@ -53,21 +53,19 @@ class Issue < ApplicationRecord
 
   def set_reporter_encrypted_id
     update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(self.account_id))
-    reporter.issues_encrypted_ids << EncryptionService.encrypt(self.id)
-    reporter.save
+    AccountIssue.create(account_id: self.account_id, issue_id: self.id)
   end
 
   def set_project_encrypted_id
     update_attribute(:project_encrypted_id, EncryptionService.encrypt(self.project_id))
-    project.issues_encrypted_ids << EncryptionService.encrypt(self.id)
-    project.save
+    ProjectIssue.create(project_id: self.project_id, issue_id: self.id)
   end
 
   def log_event(args)
     IssueEvent.create(
       issue_id: self.id,
       actor_id: args[:account_id],
-      event: "State: #{aasm.to_state}"
+      event: "Status changed to #{aasm.to_state}"
     )
   end
 

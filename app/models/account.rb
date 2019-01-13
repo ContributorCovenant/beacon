@@ -13,13 +13,13 @@ class Account < ApplicationRecord
   validates_uniqueness_of :normalized_email
 
   has_many :projects
+  has_many :account_issues
 
   before_create :normalize_email
   before_create :hash_email
 
   def issues
-    decrypted_issue_ids = self.issues_encrypted_ids.map{ |id| EncryptionService.decrypt(id) }
-    @issues ||= Issue.where(id: decrypted_issue_ids)
+    @issues ||= AccountIssue.issues_for_account(self.id)
   end
 
   private

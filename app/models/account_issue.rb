@@ -1,6 +1,5 @@
-class ProjectIssue < ApplicationRecord
-
-  belongs_to :project
+class AccountIssue < ApplicationRecord
+  belongs_to :account
 
   validates_uniqueness_of :issue_encrypted_id
 
@@ -8,8 +7,8 @@ class ProjectIssue < ApplicationRecord
 
   attr_accessor :issue_id
 
-  def self.issues_for_project(project_id)
-    encrypted_issue_ids = where(project_id: project_id).pluck(:issue_encrypted_id)
+  def self.issues_for_account(account_id)
+    encrypted_issue_ids = where(account_id: account_id).pluck(:issue_encrypted_id)
     issue_ids = encrypted_issue_ids.map{ |id| EncryptionService.decrypt(id) }
     Issue.where(id: issue_ids)
   end

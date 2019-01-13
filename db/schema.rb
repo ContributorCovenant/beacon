@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_13_190327) do
+ActiveRecord::Schema.define(version: 2019_01_13_193434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "account_issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.string "issue_encrypted_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_issues_on_account_id"
+  end
 
   create_table "accounts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "name", default: "", null: false
@@ -42,7 +50,6 @@ ActiveRecord::Schema.define(version: 2019_01_13_190327) do
     t.datetime "locked_at"
     t.string "normalized_email"
     t.string "hashed_email"
-    t.text "issues_encrypted_ids", default: [], array: true
     t.index ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["normalized_email"], name: "index_accounts_on_normalized_email", unique: true
@@ -67,14 +74,6 @@ ActiveRecord::Schema.define(version: 2019_01_13_190327) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["issue_id"], name: "index_issue_events_on_issue_id"
-  end
-
-  create_table "issue_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "event"
-    t.uuid "issue_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["issue_id"], name: "index_issue_logs_on_issue_id"
   end
 
   create_table "issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -127,9 +126,9 @@ ActiveRecord::Schema.define(version: 2019_01_13_190327) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
+  add_foreign_key "account_issues", "accounts"
   add_foreign_key "issue_comments", "issues"
   add_foreign_key "issue_events", "issues"
-  add_foreign_key "issue_logs", "issues"
   add_foreign_key "project_issues", "projects"
   add_foreign_key "project_settings", "projects"
   add_foreign_key "projects", "accounts"
