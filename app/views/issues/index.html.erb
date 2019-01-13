@@ -1,0 +1,22 @@
+<h2>Manage My Isues</h2>
+
+<div class="nav nav-tabs mt-5 mb-3" id="nav-tab" role="tablist">
+  <a class="nav-link active" id="nav-openissues-tab" data-toggle="pill" href="#nav-openissues" role="tab" aria-controls="nav-openissues" aria-selected="true">
+    Open Issues <span class="badge badge-pill badge-danger"><%= @open_issues.count %></span>
+  </a>
+  <a class="nav-link " id="nav-closedissues-tab" data-toggle="pill" href="#nav-closedissues" role="tab" aria-controls="nav-closedissues" aria-selected="false">
+    Closed Issues <span class="badge badge-pill badge-warning"><%= @closed_issues.count %></span>
+  </a>
+</div>
+
+<div class="tab-content" id="nav-tabContent">
+
+  <div class="tab-pane fade show active" id="nav-openissues" role="tabpanel" aria-labelledby="nav-openissues-tab">
+    <%= render partial: "cards", locals: { issues: @open_issues, label: "open" } %>
+  </div>
+
+  <div class="tab-pane fade" id="nav-closedissues" role="tabpanel" aria-labelledby="nav-openissues-tab">
+    <%= render partial: "cards", locals: { issues: @closed_issues, label: "closed" } %>
+  </div>
+
+</div>

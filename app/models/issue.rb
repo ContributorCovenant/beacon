@@ -11,6 +11,8 @@ class Issue < ApplicationRecord
   after_create :set_reporter_encrypted_id
   after_create :set_project_encrypted_id
 
+  OPEN_STATUSES = %w{submitted acknowledged reopened}
+
   aasm do
     state :submitted, initial: true
     state :acknowledged, before_enter: Proc.new { |args| log_event(args) }
@@ -34,6 +36,10 @@ class Issue < ApplicationRecord
       transitions from: [:dismissed, :resolved], to: :reopened
     end
 
+  end
+
+  def open?
+    OPEN_STATUSES.include?(self.aasm_state)
   end
 
   def reporter

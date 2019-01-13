@@ -1,7 +1,5 @@
 class ProjectIssue < ApplicationRecord
 
-  belongs_to :project
-
   validates_uniqueness_of :issue_encrypted_id
 
   before_create :encrypt_issue_id
