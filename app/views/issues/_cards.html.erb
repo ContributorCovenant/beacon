@@ -1,0 +1,25 @@
+<% if issues.any? %>
+
+  <% issues.each_with_index do |issue,i| %>
+
+    <% float_class = i < issues.count - 1 ? "float-left" : "float-none" %>
+    <div class="card mb-3 mr-3 <%= float_class %>" style="width: 15rem; height: 12rem">
+      <div class="card-body">
+        <h5 class="card-title"><%= issue.project.name %></h5>
+        <div class="card-text">
+          <p>
+            <%= link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue) %>
+          </p>
+          <p>
+            Status: <%= issue.aasm_state.titleize %>
+            on <%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  <% end %>
+
+<% else %>
+  <p>No <%= label %> issues.</p>
+<% end %>

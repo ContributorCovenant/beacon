@@ -16,6 +16,12 @@
         </li>
       <% end %>
 
+      <% if current_account && current_account.issues.any? %>
+        <li class="nav-item">
+          <%= link_to "Manage My Issues", issues_path, class: "nav-link" %>
+        </li>
+      <% end %>
+
       <li class="nav-item">
         <%= link_to "FAQ", "#", class: "nav-link" %>
       </li>

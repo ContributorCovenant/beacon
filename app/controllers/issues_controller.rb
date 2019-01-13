@@ -1,7 +1,13 @@
 class IssuesController < ApplicationController
 
   before_action :scope_project
-  before_action :scope_issue, except: [:new, :create]
+  before_action :scope_issue, except: [:index, :new, :create]
+
+  def index
+    issues = current_account.issues
+    @open_issues = issues.select(&:open?)
+    @closed_issues = issues - @open_issues
+  end
 
   def new
     @issue = Issue.new(project_id: @project.id, account_id: current_account.id)
