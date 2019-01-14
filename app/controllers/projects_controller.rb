@@ -2,7 +2,7 @@
 
 class ProjectsController < ApplicationController
   before_action :authenticate_account!
-  before_action :scope_project, only: %i[show edit delete update]
+  before_action :scope_project, only: [:show, :edit, :delete, :update]
 
   def index
     @projects = current_account.projects.order(:name)

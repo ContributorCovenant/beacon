@@ -2,7 +2,7 @@
 
 class IssuesController < ApplicationController
   before_action :scope_project
-  before_action :scope_issue, except: %i[index new create]
+  before_action :scope_issue, except: [:index, :new, :create]
 
   def index
     issues = current_account.issues

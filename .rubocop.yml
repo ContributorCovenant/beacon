@@ -16,3 +16,6 @@ Style/StringLiterals:
 
 Style/SpaceBeforeBlockBraces:
   EnforcedStyle: no_space
+
+Style/SymbolArray:
+  EnforcedStyle: brackets

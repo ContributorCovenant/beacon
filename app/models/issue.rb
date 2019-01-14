@@ -26,15 +26,15 @@ class Issue < ApplicationRecord
     end
 
     event :dismiss do
-      transitions from: %i[acknowledged reopened], to: :dismissed
+      transitions from: [:acknowledged, :reopened], to: :dismissed
     end
 
     event :resolve do
-      transitions from: %i[acknowledged reopened], to: :resolved
+      transitions from: [:acknowledged, :reopened], to: :resolved
     end
 
     event :reopen do
-      transitions from: %i[dismissed resolved], to: :reopened
+      transitions from: [:dismissed, :resolved], to: :reopened
     end
   end
 
