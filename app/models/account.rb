@@ -20,7 +20,7 @@ class Account < ApplicationRecord
   before_create :hash_email
 
   def issues
-    @issues ||= AccountIssue.issues_for_account(self.id)
+    @issues ||= AccountIssue.issues_for_account(id)
   end
 
   private

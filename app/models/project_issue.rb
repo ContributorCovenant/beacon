@@ -1,5 +1,6 @@
-class ProjectIssue < ApplicationRecord
+# frozen_string_literal: true
 
+class ProjectIssue < ApplicationRecord
   validates_uniqueness_of :issue_encrypted_id
 
   before_create :encrypt_issue_id
@@ -17,5 +18,4 @@ class ProjectIssue < ApplicationRecord
   def encrypt_issue_id
     self.issue_encrypted_id = EncryptionService.encrypt(issue_id)
   end
-
 end

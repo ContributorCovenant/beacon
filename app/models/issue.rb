@@ -12,7 +12,7 @@ class Issue < ApplicationRecord
   after_create :set_reporter_encrypted_id
   after_create :set_project_encrypted_id
 
-  OPEN_STATUSES = %w{submitted acknowledged reopened}
+  OPEN_STATUSES = %w[submitted acknowledged reopened].freeze
 
   aasm do
     state :submitted, initial: true
@@ -39,7 +39,7 @@ class Issue < ApplicationRecord
   end
 
   def open?
-    OPEN_STATUSES.include?(self.aasm_state)
+    OPEN_STATUSES.include?(aasm_state)
   end
 
   def reporter
@@ -58,13 +58,13 @@ class Issue < ApplicationRecord
   end
 
   def set_reporter_encrypted_id
-    update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(self.account_id))
-    AccountIssue.create(account_id: self.account_id, issue_id: self.id)
+    update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(account_id))
+    AccountIssue.create(account_id: account_id, issue_id: id)
   end
 
   def set_project_encrypted_id
-    update_attribute(:project_encrypted_id, EncryptionService.encrypt(self.project_id))
-    ProjectIssue.create(project_id: self.project_id, issue_id: self.id)
+    update_attribute(:project_encrypted_id, EncryptionService.encrypt(project_id))
+    ProjectIssue.create(project_id: project_id, issue_id: id)
   end
 
   def log_event(args)

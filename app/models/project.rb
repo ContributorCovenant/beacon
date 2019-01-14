@@ -14,7 +14,7 @@ class Project < ApplicationRecord
   after_create :make_settings
 
   def issues
-    @issues ||= ProjectIssue.issues_for_project(self.id)
+    @issues ||= ProjectIssue.issues_for_project(id)
   end
 
   def to_param
