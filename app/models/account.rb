@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require 'digest'
 require 'normailize'
 
 class Account < ApplicationRecord
-
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -19,18 +20,17 @@ class Account < ApplicationRecord
   before_create :hash_email
 
   def issues
-    @issues ||= AccountIssue.issues_for_account(self.id)
+    @issues ||= AccountIssue.issues_for_account(id)
   end
 
   private
 
   def hash_email
-    self.hashed_email = Digest::MD5.hexdigest(self.normalized_email)
+    self.hashed_email = Digest::MD5.hexdigest(normalized_email)
   end
 
   def normalize_email
-    normalized = Normailize::EmailAddress.new(self.email).normalized_address
-    self.normalized_email = normalized.gsub(/\+.+\@/, "@")
+    normalized = Normailize::EmailAddress.new(email).normalized_address
+    self.normalized_email = normalized.gsub(/\+.+\@/, '@')
   end
-
 end

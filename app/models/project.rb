@@ -1,5 +1,6 @@
-class Project < ApplicationRecord
+# frozen_string_literal: true
 
+class Project < ApplicationRecord
   validates_uniqueness_of :name
   validates_uniqueness_of :url
   validates_uniqueness_of :slug
@@ -13,15 +14,15 @@ class Project < ApplicationRecord
   after_create :make_settings
 
   def issues
-    @issues ||= ProjectIssue.issues_for_project(self.id)
+    @issues ||= ProjectIssue.issues_for_project(id)
   end
 
   def to_param
-    self.slug
+    slug
   end
 
   def public?
-    self.project_setting.include_in_directory
+    project_setting.include_in_directory
   end
 
   def user_is_admin?(account)
@@ -31,12 +32,11 @@ class Project < ApplicationRecord
   private
 
   def set_slug
-    self.slug = self.name.downcase.gsub(" ", "-")
+    self.slug = name.downcase.tr(' ', '-')
   end
 
   # Eventually this will inherit from an org's project template
   def make_settings
     create_project_setting
   end
-
 end

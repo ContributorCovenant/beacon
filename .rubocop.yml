@@ -1,0 +1,21 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - "db/**/*"
+
+Style/Documentation:
+  Enabled: false
+
+Style/MixinUsage:
+  Exclude:
+    - "bin/**/*"
+
+Style/StringLiterals:
+  Enabled: false
+
+Style/SpaceBeforeBlockBraces:
+  EnforcedStyle: no_space
+
+Style/SymbolArray:
+  EnforcedStyle: brackets

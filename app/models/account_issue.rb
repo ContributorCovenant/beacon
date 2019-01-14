@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class AccountIssue < ApplicationRecord
   belongs_to :account
 
@@ -18,5 +20,4 @@ class AccountIssue < ApplicationRecord
   def encrypt_issue_id
     self.issue_encrypted_id = EncryptionService.encrypt(issue_id)
   end
-
 end

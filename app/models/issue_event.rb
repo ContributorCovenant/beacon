@@ -1,5 +1,6 @@
-class IssueEvent < ApplicationRecord
+# frozen_string_literal: true
 
+class IssueEvent < ApplicationRecord
   attr_accessor :actor_id
 
   belongs_to :issue
@@ -7,13 +8,12 @@ class IssueEvent < ApplicationRecord
   before_create :set_actor_encrypted_id
 
   def actor
-    @actor ||= Account.find(EncryptionService.decrypt(self.actor_encrypted_id))
+    @actor ||= Account.find(EncryptionService.decrypt(actor_encrypted_id))
   end
 
   private
 
   def set_actor_encrypted_id
-    self.actor_encrypted_id = EncryptionService.encrypt(self.actor_id)
+    self.actor_encrypted_id = EncryptionService.encrypt(actor_id)
   end
-
 end

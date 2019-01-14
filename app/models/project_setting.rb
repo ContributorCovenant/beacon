@@ -1,5 +1,6 @@
-class ProjectSetting < ApplicationRecord
+# frozen_string_literal: true
 
+class ProjectSetting < ApplicationRecord
   belongs_to :project
 
   def pause!
@@ -11,7 +12,6 @@ class ProjectSetting < ApplicationRecord
   end
 
   def paused?
-    !!self.paused_at
+    !!paused_at
   end
-
 end
