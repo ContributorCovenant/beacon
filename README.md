@@ -14,13 +14,13 @@ CoC Beacon will be provided in a software-as-a-service (SaaS) model to reduce fr
 ### Fork and create prs
 In both dockerized and non-dockerized environments
 
-* Start by copying env sample to .env.development 
+* Start by copying env sample to .env.development
     `cp .env.development.sample .env.development`
 
-To use the dockerized environment:
+## To use the dockerized environment:
 
 ### To setup
-* Set the following values in your .env.development 
+* Set the following values in your .env.development
     - DATABASE_HOST=db
     - DATABASE_USERNAME=postgres
     - DATABASE_PASSWORD=postgres
@@ -32,12 +32,12 @@ To use the dockerized environment:
 * use the command `make run` and visit http://localhost:3000/
 
 ### To update dependencies
-* After changing the gemfile, you can either run 
+* After changing the gemfile, you can either run
 
 `make update-deps`OR `make dev` then `bundle install`
 
 ### To migrate the database schema
-* After adding the migration, you can either run 
+* After adding the migration, you can either run
 
 `make db-migrate`OR `make dev` then `rake db:migrate`
 
