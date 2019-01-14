@@ -16,10 +16,10 @@ class Issue < ApplicationRecord
 
   aasm do
     state :submitted, initial: true
-    state :acknowledged, before_enter: proc { |args| log_event(args) }
-    state :dismissed, before_enter: proc { |args| log_event(args) }
-    state :resolved, before_enter: proc { |args| log_event(args) }
-    state :reopened, before_enter: proc { |args| log_event(args) }
+    state :acknowledged, before_enter: proc{ |args| log_event(args) }
+    state :dismissed, before_enter: proc{ |args| log_event(args) }
+    state :resolved, before_enter: proc{ |args| log_event(args) }
+    state :reopened, before_enter: proc{ |args| log_event(args) }
 
     event :acknowledge do
       transitions from: :submitted, to: :acknowledged

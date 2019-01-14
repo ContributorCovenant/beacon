@@ -13,3 +13,6 @@ Style/MixinUsage:
 
 Style/StringLiterals:
   Enabled: false
+
+Style/SpaceBeforeBlockBraces:
+  EnforcedStyle: no_space
