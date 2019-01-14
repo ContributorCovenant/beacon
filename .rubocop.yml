@@ -10,3 +10,6 @@ Style/Documentation:
 Style/MixinUsage:
   Exclude:
     - "bin/**/*"
+
+Style/StringLiterals:
+  Enabled: false
