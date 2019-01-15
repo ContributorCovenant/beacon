@@ -1,5 +1,7 @@
 # Beacon
 
+[![Build Status](https://travis-ci.com/ContributorCovenant/beacon.svg?branch=release)](https://travis-ci.com/ContributorCovenant/beacon)
+
 ## Background
 
 Over the past several years, code of conduct adoptions by open source projects has become the norm for establishing and communicating community values. However, enforcement of a code of conduct is the real key to creating welcoming and inclusive communities.
