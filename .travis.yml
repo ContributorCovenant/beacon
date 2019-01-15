@@ -1,4 +1,4 @@
 language: ruby
 branches:
   only:
-  - master
+  - release
