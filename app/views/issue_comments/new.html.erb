@@ -1,11 +1,12 @@
 <h2><%= link_to @project.name, @project %>: Issue <%= @issue.issue_number %></h2>
 
-<h3>Contact Reporter</h3>
+<h3>Contact <%= @recipient_kind.titleize %></h3>
 
 <%= form_for @comment, url: project_issue_issue_comments_path(@project, @issue) do |f| %>
   <div class="form-group">
     <%= f.label "Comment" %><br />
-    <%= f.hidden_field :visible_to_reporter, value: 1 %>
+    <%= f.hidden_field :visible_to_reporter, value: @recipient_kind == "reporter" ? 1 : 0 %>
+    <%= f.hidden_field :visible_to_respondent, value: @recipient_kind == "respondent" ? 1 : 0 %>
     <%= f.text_area :text, class: "form-control" %>
   </div>
 

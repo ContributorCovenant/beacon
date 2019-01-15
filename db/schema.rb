@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_13_193434) do
+ActiveRecord::Schema.define(version: 2019_01_15_043219) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -64,6 +64,7 @@ ActiveRecord::Schema.define(version: 2019_01_13_193434) do
     t.uuid "issue_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "visible_to_respondent", default: false
     t.index ["issue_id"], name: "index_issue_comments_on_issue_id"
   end
 
@@ -74,6 +75,13 @@ ActiveRecord::Schema.define(version: 2019_01_13_193434) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["issue_id"], name: "index_issue_events_on_issue_id"
+  end
+
+  create_table "issue_invitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "issue_encrypted_id"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -89,6 +97,8 @@ ActiveRecord::Schema.define(version: 2019_01_13_193434) do
     t.datetime "closed_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "respondent_summary"
+    t.text "respondent_encrypted_id"
   end
 
   create_table "project_issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

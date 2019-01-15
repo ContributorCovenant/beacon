@@ -1,0 +1,19 @@
+<h2><%= link_to @project.name, @project %>: Issue <%= @issue.issue_number %></h2>
+
+<h3>Contact Respondent</h3>
+
+<%= form_for @invitation, url: project_issue_issue_invitations_path(@project, @issue) do |f| %>
+  <div class="form-group">
+    <%= f.label "Respondent Email" %><br />
+    <%= f.text_field :email, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label "Issue Summary" %><br />
+    <%= f.text_area :summary, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Send", class: "btn btn-primary" %>
+  </div>
+<% end %>

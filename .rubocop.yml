@@ -14,8 +14,26 @@ Style/MixinUsage:
 Style/StringLiterals:
   Enabled: false
 
-Style/SpaceBeforeBlockBraces:
+Layout/SpaceBeforeBlockBraces:
   EnforcedStyle: no_space
 
 Style/SymbolArray:
   EnforcedStyle: brackets
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Layout/EmptyLinesAroundClassBody:
+  Enabled: false
+
+Lint/AssignmentInCondition:
+  Enabled: false
+
+Style/RedundantSelf:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
+Style/Proc:
+  Enabled: false

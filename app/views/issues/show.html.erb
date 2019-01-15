@@ -4,27 +4,29 @@
   <h2><%= link_to @project.name, directory_project_path(@project) %>: Issue <%= @issue.issue_number %></h2>
 <% end %>
 
-<h4 class="mt-3">Description</h4>
-<div style="background-image: url('/watermark.svg'); background-repeat: no-repeat; background-position: left top;">
-  <div style="mix-blend-mode: exclusion; padding: 1em;">
-    <%= @issue.description %>
-  </div>
-</div>
-
 <% if @project.user_is_admin?(current_account) %>
   <%= render partial: "moderator_view", locals: {
         project: @project,
         issue: @issue,
         reporter_discussion_comments: @reporter_discussion_comments,
+        respondent_discussion_comments: @respondent_discussion_comments,
         internal_comments: @internal_comments,
         comment: @comment
       }
   %>
-<% else %>
+<% elsif @issue.reporter == current_account %>
   <%= render partial: "reporter_view", locals: {
         project: @project,
         issue: @issue,
         reporter_discussion_comments: @reporter_discussion_comments,
+        comment: @comment
+      }
+  %>
+<% elsif @issue.respondent == current_account %>
+  <%= render partial: "respondent_view", locals: {
+        project: @project,
+        issue: @issue,
+        respondent_discussion_comments: @respondent_discussion_comments,
         comment: @comment
       }
   %>
