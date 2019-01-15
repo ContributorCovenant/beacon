@@ -2,3 +2,5 @@ language: ruby
 branches:
   only:
   - release
+rvm:
+  - "2.5.3"
