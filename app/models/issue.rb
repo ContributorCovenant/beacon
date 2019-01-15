@@ -11,14 +11,14 @@ class Issue < ApplicationRecord
   after_create :set_reporter_encrypted_id
   after_create :set_project_encrypted_id
 
-  OPEN_STATUSES = %w{submitted acknowledged reopened}
+  OPEN_STATUSES = %w{submitted acknowledged reopened}.freeze
 
   aasm do
     state :submitted, initial: true
-    state :acknowledged, before_enter: Proc.new { |args| log_event(args) }
-    state :dismissed, before_enter: Proc.new { |args| log_event(args) }
-    state :resolved, before_enter: Proc.new { |args| log_event(args) }
-    state :reopened, before_enter: Proc.new { |args| log_event(args) }
+    state :acknowledged, before_enter: Proc.new{ |args| log_event(args) }
+    state :dismissed, before_enter: Proc.new{ |args| log_event(args) }
+    state :resolved, before_enter: Proc.new{ |args| log_event(args) }
+    state :reopened, before_enter: Proc.new{ |args| log_event(args) }
 
     event :acknowledge do
       transitions from: :submitted, to: :acknowledged

@@ -9,7 +9,7 @@ class IssueInvitationsController < ApplicationController
   def create
     if invitation_params[:summary].empty? || invitation_params[:email].empty?
       flash[:error] = "You must provide an email and an issue summary for the respondent."
-      render :new and return
+      render :new && return
     end
 
     normalized_email = Normailize::EmailAddress.new(invitation_params[:email]).normalized_address
@@ -17,11 +17,11 @@ class IssueInvitationsController < ApplicationController
     if account = Account.find_by(normalized_email: normalized_email)
       RespondentMailer.with(
         email: account.email,
-        project_name: @issue.project.name,
+        project_name: @issue.project.name
       ).notify_existing_account_of_issue.deliver_now
       @issue.update_attribute(:respondent_encrypted_id, EncryptionService.encrypt(account.id))
     else
-      invitation = IssueInvitation.create(
+      IssueInvitation.create(
         email: Normailize::EmailAddress.new(invitation_params[:email]).normalized_address,
         issue_encrypted_id: EncryptionService.encrypt(@issue.id)
       )

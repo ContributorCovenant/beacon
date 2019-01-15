@@ -25,8 +25,8 @@ class IssuesController < ApplicationController
 
   def show
     comments = @issue.issue_comments.order(:created_at)
-    @reporter_discussion_comments = comments.select{|comment| (comment.commenter == @issue.reporter) || comment.visible_to_reporter? }
-    @respondent_discussion_comments = comments.select{|comment| (comment.commenter == @issue.respondent) || comment.visible_to_respondent? }
+    @reporter_discussion_comments = comments.select{ |comment| (comment.commenter == @issue.reporter) || comment.visible_to_reporter? }
+    @respondent_discussion_comments = comments.select{ |comment| (comment.commenter == @issue.respondent) || comment.visible_to_respondent? }
     @internal_comments = comments - @reporter_discussion_comments - @respondent_discussion_comments
     @comment = IssueComment.new
   end

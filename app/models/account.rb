@@ -20,20 +20,20 @@ class Account < ApplicationRecord
   after_create :associate_respondent_with_issues
 
   def issues
-    @issues ||= AccountIssue.issues_for_account(self.id)
+    @issues ||= AccountIssue.issues_for_account(id)
   end
 
   private
 
   def associate_respondent_with_issues
-    if invitations = IssueInvitation.where(email: self.normalized_email)
-      invitations.each do |invitation|
-        if issue = Issue.find(EncryptionService.decrypt(invitation.issue_encrypted_id))
-          issue.update_attribute(:respondent_encrypted_id, EncryptionService.encrypt(self.id))
-          AccountIssue.create(account_id: self.id, issue_id: issue.id)
-        end
-        invitation.destroy
+    return unless invitations = IssueInvitation.where(email: self.normalized_email)
+
+    invitations.each do |invitation|
+      if issue = Issue.find(EncryptionService.decrypt(invitation.issue_encrypted_id))
+        issue.update_attribute(:respondent_encrypted_id, EncryptionService.encrypt(self.id))
+        AccountIssue.create(account_id: self.id, issue_id: issue.id)
       end
+      invitation.destroy
     end
   end
 
