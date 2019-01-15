@@ -14,7 +14,7 @@ Style/MixinUsage:
 Style/StringLiterals:
   Enabled: false
 
-Style/SpaceBeforeBlockBraces:
+Layout/SpaceBeforeBlockBraces:
   EnforcedStyle: no_space
 
 Style/SymbolArray:
