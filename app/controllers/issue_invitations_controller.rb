@@ -1,6 +1,7 @@
 class IssueInvitationsController < ApplicationController
 
   before_action :scope_all
+  before_action :enforce_permissions
 
   def new
     @invitation = IssueInvitation.new
@@ -37,6 +38,10 @@ class IssueInvitationsController < ApplicationController
   end
 
   private
+
+  def enforce_permissions
+    render(status: :forbidden, plain: nil) && return unless @issue.account_can_invite_respondent?(current_account)
+  end
 
   def scope_all
     @project = Project.find_by(slug: params[:project_slug])

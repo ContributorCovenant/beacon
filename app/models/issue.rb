@@ -37,6 +37,10 @@ class Issue < ApplicationRecord
     end
   end
 
+  def account_can_invite_respondent?(account)
+    return true if project.account == account
+  end
+
   def account_can_comment?(account)
     return true if project.account == account
     return true if reporter == account

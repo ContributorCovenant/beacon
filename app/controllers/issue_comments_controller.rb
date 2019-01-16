@@ -3,9 +3,9 @@
 class IssueCommentsController < ApplicationController
   before_action :scope_project
   before_action :scope_issue
+  before_action :enforce_permissions
 
   def create
-    render(status: :forbidden, plain: nil) && return unless @issue.account_can_comment?(current_account)
     comment = IssueComment.new(issue_id: @issue.id, commenter_id: current_account.id)
     comment.visible_to_reporter = comment_params[:visible_to_reporter] == '1'
     comment.visible_to_respondent = comment_params[:visible_to_respondent] == '1'
@@ -26,6 +26,10 @@ class IssueCommentsController < ApplicationController
 
   def scope_issue
     @issue = Issue.find(params[:issue_id])
+  end
+
+  def enforce_permissions
+    render(status: :forbidden, plain: nil) && return unless @issue.account_can_comment?(current_account)
   end
 
 end
