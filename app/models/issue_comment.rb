@@ -3,6 +3,8 @@
 class IssueComment < ApplicationRecord
   attr_accessor :commenter_id
 
+  belongs_to :issue
+
   before_create :set_commenter_encrypted_id
 
   def commenter
