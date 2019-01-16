@@ -23,3 +23,8 @@ deploy:
   provider: heroku
   api_key:
     secure: "ce4b318c-57ec-4436-8e12-e3352c9885f8"
+  app: coc-beacon
+  on: release
+  run:
+    - "rake db:migrate"
+    - restart
