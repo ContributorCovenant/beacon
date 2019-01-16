@@ -4,3 +4,8 @@ branches:
   - release
 rvm:
   - "2.5.3"
+script:
+  - bundle exec rails db:create RAILS_ENV=test
+  - bundle exec rails db:migrate RAILS_ENV=test
+  - bundle exec rspec
+
