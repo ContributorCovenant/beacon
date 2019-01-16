@@ -6,6 +6,9 @@ branches:
   - release
 rvm:
   - "2.5.3"
+before_install:
+  - sudo -u postgres psql -c "CREATE USER testuser WITH PASSWORD 'password'"
+  - sudo -u postgres psql -c "ALTER ROLE testuser SUPERUSER"
 script:
   - bundle exec rails db:create RAILS_ENV=test
   - bundle exec rails db:migrate RAILS_ENV=test
