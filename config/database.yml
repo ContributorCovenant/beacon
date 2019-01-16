@@ -7,7 +7,7 @@
 default: &default
   adapter: postgresql
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: <%= ENV.fetch("DATABASE_HOST") { '127.0.0.1' } %>
+  host: <%= ENV.fetch("DATABASE_URL") { '127.0.0.1' } %>
   username: <%= ENV['DATABASE_USERNAME'] %>
   password: <%= ENV['DATABASE_PASSWORD'] %>
   timeout: 5000
@@ -25,4 +25,4 @@ test:
 
 production:
   <<: *default
-  database: beacon_production
+  database: d2nc6aa06piiqi
