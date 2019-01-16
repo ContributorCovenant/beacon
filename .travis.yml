@@ -21,6 +21,6 @@ addons:
 env:
   global:
   - PGPORT=5433
-before_install:
+install:
   - sudo -u postgres psql -c "CREATE USER testuser WITH PASSWORD 'password'"
   - sudo -u postgres psql -c "ALTER ROLE testuser SUPERUSER"
