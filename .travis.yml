@@ -8,4 +8,5 @@ script:
   - bundle exec rails db:create RAILS_ENV=test
   - bundle exec rails db:migrate RAILS_ENV=test
   - bundle exec rspec
-
+addons:
+  postgresql: "10.1"
