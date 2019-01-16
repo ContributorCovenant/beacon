@@ -37,3 +37,9 @@ Style/PercentLiteralDelimiters:
 
 Style/Proc:
   Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false

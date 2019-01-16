@@ -35,7 +35,6 @@ class Issue < ApplicationRecord
     event :reopen do
       transitions from: [:dismissed, :resolved], to: :reopened
     end
-
   end
 
   def open?
@@ -52,6 +51,7 @@ class Issue < ApplicationRecord
 
   def respondent
     return unless self.respondent_encrypted_id
+
     @respondent ||= Account.find(EncryptionService.decrypt(self.respondent_encrypted_id))
   end
 
