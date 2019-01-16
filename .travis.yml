@@ -18,9 +18,3 @@ addons:
     packages:
     - postgresql-10
     - postgresql-client-10
-env:
-  global:
-  - PGPORT=5433
-install:
-  - sudo -u postgres psql -c "CREATE USER testuser WITH PASSWORD 'password'"
-  - sudo -u postgres psql -c "ALTER ROLE testuser SUPERUSER"
