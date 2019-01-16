@@ -3,6 +3,7 @@ inherit_from: .rubocop_todo.yml
 AllCops:
   Exclude:
     - "db/**/*"
+    - 'vendor/**/*'
 
 Style/Documentation:
   Enabled: false
