@@ -51,6 +51,7 @@ class Issue < ApplicationRecord
   end
 
   def respondent
+    return unless self.respondent_encrypted_id
     @respondent ||= Account.find(EncryptionService.decrypt(self.respondent_encrypted_id))
   end
 
