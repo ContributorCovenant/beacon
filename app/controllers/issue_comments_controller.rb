@@ -3,11 +3,6 @@
 class IssueCommentsController < ApplicationController
   before_action :scope_project_and_issue
 
-  def new
-    @comment = IssueComment.new
-    @recipient_kind = params[:recipient]
-  end
-
   def create
     comment = IssueComment.new(issue_id: @issue.id, commenter_id: current_account.id)
     comment.visible_to_reporter = comment_params[:visible_to_reporter] == '1'
