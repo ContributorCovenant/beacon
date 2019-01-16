@@ -37,6 +37,12 @@ class Issue < ApplicationRecord
     end
   end
 
+  def account_can_comment?(account)
+    return true if project.account == account
+    return true if reporter == account
+    return true if respondent == account
+  end
+
   def open?
     OPEN_STATUSES.include?(self.aasm_state)
   end
