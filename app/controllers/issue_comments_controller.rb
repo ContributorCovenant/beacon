@@ -7,12 +7,14 @@ class IssueCommentsController < ApplicationController
   before_action :enforce_permissions
 
   def create
-    comment = IssueComment.new(issue_id: @issue.id, commenter_id: current_account.id)
-    comment.visible_to_reporter = visible_to_reporter?
-    comment.visible_to_respondent = visible_to_respondent?
-    comment.visible_only_to_moderators = visible_only_to_moderators?
-    comment.text = comment_params[:text]
-    comment.save
+    comment = IssueComment.create(
+      issue_id: @issue.id,
+      commenter_id: current_account.id,
+      visible_to_reporter: visible_to_reporter?,
+      visible_to_respondent: visible_to_respondent?,
+      visible_only_to_moderators: visible_only_to_moderators?,
+      text: comment_params[:text]
+    )
     notify_of_new_comment(comment)
     redirect_to project_issue_path(@project, @issue)
   end

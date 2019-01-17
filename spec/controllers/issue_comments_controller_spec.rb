@@ -6,12 +6,12 @@ RSpec.describe IssueCommentsController, type: :controller do
 
   describe "#create" do
 
-    let(:reporter)    { Account.new(confirmed_at: Time.zone.now) }
-    let(:moderator)   { Account.new(confirmed_at: Time.zone.now) }
-    let(:respondent)  { Account.new(confirmed_at: Time.zone.now) }
-    let(:rando)       { Account.new(confirmed_at: Time.zone.now) }
-    let(:project)     { Project.new(id: SecureRandom.uuid, slug: "sample-project", account: moderator) }
-    let(:issue)       { Issue.new(id: SecureRandom.uuid) }
+    let(:reporter)    { FactoryBot.create(:account, email: "reporter@example.com") }
+    let(:moderator)   { FactoryBot.create(:account, email: "moderator@example.com") }
+    let(:respondent)  { FactoryBot.create(:account, email: "respondent@example.com") }
+    let(:rando)       { FactoryBot.create(:account, email: "rando@example.com") }
+    let(:project)     { FactoryBot.create(:project, account: moderator) }
+    let(:issue)       { FactoryBot.create(:issue, project_id: project.id, account_id: reporter.id) }
 
     before do
       allow(Project).to receive(:find_by).and_return(project)
