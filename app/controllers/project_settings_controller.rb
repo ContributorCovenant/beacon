@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 class ProjectSettingsController < ApplicationController
+  before_action :authenticate_account!
   before_action :scope_project_and_settings
+  before_action :enforce_permissions
 
   def edit
-    redirect_to '/' unless @settings
   end
 
   def update
-    redirect_to '/' unless @settings
     @settings.update_attributes(settings_params)
     if @settings.save
       redirect_to project_path(@project)
@@ -19,15 +19,18 @@ class ProjectSettingsController < ApplicationController
   end
 
   def toggle_pause
-    @settings.paused_at ? @settings.unpause! : @settings.pause!
+    @settings.toggle_pause
     redirect_to @project
   end
 
   private
 
-  def scope_project_and_settings
-    return unless @project = current_account.projects.find_by(slug: params[:project_slug])
+  def enforce_permissions
+    render(status: :forbidden, plain: nil) && return unless @project.account_can_manage?(current_account)
+  end
 
+  def scope_project_and_settings
+    @project = Project.find_by(slug: params[:project_slug])
     @settings = @project.project_setting
   end
 

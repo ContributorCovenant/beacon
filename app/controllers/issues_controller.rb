@@ -1,5 +1,6 @@
 class IssuesController < ApplicationController
 
+  before_action :authenticate_account!
   before_action :scope_project
   before_action :scope_issue, except: [:index, :new, :create]
   before_action :enforce_viewing_permissions, only: [:show]

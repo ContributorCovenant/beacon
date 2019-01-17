@@ -3,8 +3,10 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_project, only: [:show, :edit, :delete, :update]
+  before_action :enforce_permissions, except: [:index]
 
   def index
+    # TODO: this will need to be scoped differently once there are multiple moderators per project
     @projects = current_account.projects.order(:name)
   end
 
@@ -23,15 +25,12 @@ class ProjectsController < ApplicationController
   end
 
   def edit
-    redirect_to directory_project_path(@project) unless @project.user_is_admin?(current_account)
   end
 
   def show
-    redirect_to directory_project_path(@project) unless @project.user_is_admin?(current_account)
   end
 
   def update
-    redirect_to directory_project_path(@project) unless @project.user_is_admin?(current_account)
     if @project.update_attributes(project_params)
       flash[:notice] = 'The project was successfully updated.'
       redirect_to @project
@@ -41,6 +40,10 @@ class ProjectsController < ApplicationController
   end
 
   private
+
+  def enforce_permissions
+    render(status: :forbidden, plain: nil) && return unless @project.account_can_manage?(current_account)
+  end
 
   def project_params
     params.require(:project).permit(:name, :url, :coc_url, :description)

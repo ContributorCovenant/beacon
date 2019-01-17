@@ -29,7 +29,7 @@ class Project < ApplicationRecord
     public? && !project_setting.paused?
   end
 
-  def user_is_admin?(account)
+  def account_can_manage?(account)
     account == self.account
   end
 
@@ -43,7 +43,7 @@ class Project < ApplicationRecord
     self.slug = name.downcase.tr(' ', '-')
   end
 
-  # Eventually this will inherit from an org's project template
+  # TODO: Eventually this will inherit from an org's project template
   def make_settings
     create_project_setting
   end
