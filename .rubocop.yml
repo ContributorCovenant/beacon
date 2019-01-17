@@ -53,3 +53,7 @@ Metrics/BlockLength:
 
 Naming/MemoizedInstanceVariableName:
   Enabled: false
+
+Style/EmptyMethod:
+  Enabled: false
+

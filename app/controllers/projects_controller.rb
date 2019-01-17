@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
   before_action :enforce_permissions, except: [:index]
 
   def index
-    # TODO this will need to be scoped differently once there are multiple moderators per project
+    # TODO: this will need to be scoped differently once there are multiple moderators per project
     @projects = current_account.projects.order(:name)
   end
 
