@@ -2,6 +2,9 @@ class IssuesController < ApplicationController
 
   before_action :scope_project
   before_action :scope_issue, except: [:index, :new, :create]
+  before_action :enforce_viewing_permissions, only: [:show]
+  before_action :enforce_moderation_permissions, only: [:acknowledge, :dismiss, :resolve, :reopen]
+  before_action :enforce_issue_creation_permissions, only: [:new, :create]
 
   def index
     issues = current_account.issues
@@ -24,10 +27,9 @@ class IssuesController < ApplicationController
   end
 
   def show
-    comments = @issue.issue_comments.order(:created_at)
-    @reporter_discussion_comments = comments.select{ |comment| (comment.commenter == @issue.reporter) || comment.visible_to_reporter? }
-    @respondent_discussion_comments = comments.select{ |comment| (comment.commenter == @issue.respondent) || comment.visible_to_respondent? }
-    @internal_comments = comments - @reporter_discussion_comments - @respondent_discussion_comments
+    @reporter_discussion_comments = @issue.comments_visible_to_reporter
+    @respondent_discussion_comments = @issue.comments_visible_to_respondent
+    @internal_comments = @issue.comments_visible_only_to_moderators
     @comment = IssueComment.new
   end
 
@@ -53,14 +55,25 @@ class IssuesController < ApplicationController
 
   private
 
+  def enforce_issue_creation_permissions
+    render(status: :forbidden, plain: nil) && return unless @project.accepting_issues?
+  end
+
+  def enforce_moderation_permissions
+    render(status: :forbidden, plain: nil) && return unless @issue.account_can_moderate?(current_account)
+  end
+
+  def enforce_viewing_permissions
+    render(status: :forbidden, plain: nil) && return unless @issue.account_can_view?(current_account)
+  end
+
   def issue_params
     params.require(:issue).permit(:description, urls: [])
   end
 
   def scope_issue
-    @issue = Issue.find_by(id: params[:id])
-    @issue ||= Issue.find_by(id: params[:issue_id])
-    redirect_to :root unless @issue.reporter == current_account || @issue.project.account == current_account || @issue.respondent == current_account
+    @issue = Issue.find_by(id: params[:id]).includes(:issue_comments)
+    @issue ||= Issue.find_by(id: params[:issue_id]).includes(:issue_comments)
   end
 
   def scope_project

@@ -25,6 +25,10 @@ class Project < ApplicationRecord
     project_setting.include_in_directory
   end
 
+  def accepting_issues?
+    public? && !project_setting.paused?
+  end
+
   def user_is_admin?(account)
     account == self.account
   end

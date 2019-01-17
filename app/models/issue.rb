@@ -47,6 +47,28 @@ class Issue < ApplicationRecord
     return true if respondent == account
   end
 
+  def account_can_view?(account)
+    return true if project.account == account
+    return true if reporter == account
+    return true if respondent == account
+  end
+
+  def account_can_moderate?(account)
+    return true if project.account == account
+  end
+
+  def comments_visible_to_reporter
+    issue_comments.visible_to_reporter
+  end
+
+  def comments_visible_to_respondent
+    issue_comments.visible_to_respondent
+  end
+
+  def comments_visible_only_to_moderators
+    issue_comments.visible_only_to_moderators
+  end
+
   def open?
     OPEN_STATUSES.include?(self.aasm_state)
   end
