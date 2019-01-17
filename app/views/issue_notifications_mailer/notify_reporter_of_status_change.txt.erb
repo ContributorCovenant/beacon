@@ -1,0 +1,11 @@
+Update to #{@project.name} Issue ##{@issue.issue_number}
+--------------------------------------------------------
+
+This issue's status was updated to <%= @issue.aasm_state.titleize %> by a moderator.
+
+You can view the issue in Beacon at this URL for updates:
+
+  <%= project_issue_url(@project, @issue) %>
+
+Thank you,
+<%= @project.name %> Moderators
