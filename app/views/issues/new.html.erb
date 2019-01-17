@@ -34,6 +34,11 @@ this project can be found <%= link_to "here", @project.coc_url, target: "_new" %
     <input type="text" name="issue[urls][]", class="form-control">
   </div>
 
+  <div class="form-group">
+    <%= flash[:recaptcha_error] %>
+    <%= recaptcha_tags %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Open Issue", class: "btn btn-primary" %>
   </div>

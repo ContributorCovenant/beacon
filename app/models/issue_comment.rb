@@ -7,8 +7,8 @@ class IssueComment < ApplicationRecord
 
   before_create :set_commenter_encrypted_id
 
-  scope :visible_to_reporter, -> { where(visibile_to_reporters: true) }
-  scope :visible_to_respondent, -> { where(visibile_to_respondents: true) }
+  scope :visible_to_reporter, -> { where(visible_to_reporter: true) }
+  scope :visible_to_respondent, -> { where(visible_to_respondent: true) }
   scope :visible_only_to_moderators, -> { where(visibile_only_to_moderators: true) }
 
   def commenter
