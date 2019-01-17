@@ -13,6 +13,7 @@ class IssueCommentsController < ApplicationController
     comment.visible_only_to_moderators = visible_only_to_moderators?
     comment.text = comment_params[:text]
     comment.save
+    notify_of_new_comment(comment)
     redirect_to project_issue_path(@project, @issue)
   end
 
@@ -34,6 +35,24 @@ class IssueCommentsController < ApplicationController
   def scope_issue
     @issue = Issue.find(params[:issue_id])
   end
+
+  def notify_of_new_comment(comment)
+    return if comment.visible_only_to_moderators && comment.commenter == current_account
+    if comment.visible_to_reporter && @project.moderators.include?(comment.commenter)
+      email = @issue.reporter.email
+    elsif comment.visible_to_respondent && @project.moderators.include?(comment.commenter)
+      email = @issue.respondent.email
+    else
+      email = @project.moderators.map(&:email)
+    end
+    IssueNotificationsMailer.with(
+      email: email,
+      project: @issue.project,
+      issue: @issue,
+      commenter_kind: comment.commenter_kind
+    ).notify_of_new_comment.deliver_now
+  end
+
 
   def visible_only_to_moderators?
     comment_params[:visible_only_to_moderators] == '1' && @project.account_can_manage?(current_account)

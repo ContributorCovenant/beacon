@@ -15,6 +15,12 @@ class IssueComment < ApplicationRecord
     @commenter ||= Account.find(EncryptionService.decrypt(commenter_encrypted_id))
   end
 
+  def commenter_kind
+    return "reporter" if commenter == issue.reporter
+    return "respondent" if commenter == issue.respondent
+    return "moderator"
+  end
+
   private
 
   def set_commenter_encrypted_id
