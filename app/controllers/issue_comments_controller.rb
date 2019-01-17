@@ -40,13 +40,13 @@ class IssueCommentsController < ApplicationController
 
   def notify_of_new_comment(comment)
     return if comment.visible_only_to_moderators && comment.commenter == current_account
-    if comment.visible_to_reporter && @project.moderators.include?(comment.commenter)
-      email = @issue.reporter.email
-    elsif comment.visible_to_respondent && @project.moderators.include?(comment.commenter)
-      email = @issue.respondent.email
-    else
-      email = @project.moderators.map(&:email)
-    end
+    email = if comment.visible_to_reporter && @project.moderators.include?(comment.commenter)
+              @issue.reporter.email
+            elsif comment.visible_to_respondent && @project.moderators.include?(comment.commenter)
+              @issue.respondent.email
+            else
+              @project.moderators.map(&:email)
+            end
     IssueNotificationsMailer.with(
       email: email,
       project: @issue.project,
@@ -54,7 +54,6 @@ class IssueCommentsController < ApplicationController
       commenter_kind: comment.commenter_kind
     ).notify_of_new_comment.deliver_now
   end
-
 
   def visible_only_to_moderators?
     comment_params[:visible_only_to_moderators] == '1' && @project.account_can_manage?(current_account)
