@@ -29,7 +29,7 @@ class Project < ApplicationRecord
     public? && !project_setting.paused?
   end
 
-  def user_is_admin?(account)
+  def account_can_manage?(account)
     account == self.account
   end
 
