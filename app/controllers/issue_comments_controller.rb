@@ -18,7 +18,12 @@ class IssueCommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:issue_comment).permit(:text, :visible_to_reporter, :visible_to_respondent)
+    params.require(:issue_comment).permit(
+      :text,
+      :visible_to_reporter,
+      :visible_to_respondent,
+      :visible_to_moderators
+    )
   end
 
   def scope_project
