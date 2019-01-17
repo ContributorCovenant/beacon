@@ -5,17 +5,19 @@ branches:
   only:
   - release
 rvm:
-  - "2.5.3"
+- 2.5.3
 script:
-  - bundle exec rails db:create RAILS_ENV=test
-  - bundle exec rails db:migrate RAILS_ENV=test
-  - bundle exec rspec
-  - bundle exec rubocop
+- bundle exec rails db:create RAILS_ENV=test
+- bundle exec rails db:migrate RAILS_ENV=test
+- bundle exec rspec
+- bundle exec rubocop
 services:
-  - postgresql
+- postgresql
 addons:
-  postgresql: "10"
+  postgresql: '10'
   apt:
     packages:
     - postgresql-10
     - postgresql-client-10
+env:
+  secure: vhuL3MIiaQLGm+U2DPpm9UOm0oua6X39KDb82d36/IcmieGbbewiihfO3PQA5K1XnQJqn+W3bxx0PqBzGeXFAQSY0avuq1qQNYtM2Ym6DPa+PumW1+P8g8WmCjoLtfHJxPiba9WipXagJ4MfES57Rd5B63yRrmeXNzlZVChCt4Jl5z5okFBLPA8Z/WA5YaBq9rX9N5oJmH/0z0l5DeP7reVmY5WSYjMYX81+FyOScEZ2sekDViJJW5yVmLD3ttIgKgh+jVUOPgMwsaopTTavzz3gYDKDKWYrEOPvrt+B4bhzfC6XBrb0w1pPIRu6po9W9jMTka4wtWnWIi9dtxgvhxv3wp44NjzuVukSMAJMX4VDveYP18igzsxT+5LV+J3RDkd+V9WojNEOV1l1sdPaBpnBayNldF4lKNPsaNC7CWyNqpdncfnTbesVISVpLpyi3WlCFO6GdoslVK4IuPo6dmJbJY8HM/IxpINGVZPIs1vQS5ySf6/MMMuZ6RrjUk/Qd1/mlE2FaH0NvrLmvE0uSqAWMDbkx38dmhdCIgIMfPyly7+mt0smTrGbQBl57GUtmz5jaqLNeUcp7r3cskeblFTI23JtGeugZbKv9bgYUtt5U6Xcpt2ka690NdHiIdlcfJL8foEwW0E2jJ1EdQZKkYN3UbO1MeBP7dK2z9RDI2k=
