@@ -32,8 +32,8 @@ class Account < ApplicationRecord
       if issue = Issue.find(EncryptionService.decrypt(invitation.issue_encrypted_id))
         issue.update_attribute(:respondent_encrypted_id, EncryptionService.encrypt(self.id))
         AccountIssue.create(account_id: self.id, issue_id: issue.id)
+        invitation.destroy
       end
-      invitation.destroy
     end
   end
 

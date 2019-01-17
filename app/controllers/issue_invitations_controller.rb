@@ -17,11 +17,12 @@ class IssueInvitationsController < ApplicationController
     normalized_email = Normailize::EmailAddress.new(invitation_params[:email]).normalized_address
 
     if account = Account.find_by(normalized_email: normalized_email)
+      AccountIssue.create(account: account, issue_id: @issue.id)
+      @issue.update_attribute(:respondent_encrypted_id, EncryptionService.encrypt(account.id))
       RespondentMailer.with(
         email: account.email,
         project_name: @issue.project.name
       ).notify_existing_account_of_issue.deliver_now
-      @issue.update_attribute(:respondent_encrypted_id, EncryptionService.encrypt(account.id))
     else
       IssueInvitation.create(
         email: Normailize::EmailAddress.new(invitation_params[:email]).normalized_address,

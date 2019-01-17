@@ -8,9 +8,9 @@ class IssueCommentsController < ApplicationController
 
   def create
     comment = IssueComment.new(issue_id: @issue.id, commenter_id: current_account.id)
-    comment.visible_to_reporter = comment_params[:visible_to_reporter] == '1'
-    comment.visible_to_respondent = comment_params[:visible_to_respondent] == '1'
-    comment.visible_only_to_moderators = comment_params[:visible_only_to_moderators] == '1'
+    comment.visible_to_reporter = visible_to_reporter?
+    comment.visible_to_respondent = visible_to_respondent?
+    comment.visible_only_to_moderators = visible_only_to_moderators?
     comment.text = comment_params[:text]
     comment.save
     redirect_to project_issue_path(@project, @issue)
@@ -33,6 +33,18 @@ class IssueCommentsController < ApplicationController
 
   def scope_issue
     @issue = Issue.find(params[:issue_id])
+  end
+
+  def visible_only_to_moderators?
+    comment_params[:visible_only_to_moderators] == '1' && @project.account_can_manage?(current_account)
+  end
+
+  def visible_to_reporter?
+    current_account == @issue.reporter || (@project.account_can_manage?(current_account) && comment_params[:visible_to_reporter] == '1')
+  end
+
+  def visible_to_respondent?
+    current_account == @issue.respondent || (@project.account_can_manage?(current_account) && comment_params[:visible_to_respondent] == '1')
   end
 
   def enforce_permissions
