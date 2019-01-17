@@ -51,3 +51,5 @@ Layout/EmptyLinesAroundBlockBody:
 Metrics/BlockLength:
   Enabled: false
 
+Naming/MemoizedInstanceVariableName:
+  Enabled: false
