@@ -9,7 +9,7 @@ class IssueComment < ApplicationRecord
 
   scope :visible_to_reporter, -> { where(visible_to_reporter: true) }
   scope :visible_to_respondent, -> { where(visible_to_respondent: true) }
-  scope :visible_only_to_moderators, -> { where(visibile_only_to_moderators: true) }
+  scope :visible_only_to_moderators, -> { where(visible_only_to_moderators: true) }
 
   def commenter
     @commenter ||= Account.find(EncryptionService.decrypt(commenter_encrypted_id))
