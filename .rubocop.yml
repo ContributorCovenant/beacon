@@ -57,3 +57,15 @@ Naming/MemoizedInstanceVariableName:
 Style/EmptyMethod:
   Enabled: false
 
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false
+
+Style/RedundantReturn:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+

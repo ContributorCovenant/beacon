@@ -33,6 +33,10 @@ class Project < ApplicationRecord
     account == self.account
   end
 
+  def moderators
+    [self.account]
+  end
+
   def obscure_reporter_email?
     project_setting.allow_anonymous_issues
   end

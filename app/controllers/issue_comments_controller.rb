@@ -7,12 +7,15 @@ class IssueCommentsController < ApplicationController
   before_action :enforce_permissions
 
   def create
-    comment = IssueComment.new(issue_id: @issue.id, commenter_id: current_account.id)
-    comment.visible_to_reporter = visible_to_reporter?
-    comment.visible_to_respondent = visible_to_respondent?
-    comment.visible_only_to_moderators = visible_only_to_moderators?
-    comment.text = comment_params[:text]
-    comment.save
+    comment = IssueComment.create(
+      issue_id: @issue.id,
+      commenter_id: current_account.id,
+      visible_to_reporter: visible_to_reporter?,
+      visible_to_respondent: visible_to_respondent?,
+      visible_only_to_moderators: visible_only_to_moderators?,
+      text: comment_params[:text]
+    )
+    notify_of_new_comment(comment)
     redirect_to project_issue_path(@project, @issue)
   end
 
@@ -33,6 +36,23 @@ class IssueCommentsController < ApplicationController
 
   def scope_issue
     @issue = Issue.find(params[:issue_id])
+  end
+
+  def notify_of_new_comment(comment)
+    return if comment.visible_only_to_moderators && comment.commenter == current_account
+    email = if comment.visible_to_reporter && @project.moderators.include?(comment.commenter)
+              @issue.reporter.email
+            elsif comment.visible_to_respondent && @project.moderators.include?(comment.commenter)
+              @issue.respondent.email
+            else
+              @project.moderators.map(&:email)
+            end
+    IssueNotificationsMailer.with(
+      email: email,
+      project: @issue.project,
+      issue: @issue,
+      commenter_kind: comment.commenter_kind
+    ).notify_of_new_comment.deliver_now
   end
 
   def visible_only_to_moderators?
