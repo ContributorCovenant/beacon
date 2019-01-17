@@ -1,0 +1,11 @@
+<h1>Update to <%= @project.name %> Issue #<%= @issue.issue_number %></h1>
+<p>
+  This issue's status was updated to <%= @issue.aasm_state.titleize %> by a moderator.
+</p>
+<p>
+  You can <%= link_to "view the issue in Beacon", project_issue_url(@project, @issue) %> for updates.
+</p>
+<p>
+  Thank you,
+  The Friendly Beacon Mailer Robot
+</p>

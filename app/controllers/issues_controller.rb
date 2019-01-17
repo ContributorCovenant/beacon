@@ -36,25 +36,25 @@ class IssuesController < ApplicationController
 
   def acknowledge
     @issue.acknowledge!(account_id: current_account.id)
-    notify_reporter_of_status_change
+    notify_on_status_change
     redirect_to [@project, @issue]
   end
 
   def dismiss
     @issue.dismiss!(account_id: current_account.id)
-    notify_reporter_of_status_change
+    notify_on_status_change
     redirect_to [@project, @issue]
   end
 
   def resolve
     @issue.resolve!(account_id: current_account.id)
-    notify_reporter_of_status_change
+    notify_on_status_change
     redirect_to [@project, @issue]
   end
 
   def reopen
     @issue.reopen!(account_id: current_account.id)
-    notify_reporter_of_status_change
+    notify_on_status_change
     redirect_to [@project, @issue]
   end
 
@@ -76,12 +76,13 @@ class IssuesController < ApplicationController
     params.require(:issue).permit(:description, urls: [])
   end
 
-  def notify_reporter_of_status_change
+  def notify_on_status_change
+    emails = [@issue.reporter.email, @issue.respondent.try(:email), @project.moderators.map(&:email) - [current_account.email]]
     IssueNotificationsMailer.with(
-      email: @issue.reporter.email,
+      emails: emails,
       project: @issue.project,
       issue: @issue
-    ).notify_reporter_of_status_change.deliver_now
+    ).notify_on_status_change.deliver_now
   end
 
   def scope_issue

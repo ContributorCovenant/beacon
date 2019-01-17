@@ -1,10 +1,10 @@
 class IssueNotificationsMailer < ApplicationMailer
 
-  def notify_reporter_of_status_change
+  def notify_on_status_change
     @project = params[:project]
     @issue = params[:issue]
-    @email = params[:email]
-    mail(to: @email, subject: "Beacon: #{@project.name} Issue ##{@issue.issue_number} issue has been updated")
+    @email = params[:emails]
+    mail(bcc: @emails, subject: "Beacon: #{@project.name} Issue ##{@issue.issue_number} issue has been updated")
   end
 
   def notify_of_new_comment
