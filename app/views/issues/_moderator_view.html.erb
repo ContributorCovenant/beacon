@@ -83,6 +83,7 @@
       <%= form_for comment, url: project_issue_issue_comments_path(project, issue) do |f| %>
         <div class="form-group">
           <%= f.label "New Comment" %><br />
+          <%= f.hidden_field :visible_to_moderators, value: 1 %>
           <%= f.text_area :text, class: "form-control" %>
         </div>
 
