@@ -46,6 +46,7 @@
     <%= form_for comment, url: project_issue_issue_comments_path(project, issue) do |f| %>
       <div class="form-group">
         <%= f.label "Message to Moderators" %><br />
+        <%= f.hidden_field :visible_to_reporter, value: 1 %>
         <%= f.text_area :text, class: "form-control" %>
       </div>
 

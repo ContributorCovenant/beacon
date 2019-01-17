@@ -19,7 +19,7 @@ class IssuesController < ApplicationController
 
   def create
     @issue = Issue.new(issue_params.merge(project_id: @project.id, account_id: current_account.id))
-    if @issue.save
+    if verify_recaptcha(model: @issue) && @issue.save
       redirect_to project_issue_path(@project, @issue)
     else
       flash[:error] = @issues.errors.full_messages
@@ -73,8 +73,8 @@ class IssuesController < ApplicationController
   end
 
   def scope_issue
-    @issue = Issue.find_by(id: params[:id]).includes(:issue_comments)
-    @issue ||= Issue.find_by(id: params[:issue_id]).includes(:issue_comments)
+    @issue = Issue.find_by(id: params[:id])
+    @issue ||= Issue.find_by(id: params[:issue_id])
   end
 
   def scope_project
