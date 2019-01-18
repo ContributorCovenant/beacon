@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ProjectSettingsController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_project_and_settings
@@ -24,7 +26,7 @@ class ProjectSettingsController < ApplicationController
   private
 
   def enforce_permissions
-    render(status: :forbidden, plain: nil) && return unless current_account.can_manage_project?(@project)
+    render_forbidden && return unless current_account.can_manage_project?(@project)
   end
 
   def scope_project_and_settings

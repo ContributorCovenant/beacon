@@ -36,15 +36,15 @@ class IssueCommentsController < ApplicationController
   end
 
   def visible_only_to_moderators?
-    comment_params[:visible_only_to_moderators] == '1' && @project.account_can_manage?(current_account)
+    comment_params[:visible_only_to_moderators] == '1' && @project.moderator?(current_account)
   end
 
   def visible_to_reporter?
-    current_account == @issue.reporter || (@project.account_can_manage?(current_account) && comment_params[:visible_to_reporter] == '1')
+    current_account == @issue.reporter || (@project.moderator?(current_account) && comment_params[:visible_to_reporter] == '1')
   end
 
   def visible_to_respondent?
-    current_account == @issue.respondent || (@project.account_can_manage?(current_account) && comment_params[:visible_to_respondent] == '1')
+    current_account == @issue.respondent || (@project.moderator?(current_account) && comment_params[:visible_to_respondent] == '1')
   end
 
   def enforce_permissions

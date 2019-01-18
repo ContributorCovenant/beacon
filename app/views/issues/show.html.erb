@@ -1,10 +1,10 @@
-<% if @project.account_can_manage?(current_account) %>
+<% if @project.moderator?(current_account) %>
   <h2><%= link_to @project.name, @project %>: Issue <%= @issue.issue_number %></h2>
 <% else %>
   <h2><%= link_to @project.name, directory_project_path(@project) %>: Issue <%= @issue.issue_number %></h2>
 <% end %>
 
-<% if @project.account_can_manage?(current_account) %>
+<% if @project.moderator?(current_account) %>
   <%= render partial: "moderator_view", locals: {
         project: @project,
         issue: @issue,

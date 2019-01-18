@@ -40,7 +40,7 @@ class IssueInvitationsController < ApplicationController
   private
 
   def enforce_permissions
-    render_forbidden && return unless @issue.account_can_invite_respondent?(current_account)
+    render_forbidden && return unless current_account.can_invite_respondent?(@issue)
   end
 
   def scope_all
