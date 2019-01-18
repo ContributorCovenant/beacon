@@ -68,6 +68,9 @@
     <a class="nav-link " id="nav-respondent-discussion-tab" data-toggle="pill" href="#nav-respondent-discussion" role="tab" aria-controls="nav-respondent-discussion" aria-selected="false">
       Respondent Discussion
     </a>
+    <a class="nav-link " id="nav-uploads-tab" data-toggle="pill" href="#nav-uploads" role="tab" aria-controls="nav-uploads" aria-selected="false">
+      Uploaded Screenshots
+    </a>
     <a class="nav-link " id="nav-history-tab" data-toggle="pill" href="#nav-history" role="tab" aria-controls="nav-history" aria-selected="false">
       Issue History
     </a>
@@ -172,7 +175,15 @@
           <li><%= event.event %> by <%= event.actor.email %> (<%= event.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
         <% end %>
       </ul>
-
     </div>
+
+    <div class="tab-pane fade" id="nav-uploads" role="tabpanel" aria-labelledby="nav-uploads-tab">
+      <div class="uploads">
+        <% @issue.uploads.each do |upload| %>
+          <%= link_to image_tag(upload), upload %>
+        <% end %>
+      </div>
+    </div>
+
   </div>
 </div>

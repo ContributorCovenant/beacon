@@ -16,6 +16,7 @@ gem 'bootswatch'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
 gem 'dotenv-rails'
+gem "google-cloud-storage", require: false
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'normailize'

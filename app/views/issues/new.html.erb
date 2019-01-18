@@ -35,6 +35,11 @@ this project can be found <%= link_to "here", @project.coc_url, target: "_new" %
   </div>
 
   <div class="form-group">
+    <label>Attach any relevant screen shots:</label><br />
+    <%= f.file_field :uploads, multiple: true %>
+  </div>
+
+  <div class="form-group">
     <%= flash[:recaptcha_error] %>
     <%= recaptcha_tags %>
   </div>
