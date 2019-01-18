@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_17_005520) do
+ActiveRecord::Schema.define(version: 2019_01_18_005046) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -137,10 +137,22 @@ ActiveRecord::Schema.define(version: 2019_01_17_005520) do
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
+  create_table "suspicious_activity_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "controller"
+    t.string "action"
+    t.string "ip_address"
+    t.text "params"
+    t.uuid "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_suspicious_activity_logs_on_account_id"
+  end
+
   add_foreign_key "account_issues", "accounts"
   add_foreign_key "issue_comments", "issues"
   add_foreign_key "issue_events", "issues"
   add_foreign_key "project_issues", "projects"
   add_foreign_key "project_settings", "projects"
   add_foreign_key "projects", "accounts"
+  add_foreign_key "suspicious_activity_logs", "accounts"
 end

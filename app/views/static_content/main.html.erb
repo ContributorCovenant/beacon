@@ -8,7 +8,7 @@
 
 <% if current_account %>
 
-  <% if PermissionsService.can_create_project?(current_account) %>
+  <% if current_account.can_create_project? %>
     <div class="card float-left mr-5" style="width: 30%; height: 15rem;">
       <div class="card-body">
         <h5 class="card-title">Register a Project</h5>

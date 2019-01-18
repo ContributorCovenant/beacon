@@ -1,0 +1,2 @@
+class SuspiciousActivityLog < ApplicationRecord
+end
