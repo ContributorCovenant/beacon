@@ -1,5 +1,5 @@
 class IssueComment < ApplicationRecord
-  attr_accessor :commenter_id
+  attr_accessor :commenter_id, :context
 
   belongs_to :issue
 
