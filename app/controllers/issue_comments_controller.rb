@@ -7,13 +7,17 @@ class IssueCommentsController < ApplicationController
   before_action :enforce_permissions
 
   def create
-    comment = IssueComment.new(issue_id: @issue.id, commenter_id: current_account.id)
-    comment.visible_to_reporter = visible_to_reporter?
-    comment.visible_to_respondent = visible_to_respondent?
-    comment.visible_only_to_moderators = visible_only_to_moderators?
-    comment.text = comment_params[:text]
-    comment.save
-    redirect_to project_issue_path(@project, @issue)
+    @comment = IssueComment.new(issue_id: @issue.id, commenter_id: current_account.id)
+    @comment.visible_to_reporter = visible_to_reporter?
+    @comment.visible_to_respondent = visible_to_respondent?
+    @comment.visible_only_to_moderators = visible_only_to_moderators?
+    @comment.text = comment_params[:text]
+    @comment.context = comment_params[:context]
+    @comment.save
+    respond_to do |f|
+      f.html { redirect_to project_issue_path(@project, @issue) }
+      f.js {}
+    end
   end
 
   private
@@ -23,7 +27,8 @@ class IssueCommentsController < ApplicationController
       :text,
       :visible_to_reporter,
       :visible_to_respondent,
-      :visible_only_to_moderators
+      :visible_only_to_moderators,
+      :context
     )
   end
 

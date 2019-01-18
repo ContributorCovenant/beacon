@@ -1,0 +1,2 @@
+$('.<%= @comment.context %>-message').val("");
+$('#<%= @comment.context %>-discussion').append("<%= j render partial: '/issues/comment', locals: { comment: @comment, project: @project} %>");
