@@ -61,15 +61,15 @@ class IssuesController < ApplicationController
   private
 
   def enforce_issue_creation_permissions
-    render(status: :forbidden, plain: nil) && return unless current_account.can_open_issue_on_project?(@project)
+    render_forbidden && return unless current_account.can_open_issue_on_project?(@project)
   end
 
   def enforce_moderation_permissions
-    render(status: :forbidden, plain: nil) && return unless current_account.can_moderate_project?(@project)
+    render_forbidden && return unless current_account.can_moderate_project?(@project)
   end
 
   def enforce_viewing_permissions
-    render(status: :forbidden, plain: nil) && return unless current_account.can_view_issue?(@issue)
+    render_forbidden && return unless current_account.can_view_issue?(@issue)
   end
 
   def issue_params

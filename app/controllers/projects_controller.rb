@@ -41,11 +41,11 @@ class ProjectsController < ApplicationController
   private
 
   def enforce_existing_project_permissions
-    render(status: :forbidden, plain: nil) && return unless current_account.can_manage_project?(@project)
+    render_forbidden && return unless current_account.can_manage_project?(@project)
   end
 
   def enforce_project_creation_permissions
-    render(status: :forbidden, plain: nil) && return unless current_account.can_create_project?
+    render_forbidden && return unless current_account.can_create_project?
   end
 
   def project_params
