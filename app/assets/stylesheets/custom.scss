@@ -1,0 +1,9 @@
+.uploads img {
+  width: 15%;
+  float: left;
+  margin: 1em 1em 1em 0em;
+}
+
+.uploads :last-child {
+  float: none;
+}

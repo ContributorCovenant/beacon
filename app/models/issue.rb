@@ -6,6 +6,9 @@ class Issue < ApplicationRecord
 
   has_many :issue_events
   has_many :issue_comments
+  has_many_attached :uploads
+
+  validate :validate_upload_file_type_and_size
 
   before_create :set_issue_number
   after_create :set_reporter_encrypted_id
@@ -68,6 +71,23 @@ class Issue < ApplicationRecord
   end
 
   private
+
+  def validate_upload_file_type_and_size
+    if uploads.count > 5
+      uploads[5..-1].each(&:purge)
+      errors.add(:uploads, "are limited to 5 or less")
+    end
+    uploads.each do |upload|
+      unless upload.image?
+        upload.purge
+        errors.add(:uploads, "must be an image file")
+      end
+      if upload.image? && upload.blob.byte_size > (1024 * 1024)
+        upload.purge
+        errors.add(:uploads, "must be less than 1MB")
+      end
+    end
+  end
 
   def set_issue_number
     return if self.issue_number

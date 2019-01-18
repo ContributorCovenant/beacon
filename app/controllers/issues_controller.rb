@@ -3,6 +3,7 @@ class IssuesController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_project
   before_action :scope_issue, except: [:index, :new, :create]
+  before_action :scope_comments, only: [:show, :update]
   before_action :enforce_viewing_permissions, only: [:show]
   before_action :enforce_moderation_permissions, only: [:acknowledge, :dismiss, :resolve, :reopen]
   before_action :enforce_issue_creation_permissions, only: [:new, :create]
@@ -22,8 +23,17 @@ class IssuesController < ApplicationController
     if verify_recaptcha(model: @issue) && @issue.save
       redirect_to project_issue_path(@project, @issue)
     else
-      flash[:error] = @issues.errors.full_messages
+      flash[:error] = @issue.errors.full_messages
       render :new
+    end
+  end
+
+  def update
+    if verify_recaptcha(model: @issue) && @issue.update_attributes(uploads: issue_params[:uploads])
+      redirect_to project_issue_path(@project, @issue)
+    else
+      flash[:error] = @issue.errors.full_messages
+      render :show
     end
   end
 
@@ -73,7 +83,7 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
-    params.require(:issue).permit(:description, urls: [])
+    params.require(:issue).permit(:description, uploads: [], urls: [])
   end
 
   def notify_on_status_change
@@ -83,6 +93,13 @@ class IssuesController < ApplicationController
       project: @issue.project,
       issue: @issue
     ).notify_on_status_change.deliver_now
+  end
+
+  def scope_comments
+    @reporter_discussion_comments = @issue.comments_visible_to_reporter
+    @respondent_discussion_comments = @issue.comments_visible_to_respondent
+    @internal_comments = @issue.comments_visible_only_to_moderators
+    @comment = IssueComment.new
   end
 
   def scope_issue
