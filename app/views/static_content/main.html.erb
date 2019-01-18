@@ -7,13 +7,17 @@
 <p>Beacon is a resource designed to bring this potential to every open source project, large or small. Beacon provides project maintainers with a complete set of tools for managing their codes of conduct at all stages: setting up your enforcement teams, documenting your processes, reporting incidents, managing incident reports, building consensus around enforcement decisions, and communicating clearly with reporters and offenders.</p>
 
 <% if current_account %>
-  <div class="card float-left mr-5" style="width: 30%; height: 15rem;">
-    <div class="card-body">
-      <h5 class="card-title">Register a Project</h5>
-      <p class="card-text">Register a new project on Beacon.</p>
-      <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
+
+  <% if PermissionsService.can_create_project?(current_account) %>
+    <div class="card float-left mr-5" style="width: 30%; height: 15rem;">
+      <div class="card-body">
+        <h5 class="card-title">Register a Project</h5>
+        <p class="card-text">Register a new project on Beacon.</p>
+        <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
+      </div>
     </div>
-  </div>
+  <% end %>
+
 <% else %>
   <div class="card float-left mr-5" style="width: 30%; height: 15rem;">
     <div class="card-body">

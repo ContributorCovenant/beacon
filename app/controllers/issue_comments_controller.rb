@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class IssueCommentsController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_project
@@ -30,6 +28,10 @@ class IssueCommentsController < ApplicationController
     )
   end
 
+  def enforce_permissions
+    render(status: :forbidden, plain: nil) && return unless current_account.can_comment_on_issue?(@issue)
+  end
+
   def scope_project
     @project = Project.find_by(slug: params[:project_slug])
   end
@@ -40,9 +42,9 @@ class IssueCommentsController < ApplicationController
 
   def notify_of_new_comment(comment)
     return if comment.visible_only_to_moderators && comment.commenter == current_account
-    email = if comment.visible_to_reporter && @project.moderators.include?(comment.commenter)
+    email = if comment.visible_to_reporter && @project.moderator?(comment.commenter)
               @issue.reporter.email
-            elsif comment.visible_to_respondent && @project.moderators.include?(comment.commenter)
+            elsif comment.visible_to_respondent && @project.moderator?(comment.commenter)
               @issue.respondent.email
             else
               @project.moderators.map(&:email)
@@ -56,19 +58,15 @@ class IssueCommentsController < ApplicationController
   end
 
   def visible_only_to_moderators?
-    comment_params[:visible_only_to_moderators] == '1' && @project.account_can_manage?(current_account)
+    comment_params[:visible_only_to_moderators] == '1' && @project.moderator?(current_account)
   end
 
   def visible_to_reporter?
-    current_account == @issue.reporter || (@project.account_can_manage?(current_account) && comment_params[:visible_to_reporter] == '1')
+    current_account == @issue.reporter || (@project.moderator?(current_account) && comment_params[:visible_to_reporter] == '1')
   end
 
   def visible_to_respondent?
-    current_account == @issue.respondent || (@project.account_can_manage?(current_account) && comment_params[:visible_to_respondent] == '1')
-  end
-
-  def enforce_permissions
-    render(status: :forbidden, plain: nil) && return unless @issue.account_can_comment?(current_account)
+    current_account == @issue.respondent || (@project.moderator?(current_account) && comment_params[:visible_to_respondent] == '1')
   end
 
 end

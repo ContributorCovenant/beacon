@@ -42,7 +42,7 @@ class IssueInvitationsController < ApplicationController
   private
 
   def enforce_permissions
-    render(status: :forbidden, plain: nil) && return unless @issue.account_can_invite_respondent?(current_account)
+    render(status: :forbidden, plain: nil) && return unless current_account.can_invite_respondent?(@issue)
   end
 
   def scope_all

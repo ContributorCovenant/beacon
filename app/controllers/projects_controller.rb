@@ -1,9 +1,8 @@
-# frozen_string_literal: true
-
 class ProjectsController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_project, only: [:show, :edit, :delete, :update]
-  before_action :enforce_permissions, except: [:index]
+  before_action :enforce_existing_project_permissions, except: [:index, :new, :create]
+  before_action :enforce_project_creation_permissions, only: [:new, :create]
 
   def index
     # TODO: this will need to be scoped differently once there are multiple moderators per project
@@ -41,8 +40,12 @@ class ProjectsController < ApplicationController
 
   private
 
-  def enforce_permissions
-    render(status: :forbidden, plain: nil) && return unless @project.account_can_manage?(current_account)
+  def enforce_existing_project_permissions
+    render(status: :forbidden, plain: nil) && return unless current_account.can_manage_project?(@project)
+  end
+
+  def enforce_project_creation_permissions
+    render(status: :forbidden, plain: nil) && return unless current_account.can_create_project?
   end
 
   def project_params

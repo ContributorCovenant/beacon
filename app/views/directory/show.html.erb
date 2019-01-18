@@ -20,12 +20,8 @@
       <% end %>
     </ul>
 
-    <% if current_account %>
-      <% if @project.project_setting.paused? %>
-        <p class="btn btn-danger">This Project is Temporarily Not Accepting New Issues</p>
-      <% else %>
-        <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-primary" %>
-      <% end %>
+    <% if PermissionService.can_open_issue_on_project?(current_account, @project) %>
+      <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-primary" %>
     <% end %>
 
     <% if @project.project_setting.publish_stats? %>

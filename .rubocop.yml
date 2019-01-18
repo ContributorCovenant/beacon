@@ -69,3 +69,5 @@ Metrics/CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Enabled: false
 
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: false

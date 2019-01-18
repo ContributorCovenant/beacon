@@ -14,11 +14,11 @@ class IssuesController < ApplicationController
   end
 
   def new
-    @issue = Issue.new(project_id: @project.id, account_id: current_account.id)
+    @issue = Issue.new(project_id: @project.id, reporter_id: current_account.id)
   end
 
   def create
-    @issue = Issue.new(issue_params.merge(project_id: @project.id, account_id: current_account.id))
+    @issue = Issue.new(issue_params.merge(project_id: @project.id, reporter_id: current_account.id))
     if verify_recaptcha(model: @issue) && @issue.save
       redirect_to project_issue_path(@project, @issue)
     else
@@ -61,15 +61,15 @@ class IssuesController < ApplicationController
   private
 
   def enforce_issue_creation_permissions
-    render(status: :forbidden, plain: nil) && return unless @project.accepting_issues?
+    render(status: :forbidden, plain: nil) && return unless current_account.can_open_issue_on_project?(@project)
   end
 
   def enforce_moderation_permissions
-    render(status: :forbidden, plain: nil) && return unless @issue.account_can_moderate?(current_account)
+    render(status: :forbidden, plain: nil) && return unless current_account.can_moderate_project?(@project)
   end
 
   def enforce_viewing_permissions
-    render(status: :forbidden, plain: nil) && return unless @issue.account_can_view?(current_account)
+    render(status: :forbidden, plain: nil) && return unless current_account.can_view_issue?(@issue)
   end
 
   def issue_params
@@ -77,7 +77,7 @@ class IssuesController < ApplicationController
   end
 
   def notify_on_status_change
-    emails = [@issue.reporter.email, @issue.respondent.try(:email), @project.moderators.map(&:email) - [current_account.email]]
+    emails = [@issue.reporter.email, @issue.respondent.try(:email), @project.moderator_emails - [current_account.email]]
     IssueNotificationsMailer.with(
       emails: emails,
       project: @issue.project,

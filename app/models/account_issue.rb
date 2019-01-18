@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AccountIssue < ApplicationRecord
   belongs_to :account
 

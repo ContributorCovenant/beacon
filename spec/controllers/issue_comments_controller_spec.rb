@@ -11,7 +11,7 @@ RSpec.describe IssueCommentsController, type: :controller do
     let(:respondent)  { FactoryBot.create(:account, email: "respondent@example.com") }
     let(:rando)       { FactoryBot.create(:account, email: "rando@example.com") }
     let(:project)     { FactoryBot.create(:project, account: moderator) }
-    let(:issue)       { FactoryBot.create(:issue, project_id: project.id, account_id: reporter.id) }
+    let(:issue)       { FactoryBot.create(:issue, project_id: project.id, reporter_id: reporter.id) }
 
     before do
       allow(Project).to receive(:find_by).and_return(project)

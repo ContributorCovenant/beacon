@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Accounts
   class ConfirmationsController < Devise::ConfirmationsController
     # GET /resource/confirmation/new

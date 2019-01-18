@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class CreateIssueEvents < ActiveRecord::Migration[5.2]
   def change
     create_table :issue_events, id: :uuid do |t|
