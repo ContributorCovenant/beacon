@@ -11,4 +11,4 @@ google:
   service: GCS
   project: beacon
   credentials: <%= ENV['GOOGLE_APPLICATION_CREDENTIALS'] %>
-  bucket: beacon
+  bucket: beacon-uploads
