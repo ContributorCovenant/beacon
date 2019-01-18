@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Accounts
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # You should configure your model like this:

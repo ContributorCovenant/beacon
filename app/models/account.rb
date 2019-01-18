@@ -3,6 +3,8 @@ require 'normailize'
 
 class Account < ApplicationRecord
 
+  include Permissions
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -38,7 +40,7 @@ class Account < ApplicationRecord
   end
 
   def hash_email
-    self.hashed_email = Digest::MD5.hexdigest(self.normalized_email)
+    self.hashed_email = EncryptionService.hash(self.normalized_email)
   end
 
   def normalize_email

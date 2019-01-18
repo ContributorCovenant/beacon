@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class ProjectIssue < ApplicationRecord
   validates_uniqueness_of :issue_encrypted_id
 

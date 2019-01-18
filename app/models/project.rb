@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Project < ApplicationRecord
   validates_uniqueness_of :name
   validates_uniqueness_of :url
@@ -26,15 +24,27 @@ class Project < ApplicationRecord
   end
 
   def accepting_issues?
-    public? && !project_setting.paused?
+    public? && !paused?
   end
 
   def account_can_manage?(account)
     account == self.account
   end
 
+  def moderator?(account)
+    moderators.include?(account)
+  end
+
   def moderators
     [self.account]
+  end
+
+  def moderator_emails
+    moderators.map(&:email)
+  end
+
+  def paused?
+    project_setting.paused?
   end
 
   def obscure_reporter_email?

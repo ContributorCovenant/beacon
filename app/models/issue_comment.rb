@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class IssueComment < ApplicationRecord
   attr_accessor :commenter_id
 

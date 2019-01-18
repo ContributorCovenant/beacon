@@ -2,7 +2,7 @@ class Issue < ApplicationRecord
 
   include AASM
 
-  attr_accessor :account_id, :project_id
+  attr_accessor :reporter_id, :project_id
 
   has_many :issue_events
   has_many :issue_comments
@@ -35,26 +35,6 @@ class Issue < ApplicationRecord
     event :reopen do
       transitions from: [:dismissed, :resolved], to: :reopened
     end
-  end
-
-  def account_can_invite_respondent?(account)
-    return true if project.account == account
-  end
-
-  def account_can_comment?(account)
-    return true if project.account == account
-    return true if reporter == account
-    return true if respondent == account
-  end
-
-  def account_can_view?(account)
-    return true if project.account == account
-    return true if reporter == account
-    return true if respondent == account
-  end
-
-  def account_can_moderate?(account)
-    return true if project.account == account
   end
 
   def comments_visible_to_reporter
@@ -96,8 +76,8 @@ class Issue < ApplicationRecord
   end
 
   def set_reporter_encrypted_id
-    update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(self.account_id))
-    AccountIssue.create(account_id: self.account_id, issue_id: self.id)
+    update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(self.reporter_id))
+    AccountIssue.create(account_id: self.reporter_id, issue_id: self.id)
   end
 
   def set_project_encrypted_id

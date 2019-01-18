@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddDeviseToAccounts < ActiveRecord::Migration[5.2]
   def self.up
     change_table :accounts do |t|

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class AddNormalizedEmailIndex < ActiveRecord::Migration[5.2]
   def up
     add_index :accounts, :normalized_email, unique: true

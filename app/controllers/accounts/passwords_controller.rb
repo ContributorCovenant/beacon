@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module Accounts
   class PasswordsController < Devise::PasswordsController
     prepend_before_action :check_captcha, only: [:create]
