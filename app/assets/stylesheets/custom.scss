@@ -7,3 +7,40 @@
 .uploads :last-child {
   float: none;
 }
+
+h5 {
+  font-size: 1.1rem;
+}
+
+h6 {
+  font-size: .75rem;
+}
+
+.btn {
+  margin: .1rem;
+}
+
+.tab-pane {
+  padding: .5rem;
+}
+
+footer {
+  padding: .5rem;
+}
+
+.table {
+  font-size: .5rem;
+}
+
+.hide-portrait-phone {
+  display: none;
+}
+
+@media (min-width: 576px) {
+  .hide-portrait-phone {
+    display: block;
+  }
+  .table {
+    font-size: 1rem;
+  }
+}

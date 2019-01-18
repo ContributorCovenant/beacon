@@ -1,10 +1,10 @@
 <table class="table">
   <thead>
     <tr>
-      <th>Issue #</th>
+      <th>Issue</th>
       <th>Description</th>
       <th>Opened</th>
-      <th>Updated</th>
+      <th class="hide-portrait-phone">Updated</th>
       <th>Status</th>
     </tr>
   </thead>
@@ -14,7 +14,7 @@
         <td><%= link_to issue.issue_number, project_issue_path(@project, issue) %></td>
         <td><%= truncate(issue.description, length: 50) %></td>
         <td><%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
-        <td><%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
+        <td class="hide-portrait-phone"><%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %></td>
         <td><%= issue.aasm_state.titleize %></td>
       </tr>
     <% end %>

@@ -28,24 +28,10 @@
       <li class="nav-item">
         <%= link_to "About Beacon", "#", class: "nav-link" %>
       </li>
-      <!--li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li-->
-      <!--li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-      </li-->
     </ul>
-    <div class="ml-3">
+    <div>
       <% if current_account %>
-        Signed in as <%= link_to current_account.email, edit_account_registration_path(current_account) %>.
+        <%= link_to current_account.email, edit_account_registration_path(current_account) %>
         <%= link_to "Sign Out", destroy_account_session_path, method: :delete, class: "btn btn-primary" %>
       <% else %>
         <%= link_to "Sign In", new_account_session_path, class: "btn btn-primary" %>
