@@ -49,7 +49,6 @@
       <%= button_to "Acknowledge", project_issue_acknowledge_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
     <% elsif issue.acknowledged? || issue.reopened? %>
       <%= button_to "Dismiss", project_issue_dismiss_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
-      <%= button_to "Resolve", project_issue_resolve_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
     <% elsif issue.dismissed? || issue.resolved? %>
       <%= button_to "Re-Open", project_issue_reopen_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
     <% end %>
@@ -67,6 +66,9 @@
     </a>
     <a class="nav-link " id="nav-respondent-discussion-tab" data-toggle="pill" href="#nav-respondent-discussion" role="tab" aria-controls="nav-respondent-discussion" aria-selected="false">
       Respondent Discussion
+    </a>
+    <a class="nav-link " id="nav-resolution-tab" data-toggle="pill" href="#nav-resolution" role="tab" aria-controls="nav-resolution" aria-selected="false">
+      Resolution
     </a>
     <a class="nav-link " id="nav-history-tab" data-toggle="pill" href="#nav-history" role="tab" aria-controls="nav-history" aria-selected="false">
       Issue History
@@ -132,6 +134,34 @@
           <%= link_to "Contact Respondent", new_project_issue_issue_invitation_path(project, issue), class: "btn btn-danger mr-3" %>
         <% end %>
       </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-resolution" role="tabpanel" aria-labelledby="nav-resolution-tab">
+      <% if @issue.resolved_at.nil? %>
+        <%= form_for @issue, url: project_issue_resolve_path(@project, @issue) do |f| %>
+          <div class="form-group">
+            <%= f.label "Resolution" %><br />
+            <%= f.text_area :resolution_text, class: "form-control" %>
+          </div>
+          <div class="actions">
+            <%= f.submit "Resolve Issue", class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="card mb-3 ml-3 mr-3" style="width: 90%">
+          <div class="card-body">
+            <h5 class="card-title">
+              Resolution
+            </h5>
+            <div class="card-text">
+              <p><%= @issue.resolution_text %></p>
+              <h6>
+                Resolved on <%= @issue.resolved_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>
+              </h6>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
 
     <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab">
