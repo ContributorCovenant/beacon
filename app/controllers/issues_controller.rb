@@ -57,12 +57,17 @@ class IssuesController < ApplicationController
   end
 
   def resolve
+    @issue.update_attributes(
+      resolution_text: issue_params[:resolution_text],
+      resolved_at: DateTime.now
+    )
     @issue.resolve!(account_id: current_account.id)
     notify_on_status_change
     redirect_to [@project, @issue]
   end
 
   def reopen
+    @issue.update_attribute(:resolved_at, nil)
     @issue.reopen!(account_id: current_account.id)
     notify_on_status_change
     redirect_to [@project, @issue]
@@ -83,7 +88,7 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
-    params.require(:issue).permit(:description, uploads: [], urls: [])
+    params.require(:issue).permit(:description, :resolution_text, uploads: [], urls: [])
   end
 
   def notify_on_status_change

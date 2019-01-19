@@ -18,7 +18,7 @@ Rails.application.routes.draw do
       resources :issue_invitations, only: [:create, :new]
       post "acknowledge", to: "issues#acknowledge"
       post "dismiss", to: "issues#dismiss"
-      post "resolve", to: "issues#resolve"
+      patch "resolve", to: "issues#resolve"
       post "reopen", to: "issues#reopen"
     end
     get "settings", to: "project_settings#edit"
