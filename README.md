@@ -14,7 +14,7 @@ Beacon will be provided in a software-as-a-service (SaaS) model to reduce fricti
 
 ## Milestones
 
-* **January 2019:** We are currently working towards finishing an initial prototype.
+* **January 2019:** We are currently working towards finishing an initial prototype. [Project board](https://github.com/ContributorCovenant/beacon/projects/1)
 * **February 2019:** Work with select stakeholders representing a variety of different kinds of open source projects to ensure that Beacon satisfies their needs.
 * **April 2019:** Open a limited public beta
 * **June 2019:** Official launch
