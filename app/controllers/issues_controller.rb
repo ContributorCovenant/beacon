@@ -92,7 +92,7 @@ class IssuesController < ApplicationController
   end
 
   def notify_on_status_change
-    emails = [@issue.reporter.email, @issue.respondent.try(:email), @project.moderator_emails - [current_account.email]]
+    emails = [@issue.reporter.email, @issue.respondent.try(:email), @project.moderator_emails - [current_account.email]].compact
     IssueNotificationsMailer.with(
       emails: emails,
       project: @issue.project,
