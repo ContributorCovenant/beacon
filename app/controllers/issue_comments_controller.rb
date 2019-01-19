@@ -67,7 +67,7 @@ class IssueCommentsController < ApplicationController
     elsif @comment.commenter == @issue.reporter
       email = @project.moderator_emails
       commenter_kind = "reporter"
-    elsif @comment.commenter = @issue.respondent
+    elsif @comment.commenter == @issue.respondent
       email = @project.moderator_emails
       commenter_kind = "respondent"
     else
@@ -78,7 +78,7 @@ class IssueCommentsController < ApplicationController
     IssueNotificationsMailer.with(
       email: email,
       project: @project,
-      issue: @issue
+      issue: @issue,
       commenter_kind: commenter_kind
     ).notify_of_new_comment.deliver_now
   end

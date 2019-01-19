@@ -71,3 +71,6 @@ Metrics/PerceivedComplexity:
 
 Layout/EmptyLinesAroundModuleBody:
   Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false
