@@ -81,15 +81,18 @@
   <div class="tab-content" id="nav-tabContent" style="width: 100%;">
 
     <div class="tab-pane fade show active" id="nav-internal-discussion" role="tabpanel" aria-labelledby="nav-internal-discussion-tab">
-      <% internal_comments.each do |comment| %>
-        <%= render partial: "comment", locals: { comment: comment, project: @project } %>
-      <% end %>
+      <div id="internal-discussion">
+        <% internal_comments.each do |comment| %>
+          <%= render partial: "comment", locals: { comment: comment, project: @project } %>
+        <% end %>
+      </div>
 
-      <%= form_for comment, url: project_issue_issue_comments_path(project, issue) do |f| %>
+      <%= form_for comment, url: project_issue_issue_comments_path(project, issue), remote: true do |f| %>
         <div class="form-group">
           <%= f.label "New Comment" %><br />
           <%= f.hidden_field :visible_only_to_moderators, value: 1 %>
-          <%= f.text_area :text, class: "form-control" %>
+          <%= f.hidden_field :context, value: "internal" %>
+          <%= f.text_area :text, class: "form-control moderator-message" %>
         </div>
 
         <div class="actions">
@@ -99,15 +102,19 @@
     </div>
 
     <div class="tab-pane fade" id="nav-reporter-discussion" role="tabpanel" aria-labelledby="nav-reporter-discussion-tab">
-      <% reporter_discussion_comments.each do |comment| %>
-        <%= render partial: "comment", locals: { comment: comment, project: @project } %>
-      <% end %>
 
-      <%= form_for comment, url: project_issue_issue_comments_path(@project, @issue) do |f| %>
+      <div id="reporter-discussion">
+        <% reporter_discussion_comments.each do |comment| %>
+          <%= render partial: "comment", locals: { comment: comment, project: @project } %>
+        <% end %>
+      </div>
+
+      <%= form_for comment, url: project_issue_issue_comments_path(@project, @issue), remote: true do |f| %>
         <div class="form-group">
           <%= f.label "Comment" %><br />
           <%= f.hidden_field :visible_to_reporter, value: 1 %>
-          <%= f.text_area :text, class: "form-control" %>
+          <%= f.hidden_field :context, value: "reporter" %>
+          <%= f.text_area :text, class: "form-control reporter-message" %>
         </div>
 
         <div class="actions">
@@ -117,17 +124,32 @@
     </div>
 
     <div class="tab-pane fade" id="nav-respondent-discussion" role="tabpanel" aria-labelledby="nav-respondent-discussion-tab">
-      <% respondent_discussion_comments.each do |comment| %>
-        <%= render partial: "comment", locals: { comment: comment, project: @project } %>
-      <% end %>
+
+      <div class="card mb-3 mr-3" style="width: 100%">
+        <div class="card-body">
+          <h5 class="card-title">
+            Issue Summary to Respondent
+          </h5>
+          <div class="card-text">
+            <p><%= @issue.respondent_summary %></p>
+          </div>
+        </div>
+      </div>
+
+      <div id="respondent-discussion">
+        <% respondent_discussion_comments.each do |comment| %>
+          <%= render partial: "comment", locals: { comment: comment, project: @project } %>
+        <% end %>
+      </div>
 
       <div class="actions">
         <% if @issue.respondent.present? %>
-          <%= form_for comment, url: project_issue_issue_comments_path(@project, @issue) do |f| %>
+          <%= form_for comment, url: project_issue_issue_comments_path(@project, @issue), remote: true do |f| %>
             <div class="form-group">
               <%= f.label "Comment" %><br />
               <%= f.hidden_field :visible_to_respondent, value: 1 %>
-              <%= f.text_area :text, class: "form-control" %>
+              <%= f.hidden_field :context, value: "respondent" %>
+              <%= f.text_area :text, class: "form-control respondent-message" %>
             </div>
             <div class="actions">
               <%= f.submit "Send to Respondent", class: "btn btn-primary" %>
