@@ -67,6 +67,9 @@
     <a class="nav-link " id="nav-respondent-discussion-tab" data-toggle="pill" href="#nav-respondent-discussion" role="tab" aria-controls="nav-respondent-discussion" aria-selected="false">
       Respondent Discussion
     </a>
+    <a class="nav-link " id="nav-uploads-tab" data-toggle="pill" href="#nav-uploads" role="tab" aria-controls="nav-uploads" aria-selected="false">
+      Screenshots
+    </a>
     <a class="nav-link " id="nav-resolution-tab" data-toggle="pill" href="#nav-resolution" role="tab" aria-controls="nav-resolution" aria-selected="false">
       Resolution
     </a>
@@ -134,6 +137,14 @@
           <%= link_to "Contact Respondent", new_project_issue_issue_invitation_path(project, issue), class: "btn btn-danger mr-3" %>
         <% end %>
       </div>
+    </div>
+
+    <div class="tab-pane fade" id="nav-uploads" role="tabpanel" aria-labelledby="nav-uploads-tab">
+      <div class="uploads">
+         <% @issue.uploads.each do |upload| %>
+           <%= link_to image_tag(upload), upload %>
+         <% end %>
+       </div>
     </div>
 
     <div class="tab-pane fade" id="nav-resolution" role="tabpanel" aria-labelledby="nav-resolution-tab">
