@@ -14,6 +14,7 @@ class IssueCommentsController < ApplicationController
     @comment.text = comment_params[:text]
     @comment.context = comment_params[:context]
     @comment.save
+    send_notifications
     respond_to do |f|
       f.html { redirect_to project_issue_path(@project, @issue) }
       f.js {}
@@ -54,6 +55,32 @@ class IssueCommentsController < ApplicationController
 
   def enforce_permissions
     render_forbidden && return unless current_account.can_comment_on_issue?(@issue)
+  end
+
+  def send_notifications
+    if @project.moderator?(current_account) && visible_to_reporter?
+      email = @issue.reporter.email
+      commenter_kind = "moderator"
+    elsif @project.moderator?(current_account) && visible_to_respondent?
+      email = @issue.respondent.email
+      commenter_kind = "moderator"
+    elsif @comment.commenter == @issue.reporter
+      email = @project.moderator_emails
+      commenter_kind = "reporter"
+    elsif @comment.commenter = @issue.respondent
+      email = @project.moderator_emails
+      commenter_kind = "respondent"
+    else
+      email = @project.moderator_emails
+      commenter_kind = "moderator"
+    end
+
+    IssueNotificationsMailer.with(
+      email: email,
+      project: @project,
+      issue: @issue
+      commenter_kind: commenter_kind
+    ).notify_of_new_comment.deliver_now
   end
 
 end
