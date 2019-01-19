@@ -17,7 +17,7 @@ class Account < ApplicationRecord
   has_many :projects
   has_many :account_issues
 
-  before_create :normalize_email
+  before_validation :normalize_email
   before_create :hash_email
   after_create :associate_respondent_with_issues
 
@@ -39,13 +39,13 @@ class Account < ApplicationRecord
     end
   end
 
-  def hash_email
-    self.hashed_email = EncryptionService.hash(self.normalized_email)
-  end
-
   def normalize_email
     normalized = Normailize::EmailAddress.new(self.email).normalized_address
     self.normalized_email = normalized.gsub(/\+.+\@/, "@")
+  end
+
+  def hash_email
+    self.hashed_email = EncryptionService.hash(self.normalized_email)
   end
 
 end
