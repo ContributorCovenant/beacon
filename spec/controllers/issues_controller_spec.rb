@@ -4,8 +4,8 @@ RSpec.describe IssuesController, type: :controller do
 
   describe "#create" do
 
-    let(:moderator)   { FactoryBot.build(:account) }
-    let(:reporter)    { FactoryBot.build(:account) }
+    let(:moderator)   { FactoryBot.create(:danielle) }
+    let(:reporter)    { FactoryBot.build(:exene) }
     let!(:project)    { FactoryBot.create(:project, account: moderator) }
 
     before do

@@ -21,6 +21,7 @@ class IssuesController < ApplicationController
   def create
     @issue = Issue.new(issue_params.merge(project_id: @project.id, reporter_id: current_account.id))
     if verify_recaptcha(model: @issue) && @issue.save
+      notify_on_new_issue
       redirect_to project_issue_path(@project, @issue)
     else
       flash[:error] = @issue.errors.full_messages
@@ -91,8 +92,16 @@ class IssuesController < ApplicationController
     params.require(:issue).permit(:description, :resolution_text, uploads: [], urls: [])
   end
 
+  def notify_on_new_issue
+    IssueNotificationsMailer.with(
+      email: @project.moderator_emails,
+      project: @issue.project,
+      issue: @issue
+    ).notify_of_new_issue.deliver_now
+  end
+
   def notify_on_status_change
-    emails = [@issue.reporter.email, @issue.respondent.try(:email), @project.moderator_emails - [current_account.email]].compact
+    emails = [@issue.reporter.email, @issue.respondent.try(:email), @project.moderator_emails - [current_account.email]].flatten.compact
     IssueNotificationsMailer.with(
       emails: emails,
       project: @issue.project,

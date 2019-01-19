@@ -1,0 +1,11 @@
+<h1>New Issue on <%= @project.name %>: Issue #<%= @issue.issue_number %></h1>
+<p>
+  A new issue has been opened on <%= @project.name %> on <%= @issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>
+</p>
+<p>
+  You can <%= link_to "view the issue in Beacon", project_issue_url(@project, @issue) %> now.
+</p>
+<p>
+  Thank you,
+  The Friendly Beacon Mailer Robot
+</p>
