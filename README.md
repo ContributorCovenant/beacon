@@ -31,44 +31,44 @@ If you are adding a new gem, be sure to place it in the proper section of the `G
 ### Passing specs
 Make sure there are no test failures:
 
-    `bundle exec rspec spec/`
+`bundle exec rspec spec/`
 
 ### Coding style
 Make sure there are no code style violations:
 
-    `bundle exec rubocop`
+`bundle exec rubocop`
 
 ### Security
 Make sure that you have not introduced a security vulnerability:
 
-    `bundle exec brakeman`
+`bundle exec brakeman`
 
 
 ## Local setup (non-Docker)
 
 * Set up your environment variables for local development
 
-    `cp .env.development.sample .env.development`
+`cp .env.development.sample .env.development`
 
 * Install gems
 
-    `bundle`
+`bundle`
 
 * Create the database
 
-    `bundle exec rake db:create:all`
+`bundle exec rake db:create:all`
 
 * Migrate the database
 
-    `bundle exec rake db:migrate`
+`bundle exec rake db:migrate`
 
 * Seed the database
 
-    `bundle exec rake db:seed`
+`bundle exec rake db:seed`
 
 * Start the application
 
-    `rails s`
+`rails s`
 
 * Visit [http://localhost:3000](http://localhost:3000) in your browser
 
