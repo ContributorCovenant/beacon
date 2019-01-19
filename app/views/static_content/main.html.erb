@@ -6,41 +6,53 @@
 
 <p>Beacon is a resource designed to bring this potential to every open source project, large or small. Beacon provides project maintainers with a complete set of tools for managing their codes of conduct at all stages: setting up your enforcement teams, documenting your processes, reporting incidents, managing incident reports, building consensus around enforcement decisions, and communicating clearly with reporters and offenders.</p>
 
-<% if current_account %>
+<div class="container-fluid">
+  <div class="row">
 
-  <% if current_account.can_create_project? %>
-    <div class="card float-left mr-5" style="width: 30%; height: 15rem;">
-      <div class="card-body">
-        <h5 class="card-title">Register a Project</h5>
-        <p class="card-text">Register a new project on Beacon.</p>
-        <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
+    <% if current_account %>
+
+      <% if current_account.can_create_project? %>
+        <div class="col-sm">
+          <div class="card mr-5 mt-2">
+            <div class="card-body">
+              <h5 class="card-title">Register a Project</h5>
+              <p class="card-text">Register a new project on Beacon.</p>
+              <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
+    <% else %>
+      <div class="col-sm">
+        <div class="card mr-5 mt-2">
+          <div class="card-body">
+            <h5 class="card-title">Register</h5>
+            <p class="card-text">Create an account to file a code of conduct issue or to set up your project on Beacon.</p>
+            <%= link_to "Create an Account", new_account_registration_path, class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm">
+        <div class="card mr-5 mt-2">
+          <div class="card-body">
+            <h5 class="card-title">Sign In</h5>
+            <p class="card-text">If you already have an account, sign in to access your projects or to open a code of conduct issue.</p>
+            <%= link_to "Sign In", new_account_session_path, class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="col-sm">
+      <div class="card mr-5 mt-2">
+        <div class="card-body">
+          <h5 class="card-title">Browse Participating Projects</h5>
+          <p class="card-text">View a directory of open source projects that are currently using Beacon.</p>
+          <%= link_to "View Directory", directory_path, class: "btn btn-primary" %>
+        </div>
       </div>
     </div>
-  <% end %>
-
-<% else %>
-  <div class="card float-left mr-5" style="width: 30%; height: 15rem;">
-    <div class="card-body">
-      <h5 class="card-title">Register</h5>
-      <p class="card-text">Create an account to file a code of conduct issue or to set up your project on Beacon.</p>
-      <%= link_to "Create an Account", new_account_registration_path, class: "btn btn-primary" %>
-    </div>
-  </div>
-
-  <div class="card float-left mr-5" style="width: 30%; height: 15rem;">
-    <div class="card-body">
-      <h5 class="card-title">Sign In</h5>
-      <p class="card-text">If you already have an account, sign in to access your projects or to open a code of conduct issue.</p>
-      <%= link_to "Sign In", new_account_session_path, class: "btn btn-primary" %>
-    </div>
-  </div>
-
-<% end %>
-
-<div class="card mr-5" style="width: 30%; height: 15rem;">
-  <div class="card-body">
-    <h5 class="card-title">Browse Participating Projects</h5>
-    <p class="card-text">View a directory of open source projects that are currently using Beacon.</p>
-    <%= link_to "View Directory", directory_path, class: "btn btn-primary" %>
   </div>
 </div>
