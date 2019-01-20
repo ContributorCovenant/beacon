@@ -1,3 +1,5 @@
+We welcome contributions involving code, documentation, or design. If you'd like to contribute, please check out [our guide to contributing](https://github.com/ContributorCovenant/beacon/blob/release/CODE_OF_CONDUCT.md).
+
 All contributions, including pull requests, issues, and comments, are governed by our [code of conduct](https://github.com/ContributorCovenant/beacon/blob/release/CODE_OF_CONDUCT.md).
 
 ## Problem
