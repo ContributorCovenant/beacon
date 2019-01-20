@@ -12,6 +12,7 @@ RSpec.describe Permissions do
   let(:private_project) { FactoryBot.create(:project, account: kate) }
 
   before do
+    allow(public_project).to receive(:public?).and_return(true)
     allow(private_project).to receive(:public?).and_return(false)
     allow(paused_project).to receive(:paused?).and_return(true)
   end

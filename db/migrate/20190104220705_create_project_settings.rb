@@ -7,7 +7,7 @@ class CreateProjectSettings < ActiveRecord::Migration[5.2]
       t.integer :minimum_3rd_party_auth_age_in_days, default: 30
       t.boolean :allow_anonymous_issues, default: false
       t.boolean :publish_stats, default: true
-      t.boolean :include_in_directory, default: true
+      t.boolean :include_in_directory, default: false
       t.references :project, type: :uuid, foreign_key: true
       t.timestamps
     end
