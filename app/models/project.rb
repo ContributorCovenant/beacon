@@ -12,6 +12,8 @@ class Project < ApplicationRecord
   before_create :set_slug
   after_create :make_settings
 
+  attr_accessor :consequence_ladder_default_source
+
   def issues
     @issues ||= ProjectIssue.issues_for_project(id)
   end

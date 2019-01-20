@@ -6,6 +6,7 @@ class IssueSeverityLevelsController < ApplicationController
 
   def index
     @issue_severity_level = IssueSeverityLevel.new(project: @project)
+    @available_ladders = ["beacon_default", current_account.projects.map(&:name)].flatten
   end
 
   def create
@@ -20,10 +21,15 @@ class IssueSeverityLevelsController < ApplicationController
 
   def update
     @issue_severity_level = @project.issue_severity_levels.find(params[:id])
-    if @issue_severity_level.update_attributes(issue_severity_level_params)
+    if params[:commit] == "Save"
+      if @issue_severity_level.update_attributes(issue_severity_level_params)
+        redirect_to project_issue_severity_levels_path(@project)
+      else
+        flash[:error] = @issue_severity_level.errors.full_messages
+      end
+    elsif params[:commit] == "Delete"
+      @issue_severity_level.destroy
       redirect_to project_issue_severity_levels_path(@project)
-    else
-      flash[:error] = @issue_severity_level.errors.full_messages
     end
   end
 
@@ -44,7 +50,7 @@ class IssueSeverityLevelsController < ApplicationController
   def scope_project
     @project = Project.find_by(slug: params[:project_slug])
     @issue_severity_levels = @project.issue_severity_levels
-    @available_severities = (1..10).to_a - [(@issue_severity_levels.last.try(:level) || 0) + 1]
+    @available_severities = (1..10).to_a - @issue_severity_levels.map(&:severity)
   end
 
 end

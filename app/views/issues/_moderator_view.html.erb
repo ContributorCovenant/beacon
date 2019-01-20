@@ -44,6 +44,7 @@
         <li>
           <div id="severity-show" style="display: <%= @issue_severity_level.present? ? 'block' : 'none' %>">
             <%= "#{@issue_severity_level.try(:severity)} (#{@issue_severity_level.try(:label)})" %>
+            <p><%= "#{@issue_severity_level.try(:consequence)}" %></p>
             <button type="button" class="btn btn-primary btn-sm" onmouseup="toggle_show_and_form_views('severity')">Edit</button>
           </div>
           <div id="severity-form" style="display: <%= @issue_severity_level.present? ? 'none' : 'block' %>">
