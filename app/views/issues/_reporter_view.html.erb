@@ -13,6 +13,22 @@
         <%= link_to image_tag(upload), upload %>
       <% end %>
     </div>
+    <%= form_for @issue, url: project_issue_upload_path(@project, @issue) do |f| %>
+      <div class="form-group">
+        <label>Attach any relevant screen shots:</label><br />
+        <%= f.file_field :uploads, multiple: true %>
+      </div>
+
+      <div class="form-group">
+        <%= flash[:recaptcha_error] %>
+        <%= recaptcha_tags %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Upload Images", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
   </div>
 
 
@@ -28,21 +44,9 @@
       <p>No links provided.</p>
     <% end %>
 
-    <h4 class="mt-3">Supporting Images</h4>
-    <%= form_for @issue, url: project_issue_upload_path(@project, @issue) do |f| %>
-      <div class="form-group">
-        <label>Attach any relevant screen shots:</label><br />
-        <%= f.file_field :uploads, multiple: true %>
-      </div>
-
-      <div class="form-group">
-        <%= flash[:recaptcha_error] %>
-        <%= recaptcha_tags %>
-      </div>
-
-      <div class="actions">
-        <%= f.submit "Upload Images", class: "btn btn-primary" %>
-      </div>
+    <% if @issue_severity_level %>
+      <h4 class="mt-3">Issue Classification</h4>
+      <%= render partial: "issue_severity_levels/consequence", locals: { consequence: @issue_severity_level } %>
     <% end %>
     <h4 class="mt-3">Status</h4>
     <p>
