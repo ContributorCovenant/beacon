@@ -45,7 +45,7 @@
     <% if @issue_severity_levels.any? %>
       <h3 class="mt-3">Consequence Ladder</h3>
       <% @issue_severity_levels.each do |consequence| %>
-        <%= render partial: "issue_severity_levels/consequence", locals: { consequence: consequence } %>
+        <%= render partial: "issue_severity_levels/consequence_public", locals: { consequence: consequence } %>
       <% end %>
     <% end %>
   </div>

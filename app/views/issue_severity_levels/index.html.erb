@@ -25,7 +25,7 @@
   <div class="col">
     <div id="ladder"%>
       <% @issue_severity_levels.each do |consequence| %>
-        <%= render partial: "consequence", locals: { consequence: consequence } %>
+        <%= render partial: "consequence_moderator", locals: { consequence: consequence } %>
       <% end %>
     </div>
   </div>

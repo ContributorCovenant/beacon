@@ -16,10 +16,15 @@ class Account < ApplicationRecord
 
   has_many :projects
   has_many :account_issues
+  has_many :account_project_blocks
 
   before_validation :normalize_email
   before_create :hash_email
   after_create :associate_respondent_with_issues
+
+  def blocked_from_project?(project)
+    account_project_blocks.find_by(project_id: project.id).present?
+  end
 
   def issues
     @issues ||= AccountIssue.issues_for_account(id)
