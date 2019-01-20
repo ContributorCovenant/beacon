@@ -66,6 +66,9 @@
             <% if @project.consequence_ladder? %>
               <li><%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %></li>
             <% end %>
+            <% if @project.account_project_blocks.any? %>
+              <li><%= link_to "Blocked Accounts", project_account_project_blocks_path(@project) %></li>
+            <% end %>
             <li><%= link_to "Home page", @project.url, target: "_new" %></li>
             <li><%= link_to "Code of conduct", @project.coc_url, target: "_new" %></li>
             <% if @project.public? %>
@@ -198,6 +201,4 @@
     <% end %>
 
   </div>
-</div>
-
 </div>

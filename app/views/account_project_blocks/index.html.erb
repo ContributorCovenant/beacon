@@ -1,0 +1,45 @@
+<h2><%= link_to @project.name, @project %>: Blocked Users</h2>
+
+<% if @blocks.any? %>
+  <div class="row">
+    <% @blocks.each do |block| %>
+      <div class="col">
+        <div class="card mb-3 mr-3">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= block.account.email %>
+            </h5>
+            <div class="card-text">
+              <p>
+                Reason: <%= block.reason %>
+              </p>
+              <h5 class="mt-2">Associated Issues</h5>
+              <ul>
+                <% if @project.project_setting.allow_anonymous_issues %>
+                  <% issues = block.issues.select{ |issue| issue.reporter != block.account } %>
+                <% else %>
+                  <% issues = block.issues %>
+                <%end %>
+                <% issues.each do |issue| %>
+                  <% role = block.account == issue.reporter ? "Reporter" : "Respondent" %>
+                  <li>
+                    <%= link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue) %>
+                    (<%= role %>)
+                  </li>
+                <% end %>
+              </ul>
+              <%= form_for block, url: project_account_project_block_path(@project, block), method: :delete do |f| %>
+                <div class="actions">
+                  <%= f.hidden_field :account_id, value: block.account_id %>
+                  <%= f.submit "Unblock", class: "btn btn-danger", confirm: "Are you sure you want to unblock this account?" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <p>This project doesn't have any blocked accounts.</p>
+<% end %>

@@ -14,6 +14,7 @@ Rails.application.routes.draw do
 
   resources :projects, param: :slug do
     resources :issue_severity_levels
+    resources :account_project_blocks
     patch "clone_ladder", to: "projects#clone_ladder"
     resources :issues do
       resources :issue_comments, only: [:create, :new]

@@ -7,6 +7,7 @@ class Project < ApplicationRecord
   belongs_to :account
   has_one :project_setting
   has_many :project_issues
+  has_many :account_project_blocks
   has_many :issue_severity_levels
 
   before_create :set_slug
