@@ -6,12 +6,61 @@
   </div>
 
   <div class="col">
+    <% unless @project.setup_complete? %>
+      <div class="card mb-2" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Setup Checklist</h5>
+          <div class="card-text">
+            <ul>
+              <li>
+                <%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %>
+                <% if @project.has_consequence_ladder? %>
+                  <span class="badge badge-pill badge-success">
+                    √
+                  </span>
+                <% else %>
+                  <span class="badge badge-pill badge-danger">
+                    x
+                  </span>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to "Project Settings", project_settings_path(@project)  %>
+                <% if @project.has_verified_settings? %>
+                  <span class="badge badge-pill badge-success">
+                    √
+                  </span>
+                <% else %>
+                  <span class="badge badge-pill badge-danger">
+                    x
+                  </span>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to "Visible in Directory", project_settings_path(@project)  %>
+                <% if @project.public? %>
+                  <span class="badge badge-pill badge-success">
+                    √
+                  </span>
+                <% else %>
+                  <span class="badge badge-pill badge-danger">
+                    x
+                  </span>
+                <% end %>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    <% end %>
     <div class="card" style="width: 18rem;">
       <div class="card-body">
         <h5 class="card-title">Links</h5>
         <div class="card-text">
           <ul>
-            <li><%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %></li>
+            <% if @project.has_consequence_ladder? %>
+              <li><%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %></li>
+            <% end %>
             <li><%= link_to "Home page", @project.url, target: "_new" %></li>
             <li><%= link_to "Code of conduct", @project.coc_url, target: "_new" %></li>
             <% if @project.public? %>

@@ -30,8 +30,12 @@ class Project < ApplicationRecord
     public? && !paused?
   end
 
-  def account_can_manage?(account)
-    account == self.account
+  def has_consequence_ladder?
+    issue_severity_levels.any?
+  end
+
+  def has_verified_settings?
+    project_setting.updated_at != project_setting.created_at
   end
 
   def moderator?(account)
@@ -46,12 +50,16 @@ class Project < ApplicationRecord
     moderators.map(&:email)
   end
 
+  def obscure_reporter_email?
+    project_setting.allow_anonymous_issues
+  end
+
   def paused?
     project_setting.paused?
   end
 
-  def obscure_reporter_email?
-    project_setting.allow_anonymous_issues
+  def setup_complete?
+    public? && has_verified_settings? && has_consequence_ladder?
   end
 
   private
