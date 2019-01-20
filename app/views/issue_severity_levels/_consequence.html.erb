@@ -6,7 +6,7 @@
       <h5>Consequence</h5>
       <p><%= consequence.consequence %></p>
       <% if current_account.can_manage_consequence_ladder?(@project) %>
-        <a onmouseup="toggle_show_and_form_views('consequence-<%= consequence.severity %>')">Edit</a>
+        <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')">Edit</a>
       <% end %>
     </div>
   </div>
@@ -39,6 +39,9 @@
 
           <div class="actions">
             <%= f.submit "Save", class: "btn btn-primary" %>
+            <% if consequence.can_be_safely_destroyed? %>
+             <%= f.submit "Delete", class: "btn btn-danger" %>
+            <% end %>
             <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')" class="btn">Cancel</a>
           </div>
         <% end %>

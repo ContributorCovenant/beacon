@@ -1,12 +1,24 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_account!
-  before_action :scope_project, only: [:show, :edit, :delete, :update]
+  before_action :scope_project, only: [:show, :edit, :delete, :update, :clone_ladder]
   before_action :enforce_existing_project_permissions, except: [:index, :new, :create]
   before_action :enforce_project_creation_permissions, only: [:new, :create]
 
   def index
-    # TODO: this will need to be scoped differently once there are multiple moderators per project
     @projects = current_account.projects.order(:name)
+  end
+
+  def clone_ladder
+    source = ladder_params[:consequence_ladder_default_source]
+    if source == "Beacon Default"
+      IssueSeverityLevel.clone_from_template_for_project(@project)
+    else
+      IssueSeverityLevel.clone_from_existing_project(
+        source: current_account.projects.find_by(name: source),
+        target: @project
+      )
+    end
+    redirect_to project_issue_severity_levels_path(@project)
   end
 
   def new
@@ -46,6 +58,10 @@ class ProjectsController < ApplicationController
 
   def enforce_project_creation_permissions
     render_forbidden && return unless current_account.can_create_project?
+  end
+
+  def ladder_params
+    params.require(:project).permit(:consequence_ladder_default_source)
   end
 
   def project_params
