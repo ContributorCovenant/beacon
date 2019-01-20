@@ -36,7 +36,7 @@ class IssueSeverityLevel < ApplicationRecord
   end
 
   def can_be_safely_destroyed?
-    return false if project.issues.where(issue_severity_level_id: self.severity).any?
+    return false if project.issues.where(issue_severity_level_id: self.id).any?
     true
   end
 
