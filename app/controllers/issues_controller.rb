@@ -5,7 +5,8 @@ class IssuesController < ApplicationController
   before_action :scope_issue, except: [:index, :new, :create]
   before_action :scope_comments, only: [:show, :update]
   before_action :enforce_viewing_permissions, only: [:show]
-  before_action :enforce_moderation_permissions, only: [:acknowledge, :dismiss, :resolve, :reopen]
+  before_action :enforce_moderation_permissions, only: [:acknowledge, :dismiss, :resolve, :reopen, :update]
+  before_action :enforce_upload_permissions, only: [:upload]
   before_action :enforce_issue_creation_permissions, only: [:new, :create]
 
   def index
@@ -29,7 +30,7 @@ class IssuesController < ApplicationController
     end
   end
 
-  def update
+  def upload
     if verify_recaptcha(model: @issue) && @issue.update_attributes(uploads: issue_params[:uploads])
       redirect_to project_issue_path(@project, @issue)
     else
@@ -38,10 +39,16 @@ class IssuesController < ApplicationController
     end
   end
 
+  def update
+    @issue.update_attributes(issue_params)
+    redirect_to project_issue_path(@project, @issue)
+  end
+
   def show
     @reporter_discussion_comments = @issue.comments_visible_to_reporter
     @respondent_discussion_comments = @issue.comments_visible_to_respondent
     @internal_comments = @issue.comments_visible_only_to_moderators
+    @issue_severity_level = @issue.issue_severity_level
     @comment = IssueComment.new
   end
 
@@ -84,19 +91,23 @@ class IssuesController < ApplicationController
     render_forbidden && return unless current_account.can_moderate_project?(@project)
   end
 
+  def enforce_upload_permissions
+    render_forbidden && return unless current_account.can_upload_images_to_issue?(@issue)
+  end
+
   def enforce_viewing_permissions
     render_forbidden && return unless current_account.can_view_issue?(@issue)
   end
 
   def issue_params
-    params.require(:issue).permit(:description, :resolution_text, uploads: [], urls: [])
+    params.require(:issue).permit(:description, :resolution_text, :issue_severity_level_id, uploads: [], urls: [])
   end
 
   def notify_on_new_issue
     IssueNotificationsMailer.with(
       email: @project.moderator_emails,
       project: @issue.project,
-      issue: @issue
+      issue: @issue.reload
     ).notify_of_new_issue.deliver_now
   end
 

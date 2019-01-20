@@ -7,8 +7,9 @@ class Issue < ApplicationRecord
   has_many :issue_events
   has_many :issue_comments
   has_many_attached :uploads
+  belongs_to :issue_severity_level, optional: true
 
-  validate :validate_upload_file_type_and_size
+  before_save :validate_upload_file_type_and_size
 
   before_create :set_issue_number
   after_create :set_reporter_encrypted_id
