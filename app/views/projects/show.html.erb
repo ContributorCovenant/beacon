@@ -19,7 +19,7 @@
             <ul>
               <li>
                 <%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %>
-                <% if @project.has_consequence_ladder? %>
+                <% if @project.consequence_ladder? %>
                   <span class="badge badge-pill badge-success">
                     √
                   </span>
@@ -31,7 +31,7 @@
               </li>
               <li>
                 <%= link_to "Project Settings", project_settings_path(@project)  %>
-                <% if @project.has_verified_settings? %>
+                <% if @project.verified_settings? %>
                   <span class="badge badge-pill badge-success">
                     √
                   </span>
@@ -63,7 +63,7 @@
         <h5 class="card-title">Links</h5>
         <div class="card-text">
           <ul>
-            <% if @project.has_consequence_ladder? %>
+            <% if @project.consequence_ladder? %>
               <li><%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %></li>
             <% end %>
             <li><%= link_to "Home page", @project.url, target: "_new" %></li>

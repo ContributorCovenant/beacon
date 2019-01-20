@@ -30,11 +30,11 @@ class Project < ApplicationRecord
     public? && !paused?
   end
 
-  def has_consequence_ladder?
+  def consequence_ladder?
     issue_severity_levels.any?
   end
 
-  def has_verified_settings?
+  def verified_settings?
     project_setting.updated_at != project_setting.created_at
   end
 
@@ -59,7 +59,7 @@ class Project < ApplicationRecord
   end
 
   def setup_complete?
-    public? && has_verified_settings? && has_consequence_ladder?
+    public? && verified_settings? && consequence_ladder?
   end
 
   private
