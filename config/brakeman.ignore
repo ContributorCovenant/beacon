@@ -1,0 +1,26 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Mass Assignment",
+      "warning_code": 105,
+      "fingerprint": "a68114663a38f088c71b31af7d0c8d4973a2093d03dff9ed27a499ed0a9b58ca",
+      "check_name": "PermitAttributes",
+      "message": "Potentially dangerous key allowed for mass assignment",
+      "file": "app/controllers/account_project_blocks_controller.rb",
+      "line": 38,
+      "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
+      "code": "params.require(:account_project_block).permit(:account_id, :reason)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "AccountProjectBlocksController",
+        "method": "block_params"
+      },
+      "user_input": ":account_id",
+      "confidence": "High",
+      "note": ""
+    }
+  ],
+  "updated": "2019-01-20 17:47:46 -0600",
+  "brakeman_version": "4.3.1"
+}
