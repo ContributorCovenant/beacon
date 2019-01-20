@@ -17,6 +17,7 @@ Rails.application.routes.draw do
     resources :issues do
       resources :issue_comments, only: [:create, :new]
       resources :issue_invitations, only: [:create, :new]
+      post "upload", to: "issues#upload"
       post "acknowledge", to: "issues#acknowledge"
       post "dismiss", to: "issues#dismiss"
       patch "resolve", to: "issues#resolve"

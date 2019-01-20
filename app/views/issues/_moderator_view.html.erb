@@ -25,18 +25,39 @@
       <li>
         <%= @issue.respondent ? @issue.respondent.email : "Unknown" %>
       </li>
-    </ul
+    </ul>
 
     <h4 class="mt-3">Supporting Links</h4>
-    <% if issue.urls.reject(&:empty?).any? %>
-      <ul>
+    <ul>
+      <% if issue.urls.reject(&:empty?).any? %>
         <% issue.urls.reject(&:empty?).each do |url| %>
           <li><%= link_to truncate(url, lenght: 30), url, target: "_new" %></li>
         <% end %>
-      </ul>
-    <% else %>
-      <p>No links provided.</p>
-    <% end %>
+      <% else %>
+        <li>No links provided.</li>
+      <% end %>
+    </ul>
+
+    <h4 class="mt-3">Severity</h4>
+    <ul>
+      <li>
+        <div id="severity-show" style="display: <%= @issue_severity_level.present? ? 'block' : 'none' %>">
+          <%= "#{@issue_severity_level.try(:severity)} (#{@issue_severity_level.try(:label)})" %>
+          <button type="button" class="btn btn-primary btn-sm" onmouseup="toggle_show_and_form_views('severity')">Edit</button>
+        </div>
+        <div id="severity-form" style="display: <%= @issue_severity_level.present? ? 'none' : 'block' %>">
+          <%= form_for @issue, url: project_issue_path(@project, @issue) do |f| %>
+            <div class="form-group">
+              <%= f.select :issue_severity_level_id, @project.issue_severity_levels.map{ |isl| ["#{isl.severity}: #{isl.label}", isl.id] }, include_blank: 'Select...', class: "form-control" %>
+            </div>
+            <div class="actions">
+              <%= f.submit "Save", class: "btn btn-primary" %>
+              <a onclick="toggle_show_and_form_views('severity')" class="btn">Cancel</a>
+            </div>
+          <% end %>
+        </div>
+      </li>
+    </ul>
 
     <h4 class="mt-3">Status</h4>
     <ul>
@@ -216,3 +237,11 @@
     </div>
   </div>
 </div>
+
+
+<%= javascript_tag do %>
+  function toggle_show_and_form_views(id) {
+    $('#' + id + '-show').toggle();
+    $('#' + id + '-form').toggle();
+  }
+<% end %>

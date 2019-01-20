@@ -1,6 +1,7 @@
 class IssueSeverityLevel < ApplicationRecord
 
   belongs_to :project
+  has_many :issues
 
   default_scope { order("severity ASC") }
 

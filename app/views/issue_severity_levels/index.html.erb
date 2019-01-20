@@ -3,11 +3,9 @@
 <div class="row">
 
   <div class="col">
-    <div id="ladder"%>
-      <% @issue_severity_levels.each do |consequence| %>
-        <%= render partial: "consequence", locals: { consequence: consequence } %>
-      <% end %>
-    </div>
+    <% @issue_severity_levels.each do |consequence| %>
+      <%= render partial: "consequence", locals: { consequence: consequence } %>
+    <% end %>
   </div>
 
   <div class="col">

@@ -27,6 +27,10 @@ class IssueSeverityLevelsController < ApplicationController
     end
   end
 
+  def destroy
+    @project.issue_severity_levels.find(params[:id]).destroy
+  end
+
   private
 
   def enforce_ladder_management_permissions

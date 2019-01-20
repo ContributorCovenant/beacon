@@ -29,7 +29,7 @@ class IssuesController < ApplicationController
     end
   end
 
-  def update
+  def upload
     if verify_recaptcha(model: @issue) && @issue.update_attributes(uploads: issue_params[:uploads])
       redirect_to project_issue_path(@project, @issue)
     else
@@ -38,10 +38,16 @@ class IssuesController < ApplicationController
     end
   end
 
+  def update
+    @issue.update_attributes(issue_params)
+    redirect_to project_issue_path(@project, @issue)
+  end
+
   def show
     @reporter_discussion_comments = @issue.comments_visible_to_reporter
     @respondent_discussion_comments = @issue.comments_visible_to_respondent
     @internal_comments = @issue.comments_visible_only_to_moderators
+    @issue_severity_level = @issue.issue_severity_level
     @comment = IssueComment.new
   end
 
@@ -89,14 +95,14 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
-    params.require(:issue).permit(:description, :resolution_text, uploads: [], urls: [])
+    params.require(:issue).permit(:description, :resolution_text, :issue_severity_level_id, uploads: [], urls: [])
   end
 
   def notify_on_new_issue
     IssueNotificationsMailer.with(
       email: @project.moderator_emails,
       project: @issue.project,
-      issue: @issue
+      issue: @issue.reload
     ).notify_of_new_issue.deliver_now
   end
 
