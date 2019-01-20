@@ -4,10 +4,13 @@
     <h2><%= @project.name %></h2>
     <p><%= @project.description %></p>
 
-    <h3>Project Governance</h3>
-    <p><%= @project.name %> is managed by a single individual.</p>
+    <h3 class="mt-5">Links</h3>
+    <ul>
+      <li><%= link_to "Home page", @project.url, target: "_new" %></li>
+      <li><%= link_to "Code of conduct", @project.coc_url, target: "_new" %></li>
+    </ul>
 
-    <h3>Issue Guidelines</h3>
+    <h3 class="mt-5">Issue Guidelines</h3>
     <p>The project maintainers have the following requirements for opening an issue:</p>
     <ul>
       <% if @project.project_setting.allow_anonymous_issues? %>
@@ -21,8 +24,13 @@
     </ul>
 
     <% if current_account && current_account.can_open_issue_on_project?(@project) %>
-      <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-primary" %>
+      <div class="actions">
+        <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-primary" %>
+      </div>
     <% end %>
+
+    <h3 class="mt-5">Project Governance</h3>
+    <p><%= @project.name %> is managed by a single individual.</p>
 
     <% if @project.project_setting.publish_stats? %>
       <h3 class="mt-5">3-Month Activity</h3>
@@ -33,18 +41,13 @@
 
   </div>
 
-  <div class="col-sm">
-    <div class="card" style="width: 18rem;">
-      <div class="card-body">
-        <h5 class="card-title">Links</h5>
-        <div class="card-text">
-          <ul>
-            <li><%= link_to "Home page", @project.url, target: "_new" %></li>
-            <li><%= link_to "Code of conduct", @project.coc_url, target: "_new" %></li>
-          </ul>
-        </div>
-      </div>
-    </div>
+  <div class="col">
+    <% if @issue_severity_levels.any? %>
+      <h3 class="mt-3">Consequence Ladder</h3>
+      <% @issue_severity_levels.each do |consequence| %>
+        <%= render partial: "issue_severity_levels/consequence", locals: { consequence: consequence } %>
+      <% end %>
+    <% end %>
   </div>
 
 </div>

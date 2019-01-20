@@ -1,20 +1,8 @@
 <div class="row">
-
   <div class="col">
     <h2><%= @project.name %></h2>
     <p><%= @project.description %></p>
-    <div class="row">
-      <div class="col">
-        <%= link_to "Edit", edit_project_path(@project), class: "btn btn-warning" %>
-      </div>
-      <div class="col">
-        <% if @settings.paused? %>
-          <%= button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-warning" %>
-        <% else %>
-          <%= button_to "Pause Issues for 24 Hours", project_toggle_pause_path(@project), class: "btn btn-danger" %>
-        <% end %>
-      </div>
-    </div>
+    <%= link_to "Edit", edit_project_path(@project), class: "btn btn-warning" %>
   </div>
 
   <div class="col">
@@ -51,6 +39,9 @@
   </a></li>
   <li class="nav-item"><a class="nav-link" id="nav-settings-tab" data-toggle="pill" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">
     Settings
+    <% if @settings.paused? %>
+      <span class="badge badge-pill badge-danger">Paused</span>
+    <% end %>
   </a></li>
 </ul>
 
@@ -146,6 +137,11 @@
     </table>
 
     <%= link_to "Edit Settings", project_settings_path(@project), class: "btn btn-warning float-left mr-5" %>
+    <% if @settings.paused? %>
+      <%= button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-warning" %>
+    <% else %>
+      <%= button_to "Pause Issues for 24 Hours", project_toggle_pause_path(@project), class: "btn btn-danger" %>
+    <% end %>
 
   </div>
 </div>
