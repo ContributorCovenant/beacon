@@ -2,7 +2,12 @@
   <div class="col">
     <h2><%= @project.name %></h2>
     <p><%= @project.description %></p>
-    <%= link_to "Edit", edit_project_path(@project), class: "btn btn-warning" %>
+    <div class="actions">
+      <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning" %>
+      <% if current_account.can_open_issue_on_project?(@project) %>
+        <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-primary" %>
+      <% end %>
+    </div>
   </div>
 
   <div class="col">
