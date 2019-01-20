@@ -1,0 +1,45 @@
+<div id="consequence-<%= consequence.severity %>-show" class="card mb-3 mr-3" style="width: 30rem">
+  <div class="card-body">
+    <h5 class="card-title">Level <%= consequence.severity %>: <%= consequence.label %></h5>
+    <div class="card-text">
+      <h6>Example</h6>
+      <p><%= consequence.example %></p>
+      <h6>Consequence</h6>
+      <p><%= consequence.consequence %></p>
+      <a onmouseup="toggle_show_and_form_views('consequence-<%= consequence.severity %>')">Edit</a>
+    </div>
+  </div>
+</div>
+
+<div id="consequence-<%= consequence.severity %>-form" class="card mb-3 mr-3" style="display: none; width: 30rem">
+  <div class="card-body">
+    <div class="card-text">
+      <%= form_for consequence, url: project_issue_severity_level_path(@project, consequence), style: "width: 100%" do |f| %>
+        <div class="form-group">
+          <%= f.label :label %><br />
+          <%= f.text_field :label, autofocus: true, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :severity %>
+          <%= f.select :severity, (1..10).to_a, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :example %><br />
+          <%= f.text_area :example, rows: 5, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <%= f.label :consequence %><br />
+          <%= f.text_area :consequence, rows: 5, class: "form-control" %>
+        </div>
+
+        <div class="actions">
+          <%= f.submit "Save", class: "btn btn-primary" %>
+          <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')" class="btn">Cancel</a>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -23,6 +23,7 @@
         <h5 class="card-title">Links</h5>
         <div class="card-text">
           <ul>
+            <li><%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %></li>
             <li><%= link_to "Home page", @project.url, target: "_new" %></li>
             <li><%= link_to "Code of conduct", @project.coc_url, target: "_new" %></li>
             <% if @project.public? %>

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   resources :issues
 
   resources :projects, param: :slug do
+    resources :issue_severity_levels
     resources :issues do
       resources :issue_comments, only: [:create, :new]
       resources :issue_invitations, only: [:create, :new]

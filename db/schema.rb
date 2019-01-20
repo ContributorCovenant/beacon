@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_19_000747) do
+ActiveRecord::Schema.define(version: 2019_01_19_223758) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -106,6 +106,18 @@ ActiveRecord::Schema.define(version: 2019_01_19_000747) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "issue_severity_levels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "scope", default: "project", null: false
+    t.string "label", null: false
+    t.integer "severity", null: false
+    t.text "example", null: false
+    t.text "consequence", null: false
+    t.uuid "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_issue_severity_levels_on_project_id"
+  end
+
   create_table "issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "description"
     t.string "reporter_encrypted_id"
@@ -175,6 +187,7 @@ ActiveRecord::Schema.define(version: 2019_01_19_000747) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "issue_comments", "issues"
   add_foreign_key "issue_events", "issues"
+  add_foreign_key "issue_severity_levels", "projects"
   add_foreign_key "project_issues", "projects"
   add_foreign_key "project_settings", "projects"
   add_foreign_key "projects", "accounts"
