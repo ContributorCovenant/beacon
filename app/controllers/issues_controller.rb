@@ -5,7 +5,8 @@ class IssuesController < ApplicationController
   before_action :scope_issue, except: [:index, :new, :create]
   before_action :scope_comments, only: [:show, :update]
   before_action :enforce_viewing_permissions, only: [:show]
-  before_action :enforce_moderation_permissions, only: [:acknowledge, :dismiss, :resolve, :reopen]
+  before_action :enforce_moderation_permissions, only: [:acknowledge, :dismiss, :resolve, :reopen, :update]
+  before_action :enforce_upload_permissions, only: [:upload]
   before_action :enforce_issue_creation_permissions, only: [:new, :create]
 
   def index
@@ -88,6 +89,10 @@ class IssuesController < ApplicationController
 
   def enforce_moderation_permissions
     render_forbidden && return unless current_account.can_moderate_project?(@project)
+  end
+
+  def enforce_upload_permissions
+    render_forbidden && return unless current_account.can_upload_images_to_issue?(@issue)
   end
 
   def enforce_viewing_permissions

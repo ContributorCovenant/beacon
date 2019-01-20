@@ -8,6 +8,6 @@ class IssueSeverityLevel < ApplicationRecord
   validates_presence_of :scope, :label, :severity, :example, :consequence
   validates_uniqueness_of :severity, scope: :project
 
-  SCOPES = %w{project organization example}
+  SCOPES = %w{project organization example}.freeze
 
 end

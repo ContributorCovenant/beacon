@@ -31,6 +31,10 @@ module Permissions
     project.accepting_issues?
   end
 
+  def can_upload_images_to_issue?(issue)
+    issue.reporter == self
+  end
+
   def can_view_issue?(issue)
     return true if issue.project.moderator?(self)
     return true if issue.reporter == self
