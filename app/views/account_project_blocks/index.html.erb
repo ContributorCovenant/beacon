@@ -7,7 +7,11 @@
         <div class="card mb-3 mr-3">
           <div class="card-body">
             <h5 class="card-title">
-              <%= block.account.email %>
+              <% if @project.project_setting.allow_anonymous_issues && block.issue.reporter == block.account %>
+                Anonymous Reporter
+              <% else %>
+                <%= block.account.email %>
+              <% end %>
             </h5>
             <div class="card-text">
               <p>
