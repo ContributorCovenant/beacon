@@ -11,14 +11,22 @@
       </li>
 
       <% if current_account && current_account.projects.any? %>
-        <li class="nav-item">
-          <%= link_to "Manage My Projects", projects_path, class: "nav-link" %>
+        <li class="nav-item nav-link">
+          <%= link_to "Manage My Projects", projects_path %>
+          <% count = current_account.notifications.count %>
+          <% if count > 0 %>
+            <span class="badge badge-pill badge-danger"><%= count %></span>
+          <% end %>
         </li>
       <% end %>
 
       <% if current_account && current_account.issues.any? %>
-        <li class="nav-item">
-          <%= link_to "Manage My Issues", issues_path, class: "nav-link" %>
+        <li class="nav-item nav-link">
+          <%= link_to "Manage My Issues", issues_path %>
+          <% count = current_account.notifications.where(issue_id: current_account.issues.map(&:id)).count %>
+          <% if count > 0 %>
+            <span class="badge badge-pill badge-danger"><%= count %></span>
+          <% end %>
         </li>
       <% end %>
 

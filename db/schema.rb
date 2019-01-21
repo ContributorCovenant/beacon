@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_20_204740) do
+ActiveRecord::Schema.define(version: 2019_01_21_020244) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -149,6 +149,19 @@ ActiveRecord::Schema.define(version: 2019_01_20_204740) do
     t.index ["issue_severity_level_id"], name: "index_issues_on_issue_severity_level_id"
   end
 
+  create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.uuid "issue_id"
+    t.uuid "issue_comment_id"
+    t.uuid "account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_notifications_on_account_id"
+    t.index ["issue_comment_id"], name: "index_notifications_on_issue_comment_id"
+    t.index ["issue_id"], name: "index_notifications_on_issue_id"
+    t.index ["project_id"], name: "index_notifications_on_project_id"
+  end
+
   create_table "project_issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.string "issue_encrypted_id", null: false
@@ -204,6 +217,10 @@ ActiveRecord::Schema.define(version: 2019_01_20_204740) do
   add_foreign_key "issue_events", "issues"
   add_foreign_key "issue_severity_levels", "projects"
   add_foreign_key "issues", "issue_severity_levels"
+  add_foreign_key "notifications", "accounts"
+  add_foreign_key "notifications", "issue_comments"
+  add_foreign_key "notifications", "issues"
+  add_foreign_key "notifications", "projects"
   add_foreign_key "project_issues", "projects"
   add_foreign_key "project_settings", "projects"
   add_foreign_key "projects", "accounts"

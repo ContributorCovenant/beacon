@@ -45,10 +45,27 @@ class IssuesController < ApplicationController
   end
 
   def show
-    @reporter_discussion_comments = @issue.comments_visible_to_reporter
-    @respondent_discussion_comments = @issue.comments_visible_to_respondent
-    @internal_comments = @issue.comments_visible_only_to_moderators
+    @reporter_discussion_comments = @issue.comments_visible_to_reporter.includes(:notifications)
+    @respondent_discussion_comments = @issue.comments_visible_to_respondent.includes(:notifications)
+    @internal_comments = @issue.comments_visible_only_to_moderators.includes(:notifications)
     @issue_severity_level = @issue.issue_severity_level
+    @notifications_for_internal_comments_count = @internal_comments.map(&:notifications).flatten.select{ |n| n.account_id == current_account.id }.count
+    @notifications_for_reporter_comments_count = @reporter_discussion_comments
+      .map(&:notifications)
+      .flatten
+      .select{ |n| n.account_id == current_account.id }
+      .count
+    @notifications_for_respondent_comments_count = @respondent_discussion_comments
+      .map(&:notifications)
+      .flatten
+      .select{ |n| n.account_id == current_account.id }
+      .count
+    if current_account == @issue.reporter || current_account == @issue.respondent
+      current_account.notifications.where(issue_id: @issue.id).destroy_all
+    end
+    if @project.moderator?(current_account)
+      current_account.notifications.where(issue_id: @issue.id).destroy_all
+    end
     @comment = IssueComment.new
   end
 
@@ -104,10 +121,13 @@ class IssuesController < ApplicationController
   end
 
   def notify_on_new_issue
+    @project.moderators.each do |moderator|
+      NotificationService.notify(project: @project, issue: @issue, account: moderator)
+    end
     IssueNotificationsMailer.with(
       email: @project.moderator_emails,
       project: @issue.project,
-      issue: @issue.reload
+      issue: @issue
     ).notify_of_new_issue.deliver_now
   end
 

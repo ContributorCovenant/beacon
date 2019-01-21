@@ -6,6 +6,7 @@ class Issue < ApplicationRecord
 
   has_many :issue_events
   has_many :issue_comments
+  has_many :notifications
   has_many_attached :uploads
   belongs_to :issue_severity_level, optional: true
 

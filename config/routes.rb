@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resources :reporters, only: [:show]
     resources :respondents, only: [:show]
     resources :issues do
+      resources :uploads
       resources :issue_comments, only: [:create, :new]
       resources :issue_invitations, only: [:create, :new]
       post "acknowledge", to: "issues#acknowledge"

@@ -117,12 +117,21 @@
   <div class="nav nav-tabs mt-5 mb-3" id="nav-tab" role="tablist" style="width: 100%;">
     <a class="nav-link active" id="nav-internal-discussion-tab" data-toggle="pill" href="#nav-internal-discussion" role="tab" aria-controls="nav-internal-discussion" aria-selected="true">
       Moderator Discussion
+      <% if @notifications_for_internal_comments_count > 0 %>
+        <span class="badge badge-pill badge-danger"><%= @notifications_for_internal_comments_count %></span>
+      <% end %>
     </a>
     <a class="nav-link " id="nav-reporter-discussion-tab" data-toggle="pill" href="#nav-reporter-discussion" role="tab" aria-controls="nav-reporter-discussion" aria-selected="false">
       Reporter Discussion
+      <% if @notifications_for_reporter_comments_count > 0 %>
+        <span class="badge badge-pill badge-danger"><%= @notifications_for_reporter_comments_count %></span>
+      <% end %>
     </a>
     <a class="nav-link " id="nav-respondent-discussion-tab" data-toggle="pill" href="#nav-respondent-discussion" role="tab" aria-controls="nav-respondent-discussion" aria-selected="false">
       Respondent Discussion
+      <% if @notifications_for_respondent_comments_count > 0 %>
+        <span class="badge badge-pill badge-danger"><%= @notifications_for_respondent_comments_count %></span>
+      <% end %>
     </a>
     <a class="nav-link " id="nav-uploads-tab" data-toggle="pill" href="#nav-uploads" role="tab" aria-controls="nav-uploads" aria-selected="false">
       Screenshots

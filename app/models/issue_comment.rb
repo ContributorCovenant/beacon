@@ -2,6 +2,7 @@ class IssueComment < ApplicationRecord
   attr_accessor :commenter_id, :context
 
   belongs_to :issue
+  has_many :notifications
 
   before_create :set_commenter_encrypted_id
 
