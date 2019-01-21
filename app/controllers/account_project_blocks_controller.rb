@@ -29,12 +29,11 @@ class AccountProjectBlocksController < ApplicationController
   end
 
   def destroy
-    account = Account.find(block_params[:account_id])
-    @project.account_project_blocks.find_by(account_id: account.id).destroy
+    @project.account_project_blocks.find{ |block| block.account_id = block_params[:account_id] }.destroy
     if params[:return_to] == "respondent"
-      redirect_to project_respondent_url(@project, id: account.id)
+      redirect_to project_respondent_url(@project, id: block.account_id)
     elsif params[:return_to] == "reporter"
-      redirect_to project_reporter_url(@project, id: account.id)
+      redirect_to project_reporter_url(@project, id: block.account_id)
     else
       redirect_to project_account_project_blocks_url(@project)
     end
@@ -51,7 +50,7 @@ class AccountProjectBlocksController < ApplicationController
   end
 
   def scope_project
-    @project = Project.find_by(slug: params[:project_slug])
+    @project = Project.where(slug: params[:project_slug]).includes(:account_project_blocks)
   end
 
 end

@@ -48,7 +48,7 @@ class IssueSeverityLevelsController < ApplicationController
   end
 
   def scope_project
-    @project = Project.find_by(slug: params[:project_slug])
+    @project = Project.where(slug: params[:project_slug]).includes(:issue_severity_levels).first
     @issue_severity_levels = @project.issue_severity_levels
     @available_severities = (1..10).to_a - @issue_severity_levels.map(&:severity)
   end

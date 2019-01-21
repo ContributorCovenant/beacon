@@ -83,16 +83,16 @@
 
 <ul class="nav nav-tabs mt-5 mb-3 responsive" id="nav-tab" role="tablist">
   <li class="nav-item"><a class="nav-link active" id="nav-newissues-tab" data-toggle="pill" href="#nav-newissues" role="tab" aria-controls="nav-newissues" aria-selected="true">
-    New Issues <span class="badge badge-pill badge-danger"><%= @issues.submitted.count %></span>
+    New Issues <span class="badge badge-pill badge-danger"><%= @issues.submitted.size %></span>
   </a></li>
   <li class="nav-item"><a class="nav-link " id="nav-acknowledgedissues-tab" data-toggle="pill" href="#nav-acknowledgedissues" role="tab" aria-controls="nav-acknowledgedissues" aria-selected="false">
-    In Progress <span class="badge badge-pill badge-warning"><%= @issues.acknowledged.count + @issues.reopened.count %></span>
+    In Progress <span class="badge badge-pill badge-warning"><%= @issues.acknowledged.size + @issues.reopened.size %></span>
   </a></li>
   <li class="nav-item"><a class="nav-link " id="nav-resolvedissues-tab" data-toggle="pill" href="#nav-resolvedissues" role="tab" aria-controls="nav-resolvedissues" aria-selected="false">
-    Resolved <span class="badge badge-pill badge-light"><%= @issues.resolved.count %></span>
+    Resolved <span class="badge badge-pill badge-light"><%= @issues.resolved.size %></span>
   </a></li>
   <li class="nav-item"><a class="nav-link " id="nav-dismissedissues-tab" data-toggle="pill" href="#nav-dismissedissues" role="tab" aria-controls="nav-dismissedissues" aria-selected="false">
-    Dismissed <span class="badge badge-pill badge-dark"><%= @issues.dismissed.count %></span>
+    Dismissed <span class="badge badge-pill badge-dark"><%= @issues.dismissed.size %></span>
   </a></li>
   <li class="nav-item"><a class="nav-link" id="nav-settings-tab" data-toggle="pill" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">
     Settings
