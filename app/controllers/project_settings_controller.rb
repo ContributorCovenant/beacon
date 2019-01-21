@@ -30,7 +30,7 @@ class ProjectSettingsController < ApplicationController
   end
 
   def scope_project_and_settings
-    @project = Project.find_by(slug: params[:project_slug])
+    @project = Project.where(slug: params[:project_slug]).includes(:project_setting)
     @settings = @project.project_setting
   end
 

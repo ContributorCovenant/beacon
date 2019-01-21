@@ -20,6 +20,8 @@ class IssueInvitationsController < ApplicationController
         email: account.email,
         project_name: @issue.project.name
       ).notify_existing_account_of_issue.deliver_now
+      AccountIssue.create(issue_id: @issue.id, account: account)
+      NotificationService.notify(account: account, project_id: @project.id, issue_id: @issue.id)
       @issue.update_attribute(:respondent_encrypted_id, EncryptionService.encrypt(account.id))
     else
       IssueInvitation.create(

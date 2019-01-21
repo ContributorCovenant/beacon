@@ -191,16 +191,18 @@
 
     <div class="tab-pane fade" id="nav-respondent-discussion" role="tabpanel" aria-labelledby="nav-respondent-discussion-tab">
 
-      <div class="card mb-3 mr-3" style="width: 100%">
-        <div class="card-body">
-          <h5 class="card-title">
-            Issue Summary to Respondent
-          </h5>
-          <div class="card-text">
-            <p><%= @issue.respondent_summary %></p>
+      <% if @issue.respondent_summary %>
+        <div class="card mb-3 mr-3" style="width: 100%">
+          <div class="card-body">
+            <h5 class="card-title">
+              Issue Summary to Respondent
+            </h5>
+            <div class="card-text">
+              <p><%= @issue.respondent_summary %></p>
+            </div>
           </div>
         </div>
-      </div>
+      <% end %>
 
       <div id="respondent-discussion">
         <% respondent_discussion_comments.each do |comment| %>

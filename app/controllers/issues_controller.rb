@@ -122,11 +122,11 @@ class IssuesController < ApplicationController
 
   def notify_on_new_issue
     @project.moderators.each do |moderator|
-      NotificationService.notify(project: @project, issue: @issue, account: moderator)
+      NotificationService.notify(account: moderator, project_id: @project.id, issue_id: @issue.id)
     end
     IssueNotificationsMailer.with(
       email: @project.moderator_emails,
-      project: @issue.project,
+      project: @project,
       issue: @issue
     ).notify_of_new_issue.deliver_now
   end
@@ -148,12 +148,11 @@ class IssuesController < ApplicationController
   end
 
   def scope_issue
-    @issue = Issue.find_by(id: params[:id])
-    @issue ||= Issue.find_by(id: params[:issue_id])
+    @issue = Issue.where(id: [params[:id], params[:issue_id]]).includes(:issue_comments).first
   end
 
   def scope_project
-    @project = Project.find_by(slug: params[:project_slug])
+    @project = Project.where(slug: params[:project_slug]).includes(:account).first
   end
 
 end

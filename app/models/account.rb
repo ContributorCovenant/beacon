@@ -17,7 +17,6 @@ class Account < ApplicationRecord
   has_many :projects
   has_many :account_issues
   has_many :account_project_blocks
-  has_many :notifications
 
   before_validation :normalize_email
   before_create :hash_email
@@ -29,6 +28,10 @@ class Account < ApplicationRecord
 
   def issues
     @issues ||= AccountIssue.issues_for_account(id)
+  end
+
+  def notifications
+    @notifications ||= Notification.notifications_for_account(self)
   end
 
   private

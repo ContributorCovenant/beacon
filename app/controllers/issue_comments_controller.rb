@@ -34,7 +34,7 @@ class IssueCommentsController < ApplicationController
   end
 
   def scope_project
-    @project = Project.find_by(slug: params[:project_slug])
+    @project = Project.where(slug: params[:project_slug]).includes(:account).first
   end
 
   def scope_issue
@@ -61,29 +61,29 @@ class IssueCommentsController < ApplicationController
     if @project.moderator?(current_account) && visible_to_reporter?
       email = @issue.reporter.email
       commenter_kind = "moderator"
-      NotificationService.notify(project: @project, issue: @issue, issue_comment: @comment, account: @issue.reporter)
+      NotificationService.notify(account: @issue.reporter, project: @project, issue_id: @issue.id, issue_comment_id: @comment.id)
     elsif @project.moderator?(current_account) && visible_to_respondent?
       email = @issue.respondent.email
       commenter_kind = "moderator"
-      NotificationService.notify(project: @project, issue: @issue, issue_comment: @comment, account: @issue.respondent)
+      NotificationService.notify(account: @issue.respondent, project_id: @project.id, issue_id: @issue.id, issue_comment_id: @comment.id)
     elsif @comment.commenter == @issue.reporter
       email = @project.moderator_emails
       commenter_kind = "reporter"
       @project.moderators.each do |moderator|
-        NotificationService.notify(project: @project, issue: @issue, issue_comment: @comment, account: moderator)
+        NotificationService.notify(account: moderator, project_id: @project.id, issue_id: @issue.id, issue_comment_id: @comment.id)
       end
     elsif @comment.commenter == @issue.respondent
       email = @project.moderator_emails
       commenter_kind = "respondent"
       @project.moderators.each do |moderator|
-        NotificationService.notify(project: @project, issue: @issue, issue_comment: @comment, account: moderator)
+        NotificationService.notify(account: moderator, project_id: @project.id, issue_id: @issue.id, issue_comment_id: @comment.id)
       end
     else
       email = @project.moderator_emails
       commenter_kind = "moderator"
       @project.moderators.each do |moderator|
         next if moderator == current_account
-        NotificationService.notify(project: @project, issue: @issue, issue_comment: @comment, account: moderator)
+        NotificationService.notify(account: moderator, project_id: @project.id, issue_id: @issue.id, issue_comment_id: @comment.id)
       end
     end
 

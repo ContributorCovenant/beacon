@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_21_020244) do
+ActiveRecord::Schema.define(version: 2019_01_21_192516) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 2019_01_21_020244) do
     t.datetime "locked_at"
     t.string "normalized_email"
     t.string "hashed_email"
+    t.string "notification_encrypted_ids", default: [], array: true
     t.index ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["normalized_email"], name: "index_accounts_on_normalized_email", unique: true
@@ -153,10 +154,8 @@ ActiveRecord::Schema.define(version: 2019_01_21_020244) do
     t.uuid "project_id"
     t.uuid "issue_id"
     t.uuid "issue_comment_id"
-    t.uuid "account_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_notifications_on_account_id"
     t.index ["issue_comment_id"], name: "index_notifications_on_issue_comment_id"
     t.index ["issue_id"], name: "index_notifications_on_issue_id"
     t.index ["project_id"], name: "index_notifications_on_project_id"
@@ -217,7 +216,6 @@ ActiveRecord::Schema.define(version: 2019_01_21_020244) do
   add_foreign_key "issue_events", "issues"
   add_foreign_key "issue_severity_levels", "projects"
   add_foreign_key "issues", "issue_severity_levels"
-  add_foreign_key "notifications", "accounts"
   add_foreign_key "notifications", "issue_comments"
   add_foreign_key "notifications", "issues"
   add_foreign_key "notifications", "projects"
