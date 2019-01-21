@@ -10,10 +10,11 @@ class NotificationService
     account.save
   end
 
-  def self.notified!(account, notification_encrypted_id)
-    notification = Notification.find(EncryptionService.decrypt(notification_encrypted_id))
-    notification.destroy
-    account.notification_encrypted_ids.delete(notification_encrypted_id)
+  def self.notified!(account:, issue_id:)
+    if notifications = account.notifications.where(issue_id: issue_id)
+      notifications.destroy_all
+    end
+    account.notification_encrypted_ids = account.notifications.compact.map{ |n| EncryptionService.encrypt(n.id) }
     account.save
   end
 

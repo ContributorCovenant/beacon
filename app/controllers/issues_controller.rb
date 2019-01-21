@@ -61,10 +61,10 @@ class IssuesController < ApplicationController
       .select{ |n| n.account_id == current_account.id }
       .count
     if current_account == @issue.reporter || current_account == @issue.respondent
-      current_account.notifications.where(issue_id: @issue.id).destroy_all
+      NotificationService.notified!(account: current_account, issue_id: @issue.id)
     end
     if @project.moderator?(current_account)
-      current_account.notifications.where(issue_id: @issue.id).destroy_all
+      NotificationService.notified!(account: current_account, issue_id: @issue.id)
     end
     @comment = IssueComment.new
   end

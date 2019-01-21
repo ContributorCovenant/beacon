@@ -1,8 +1,13 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 require 'devise'
+require 'simplecov'
 
 ENV['RAILS_ENV'] ||= 'test'
+
+SimpleCov.start
+SimpleCov.minimum_coverage 90
+
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
