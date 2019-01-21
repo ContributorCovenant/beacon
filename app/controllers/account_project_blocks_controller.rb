@@ -15,7 +15,13 @@ class AccountProjectBlocksController < ApplicationController
       reason: block_params[:reason]
     )
     if @block.save
-      redirect_to project_account_project_blocks_url(@project)
+      if params[:return_to] == "respondent"
+        redirect_to project_respondent_url(@project, id: block_params[:account_id])
+      elsif params[:return_to] == "reporter"
+        redirect_to project_reporter_url(@project, id: block_params[:account_id])
+      else
+        redirect_to project_account_project_blocks_url(@project)
+      end
     else
       flash[:error] = @block.errors.full_messages
       render :new
@@ -25,7 +31,13 @@ class AccountProjectBlocksController < ApplicationController
   def destroy
     account = Account.find(block_params[:account_id])
     @project.account_project_blocks.find_by(account_id: account.id).destroy
-    redirect_to project_account_project_blocks_url(@project)
+    if params[:return_to] == "respondent"
+      redirect_to project_respondent_url(@project, id: account.id)
+    elsif params[:return_to] == "reporter"
+      redirect_to project_reporter_url(@project, id: account.id)
+    else
+      redirect_to project_account_project_blocks_url(@project)
+    end
   end
 
   private

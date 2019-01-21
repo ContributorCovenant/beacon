@@ -15,7 +15,9 @@
         <% if @project.obscure_reporter_email? %>
           Anonymous <a onclick="toggle_show_block_form('@issue.reporter.hashed_email')" class="btn btn-sm btn-danger">Block</a>
         <% else %>
-          <%= @issue.reporter.email %> <a onclick="toggle_show_block_form('<%= @issue.reporter.hashed_email %>')" class="btn btn-sm btn-danger">Block</a>
+          <%= @issue.reporter.email %><br />
+          <%= link_to "History", project_reporter_path(@project, @issue.reporter.id), class: "btn btn-sm btn-warning" %>
+          <a onclick="toggle_show_block_form('<%= @issue.reporter.hashed_email %>')" class="btn btn-sm btn-danger">Block</a>
         <% end %>
         <div id="block-form-<%= @issue.reporter.hashed_email %>" style="display: none">
           <%= form_for @project.account_project_blocks.new, url: project_account_project_blocks_path(@project) do |f| %>
@@ -37,7 +39,9 @@
     <ul>
       <li>
         <% if @issue.respondent %>
-          <%= @issue.respondent.email %> <a onclick="toggle_show_block_form('<%= @issue.respondent.hashed_email %>')" class="btn btn-sm btn-danger">Block</a>
+          <%= @issue.respondent.email %><br />
+          <%= link_to "History", project_respondent_path(@project, @issue.respondent.id), class: "btn btn-sm btn-warning" %>
+          <a onclick="toggle_show_block_form('<%= @issue.respondent.hashed_email %>')" class="btn btn-sm btn-danger">Block</a>
           <div id="block-form-<%= @issue.respondent.hashed_email %>" style="display: none">
             <%= form_for @project.account_project_blocks.new, url: project_account_project_blocks_path(@project) do |f| %>
             <%= f.hidden_field :account_id, value: @issue.respondent.id %>
