@@ -67,7 +67,7 @@ class Project < ApplicationRecord
   private
 
   def set_slug
-    self.slug = name.downcase.gsub(/^[a-zA-Z0-9]/,'_')
+    self.slug = name.downcase.gsub(/^[a-zA-Z0-9]/, '_')
   end
 
   # TODO: Eventually this will inherit from an org's project template
