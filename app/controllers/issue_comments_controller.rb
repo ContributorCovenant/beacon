@@ -61,18 +61,30 @@ class IssueCommentsController < ApplicationController
     if @project.moderator?(current_account) && visible_to_reporter?
       email = @issue.reporter.email
       commenter_kind = "moderator"
+      NotificationService.notify(project: @project, issue: @issue, issue_comment: @comment, account: @issue.reporter)
     elsif @project.moderator?(current_account) && visible_to_respondent?
       email = @issue.respondent.email
       commenter_kind = "moderator"
+      NotificationService.notify(project: @project, issue: @issue, issue_comment: @comment, account: @issue.respondent)
     elsif @comment.commenter == @issue.reporter
       email = @project.moderator_emails
       commenter_kind = "reporter"
+      @project.moderators.each do |moderator|
+        NotificationService.notify(project: @project, issue: @issue, issue_comment: @comment, account: moderator)
+      end
     elsif @comment.commenter == @issue.respondent
       email = @project.moderator_emails
       commenter_kind = "respondent"
+      @project.moderators.each do |moderator|
+        NotificationService.notify(project: @project, issue: @issue, issue_comment: @comment, account: moderator)
+      end
     else
       email = @project.moderator_emails
       commenter_kind = "moderator"
+      @project.moderators.each do |moderator|
+        next if moderator == current_account
+        NotificationService.notify(project: @project, issue: @issue, issue_comment: @comment, account: moderator)
+      end
     end
 
     IssueNotificationsMailer.with(

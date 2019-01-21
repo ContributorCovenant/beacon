@@ -40,6 +40,10 @@ form {
   display: none;
 }
 
+.navbar-light .navbar-nav .nav-link a {
+  color: rgba(0, 0, 0, 0.5);
+}
+
 @media (min-width: 576px) {
   .hide-portrait-phone {
     display: block;

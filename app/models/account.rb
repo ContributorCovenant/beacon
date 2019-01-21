@@ -17,6 +17,7 @@ class Account < ApplicationRecord
   has_many :projects
   has_many :account_issues
   has_many :account_project_blocks
+  has_many :notifications
 
   before_validation :normalize_email
   before_create :hash_email

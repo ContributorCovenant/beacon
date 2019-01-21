@@ -9,6 +9,10 @@
         <div class="card-text">
           <p>
             <%= link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue) %>
+            <% count = current_account.notifications.for_issue(issue.id).count %>
+            <% if count > 0 %>
+              <span class="badge badge-pill badge-danger"><%= count %></span>
+            <% end %>
           </p>
           <p>
             Status: <%= issue.aasm_state.titleize %>
