@@ -2,14 +2,14 @@
 
   <% issues.each_with_index do |issue,i| %>
 
-    <% float_class = i < issues.count - 1 ? "float-left" : "float-none" %>
+    <% float_class = i < issues.size - 1 ? "float-left" : "float-none" %>
     <div class="card mb-3 mr-3 <%= float_class %>" style="width: 15rem; height: 12rem">
       <div class="card-body">
         <h5 class="card-title"><%= issue.project.name %></h5>
         <div class="card-text">
           <p>
             <%= link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue) %>
-            <% count = current_account.notifications.for_issue(issue.id).count %>
+            <% count = current_account.notifications.for_issue(issue.id).size %>
             <% if count > 0 %>
               <span class="badge badge-pill badge-danger"><%= count %></span>
             <% end %>

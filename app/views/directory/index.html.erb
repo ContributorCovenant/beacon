@@ -2,7 +2,7 @@
 
 <% @projects.each_with_index do |project,i| %>
 
-  <% float_class = i < @projects.count - 1 ? "float-left" : "float-none" %>
+  <% float_class = i < @projects.size - 1 ? "float-left" : "float-none" %>
   <div class="card mb-3 mr-3 <%= float_class %>" style="width: 15rem; height: 15rem">
     <div class="card-body">
       <h5 class="card-title"><%= link_to project.name, directory_project_path(project.slug) %></h5>

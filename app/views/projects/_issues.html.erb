@@ -12,10 +12,10 @@
     <% issues.each do |issue| %>
       <tr>
         <td>
-          <% count = current_account.notifications.for_issue(issue).count %>
+          <% count = current_account.notifications.for_issue(issue).size %>
           <%= link_to issue.issue_number, project_issue_path(@project, issue) %>
           <% if count > 0 %>
-            <span class="badge badge-pill badge-danger"><%= current_account.notifications.for_issue(issue).count %></span>
+            <span class="badge badge-pill badge-danger"><%= current_account.notifications.for_issue(issue).size %></span>
           <% end %>
         </td>
         <td><%= truncate(issue.description, length: 50) %></td>

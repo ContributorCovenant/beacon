@@ -2,10 +2,10 @@
 
 <div class="nav nav-tabs mt-5 mb-3" id="nav-tab" role="tablist">
   <a class="nav-link active" id="nav-openissues-tab" data-toggle="pill" href="#nav-openissues" role="tab" aria-controls="nav-openissues" aria-selected="true">
-    Open Issues <span class="badge badge-pill badge-danger"><%= @open_issues.count %></span>
+    Open Issues <span class="badge badge-pill badge-danger"><%= @open_issues.size %></span>
   </a>
   <a class="nav-link " id="nav-closedissues-tab" data-toggle="pill" href="#nav-closedissues" role="tab" aria-controls="nav-closedissues" aria-selected="false">
-    Closed Issues <span class="badge badge-pill badge-warning"><%= @closed_issues.count %></span>
+    Closed Issues <span class="badge badge-pill badge-warning"><%= @closed_issues.size %></span>
   </a>
 </div>
 
