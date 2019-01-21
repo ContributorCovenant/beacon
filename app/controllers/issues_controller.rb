@@ -152,7 +152,7 @@ class IssuesController < ApplicationController
   end
 
   def scope_project
-    @project = Project.where(slug: params[:project_slug]).includes(:account).first
+    @project = Project.find_by(slug: params[:project_slug])
   end
 
 end

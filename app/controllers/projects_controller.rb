@@ -69,7 +69,7 @@ class ProjectsController < ApplicationController
   end
 
   def scope_project
-    @project = Project.where(slug: params[:slug]).joins(:project_setting).first
+    @project = Project.find_by(slug: params[:slug])
     @settings = @project.project_setting
     @issues = @project.issues
   end
