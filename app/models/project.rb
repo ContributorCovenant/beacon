@@ -45,7 +45,7 @@ class Project < ApplicationRecord
   end
 
   def moderators
-    [self.account]
+    @moderators ||= [self.account]
   end
 
   def moderator_emails

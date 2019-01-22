@@ -43,15 +43,15 @@ class Issue < ApplicationRecord
   end
 
   def comments_visible_to_reporter
-    issue_comments.visible_to_reporter
+    issue_comments.select(&:visible_to_reporter)
   end
 
   def comments_visible_to_respondent
-    issue_comments.visible_to_respondent
+    issue_comments.select(&:visible_to_respondent)
   end
 
   def comments_visible_only_to_moderators
-    issue_comments.visible_only_to_moderators
+    issue_comments.select(&:visible_only_to_moderators)
   end
 
   def open?

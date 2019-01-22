@@ -45,9 +45,9 @@ class IssuesController < ApplicationController
   end
 
   def show
-    @reporter_discussion_comments = @issue.comments_visible_to_reporter.includes(:notifications)
-    @respondent_discussion_comments = @issue.comments_visible_to_respondent.includes(:notifications)
-    @internal_comments = @issue.comments_visible_only_to_moderators.includes(:notifications)
+    @reporter_discussion_comments = @issue.comments_visible_to_reporter
+    @respondent_discussion_comments = @issue.comments_visible_to_respondent
+    @internal_comments = @issue.comments_visible_only_to_moderators
     @issue_severity_level = @issue.issue_severity_level
     @notifications_for_internal_comments_count = @internal_comments.map(&:notifications).flatten.select{ |n| n.account_id == current_account.id }.count
     @notifications_for_reporter_comments_count = @reporter_discussion_comments
@@ -135,7 +135,7 @@ class IssuesController < ApplicationController
     emails = [@issue.reporter.email, @issue.respondent.try(:email), @project.moderator_emails - [current_account.email]].flatten.compact
     IssueNotificationsMailer.with(
       emails: emails,
-      project: @issue.project,
+      project: @project,
       issue: @issue
     ).notify_on_status_change.deliver_now
   end
