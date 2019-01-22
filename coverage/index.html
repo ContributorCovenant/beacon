@@ -14,7 +14,7 @@
       <img src="./assets/0.10.2/loading.gif" alt="loading"/>
     </div>
     <div id="wrapper" style="display:none;">
-      <div class="timestamp">Generated <abbr class="timeago" title="2019-01-21T17:19:10-06:00">2019-01-21T17:19:10-06:00</abbr></div>
+      <div class="timestamp">Generated <abbr class="timeago" title="2019-01-21T19:40:19-06:00">2019-01-21T19:40:19-06:00</abbr></div>
       <ul class="group_tabs"></ul>
 
       <div id="content">
@@ -25,7 +25,7 @@
      covered at
      <span class="covered_strength">
        <span class="green">
-         5.0
+         4.97
        </span>
     </span> hits/line)
   </h2>
@@ -187,7 +187,7 @@
         <td>66</td>
         <td>51</td>
         <td>15</td>
-        <td>5.6</td>
+        <td>5.5</td>
       </tr>
       
       <tr>
@@ -277,7 +277,7 @@
         <td>17</td>
         <td>17</td>
         <td>0</td>
-        <td>52.2</td>
+        <td>51.0</td>
       </tr>
       
       <tr>
@@ -1906,19 +1906,19 @@
         <li class="missed" data-hits="0" data-linenumber="48">
           
           
-          <code class="ruby">    @reporter_discussion_comments = @issue.comments_visible_to_reporter.includes(:notifications)</code>
+          <code class="ruby">    @reporter_discussion_comments = @issue.comments_visible_to_reporter</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="49">
           
           
-          <code class="ruby">    @respondent_discussion_comments = @issue.comments_visible_to_respondent.includes(:notifications)</code>
+          <code class="ruby">    @respondent_discussion_comments = @issue.comments_visible_to_respondent</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="50">
           
           
-          <code class="ruby">    @internal_comments = @issue.comments_visible_only_to_moderators.includes(:notifications)</code>
+          <code class="ruby">    @internal_comments = @issue.comments_visible_only_to_moderators</code>
         </li>
       
         <li class="missed" data-hits="0" data-linenumber="51">
@@ -2446,7 +2446,7 @@
         <li class="never" data-hits="" data-linenumber="138">
           
           
-          <code class="ruby">      project: @issue.project,</code>
+          <code class="ruby">      project: @project,</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="139">
@@ -4178,7 +4178,7 @@
         <li class="missed" data-hits="0" data-linenumber="46">
           
           
-          <code class="ruby">    issue_comments.visible_to_reporter</code>
+          <code class="ruby">    issue_comments.select(&amp;:visible_to_reporter)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="47">
@@ -4202,7 +4202,7 @@
         <li class="missed" data-hits="0" data-linenumber="50">
           
           
-          <code class="ruby">    issue_comments.visible_to_respondent</code>
+          <code class="ruby">    issue_comments.select(&amp;:visible_to_respondent)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="51">
@@ -4226,7 +4226,7 @@
         <li class="missed" data-hits="0" data-linenumber="54">
           
           
-          <code class="ruby">    issue_comments.visible_only_to_moderators</code>
+          <code class="ruby">    issue_comments.select(&amp;:visible_only_to_moderators)</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="55">
@@ -4271,8 +4271,8 @@
           <code class="ruby">  def project</code>
         </li>
       
-        <li class="covered" data-hits="19" data-linenumber="62">
-          <span class="hits">19</span>
+        <li class="covered" data-hits="15" data-linenumber="62">
+          <span class="hits">15</span>
           
           <code class="ruby">    @project ||= Project.find(EncryptionService.decrypt(self.project_encrypted_id))</code>
         </li>
@@ -5383,7 +5383,7 @@
         <li class="covered" data-hits="53" data-linenumber="48">
           <span class="hits">53</span>
           
-          <code class="ruby">    [self.account]</code>
+          <code class="ruby">    @moderators ||= [self.account]</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="49">
@@ -5978,32 +5978,32 @@
           <code class="ruby">  def self.decrypt(text)</code>
         </li>
       
-        <li class="covered" data-hits="30" data-linenumber="18">
-          <span class="hits">30</span>
+        <li class="covered" data-hits="26" data-linenumber="18">
+          <span class="hits">26</span>
           
           <code class="ruby">    salt, data = text.split(&#39;$$&#39;)</code>
         </li>
       
-        <li class="covered" data-hits="30" data-linenumber="19">
-          <span class="hits">30</span>
+        <li class="covered" data-hits="26" data-linenumber="19">
+          <span class="hits">26</span>
           
           <code class="ruby">    len   = ActiveSupport::MessageEncryptor.key_len</code>
         </li>
       
-        <li class="covered" data-hits="30" data-linenumber="20">
-          <span class="hits">30</span>
+        <li class="covered" data-hits="26" data-linenumber="20">
+          <span class="hits">26</span>
           
           <code class="ruby">    key   = ActiveSupport::KeyGenerator.new(Rails.application.credentials.secret_key_base).generate_key(salt, len)</code>
         </li>
       
-        <li class="covered" data-hits="30" data-linenumber="21">
-          <span class="hits">30</span>
+        <li class="covered" data-hits="26" data-linenumber="21">
+          <span class="hits">26</span>
           
           <code class="ruby">    crypt = ActiveSupport::MessageEncryptor.new(key)</code>
         </li>
       
-        <li class="covered" data-hits="30" data-linenumber="22">
-          <span class="hits">30</span>
+        <li class="covered" data-hits="26" data-linenumber="22">
+          <span class="hits">26</span>
           
           <code class="ruby">    crypt.decrypt_and_verify(data)</code>
         </li>
@@ -6129,22 +6129,22 @@
           <code class="ruby">      notifications.destroy_all</code>
         </li>
       
-        <li class="never" data-hits="" data-linenumber="16">
+        <li class="covered" data-hits="3" data-linenumber="16">
+          <span class="hits">3</span>
+          
+          <code class="ruby">      account.notification_encrypted_ids = account.notifications.compact.map{ |n| EncryptionService.encrypt(n.id) }</code>
+        </li>
+      
+        <li class="covered" data-hits="1" data-linenumber="17">
+          <span class="hits">1</span>
+          
+          <code class="ruby">      account.save</code>
+        </li>
+      
+        <li class="never" data-hits="" data-linenumber="18">
           
           
           <code class="ruby">    end</code>
-        </li>
-      
-        <li class="covered" data-hits="3" data-linenumber="17">
-          <span class="hits">3</span>
-          
-          <code class="ruby">    account.notification_encrypted_ids = account.notifications.compact.map{ |n| EncryptionService.encrypt(n.id) }</code>
-        </li>
-      
-        <li class="covered" data-hits="1" data-linenumber="18">
-          <span class="hits">1</span>
-          
-          <code class="ruby">    account.save</code>
         </li>
       
         <li class="never" data-hits="" data-linenumber="19">
