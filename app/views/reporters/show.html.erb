@@ -5,6 +5,7 @@
   <% @issues.each do |issue| %>
     <li>
       <%= link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue) %>
+      (<%= issue.aasm_state.titleize %>, opened on <%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
     </li>
   <% end %>
 </ul>

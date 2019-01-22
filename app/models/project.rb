@@ -45,7 +45,7 @@ class Project < ApplicationRecord
   end
 
   def moderators
-    [self.account]
+    @moderators ||= [self.account]
   end
 
   def moderator_emails
@@ -67,7 +67,7 @@ class Project < ApplicationRecord
   private
 
   def set_slug
-    self.slug = name.downcase.gsub(/^[a-zA-Z0-9]/, '_')
+    self.slug = name.downcase.gsub(/[^a-z0-9]/i, '_')
   end
 
   # TODO: Eventually this will inherit from an org's project template
