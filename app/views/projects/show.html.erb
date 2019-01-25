@@ -18,6 +18,18 @@
           <div class="card-text">
             <ul>
               <li>
+                <%= link_to "Ownership Confirmation", project_ownership_path(@project) %>
+                <% if @project.ownership_confirmed? %>
+                  <span class="badge badge-pill badge-success">
+                    √
+                  </span>
+                <% else %>
+                  <span class="badge badge-pill badge-danger">
+                    x
+                  </span>
+                <% end %>
+              </li>
+              <li>
                 <%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %>
                 <% if @project.consequence_ladder? %>
                   <span class="badge badge-pill badge-success">

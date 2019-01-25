@@ -16,6 +16,8 @@ Rails.application.routes.draw do
     resources :issue_severity_levels
     resources :account_project_blocks
     patch "clone_ladder", to: "projects#clone_ladder"
+    get "ownership", to: "projects#ownership"
+    patch "confirm", to: "projects#confirm_ownership"
     resources :reporters, only: [:show]
     resources :respondents, only: [:show]
     resources :issues do

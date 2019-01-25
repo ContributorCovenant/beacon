@@ -1,0 +1,24 @@
+<h2><%= @project.name %>: Ownership Confirmation</h2>
+
+<p>To confirm ownership of this project, create a file at the designated URL with the following contents:</p>
+
+<%= form_for @project, url: project_confirm_path(@project) do |f| %>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :token, "Confirmation Token" %>
+    <%= f.text_field :token, value: "BEACON_TOKEN=#{EncryptionService.hash(@project.id)}", disabled: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :confirmation_token_url, "Confirmation Token URL" %>
+    <%= f.text_field :confirmation_token_url, disabled: true, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Verify Ownership", class: "btn btn-primary" %>
+  </div>
+
+<% end %>
+
+<p class="mt-3">Alternately, <a href="#">connect your account</a> to GitHub or GitLab to verify ownership of your repository.</p>
+

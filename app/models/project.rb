@@ -36,8 +36,8 @@ class Project < ApplicationRecord
     issue_severity_levels.any?
   end
 
-  def verified_settings?
-    project_setting.updated_at != project_setting.created_at
+  def confirmation_token_url
+    url + "beacon.txt"
   end
 
   def moderator?(account)
@@ -60,8 +60,16 @@ class Project < ApplicationRecord
     project_setting.paused?
   end
 
+  def ownership_confirmed?
+    confirmed_at.present?
+  end
+
   def setup_complete?
-    public? && verified_settings? && consequence_ladder?
+    public? && verified_settings? && consequence_ladder? && ownership_confirmed?
+  end
+
+  def verified_settings?
+    project_setting.updated_at != project_setting.created_at
   end
 
   private
