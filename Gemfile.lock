@@ -421,6 +421,7 @@ DEPENDENCIES
   omniauth-github!
   omniauth-gitlab!
   pg
+  popper_js (~> 1.14.5)
   pry
   puma (~> 3.11)
   rails (~> 5.2.2)
