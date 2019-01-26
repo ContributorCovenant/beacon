@@ -25,7 +25,7 @@ class Project < ApplicationRecord
   end
 
   def public?
-    project_setting.include_in_directory
+    project_setting.include_in_directory && setup_complete
   end
 
   def accepting_issues?
