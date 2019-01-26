@@ -23,4 +23,4 @@ Beacon will be provided in a software-as-a-service (SaaS) model to reduce fricti
 You can show your support for Beacon and help fund its development through [monthly contributions to our Patreon](https://www.patreon.com/cocbeacon) or a [one-time donation to our fundraiser](https://www.gofundme.com/coc-beacon).
 
 ## Contributing
-We welcome contributions involving code, documentation, or design. If you'd like to contribute, please check out [our guide to contributing](https://github.com/ContributorCovenant/beacon/blob/release/CODE_OF_CONDUCT.md).
+We welcome contributions involving code, documentation, or design. If you'd like to contribute, please check out [our guide to contributing](https://github.com/ContributorCovenant/beacon/blob/release/CONTRIBUTING.md).
