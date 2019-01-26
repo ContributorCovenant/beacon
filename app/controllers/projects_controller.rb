@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_account!
-  before_action :scope_project, only: [:show, :edit, :delete, :update, :clone_ladder]
+  before_action :scope_project, except: [:index, :new, :create]
   before_action :enforce_existing_project_permissions, except: [:index, :new, :create]
   before_action :enforce_project_creation_permissions, only: [:new, :create]
 
@@ -41,6 +41,14 @@ class ProjectsController < ApplicationController
   def show
   end
 
+  def ownership
+  end
+
+  def confirm_ownership
+    ProjectConfirmationService.confirm!(@project)
+    redirect_to @project
+  end
+
   def update
     if @project.update_attributes(project_params)
       flash[:notice] = 'The project was successfully updated.'
@@ -69,7 +77,7 @@ class ProjectsController < ApplicationController
   end
 
   def scope_project
-    @project = Project.find_by(slug: params[:slug])
+    @project = Project.find_by(slug: params[:slug]) || Project.find_by(slug: params[:project_slug])
     @settings = @project.project_setting
     @issues = @project.issues
   end
