@@ -1,6 +1,8 @@
 class DirectoryController < ApplicationController
+
   def index
-    @projects = Project.includes(:project_setting).all.order(:name).select(&:public?)
+    # TODO: this query is going to need to be optimized before performance becomes an issue
+    @projects = Project.includes(:project_setting).all.order(:name).select(&:show_in_directory?)
   end
 
   def show

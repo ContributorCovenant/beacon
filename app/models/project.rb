@@ -25,7 +25,7 @@ class Project < ApplicationRecord
   end
 
   def public?
-    project_setting.include_in_directory && setup_complete
+    project_setting.include_in_directory
   end
 
   def accepting_issues?
@@ -66,6 +66,10 @@ class Project < ApplicationRecord
 
   def setup_complete?
     public? && verified_settings? && consequence_ladder? && ownership_confirmed?
+  end
+
+  def show_in_directory?
+    public? && setup_complete?
   end
 
   def verified_settings?
