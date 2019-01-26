@@ -23,5 +23,11 @@
         <a href="https://www.patreon.com/cocbeacon">Support this project on Patreon</a>
       </div>
   </footer>
+
+  <%= javascript_tag do %>
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+  <% end %>
 </body>
 </html>
