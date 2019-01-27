@@ -1,5 +1,13 @@
 module Permissions
 
+  def can_access_admin_dashboard?
+    !!is_admin
+  end
+
+  def can_access_admin_project_dashboard?
+    !!is_admin
+  end
+
   def can_block_account?(project)
     return true if project.moderators.include?(self)
     false

@@ -1,0 +1,32 @@
+<h2>Admin: Projects (<%= @projects.size %>)</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Project</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+      <th>Moderators</th>
+      <th>Setup Complete?</th>
+      <th>Flagged?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @projects.each do |project| %>
+      <tr>
+        <td><%= link_to project.name, admin_project_path(project) %></td>
+        <td><%= project.created_at.strftime("%D %r") %></td>
+        <td><%= project.updated_at.strftime("%D %r") %></td>
+        <td>
+          <ul>
+            <% project.moderators.each do |moderator| %>
+              <li><%= moderator.email %></li>
+            <% end %>
+          </ul>
+        </td>
+        <td><span class="badge"><%= project.setup_complete? ? "√" : "x" %></span></td>
+        <td><%= project.is_flagged? ? "Flagged" : "" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>

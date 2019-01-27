@@ -17,7 +17,7 @@ Rails.application.routes.draw do
     resources :account_project_blocks
     patch "clone_ladder", to: "projects#clone_ladder"
     get "ownership", to: "projects#ownership"
-    patch "confirm", to: "projects#confirm_ownership"
+    post "confirm", to: "projects#confirm_ownership"
     resources :reporters, only: [:show]
     resources :respondents, only: [:show]
     resources :issues do
@@ -32,6 +32,10 @@ Rails.application.routes.draw do
     get "settings", to: "project_settings#edit"
     patch "settings", to: "project_settings#update"
     post "toggle_pause", to: "project_settings#toggle_pause"
+  end
+
+  namespace :admin do
+    resources :projects, param: :slug
   end
 
   get "directory", to: "directory#index"

@@ -10,10 +10,20 @@
         <%= link_to "Project Directory", directory_path, class: "nav-link" %>
       </li>
 
+      <% if current_account.can_access_admin_dashboard? %>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
+          <div class="dropdown-menu">
+            <% if current_account.can_access_admin_project_dashboard? %>
+              <%= link_to "Projects", admin_projects_path, class: "dropdown-item" %>
+            <% end %>
+          </div>
+        </li>
+      <% end %>
       <% if current_account && current_account.projects.any? %>
         <li class="nav-item nav-link">
           <%= link_to "Manage My Projects", projects_path %>
-          <% count = current_account.notifications.size %>
+          <% count = current_account.notifications.count %>
           <% if count > 0 %>
             <span class="badge badge-pill badge-danger"><%= count %></span>
           <% end %>
@@ -23,7 +33,7 @@
       <% if current_account && current_account.issues.any? %>
         <li class="nav-item nav-link">
           <%= link_to "Manage My Issues", issues_path %>
-          <% count = current_account.notifications.where(issue_id: current_account.issues.map(&:id)).size %>
+          <% count = current_account.notifications.where(issue_id: current_account.issues.map(&:id)).count %>
           <% if count > 0 %>
             <span class="badge badge-pill badge-danger"><%= count %></span>
           <% end %>
