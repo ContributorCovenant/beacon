@@ -4,6 +4,7 @@
 
   <div class="row">
     <div class="col-sm">
+      <p class="mt-3"><a href="#">Sign up with GitHub</a> | <a href="#">Sign up with GitLab</a></p>
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
         <%= devise_error_messages!.gsub(/^.+\^/,'').html_safe %>
 
