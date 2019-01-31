@@ -1,54 +1,57 @@
-class Admin::ProjectsController < Admin::AdminController
+module Admin
 
-  before_action :enforce_project_permissions
-  before_action :scope_project, except: [:index]
+  class ProjectsController < Admin::AdminController
 
-  def index
-    @projects = Project.public_scope
-  end
+    before_action :enforce_project_permissions
+    before_action :scope_project, except: [:index]
 
-  def show
-    issues = @project.issues.order("created_at DESC")
-    @total_issues = issues.count
-    @submitted_issues = issues.select{ |issue| issue.aasm_state == "submitted" }
-    @acknowledged_issues = issues.select{ |issue| issue.aasm_state == "acknowledged" }
-    @dismissed_issues = issues.select{ |issue| issue.aasm_state == "dismissed" }
-    @resolved_issues = issues.select{ |issue| issue.aasm_state == "resolved" }
-    @blocked_accounts = @project.account_project_blocks.includes(:account).map(&:account)
-  end
+    def index
+      @projects = Project.public_scope
+    end
 
-  def flag
-    @project.toggle_flagged
-    @project.update_attributes(
-      flagged_reason: flag_project_params[:flagged_reason],
-      flagged_at: Time.zone.now
-    )
-    redirect_to admin_project_path(@project)
-  end
+    def show
+      issues = @project.issues.order("created_at DESC")
+      @total_issues = issues.count
+      @submitted_issues = issues.select{ |issue| issue.aasm_state == "submitted" }
+      @acknowledged_issues = issues.select{ |issue| issue.aasm_state == "acknowledged" }
+      @dismissed_issues = issues.select{ |issue| issue.aasm_state == "dismissed" }
+      @resolved_issues = issues.select{ |issue| issue.aasm_state == "resolved" }
+      @blocked_accounts = @project.account_project_blocks.includes(:account).map(&:account)
+    end
 
-  def unflag
-    @project.toggle_flagged
-    @project.update_attributes(
-      flagged_reason: nil,
-      flagged_at: nil
-    )
-    redirect_to admin_project_path(@project)
-  end
+    def flag
+      @project.toggle_flagged
+      @project.update_attributes(
+        flagged_reason: flag_project_params[:flagged_reason],
+        flagged_at: Time.zone.now
+      )
+      redirect_to admin_project_path(@project)
+    end
 
-  private
+    def unflag
+      @project.toggle_flagged
+      @project.update_attributes(
+        flagged_reason: nil,
+        flagged_at: nil
+      )
+      redirect_to admin_project_path(@project)
+    end
 
-  def enforce_project_permissions
-    render_forbidden && return unless current_account.can_access_admin_project_dashboard?
-  end
+    private
 
-  def flag_project_params
-    params.require(:project).permit(:flagged_reason)
-  end
+    def enforce_project_permissions
+      render_forbidden && return unless current_account.can_access_admin_project_dashboard?
+    end
 
+    def flag_project_params
+      params.require(:project).permit(:flagged_reason)
+    end
 
-  def scope_project
-    @project = Project.find_by(slug: params[:slug]) || Project.find_by(slug: params[:project_slug])
-    @settings = @project.project_setting
+    def scope_project
+      @project = Project.find_by(slug: params[:slug]) || Project.find_by(slug: params[:project_slug])
+      @settings = @project.project_setting
+    end
+
   end
 
 end
