@@ -35,7 +35,10 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
-    resources :projects, param: :slug
+    resources :projects, param: :slug do
+      patch "flag", to: "projects#flag"
+      post "unflag", to: "projects#unflag"
+    end
   end
 
   get "directory", to: "directory#index"

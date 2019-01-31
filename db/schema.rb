@@ -196,6 +196,8 @@ ActiveRecord::Schema.define(version: 2019_01_27_211034) do
     t.boolean "has_confirmed_settings", default: false
     t.datetime "confirmed_at"
     t.boolean "is_flagged", default: false
+    t.text "flagged_reason"
+    t.datetime "flagged_at"
     t.index ["account_id"], name: "index_projects_on_account_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end

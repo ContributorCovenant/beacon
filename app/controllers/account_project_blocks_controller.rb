@@ -50,7 +50,7 @@ class AccountProjectBlocksController < ApplicationController
   end
 
   def scope_project
-    @project = Project.where(slug: params[:project_slug]).includes(:account_project_blocks)
+    @project = Project.where(slug: params[:project_slug]).includes(:account_project_blocks).first
   end
 
 end

@@ -1,6 +1,6 @@
 <h2>Admin: Projects (<%= @projects.size %>)</h2>
 
-<table class="table">
+<table class="table" id="projects" data-sorting="true">
   <thead>
     <tr>
       <th>Project</th>
@@ -15,8 +15,8 @@
     <% @projects.each do |project| %>
       <tr>
         <td><%= link_to project.name, admin_project_path(project) %></td>
-        <td><%= project.created_at.strftime("%D %r") %></td>
-        <td><%= project.updated_at.strftime("%D %r") %></td>
+        <td><%= project.created_at.strftime("%D") %></td>
+        <td><%= project.updated_at.strftime("%D") %></td>
         <td>
           <ul>
             <% project.moderators.each do |moderator| %>
@@ -30,3 +30,9 @@
     <% end %>
   </tbody>
 <table>
+
+<%= javascript_tag do %>
+  jQuery(function($){
+	  $('.table').footable();
+  });
+<% end %>
