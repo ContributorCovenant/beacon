@@ -17,4 +17,6 @@
 //= require bootstrap-sprockets
 //= require bootstrap-toggle
 //= require popper
+//= require moment
+//= require footable
 //= require_tree .

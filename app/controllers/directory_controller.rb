@@ -7,6 +7,7 @@ class DirectoryController < ApplicationController
 
   def show
     @project = Project.find_by(slug: params[:slug])
+    redirect_to directory_path unless @project.show_in_directory?
     @issue_severity_levels = @project.issue_severity_levels
     redirect_to :index unless @project.public?
   end

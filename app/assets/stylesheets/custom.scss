@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'FontAwesome';
+  src: url(font-path('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.svg') format('svg'));
+  src: url(font-path('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.ttf') format('truetype'));
+  font-weight: normal;
+  font-style: normal;
+}
+
 .uploads img {
   width: 15%;
   float: left;
@@ -30,6 +38,7 @@ footer {
 
 .table {
   font-size: .5rem;
+  font-family: 'FontAwesome';
 }
 
 form {
@@ -42,6 +51,27 @@ form {
 
 .navbar-light .navbar-nav .nav-link a {
   color: rgba(0, 0, 0, 0.5);
+}
+
+.dataTables_wrapper div.row {
+  width: 100%;
+}
+
+div.dataTables_wrapper div.dataTables_length label {
+  align-items: left;
+  justify-content: left;
+}
+
+div.dataTables_wrapper div.dataTables_filter label {
+  justify-content: none;
+  float: right;
+  text-align: right !important;
+}
+
+.paginate_button {
+  margin-right: 1rem;
+  padding-right: 1rem;
+  border-right: 1px solid #eee;
 }
 
 @media (min-width: 576px) {

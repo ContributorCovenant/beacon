@@ -34,6 +34,10 @@ class Account < ApplicationRecord
     @notifications ||= Notification.notifications_for_account(self)
   end
 
+  def reputation
+    "good"
+  end
+
   private
 
   def associate_respondent_with_issues

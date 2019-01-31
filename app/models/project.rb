@@ -16,6 +16,10 @@ class Project < ApplicationRecord
 
   attr_accessor :consequence_ladder_default_source
 
+  def self.public_scope
+    ProjectSetting.includes(:project).where(include_in_directory: true).order("projects.name ASC").map(&:project)
+  end
+
   def issues
     @issues ||= ProjectIssue.issues_for_project(id)
   end
@@ -69,7 +73,11 @@ class Project < ApplicationRecord
   end
 
   def show_in_directory?
-    public? && setup_complete?
+    public? && setup_complete? && !is_flagged
+  end
+
+  def toggle_flagged
+    self.update_attribute(:is_flagged, !is_flagged)
   end
 
   def verified_settings?

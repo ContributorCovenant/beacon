@@ -402,7 +402,7 @@ DEPENDENCIES
   aasm
   autoprefixer-rails
   bootsnap (>= 1.1.0)
-  bootstrap
+  bootstrap (~> 4.2.1)
   bootstrap-toggle-rails
   bootswatch
   brakeman

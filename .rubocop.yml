@@ -80,3 +80,6 @@ Layout/MultilineMethodCallIndentation:
 
 Style/IfUnlessModifier:
   Enabled: false
+
+Style/DoubleNegation:
+  Enabled: false
