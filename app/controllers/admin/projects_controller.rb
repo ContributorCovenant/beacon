@@ -4,7 +4,7 @@ class Admin::ProjectsController < Admin::AdminController
   before_action :scope_project, except: [:index]
 
   def index
-    @projects = Project.public
+    @projects = Project.public_scope
   end
 
   def show

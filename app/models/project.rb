@@ -16,7 +16,7 @@ class Project < ApplicationRecord
 
   attr_accessor :consequence_ladder_default_source
 
-  def self.public
+  def self.public_scope
     ProjectSetting.includes(:project).where(include_in_directory: true).order("projects.name ASC").map(&:project)
   end
 
