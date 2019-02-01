@@ -13,7 +13,7 @@ module Admin
       issues = @project.issues.order("created_at DESC")
       @total_issues = issues.count
       @submitted_issues = issues.select{ |issue| issue.aasm_state == "submitted" }
-      @acknowledged_issues = issues.select{ |issue| issue.aasm_state == "acknowledged" }
+      @acknowledged_issues = issues.select{ |issue| %w{acknowledged reopened}.include? issue.aasm_state }
       @dismissed_issues = issues.select{ |issue| issue.aasm_state == "dismissed" }
       @resolved_issues = issues.select{ |issue| issue.aasm_state == "resolved" }
       @blocked_accounts = @project.account_project_blocks.includes(:account).map(&:account)
