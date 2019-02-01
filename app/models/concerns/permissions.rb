@@ -33,7 +33,7 @@ module Permissions
   end
 
   def can_create_project?
-     !is_flagged
+    !is_flagged
   end
 
   def can_invite_respondent?(issue)

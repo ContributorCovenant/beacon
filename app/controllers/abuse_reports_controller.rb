@@ -11,7 +11,7 @@ class AbuseReportsController < ApplicationController
   def create
     if abuse_report_params[:description].empty?
       flash[:error] = "You must provide an explanation."
-      redirect_to new_abuse_report_path(project_slug: @project.slug) and return
+      redirect_to new_abuse_report_path(project_slug: @project.slug) && return
     end
     report = AbuseReport.create!(
       account: current_account,
@@ -20,7 +20,7 @@ class AbuseReportsController < ApplicationController
     )
     AdminMailer.with(
       report: report,
-      project: @project,
+      project: @project
     ).notify_on_abuse_report.deliver_now
     flash[:message] = "Your report has been sent to Beacon administrative staff for review."
     redirect_to root_path
