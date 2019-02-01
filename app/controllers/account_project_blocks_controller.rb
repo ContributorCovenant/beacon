@@ -29,7 +29,7 @@ class AccountProjectBlocksController < ApplicationController
   end
 
   def destroy
-    @project.account_project_blocks.find{ |block| block.account_id = block_params[:account_id] }.destroy
+    @project.account_project_blocks.find(params[:id]).destroy
     if params[:return_to] == "respondent"
       redirect_to project_respondent_url(@project, id: block.account_id)
     elsif params[:return_to] == "reporter"

@@ -60,6 +60,8 @@ class IssuesController < ApplicationController
       .flatten
       .select{ |n| n.account_id == current_account.id }
       .count
+    @reporter_block = @project.account_project_blocks.find_by(account_id: @issue.reporter.id)
+    @respondent_block = @project.account_project_blocks.find_by(account_id: @issue.respondent.try(:id))
     if current_account == @issue.reporter || current_account == @issue.respondent
       NotificationService.notified!(account: current_account, issue_id: @issue.id)
     end
