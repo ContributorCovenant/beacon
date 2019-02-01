@@ -12,6 +12,9 @@ Beacon was created with the goal of bringing this potential to every open source
 
 Beacon will be provided in a software-as-a-service (SaaS) model to reduce friction for getting started, so that maintainers can focus on managing their projects and communities with a minimum of setup.
 
+## Feature Map
+A list of existing and planned features for Beacon can be found [here](https://github.com/ContributorCovenant/beacon/blob/release/feature_map.md).
+
 ## Milestones
 
 * **January 2019:** We are currently working towards finishing an initial prototype. [Project board](https://github.com/ContributorCovenant/beacon/projects/1)
