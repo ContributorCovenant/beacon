@@ -1,0 +1,14 @@
+<h1>New abuse report on <%= @project.name %>
+<p>
+  An abuse report was made on this issue by a <%= @reporter.email %>:
+</p>
+
+<blockquote><%= @report.description %></blockquote>
+
+<p>
+  You can <%= link_to "view the report in Beacon", admin_abuse_report_url(@report) %>.
+</p>
+<p>
+  Thank you,
+  The Friendly Beacon Mailer Robot
+</p>

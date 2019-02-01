@@ -19,6 +19,7 @@ gem 'dotenv-rails'
 gem "google-cloud-storage", require: false
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
+gem 'mc-settings'
 gem 'normailize'
 gem 'omniauth-github', github: 'intridea/omniauth-github'
 gem 'omniauth-gitlab', github: 'linchus/omniauth-gitlab'

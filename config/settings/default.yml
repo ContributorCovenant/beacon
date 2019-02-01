@@ -1,0 +1,2 @@
+throttling:
+  max_abuse_reports_per_day: <%= ENV.fetch('MAX_ABUSE_REPORTS_PER_DAY', 5) %>

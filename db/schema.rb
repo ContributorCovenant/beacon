@@ -10,12 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_27_211034) do
+ActiveRecord::Schema.define(version: 2019_02_01_014249) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "abuse_report_subjects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "abuse_report_id"
+    t.uuid "account_id"
+    t.uuid "project_id"
+    t.uuid "issue_id"
+    t.index ["abuse_report_id"], name: "index_abuse_report_subjects_on_abuse_report_id"
+    t.index ["account_id"], name: "index_abuse_report_subjects_on_account_id"
+    t.index ["issue_id"], name: "index_abuse_report_subjects_on_issue_id"
+    t.index ["project_id"], name: "index_abuse_report_subjects_on_project_id"
+  end
+
+  create_table "abuse_reports", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.text "description"
+    t.string "aasm_state"
+    t.integer "report_number"
+    t.text "admin_note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_abuse_reports_on_account_id"
+  end
 
   create_table "account_issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "account_id"
@@ -62,6 +84,9 @@ ActiveRecord::Schema.define(version: 2019_01_27_211034) do
     t.string "hashed_email"
     t.string "notification_encrypted_ids", default: [], array: true
     t.boolean "is_admin", default: false
+    t.boolean "is_flagged", default: false
+    t.text "flagged_reason"
+    t.datetime "flagged_at"
     t.index ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["normalized_email"], name: "index_accounts_on_normalized_email", unique: true
@@ -213,6 +238,11 @@ ActiveRecord::Schema.define(version: 2019_01_27_211034) do
     t.index ["account_id"], name: "index_suspicious_activity_logs_on_account_id"
   end
 
+  add_foreign_key "abuse_report_subjects", "abuse_reports"
+  add_foreign_key "abuse_report_subjects", "accounts"
+  add_foreign_key "abuse_report_subjects", "issues"
+  add_foreign_key "abuse_report_subjects", "projects"
+  add_foreign_key "abuse_reports", "accounts"
   add_foreign_key "account_issues", "accounts"
   add_foreign_key "account_project_blocks", "accounts"
   add_foreign_key "account_project_blocks", "projects"

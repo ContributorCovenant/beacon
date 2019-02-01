@@ -50,7 +50,10 @@ class ProjectsController < ApplicationController
   end
 
   def update
+    project_params.delete(:name)
+    previous_url = @project.url
     if @project.update_attributes(project_params)
+      @project.update_attribute(:confirmed_at, nil) if previous_url != project_params[:url]
       flash[:notice] = 'The project was successfully updated.'
       redirect_to @project
     else
