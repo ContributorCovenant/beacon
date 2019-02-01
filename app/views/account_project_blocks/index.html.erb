@@ -7,7 +7,7 @@
         <div class="card mb-3 mr-3">
           <div class="card-body">
             <h5 class="card-title">
-              <% if @project.project_setting.allow_anonymous_issues && block.issue.reporter == block.account %>
+              <% if @project.project_setting.allow_anonymous_issues && @project.issues.map(&:reporter).include?( block.account) %>
                 Anonymous Reporter
               <% else %>
                 <%= block.account.email %>
@@ -20,7 +20,7 @@
               <h5 class="mt-2">Associated Issues</h5>
               <ul>
                 <% if @project.project_setting.allow_anonymous_issues %>
-                  <% issues = block.issues.select{ |issue| issue.reporter != block.account } %>
+                  <% issues = block.issues.select{ |issue| issue.reporter == block.account } %>
                 <% else %>
                   <% issues = block.issues %>
                 <%end %>
