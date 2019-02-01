@@ -1,0 +1,10 @@
+New abuse report on <%= @project.name %>
+
+An abuse report was made on this issue by a <%= @reporter.email %>:
+
+<%= @report.description %>
+
+You can view the report in Beacon: <%= admin_abuse_report_url(@report) %>
+
+Thank you,
+The Friendly Beacon Mailer Robot

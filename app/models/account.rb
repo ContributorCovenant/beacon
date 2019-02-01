@@ -14,9 +14,12 @@ class Account < ApplicationRecord
 
   validates_uniqueness_of :normalized_email
 
-  has_many :projects
+  has_many :abuse_reports
   has_many :account_issues
   has_many :account_project_blocks
+  has_many :projects
+
+  scope :admins, -> { where(is_admin: true) }
 
   before_validation :normalize_email
   before_create :hash_email
@@ -36,6 +39,10 @@ class Account < ApplicationRecord
 
   def reputation
     "good"
+  end
+
+  def toggle_flagged
+    self.update_attribute(:is_flagged, !is_flagged)
   end
 
   private

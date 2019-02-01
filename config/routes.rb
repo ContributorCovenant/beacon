@@ -10,14 +10,14 @@ Rails.application.routes.draw do
 
   get "watermark.svg", to: "watermarks#show", format: :xml
 
+  resources :abuse_reports, only: [:new, :create]
   resources :issues
-
   resources :projects, param: :slug do
     resources :issue_severity_levels
     resources :account_project_blocks
     patch "clone_ladder", to: "projects#clone_ladder"
     get "ownership", to: "projects#ownership"
-    post "confirm", to: "projects#confirm_ownership"
+    patch "confirm", to: "projects#confirm_ownership"
     resources :reporters, only: [:show]
     resources :respondents, only: [:show]
     resources :issues do
@@ -35,6 +35,10 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :abuse_reports do
+      post "dismiss", to: "abuse_reports#dismiss"
+      post "resolve", to: "abuse_reports#resolve"
+    end
     resources :projects, param: :slug do
       patch "flag", to: "projects#flag"
       post "unflag", to: "projects#unflag"

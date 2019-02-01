@@ -1,6 +1,14 @@
 module Permissions
 
+  def can_access_abuse_reports?
+    !!is_admin
+  end
+
   def can_access_admin_dashboard?
+    !!is_admin
+  end
+
+  def can_access_admin_account_dashboard?
     !!is_admin
   end
 
@@ -25,7 +33,7 @@ module Permissions
   end
 
   def can_create_project?
-    true
+    !is_flagged
   end
 
   def can_invite_respondent?(issue)
@@ -45,7 +53,14 @@ module Permissions
   end
 
   def can_open_issue_on_project?(project)
-    project.accepting_issues? && !blocked_from_project?(project)
+    project.accepting_issues? && !blocked_from_project?(project) && !is_flagged
+  end
+
+  def can_report_abuse?(project)
+    return false if is_flagged
+    return false if abuse_reports.submitted.select{ |report| report.project == project }.any?
+    return false if abuse_reports.submitted.count >= Setting.throttling(:max_abuse_reports_per_day)
+    true
   end
 
   def can_upload_images_to_issue?(issue)
