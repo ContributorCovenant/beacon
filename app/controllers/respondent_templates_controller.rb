@@ -6,12 +6,12 @@ class RespondentTemplatesController < ApplicationController
 
   def new
     @template = RespondentTemplate.new(project_id: @project.id, text: RespondentTemplate.beacon_default.text)
-    projects_with_respondent_template = current_account.projects.select{ |project| project.respondent_template? && project.name != @project.name }
-    @available_templates = (["Beacon Default"] << projects_with_respondent_template.map(&:name)).flatten
   end
 
   def create
     @template = RespondentTemplate.new(respondent_template_params.merge(project_id: @project.id))
+    projects_with_respondent_template = current_account.projects.select{ |project| project.respondent_template? }
+    @available_templates = (["Beacon Default"] << projects_with_respondent_template.map(&:name)) - [@project.name]
     if @template.save
       redirect_to project_path(@project)
     else
@@ -28,7 +28,7 @@ class RespondentTemplatesController < ApplicationController
     if source == "Beacon Default"
       @project.create_respondent_template(text: RespondentTemplate.beacon_default.text)
     else
-      source = current_account.projects.find_by(name: source)
+      source = current_account.projects.find_by(name: source).respondent_template
       @project.create_respondent_template(text: source.text)
     end
     flash[:notice] = "You have successfully updated the respondent template."

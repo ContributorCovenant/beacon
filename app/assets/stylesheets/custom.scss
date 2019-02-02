@@ -21,6 +21,11 @@
   color: $black;
 }
 
+.form-control:disabled, .form-control[readonly] {
+  background-color: $gray-800;
+  color: #ffffff;
+}
+
 h1 {
   font-size: 2rem;
 }
