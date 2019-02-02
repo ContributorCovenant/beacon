@@ -32,6 +32,7 @@ gem 'sendgrid-ruby'
 gem 'sprockets-es6'
 gem 'turbolinks', '~> 5'
 gem 'uglifier', '>= 1.3.0'
+gem 'valid_email2'
 
 group :development, :test do
   gem 'brakeman'

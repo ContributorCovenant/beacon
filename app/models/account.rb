@@ -13,6 +13,7 @@ class Account < ApplicationRecord
          :validatable
 
   validates_uniqueness_of :normalized_email
+  validates :email, 'valid_email_2/email': { disposable: true, mx: true }
 
   has_many :abuse_reports
   has_many :account_issues
