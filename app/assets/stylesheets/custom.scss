@@ -16,10 +16,6 @@
   float: none;
 }
 
-a {
-  color: #e9664 !important;
-}
-
 h1 {
   font-size: 2rem;
 }
@@ -44,12 +40,16 @@ h6 {
   font-size: .75rem;
 }
 
-.card-text a {
-  color: ffffff !important;
-}
-
 .btn {
   margin: .1rem;
+}
+
+.tooltip-inner {
+  color: #000000 !important;
+}
+
+.bg-success .card-body {
+  color: #000000 !important;
 }
 
 .tab-pane {
