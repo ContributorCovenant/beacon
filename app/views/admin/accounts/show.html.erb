@@ -24,11 +24,10 @@
   <% end %>
 </div>
 
-<% projects = @account.projects %>
-<% if projects.any? %>
+<% if @projects.any? %>
   <h2 class="mt-3">Associated Projects</h2>
   <ul>
-    <% projects.each do |project| %>
+    <% @projects.each do |project| %>
       <li>
         <%= link_to project.name, admin_project_path(project) %>
       </li>

@@ -7,7 +7,7 @@
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/account_project_blocks_controller.rb",
-      "line": 38,
+      "line": 59,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:account_project_block).permit(:account_id, :reason)",
       "render_path": null,
