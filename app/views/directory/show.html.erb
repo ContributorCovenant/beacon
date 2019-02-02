@@ -36,7 +36,7 @@
     <% end %>
 
     <h2 class="mt-5">Project Governance</h2>
-    <p><%= @project.name %> is managed by a single individual.</p>
+    <p><%= @project.name %> is managed by a <%= @project.moderators.size == 1 ? "single individual" : "team of moderators" %>.</p>
 
     <% if @project.project_setting.publish_stats? %>
       <h2 class="mt-5">3-Month Activity</h2>
