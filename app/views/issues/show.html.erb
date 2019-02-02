@@ -4,7 +4,7 @@
   <h1><%= link_to @project.name, directory_project_path(@project) %>: Issue <%= @issue.issue_number %></h1>
 <% end %>
 
-<% if @project.moderator?(current_account) %>
+<% if @project.moderator?(current_account) || current_account.is_admin? %>
   <%= render partial: "moderator_view", locals: {
         project: @project,
         issue: @issue,

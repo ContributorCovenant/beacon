@@ -14,7 +14,22 @@ class AccountProjectBlocksController < ApplicationController
       account_id: block_params[:account_id],
       reason: block_params[:reason]
     )
+
     if @block.save
+      if block_params[:report_for_abuse]
+        @account = Account.find(block_params[:account_id])
+        @account.update_attributes(
+          flag_requested: true,
+          flag_requested_reason: block_params[:reason]
+        )
+        @report = AbuseReport.create!(
+          account: current_account,
+          description: block_params[:reason],
+          reportee: @account
+        )
+        notify_on_account_flag_requested
+      end
+
       if params[:return_to] == "respondent"
         redirect_to project_respondent_url(@project, id: block_params[:account_id])
       elsif params[:return_to] == "reporter"
@@ -29,14 +44,9 @@ class AccountProjectBlocksController < ApplicationController
   end
 
   def destroy
-    @project.account_project_blocks.find(params[:id]).destroy
-    if params[:return_to] == "respondent"
-      redirect_to project_respondent_url(@project, id: block.account_id)
-    elsif params[:return_to] == "reporter"
-      redirect_to project_reporter_url(@project, id: block.account_id)
-    else
-      redirect_to project_account_project_blocks_url(@project)
-    end
+    block = @project.account_project_blocks.find(params[:id])
+    block.destroy
+    redirect_to project_account_project_blocks_url(@project)
   end
 
   private
@@ -46,7 +56,16 @@ class AccountProjectBlocksController < ApplicationController
   end
 
   def block_params
-    params.require(:account_project_block).permit(:account_id, :reason)
+    params.require(:account_project_block).permit(:account_id, :reason, :report_for_abuse)
+  end
+
+  def notify_on_account_flag_requested
+    AdminMailer.with(
+      reporter: current_account,
+      account: @account,
+      report: @report,
+      reason: block_params[:reason]
+    ).notify_on_flag_request.deliver_now
   end
 
   def scope_project

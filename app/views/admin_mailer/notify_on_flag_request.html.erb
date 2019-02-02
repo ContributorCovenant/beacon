@@ -1,0 +1,15 @@
+<h1>New account flag request</h1>
+
+<p>
+  An abuse report was made on <%= @account.email %> by <%= @reporter.email %>:
+</p>
+
+<blockquote><%= @reason %></blockquote>
+
+<p>
+  You can <%= link_to "view the account in Beacon", admin_abuse_report_url(@report) %>.
+</p>
+<p>
+  Thank you,
+  The Friendly Beacon Mailer Robot
+</p>

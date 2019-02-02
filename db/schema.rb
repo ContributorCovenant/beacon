@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_02_184126) do
+ActiveRecord::Schema.define(version: 2019_02_02_213322) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -87,6 +87,8 @@ ActiveRecord::Schema.define(version: 2019_02_02_184126) do
     t.boolean "is_flagged", default: false
     t.text "flagged_reason"
     t.datetime "flagged_at"
+    t.boolean "flag_requested", default: false
+    t.text "flag_requested_reason"
     t.index ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true
     t.index ["normalized_email"], name: "index_accounts_on_normalized_email", unique: true

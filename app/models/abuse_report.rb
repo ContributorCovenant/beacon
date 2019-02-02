@@ -10,6 +10,8 @@ class AbuseReport < ApplicationRecord
 
   validates_presence_of :description
 
+  attr_accessor :flag
+
   aasm do
     state :submitted, initial: true
     state :dismissed
@@ -38,7 +40,7 @@ class AbuseReport < ApplicationRecord
   end
 
   def reportee=(account)
-    build_abuse_report_subject(account: account.id)
+    build_abuse_report_subject(account_id: account.id)
   end
 
   def reportee

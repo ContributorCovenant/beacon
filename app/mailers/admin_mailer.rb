@@ -12,6 +12,14 @@ class AdminMailer < ApplicationMailer
     mail(to: admin_emails, subject: "Beacon: New Contact Form")
   end
 
+  def notify_on_flag_request
+    @reporter = params[:reporter]
+    @account = params[:account]
+    @reason = params[:reason]
+    @report = params[:report]
+    mail(to: admin_emails, subject: "Beacon: New Account Block Request")
+  end
+
   private
 
   def admin_emails
