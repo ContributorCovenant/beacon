@@ -10,10 +10,11 @@ class ContactMessagesController < ApplicationController
     if verify_recaptcha(model: @contact_message) && @contact_message.save
       notify_on_new_contact_message
       flash[:info] = "Your message has been sent. A Beacon administrator will reply soon."
+      redirect_to root_path
     else
       flash[:error] = @contact_message.errors.full_messages
+      render :new
     end
-    redirect_to root_path
   end
 
   private
