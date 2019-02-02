@@ -61,7 +61,7 @@ class IssueCommentsController < ApplicationController
     if @project.moderator?(current_account) && visible_to_reporter?
       email = @issue.reporter.email
       commenter_kind = "moderator"
-      NotificationService.notify(account: @issue.reporter, project: @project, issue_id: @issue.id, issue_comment_id: @comment.id)
+      NotificationService.notify(account: @issue.reporter, project_id: @project.id, issue_id: @issue.id, issue_comment_id: @comment.id)
     elsif @project.moderator?(current_account) && visible_to_respondent?
       email = @issue.respondent.email
       commenter_kind = "moderator"
