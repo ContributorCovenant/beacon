@@ -1,4 +1,4 @@
-<h2><%= link_to @project.name, @project %>: Consequence Ladder</h2>
+<h1><%= link_to @project.name, @project %>: Consequence Ladder</h1>
 
 <div class="mb-3" style="border-bottom: 1px solid #ddd">
   <p>The consequence ladder establishes guidelines for how you will enforce your code of conduct, specifying different escalating levels of violations and their consequences. When your project is public, its ladder will be displayed on your project's directory page. As part of moderation of issues, you will be able to assign a level to the issue, and this level's description will be visible to both reporters and respondents.</p>
@@ -31,7 +31,7 @@
   </div>
 
   <div class="col">
-    <h3>New Level</h4>
+    <h2>New Level</h2>
     <%= form_for @issue_severity_level, url: project_issue_severity_levels_path do |f| %>
       <div class="form-group col-sm-6">
         <%= f.label :label %><br />

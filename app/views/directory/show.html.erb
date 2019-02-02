@@ -1,7 +1,7 @@
 <div class="row">
 
   <div class="col">
-    <h2><%= @project.name %></h2>
+    <h1><%= @project.name %></h1>
     <p><%= @project.description %></p>
     <% if current_account && current_account.can_report_abuse?(@project) %>
       <div class="actions">
@@ -9,13 +9,13 @@
       </div>
     <% end %>
 
-    <h3 class="mt-5">Links</h3>
+    <h2 class="mt-5">Links</h2>
     <ul>
       <li><%= link_to "Home page", @project.url, target: "_new" %></li>
       <li><%= link_to "Code of conduct", @project.coc_url, target: "_new" %></li>
     </ul>
 
-    <h3 class="mt-5">Issue Guidelines</h3>
+    <h2 class="mt-5">Issue Guidelines</h2>
     <p>The project maintainers have the following requirements for opening an issue:</p>
     <ul>
       <% if @project.project_setting.allow_anonymous_issues? %>
@@ -34,11 +34,11 @@
       </div>
     <% end %>
 
-    <h3 class="mt-5">Project Governance</h3>
+    <h2 class="mt-5">Project Governance</h2>
     <p><%= @project.name %> is managed by a single individual.</p>
 
     <% if @project.project_setting.publish_stats? %>
-      <h3 class="mt-5">3-Month Activity</h3>
+      <h2 class="mt-5">3-Month Activity</h2>
       <p>Issues opened: 2</p>
       <p>Issues resolved: 2</p>
       <p>Average time to resolve an issue: 3 days</p>
@@ -48,7 +48,7 @@
 
   <div class="col">
     <% if @issue_severity_levels.any? %>
-      <h3 class="mt-3">Consequence Ladder</h3>
+      <h2 class="mt-3">Consequence Ladder</h2>
       <% @issue_severity_levels.each do |consequence| %>
         <%= render partial: "issue_severity_levels/consequence_public", locals: { consequence: consequence } %>
       <% end %>

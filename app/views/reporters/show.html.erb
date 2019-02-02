@@ -1,6 +1,6 @@
-<h2><%= link_to @project.name, @project %>: Reporter Profile for <%= @display_name %></h2>
+<h1><%= link_to @project.name, @project %>: Reporter Profile for <%= @display_name %></h1>
 
-<h3 class="mt-3">Associated Issues</h3>
+<h2 class="mt-3">Associated Issues</h2>
 <ul>
   <% @issues.each do |issue| %>
     <li>

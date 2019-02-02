@@ -1,6 +1,6 @@
-<h2>Abuse Report <%= @report.report_number %>: <%= @project.name %></h2>
+<h1>Abuse Report <%= @report.report_number %>: <%= @project.name %></h1>
 
-<h3>Reporter</h3>
+<h2>Reporter</h2>
 <ul>
   <li><%= @reporter.email %></li>
   <li>
@@ -13,10 +13,10 @@
   </li>
 </ul>
 
-<h3>Explanation</h3>
+<h2>Explanation</h2>
 <p><%= @report.description %></p>
 
-<h3 class="mt-3">About <%= link_to @project.name, admin_project_path(@project) %></h3>
+<h2 class="mt-3">About <%= link_to @project.name, admin_project_path(@project) %></h2>
 <p><%= @project.description %></p>
 
 Moderators:
@@ -26,7 +26,7 @@ Moderators:
   <% end %>
 </ul>
 
-<h3>Resolution</h3>
+<h2>Resolution</h2>
 <% if @report.aasm_state == "submitted" %>
   <%= form_for @report, url: admin_abuse_report_path(@report) do |f| %>
     <div class="form-group col-sm-6">
