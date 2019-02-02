@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>Report #</th>
-      <th>Project</th>
+      <th>Subject</th>
       <th>Reporter</th>
       <th>Created At</th>
       <th>Updated At</th>
@@ -15,7 +15,7 @@
     <% @reports.each do |report| %>
       <tr>
         <td><%= link_to report.report_number, admin_abuse_report_path(report) %></td>
-        <td><%= report.project.name %></td>
+        <td><%= (report.project && report.project.name) || report.reportee.email %></td>
         <td><%= report.reporter.email %></td>
         <td><%= report.created_at.strftime("%D") %></td>
         <td><%= report.updated_at.strftime("%D") %></td>

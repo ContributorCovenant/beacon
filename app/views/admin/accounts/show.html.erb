@@ -1,0 +1,47 @@
+<h1><%= @account.email %></h1>
+
+<div class="actions mt-1">
+  <% if current_account.can_lock_account? %>
+    <% if !@account.is_flagged? %>
+      <a id="block-button" class="btn btn-danger" onclick="$('#block-form').toggle(); $('#block-button').toggle(); ">Lock Account</a>
+      <div id="block-form" style="display: none;">
+        <%= form_for @account, url: admin_account_flag_path(@account) do |f| %>
+          <div class="form-group col-sm-6">
+            <%= f.label 'Reason for Locking' %><br />
+            <%= f.text_area :flagged_reason, class: "form-control" %>
+          </div>
+          <div class="actions">
+            <%= f.submit "Lock", class: "btn btn-danger", confirm: "Are you sure you want to lock this account?" %>
+            <a class="btn btn-warning" onclick="$('#block-form').toggle(); $('#block-button').toggle(); ">Cancel</a>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <h2 class="mt-3">Account is Locked</h2>
+      <p><%= @account.flagged_reason %></p>
+      <%= button_to "Unlock Account", admin_account_unflag_path(@account), class: "btn btn-danger" %>
+    <% end %>
+  <% end %>
+</div>
+
+<% projects = @account.projects %>
+<% if projects.any? %>
+  <h2 class="mt-3">Associated Projects</h2>
+  <ul>
+    <% projects.each do |project| %>
+      <li>
+        <%= link_to project.name, admin_project_path(project) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<h2 class="mt-3">Associated Issues</h2>
+<ul>
+  <% @account.issues.each do |issue| %>
+    <li>
+      <%= link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue) %>
+      (<%= issue.aasm_state.titleize %>, opened on <%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
+    </li>
+  <% end %>
+</ul>

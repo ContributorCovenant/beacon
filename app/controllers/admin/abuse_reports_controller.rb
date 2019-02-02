@@ -12,11 +12,20 @@ module Admin
     def show
       @project = @report.project
       @reporter = @report.account
+      @reportee = @report.reportee
     end
 
     def update
       @report.update_attributes(report_params)
-      @report.resolve! if params[:commit] == "Resolve Report"
+      if params[:flag]
+        @report.resolve!
+        if project = @report.project
+          project.flag!
+        elsif reportee = @report.reportee
+          reportee.flag!
+        end
+      end
+      @report.resolve! if params[:commit] == "Flag Account" || params[:commit] == "Flag Project"
       @report.dismiss! if params[:commit] == "Dismiss Report"
       redirect_to admin_abuse_reports_path
     end
@@ -28,7 +37,7 @@ module Admin
     end
 
     def report_params
-      params.require(:abuse_report).permit(:admin_note)
+      params.require(:abuse_report).permit(:admin_note, :flag)
     end
 
     def scope_report

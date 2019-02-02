@@ -93,6 +93,10 @@ class Project < ApplicationRecord
     slug
   end
 
+  def flag!
+    self.update_attribute(:is_flagged, true)
+  end
+
   def toggle_flagged
     self.update_attribute(:is_flagged, !is_flagged)
   end

@@ -43,6 +43,10 @@ Rails.application.routes.draw do
       post "dismiss", to: "abuse_reports#dismiss"
       post "resolve", to: "abuse_reports#resolve"
     end
+    resources :accounts do
+      patch "flag", to: "accounts#flag"
+      post "unflag", to: "accounts#unflag"
+    end
     resources :projects, param: :slug do
       patch "flag", to: "projects#flag"
       post "unflag", to: "projects#unflag"

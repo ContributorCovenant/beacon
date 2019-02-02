@@ -1,4 +1,4 @@
-<h1>Abuse Report <%= @report.report_number %>: <%= @project.name %></h1>
+<h1>Abuse Report <%= @report.report_number %>: <%= (@report.project && @report.project.name) || @report.reportee.email %></h1>
 
 <h2>Reporter</h2>
 <ul>
@@ -16,15 +16,44 @@
 <h2>Explanation</h2>
 <p><%= @report.description %></p>
 
-<h2 class="mt-3">About <%= link_to @project.name, admin_project_path(@project) %></h2>
-<p><%= @project.description %></p>
+<% if @project %>
+  <h2 class="mt-3">About <%= link_to @project.name, admin_project_path(@project) %></h2>
+  <p><%= @project.description %></p>
 
-Moderators:
-<ul>
-  <% @project.moderators.map(&:email).each do |email| %>
-    <li><%= email %></li>
+  <h2>Moderators:</h2>
+  <ul>
+    <% @project.moderators.map(&:email).each do |email| %>
+      <li><%= email %></li>
+    <% end %>
+  </ul>
+<% elsif @reportee %>
+  <h2 class="mt-3">Reported Account</h2>
+  <ul>
+    <li><%= @reportee.email %></li>
+  </ul>
+
+  <% projects = @reportee.projects %>
+  <% if projects.any? %>
+    <h2 class="mt-3">Associated Projects</h2>
+    <ul>
+      <% project.each do |project| %>
+        <li>
+          <%= link_to project.name, admin_project_path(project) %>
+        </li>
+      <% end %>
+    </ul>
   <% end %>
-</ul>
+
+  <h2 class="mt-3">Associated Issues</h2>
+  <ul>
+    <% @reportee.issues.each do |issue| %>
+      <li>
+        <%= link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue) %>
+        (<%= issue.aasm_state.titleize %>, opened on <%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
+      </li>
+    <% end %>
+  </ul>
+<% end %>
 
 <h2>Resolution</h2>
 <% if @report.aasm_state == "submitted" %>
@@ -35,7 +64,11 @@ Moderators:
     </div>
 
     <div class="actions">
-      <%= f.submit "Resolve Report", class: "btn btn-primary" %>
+      <% if @reportee %>
+        <%= f.submit "Lock Account", class: "btn btn-primary" %>
+      <% else %>
+        <%= f.submit "Lock Project", class: "btn btn-primary" %>
+      <% end %>
       <%= f.submit "Dismiss Report", class: "btn btn-danger" %>
     </div>
   <% end %>

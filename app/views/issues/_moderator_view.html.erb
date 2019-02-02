@@ -17,35 +17,13 @@
         <% else %>
           <%= @issue.reporter.email %><br />
         <% end %>
-        <%= link_to "History", project_reporter_path(@project, @issue.reporter.id), class: "btn btn-sm btn-warning" %>
-        <% if @reporter_block.present? %>
+        <% if @reporter_block %>
           <p>
-            This account is blocked for this project for the following reason:<br />
+            This account is blocked from this project for the following reason:<br />
             <%= @reporter_block.reason %>
           </p>
-          <%= form_for @reporter_block, url: project_account_project_block_path(@project, @reporter_block), method: :delete do |f| %>
-            <%= f.hidden_field :account_id, value: @issue.reporter.id %>
-            <div class="actions">
-              <%= f.submit "Unblock", class: "btn btn-sm btn-danger" %>
-            </div>
-          <% end %>
-        <% else %>
-          <a onclick="toggle_show_block_form('<%= @issue.reporter.hashed_email %>')" class="btn btn-sm btn-danger">Block</a>
         <% end %>
-
-        <div id="block-form-<%= @issue.reporter.hashed_email %>" style="display: none">
-          <%= form_for @project.account_project_blocks.new, url: project_account_project_blocks_path(@project) do |f| %>
-            <%= f.hidden_field :account_id, value: @issue.reporter.id %>
-            <div class="form-group">
-              <%= f.label "Reason" %><br />
-              <%= f.text_area :reason, class: "form-control" %>
-            </div>
-            <div class="actions">
-              <%= f.submit "Block", class: "btn btn-sm btn-danger", confirm: "Are you sure you want to block this account? They will no longer be able to open or comment on issues on this project." %>
-              <a onclick="toggle_show_block_form('<%= @issue.reporter.hashed_email%>')" class="btn btn-sm">Cancel</a>
-            <% end %>
-          </div>
-        </div>
+        <%= link_to "Details", project_reporter_path(@project, @issue.reporter.id), class: "btn btn-sm btn-warning" %>
       </li>
     </ul>
 
@@ -57,34 +35,13 @@
       <ul>
         <li>
           <%= @issue.respondent.email %><br />
-          <%= link_to "History", project_respondent_path(@project, @issue.respondent.id), class: "btn btn-sm btn-warning" %>
+          <%= link_to "Details", project_respondent_path(@project, @issue.respondent.id), class: "btn btn-sm btn-warning" %>
           <% if @respondent_block %>
             <p>
-              This account is blocked for this project for the following reason:<br />
+              This account is blocked from this project for the following reason:<br />
               <%= @respondent_block.reason %>
             </p>
-            <%= form_for @respondent_block, url: project_account_project_block_path(@project, @respondent_block), method: :delete do |f| %>
-              <%= f.hidden_field :account_id, value: @issue.respondent.id %>
-              <div class="actions">
-                <%= f.submit "Unblock", class: "btn btn-sm btn-danger" %>
-              </div>
-            <% end %>
-         <% else %>
-            <a onclick="toggle_show_block_form('<%= @issue.respondent.hashed_email %>')" class="btn btn-sm btn-danger">Block</a>
           <% end %>
-          <div id="block-form-<%= @issue.respondent.hashed_email %>" style="display: none">
-            <%= form_for @project.account_project_blocks.new, url: project_account_project_blocks_path(@project) do |f| %>
-            <%= f.hidden_field :account_id, value: @issue.respondent.id %>
-            <div class="form-group">
-              <%= f.label "Reason" %><br />
-              <%= f.text_area :reason, class: "form-control" %>
-            </div>
-            <div class="actions">
-              <%= f.submit "Block", class: "btn btn-sm btn-danger", confirm: "Are you sure you want to block this account? They will no longer be able to open or comment on issues on this project." %>
-              <a onclick="toggle_show_block_form('<%= @issue.respondent.hashed_email%>')" class="btn btn-sm">Cancel</a>
-            </div>
-            <% end %>
-          </div>
         </li>
       </ul>
     <% else %>
