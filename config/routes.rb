@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     get "ownership", to: "projects#ownership"
     patch "clone_ladder", to: "projects#clone_ladder"
     post "clone_respondent_template", to: "respondent_templates#clone"
+    patch "clone_respondent_template", to: "respondent_templates#clone"
     patch "confirm", to: "projects#confirm_ownership"
     patch "settings", to: "project_settings#update"
     post "toggle_pause", to: "project_settings#toggle_pause"
