@@ -24,7 +24,8 @@
 * Moderators have a step-by-step setup process with a clear progress indicator
 * Creation and display of a "consequence ladder" per project (detailing examples of unacceptable behavior and their likely consequences)
 * Per-project block lists of reporters
-* Prototype will be accessible on a temporary server setup on Heroku
+* Project moderators can report an account to Beacon admins for abuse
+* Superuser dashboards and controls for account and project management
 * CI and automated deployments
 
 ## Prototype security features
@@ -33,8 +34,10 @@
 * Links between issues, reporters, subjects, moderators, and projects are all encrypted in the database. This means that if someone gets access to the database, they will not be able to recreate the association between an issue and the reporter, etc.
 * All displays of issue details are watermarked with a hash that can be linked to an account, so if someone takes a screenshot of an issue we can trace the leak back to a given account
 * Email validation required to activate an account
+* All emails are validated against known throwaway account providers and MX records
 * Validation of uniqueness of email addresses to prevent mass creation of junk accounts (e.g. john.smith@gmail.com, johnsmith@gmail.com, johnsmith+test@gmail.com)
 * Record instances of a user attempting to access a forbidden resource or page
+* Global rate-limiting for opening issues
 
 ## Public beta features
 
@@ -56,19 +59,17 @@
 
 ### For Beacon administrators
 * Beacon administrators have the responsibility to review and approve projects prior to them being public
-* Superuser dashboards and controls for account and project management
 
 ### Additional security features
 * SMS 2fa on account creation and sign in
 * Phone number uniqueness validation
 * Linking accounts to GitHub or GitLab accounts
 * Sign in with GitHub or GitLab credentials
-* Global rate-limiting for opening issues
 * Reporter reputation system
-* Number of dismissed/spam issues
-* Traffic source (Tor exit nodes, proxies)
-* Number of resolved issues with the reporter as the subject
-* Suspicious site activity (pattern of triggering 404s and 302s)
+  * Number of dismissed/spam issues
+  * Traffic source (Tor exit nodes, proxies)
+  * Number of resolved issues with the reporter as the subject
+  * Suspicious site activity (pattern of triggering 404s and 302s)
 
 ### Additional post-prototype effort
 * UI/UX/accessibility improvements
