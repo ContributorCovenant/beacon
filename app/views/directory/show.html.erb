@@ -3,10 +3,11 @@
   <div class="col">
     <h1><%= @project.name %></h1>
     <p><%= @project.description %></p>
-    <div class="actions">
-      <%= link_to "Report This Project", "#", class: "btn btn-primary" %>
-    </div>
-
+    <% if current_account %>
+      <div class="actions">
+        <%= link_to "Report This Project", "#", class: "btn btn-primary" %>
+      </div>
+    <% end %>
     <h2 class="mt-5">Links</h2>
     <ul>
       <li><%= link_to "Home page", @project.url, target: "_new" %></li>
