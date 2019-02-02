@@ -42,6 +42,19 @@
                 <% end %>
               </li>
               <li>
+                <% if @project.respondent_template? %>
+                  <%= link_to "Respondent Template", project_respondent_template_path(@project, @project.respondent_template) %>
+                  <span class="badge badge-pill badge-success">
+                    √
+                  </span>
+                <% else %>
+                  <%= link_to "Respondent Template", new_project_respondent_template_path(@project) %>
+                  <span class="badge badge-pill badge-danger">
+                    x
+                  </span>
+                <% end %>
+              </li>
+              <li>
                 <%= link_to "Project Settings", project_settings_path(@project)  %>
                 <% if @project.verified_settings? %>
                   <span class="badge badge-pill badge-success">
@@ -75,16 +88,31 @@
         <h2 class="card-title">Links</h2>
         <div class="card-text">
           <ul>
+            <li>
+              <%= link_to "Home Page", @project.url, target: "_new" %>
+            </li>
+            <li>
+              <%= link_to "Code of Conduct", @project.coc_url, target: "_new" %>
+            </li>
+            <% if @project.public? %>
+              <li>
+                <%= link_to "View in Directory", directory_project_path(@project.slug) %>
+              </li>
+            <% end %>
             <% if @project.consequence_ladder? %>
-              <li><%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %></li>
+              <li>
+                <%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %>
+              </li>
+            <% end %>
+            <% if @project.respondent_template? %>
+              <li>
+                <%= link_to "Respondent Template", edit_project_respondent_template_path(@project, @project.respondent_template) %>
+              </li>
             <% end %>
             <% if @project.account_project_blocks.any? %>
-              <li><%= link_to "Blocked Accounts", project_account_project_blocks_path(@project) %></li>
-            <% end %>
-            <li><%= link_to "Home page", @project.url, target: "_new" %></li>
-            <li><%= link_to "Code of conduct", @project.coc_url, target: "_new" %></li>
-            <% if @project.public? %>
-              <li><%= link_to "View in Directory", directory_project_path(@project.slug) %></li>
+              <li>
+                <%= link_to "Blocked Accounts", project_account_project_blocks_path(@project) %>
+              </li>
             <% end %>
           </ul>
         </div>

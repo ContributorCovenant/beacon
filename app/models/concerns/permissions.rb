@@ -44,6 +44,10 @@ module Permissions
     project.moderator?(self)
   end
 
+  def can_manage_respondent_template?(project)
+    project.moderator?(self)
+  end
+
   def can_moderate_project?(project)
     project.moderator?(self)
   end

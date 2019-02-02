@@ -1,0 +1,15 @@
+<h1><%= link_to @project.name, @project %>: Respondent Contact Template</h1>
+
+<p>This template will be used when you first contact the respondent of an issue.</p>
+
+<p>Values like <b>[[VALUE]]</b> will be auto-populated when you use the template to contact a respondent.</p>
+
+<%= form_for @template, url: project_respondent_templates_path(@project) do |f| %>
+  <div class="form-group">
+    <%= f.text_area :text, class: "form-control", rows: 20 %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Save", class: "btn btn-primary" %>
+  </div>
+<% end %>
