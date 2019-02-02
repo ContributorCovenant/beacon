@@ -12,6 +12,7 @@ module Admin
     def show
       @blocks = @account.account_project_blocks.includes(:projects).map(&:project)
       @reports = AbuseReportSubject.where(account_id: @account.id).includes(:abuse_report)
+      @projects = @account.projects
     end
 
     def flag
@@ -43,7 +44,7 @@ module Admin
     end
 
     def scope_account
-      @account = Account.find(params[:id])
+      @account = Account.find_by(id: params[:id]) || Account.find_by(id: params[:account_id])
     end
 
   end

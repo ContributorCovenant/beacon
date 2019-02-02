@@ -11,6 +11,12 @@
 </ul>
 
 <% if @blocked %>
+  <p>
+    This account is blocked from this project for the following reason:<br />
+    <%= @block.reason %>
+  </p>
+
+
   <%= form_for @block, url: project_account_project_block_path(@project, @block), method: :delete do |f| %>
     <%= f.hidden_field :account_id, value: @actor.id %>
     <%= hidden_field_tag :return_to, "reporter" %>

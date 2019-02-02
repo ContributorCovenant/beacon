@@ -16,10 +16,6 @@ module Permissions
     !!is_admin
   end
 
-  def can_lock_project?
-    !!is_admin
-  end
-
   def can_block_account?(project)
     return true if project.moderators.include?(self)
     false
@@ -38,6 +34,14 @@ module Permissions
 
   def can_invite_respondent?(issue)
     issue.project.moderator?(self)
+  end
+
+  def can_lock_account?
+    !!is_admin
+  end
+
+  def can_lock_project?
+    !!is_admin
   end
 
   def can_manage_consequence_ladder?(project)
@@ -60,7 +64,6 @@ module Permissions
     return false unless project.accepting_issues?
     return false if blocked_from_project?(project)
     return false if is_flagged
-    return false if total_issues_past_24_hours >= Setting.throttling(:max_issues_per_day)
     return false if project.issue_count_from_past_24_hours == project.project_setting.rate_per_day
     return true
   end
@@ -77,6 +80,7 @@ module Permissions
   end
 
   def can_view_issue?(issue)
+    return true if is_admin?
     return true if issue.project.moderator?(self)
     return true if issue.reporter == self && !blocked_from_project?(issue.project)
     return true if issue.respondent == self && !blocked_from_project?(issue.project)

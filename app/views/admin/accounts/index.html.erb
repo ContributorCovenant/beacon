@@ -1,0 +1,30 @@
+<h1>Admin: Accounts (<%= @accounts.size %>)</h1>
+
+<table class="table" id="accounts" data-sorting="true">
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+      <th># Projects</th>
+      <th>Flagged?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @accounts.each do |account| %>
+      <tr>
+        <td><%= link_to account.email, admin_account_path(account) %></td>
+        <td><%= account.created_at.strftime("%D") %></td>
+        <td><%= account.updated_at.strftime("%D") %></td>
+        <td><%= account.projects.count %></td>
+        <td><%= account.is_flagged? ? "Flagged" : "" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>
+
+<%= javascript_tag do %>
+  jQuery(function($){
+	  $('.table').footable();
+  });
+<% end %>
