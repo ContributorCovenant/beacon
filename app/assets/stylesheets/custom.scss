@@ -16,6 +16,10 @@
   float: none;
 }
 
+a {
+  color: #e9664 !important;
+}
+
 h1 {
   font-size: 2rem;
 }
@@ -38,6 +42,10 @@ h5 {
 
 h6 {
   font-size: .75rem;
+}
+
+.card-text a {
+  color: ffffff !important;
 }
 
 .btn {
