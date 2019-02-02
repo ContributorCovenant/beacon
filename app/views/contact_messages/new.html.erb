@@ -1,0 +1,26 @@
+<h1>Contact Beacon Administrators</h1>
+
+<p>Use this form to send a message to the administrators of the Beacon application.</p>
+
+<%= form_for @contact_message, url: contact_messages_path do |f| %>
+
+  <div class="form-group">
+    <label>Your email address</label><br />
+    <%= f.text_field :sender_email, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label>Message</label><br />
+    <%= f.text_area :message, class: "form-control", rows: 10 %>
+  </div>
+
+  <div class="form-group">
+    <%= flash[:recaptcha_error] %>
+    <%= recaptcha_tags %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Send Message", class: "btn btn-primary" %>
+  </div>
+
+<% end %>
