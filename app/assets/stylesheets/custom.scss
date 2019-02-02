@@ -21,6 +21,11 @@
   color: $black;
 }
 
+.bg-primary {
+  background-color: $red !important;
+  background: linear-gradient(180deg, $red, #220000) repeat-x;
+}
+
 .form-control:disabled, .form-control[readonly] {
   background-color: $gray-800;
   color: #ffffff;
