@@ -53,7 +53,11 @@ module Permissions
   end
 
   def can_open_issue_on_project?(project)
-    project.accepting_issues? && !blocked_from_project?(project) && !is_flagged
+    return false unless project.accepting_issues?
+    return false if blocked_from_project?(project)
+    return false if is_flagged
+    return false if project.issue_count_from_past_24_hours == project.project_setting.rate_per_day
+    return true
   end
 
   def can_report_abuse?(project)

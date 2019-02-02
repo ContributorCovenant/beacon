@@ -24,6 +24,10 @@ class Project < ApplicationRecord
     @issues ||= ProjectIssue.issues_for_project(id)
   end
 
+  def issue_count_from_past_24_hours
+    issues.select{ |issue| issue.created_at >= Time.zone.now - 24.hours }.size
+  end
+
   def to_param
     slug
   end
