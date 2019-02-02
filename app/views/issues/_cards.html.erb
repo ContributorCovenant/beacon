@@ -5,7 +5,7 @@
     <% float_class = i < issues.size - 1 ? "float-left" : "float-none" %>
     <div class="card mb-3 mr-3 <%= float_class %>" style="width: 15rem; height: 12rem">
       <div class="card-body">
-        <h5 class="card-title"><%= issue.project.name %></h5>
+        <h2 class="card-title"><%= issue.project.name %></h2>
         <div class="card-text">
           <p>
             <%= link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue) %>

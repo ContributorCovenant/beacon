@@ -1,4 +1,4 @@
-<h2><%= link_to @project.name, @project %>: Blocked Users</h2>
+<h1><%= link_to @project.name, @project %>: Blocked Users</h1>
 
 <% if @blocks.any? %>
   <div class="row">
@@ -6,18 +6,18 @@
       <div class="col">
         <div class="card mb-3 mr-3">
           <div class="card-body">
-            <h5 class="card-title">
+            <h2 class="card-title">
               <% if @project.project_setting.allow_anonymous_issues && @project.issues.map(&:reporter).include?( block.account) %>
                 Anonymous Reporter
               <% else %>
                 <%= block.account.email %>
               <% end %>
-            </h5>
+            </h2>
             <div class="card-text">
               <p>
                 Reason: <%= block.reason %>
               </p>
-              <h5 class="mt-2">Associated Issues</h5>
+              <h2 class="mt-2">Associated Issues</h2>
               <ul>
                 <% if @project.project_setting.allow_anonymous_issues %>
                   <% issues = block.issues.select{ |issue| issue.reporter == block.account } %>

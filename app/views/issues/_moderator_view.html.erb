@@ -1,7 +1,7 @@
 <div class="row mt-3">
 
   <div class="col">
-    <div style="background-image: url('/watermark.svg'); background-repeat: no-repeat; background-position: left top; background-size: 100px 100px;">
+    <div>
       <div style="mix-blend-mode: exclusion; padding: .25em;">
         <%= @issue.description %>
       </div>
@@ -9,7 +9,7 @@
   </div>
 
   <div class="col" style="border-left: 1px solid #eee;">
-    <h4 class="mt-3">Reporter</h4>
+    <h2 class="mt-3">Reporter</h2>
     <ul>
       <li>
         <% if @project.obscure_reporter_email? %>
@@ -49,13 +49,10 @@
       </li>
     </ul>
 
-    <div style="width: 10rem;">
-      <h4 class="mt-3">
-        Respondent
-        <div class="float-right badge badge-pill badge-info" data-toggle="tooltip" data-placement="right" title="The respondent is the person whose behavior was flagged in the issue.">?</div>
-        </div>
-
-      </h4>
+    <h2 class="mt-3">
+      Respondent
+    </h2>
+    <p><i>The respondent is the person whose behavior was flagged in the issue.</i></p>
     <% if @issue.respondent %>
       <ul>
         <li>
@@ -94,7 +91,7 @@
       <%= link_to "Add Respondent", new_project_issue_issue_invitation_path(project, issue), class: "ml-4 btn btn-danger mr-3" %>
     <% end %>
 
-    <h4 class="mt-3">Supporting Links</h4>
+    <h2 class="mt-3">Supporting Links</h2>
     <ul>
       <% if issue.urls.reject(&:empty?).any? %>
         <% issue.urls.reject(&:empty?).each do |url| %>
@@ -106,7 +103,7 @@
     </ul>
 
     <% if @project.issue_severity_levels.any? %>
-      <h4 class="mt-3">Severity</h4>
+      <h2 class="mt-3">Severity</h2>
       <ul>
         <li>
           <div id="severity-show" style="display: <%= @issue_severity_level.present? ? 'block' : 'none' %>">
@@ -128,7 +125,7 @@
         </li>
       </ul>
     <% end %>
-    <h4 class="mt-3">Status</h4>
+    <h2 class="mt-3">Status</h2>
     <ul>
       <li>
         <%= issue.aasm_state.titleize %> (<%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
@@ -227,9 +224,9 @@
       <% if @issue.respondent_summary %>
         <div class="card mb-3 mr-3" style="width: 100%">
           <div class="card-body">
-            <h5 class="card-title">
+            <h2 class="card-title">
               Issue Summary to Respondent
-            </h5>
+            </h2>
             <div class="card-text">
               <p><%= @issue.respondent_summary %></p>
             </div>
@@ -284,9 +281,9 @@
       <% else %>
         <div class="card mb-3 ml-3 mr-3" style="width: 90%">
           <div class="card-body">
-            <h5 class="card-title">
+            <h2 class="card-title">
               Resolution
-            </h5>
+            </h2>
             <div class="card-text">
               <p><%= @issue.resolution_text %></p>
               <h6>

@@ -1,6 +1,6 @@
-<h2><%= link_to @project.name, @project %>: Issue <%= @issue.issue_number %></h2>
+<h1><%= link_to @project.name, @project %>: Issue <%= @issue.issue_number %></h1>
 
-<h3>Contact Respondent</h3>
+<h2>Contact Respondent</h2>
 
 <%= form_for @invitation, url: project_issue_issue_invitations_path(@project, @issue) do |f| %>
   <div class="form-group">

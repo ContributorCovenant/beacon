@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col">
-    <h2><%= @project.name %></h2>
+    <h1><%= @project.name %></h1>
     <p><%= @project.description %></p>
     <div class="actions">
       <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning" %>
@@ -14,7 +14,7 @@
     <% unless @project.setup_complete? %>
       <div class="card mb-2" style="width: 18rem;">
         <div class="card-body">
-          <h5 class="card-title">Setup Checklist</h5>
+          <h2 class="card-title">Setup Checklist</h2>
           <div class="card-text">
             <ul>
               <li>
@@ -72,7 +72,7 @@
     <% end %>
     <div class="card" style="width: 18rem;">
       <div class="card-body">
-        <h5 class="card-title">Links</h5>
+        <h2 class="card-title">Links</h2>
         <div class="card-text">
           <ul>
             <% if @project.consequence_ladder? %>

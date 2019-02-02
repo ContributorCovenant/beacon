@@ -1,14 +1,14 @@
 <% card_bg = comment.commenter == project.account ? "bg-success" : "bg-warning" %>
 <div class="card mb-3 ml-3 mr-3 <%= card_bg %>" style="width: 90%">
   <div class="card-body">
-    <h5 class="card-title">
+    <h2 class="card-title">
       <%= comment.commenter == comment.issue.reporter && project.obscure_reporter_email? ? "Reporter" : comment.commenter.email %>
-    </h5>
+    </h2>
     <div class="card-text">
       <p><%= comment.text %></p>
-      <h6>
+      <h3>
         <%= comment.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>
-      </h6>
+      </h3>
     </div>
   </div>
 </div>

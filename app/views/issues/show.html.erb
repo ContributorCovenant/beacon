@@ -1,7 +1,7 @@
 <% if @project.moderator?(current_account) %>
-  <h2><%= link_to @project.name, @project %>: Issue <%= @issue.issue_number %></h2>
+  <h1><%= link_to @project.name, @project %>: Issue <%= @issue.issue_number %></h1>
 <% else %>
-  <h2><%= link_to @project.name, directory_project_path(@project) %>: Issue <%= @issue.issue_number %></h2>
+  <h1><%= link_to @project.name, directory_project_path(@project) %>: Issue <%= @issue.issue_number %></h1>
 <% end %>
 
 <% if @project.moderator?(current_account) %>
