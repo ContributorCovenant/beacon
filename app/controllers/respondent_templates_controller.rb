@@ -6,7 +6,7 @@ class RespondentTemplatesController < ApplicationController
 
   def new
     @template = RespondentTemplate.new(project_id: @project.id, text: RespondentTemplate.beacon_default.text)
-    projects_with_respondent_template = current_account.projects.select{ |project| project.respondent_template? }
+    projects_with_respondent_template = current_account.projects.select(&:respondent_template?)
     @available_templates = (["Beacon Default"] << projects_with_respondent_template.map(&:name)) - [@project.name]
   end
 
