@@ -4,7 +4,7 @@ class IssueInvitationsController < ApplicationController
   before_action :enforce_permissions
 
   def new
-    @invitation = IssueInvitation.new
+    @invitation = IssueInvitation.new(summary: @project.respondent_template.populate_from(@issue, issue_url(@issue)))
   end
 
   def create

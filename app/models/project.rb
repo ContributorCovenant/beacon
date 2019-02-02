@@ -6,6 +6,7 @@ class Project < ApplicationRecord
 
   belongs_to :account
   has_one :project_setting
+  has_one :respondent_template
   has_many :project_issues
   has_many :account_project_blocks
   has_many :issue_severity_levels
@@ -20,32 +21,24 @@ class Project < ApplicationRecord
     ProjectSetting.includes(:project).where(include_in_directory: true).order("projects.name ASC").map(&:project)
   end
 
-  def issues
-    @issues ||= ProjectIssue.issues_for_project(id)
-  end
-
-  def issue_count_from_past_24_hours
-    issues.select{ |issue| issue.created_at >= Time.zone.now - 24.hours }.size
-  end
-
-  def to_param
-    slug
-  end
-
-  def public?
-    project_setting.include_in_directory
-  end
-
   def accepting_issues?
     public? && !paused?
+  end
+
+  def confirmation_token_url
+    url + "beacon.txt"
   end
 
   def consequence_ladder?
     issue_severity_levels.any?
   end
 
-  def confirmation_token_url
-    url + "beacon.txt"
+  def issues
+    @issues ||= ProjectIssue.issues_for_project(id)
+  end
+
+  def issue_count_from_past_24_hours
+    issues.select{ |issue| issue.created_at >= Time.zone.now - 24.hours }.size
   end
 
   def moderator?(account)
@@ -64,20 +57,40 @@ class Project < ApplicationRecord
     project_setting.allow_anonymous_issues
   end
 
-  def paused?
-    project_setting.paused?
-  end
-
   def ownership_confirmed?
     confirmed_at.present?
   end
 
+  def paused?
+    project_setting.paused?
+  end
+
+  def public?
+    project_setting.include_in_directory
+  end
+
+  def respondent_template?
+    respondent_template.present?
+  end
+
   def setup_complete?
-    public? && verified_settings? && consequence_ladder? && ownership_confirmed?
+    return false unless public?
+    return false unless verified_settings?
+    return false unless consequence_ladder?
+    return false unless ownership_confirmed?
+    return false unless respondent_template?
+    return true
   end
 
   def show_in_directory?
-    public? && setup_complete? && !is_flagged
+    return false unless public?
+    return false unless setup_complete?
+    return false if is_flagged
+    return true
+  end
+
+  def to_param
+    slug
   end
 
   def toggle_flagged

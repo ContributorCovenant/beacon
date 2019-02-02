@@ -1,4 +1,4 @@
-<h1><%= link_to @project.name, @project %>: Issue <%= @issue.issue_number %></h1>
+<h1><%= link_to @project.name, @project %>: <%= link_to "Issue #{@issue.issue_number}", project_issue_path(@project, @issue) %></h1>
 
 <h2>Contact Respondent</h2>
 
@@ -10,7 +10,7 @@
 
   <div class="form-group">
     <%= f.label "Issue Summary" %><br />
-    <%= f.text_area :summary, class: "form-control" %>
+    <%= f.text_area :summary, class: "form-control", rows: 20 %>
   </div>
 
   <div class="actions">
