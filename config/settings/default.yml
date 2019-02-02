@@ -1,3 +1,4 @@
 throttling:
   max_abuse_reports_per_day: <%= ENV.fetch('MAX_ABUSE_REPORTS_PER_DAY', 5) %>
   max_general_contacts_per_day: <%= ENV.fetch('MAX_GENERAL_CONTACTS_PER_DAY', 2) %>
+  max_issues_per_day: <%= ENV.fetch('MAX_ISSUES_PER_DAY', 3) %>

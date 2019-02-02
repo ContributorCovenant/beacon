@@ -34,6 +34,10 @@ class Account < ApplicationRecord
     @issues ||= AccountIssue.issues_for_account(id)
   end
 
+  def total_issues_past_24_hours
+    issues.select{ |issue| issue.created_at >= Time.zone.now - 24.hours }.size
+  end
+
   def notifications
     @notifications ||= Notification.notifications_for_account(self)
   end
