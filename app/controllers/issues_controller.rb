@@ -45,30 +45,36 @@ class IssuesController < ApplicationController
   end
 
   def show
+    @comment = IssueComment.new
+
+    @internal_comments = @issue.comments_visible_only_to_moderators
     @reporter_discussion_comments = @issue.comments_visible_to_reporter
     @respondent_discussion_comments = @issue.comments_visible_to_respondent
-    @internal_comments = @issue.comments_visible_only_to_moderators
+
     @issue_severity_level = @issue.issue_severity_level
-    @notifications_for_internal_comments_count = @internal_comments.map(&:notifications).flatten.select{ |n| n.account_id == current_account.id }.count
-    @notifications_for_reporter_comments_count = @reporter_discussion_comments
-      .map(&:notifications)
-      .flatten
-      .select{ |n| n.account_id == current_account.id }
-      .count
-    @notifications_for_respondent_comments_count = @respondent_discussion_comments
-      .map(&:notifications)
-      .flatten
-      .select{ |n| n.account_id == current_account.id }
-      .count
+
+    @notifications_for_internal_comments_count = (
+      @internal_comments
+        .map(&:notifications)
+        .flatten & current_account.notifications
+    ).size
+
+    @notifications_for_reporter_comments_count = (
+      @reporter_discussion_comments
+        .map(&:notifications)
+        .flatten & current_account.notifications
+    ).size
+
+    @notifications_for_respondent_comments_count = (
+      @respondent_discussion_comments
+        .map(&:notifications)
+        .flatten & current_account.notifications
+    ).size
+
     @reporter_block = @project.account_project_blocks.find_by(account_id: @issue.reporter.id)
     @respondent_block = @project.account_project_blocks.find_by(account_id: @issue.respondent.try(:id))
-    if current_account == @issue.reporter || current_account == @issue.respondent
-      NotificationService.notified!(account: current_account, issue_id: @issue.id)
-    end
-    if @project.moderator?(current_account)
-      NotificationService.notified!(account: current_account, issue_id: @issue.id)
-    end
-    @comment = IssueComment.new
+
+    NotificationService.notified!(account: current_account, issue_id: @issue.id)
   end
 
   def acknowledge

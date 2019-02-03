@@ -2,6 +2,8 @@
 
 <h2>Contact Respondent</h2>
 
+<p>This is your first time contacting the respondent on this issue. Because they will not be able to see the description of the issue that has been filed, for the sake of the privacy of the reporter, you will need to summarize the issue for them in this message.</p>
+
 <%= form_for @invitation, url: project_issue_issue_invitations_path(@project, @issue) do |f| %>
   <div class="form-group">
     <%= f.label "Respondent Email" %><br />
