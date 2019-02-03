@@ -4,6 +4,7 @@ AllCops:
   Exclude:
     - "db/**/*"
     - 'vendor/**/*'
+    - 'lib/tasks/*'
 
 Style/Documentation:
   Enabled: false

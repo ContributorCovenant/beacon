@@ -1,31 +1,46 @@
 <h1><%= link_to @project.name, @project %>: Respondent Contact Template</h1>
 
-<div class="mb-3" style="border-bottom: 1px solid #ddd">
-  <p>This template will be used when you first contact the respondent of an issue.</p>
+<p>This template will be used when you first contact the respondent of an issue.</p>
 
-  <p>Values like <b>[[VALUE]]</b> will be auto-populated when you use the template to contact a respondent.</p>
+<div class="row">
 
-  <p>You can customize your respondent template from Beacon defaults or another one of your projects, or create your own.</p>
+  <div class="col">
+    <%= form_for @template, url: project_respondent_templates_path(@project, @template) do |f| %>
+      <div class="form-group">
+        <%= f.text_area :text, class: "form-control", rows: 20 %>
+      </div>
 
-  <%= form_for @template, url: project_clone_respondent_template_path(@project) do |f| %>
-    <div class="form-group col-sm-6">
-      <%= f.label :clone_from %>
-      <%= f.select :respondent_template_default_source, @available_templates, class: "form-control", include_blank: "Select..." %>
-    </div>
+      <div class="actions">
+        <%= f.submit "Save", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
 
-    <div class="actions mb-3">
-      <%= f.submit "Clone", class: "btn btn-primary" %>
-    </div>
-  <% end %>
+  <div class="col">
+    <h2>Cloning a Template</h2>
+    <p>You can customize your respondent template from Beacon defaults or another one of your projects, or create your own.</p>
 
+    <%= form_for @template, url: project_clone_respondent_template_path(@project) do |f| %>
+      <div class="form-group col-sm-6">
+        <%= f.label :clone_from %>
+        <%= f.select :respondent_template_default_source, @available_templates, class: "form-control", include_blank: "Select..." %>
+      </div>
+
+      <div class="actions mb-3">
+        <%= f.submit "Clone", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+    <h2>Tags</h2>
+    <p>The following tags will be auto-populated from your project and the issue when you contact a respondent:</p>
+
+    <ul>
+      <li>[[PROJECT_NAME]]</li>
+      <li>[[CODE_OF_CONDUCT_URL]]</li>
+      <li>[[VIOLATION_EXAMPLE]]: The example from the consequence ladder corresponding to the level of the issue.</li>
+      <li>[[CONSEQUENCE]]: The relevant consequence corresponding to the level of the issue.</li>
+      <li>[[ISSUE_URL]]</li>
+    </ul>
+
+  </div>
 </div>
-
-<%= form_for @template, url: project_respondent_templates_path(@project) do |f| %>
-  <div class="form-group">
-    <%= f.text_area :text, class: "form-control", rows: 20 %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Save", class: "btn btn-primary" %>
-  </div>
-<% end %>

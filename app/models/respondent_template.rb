@@ -11,12 +11,14 @@ class RespondentTemplate < ApplicationRecord
   end
 
   def populate_from(issue, issue_url)
+    severity = project.issue_severity_levels.find_by(severity: issue.issue_severity_level)
+
     text.gsub!("[[PROJECT_NAME]]", project.name)
     text.gsub!("[[CODE_OF_CONDUCT_URL]]", project.coc_url)
-    if severity_level = issue.issue_severity_level
-      text.gsub!("[[CONSEQUENCE]]", severity_level.consequence)
-    end
+    text.gsub!("[[VIOLATION_EXAMPLE]]", severity.example)
+    text.gsub!("[[CONSEQUENCE]]", severity.consequence)
     text.gsub!("[[ISSUE_URL]]", issue_url)
+
     return text
   end
 
