@@ -7,7 +7,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item nav-link">
-        <%= link_to "Project Directory", directory_path %>
+        <%= link_to "Directory", directory_path %>
       </li>
 
       <% if current_account && current_account.can_access_admin_dashboard? %>
@@ -49,7 +49,7 @@
         <%= link_to "FAQ", "#" %>
       </li>
       <li class="nav-item nav-link">
-        <%= link_to "About Beacon", "#" %>
+        <%= link_to "About Beacon", about_path %>
       </li>
       <li class="nav-item nav-link">
         <%= link_to "Contact", new_contact_message_path %>
