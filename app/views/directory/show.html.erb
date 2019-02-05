@@ -5,7 +5,7 @@
     <p><%= @project.description %></p>
     <% if current_account %>
       <div class="actions">
-        <%= link_to "Report This Project", "#", class: "btn btn-primary" %>
+        <%= link_to "Report This Project", new_abuse_report_path(project_slug: @project.slug), class: "btn btn-primary" %>
       </div>
     <% end %>
     <h2 class="mt-5">Links</h2>
