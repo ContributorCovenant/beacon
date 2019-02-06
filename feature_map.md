@@ -39,7 +39,7 @@
 * Record instances of a user attempting to access a forbidden resource or page
 * Global rate-limiting for opening issues
 
-## Public beta features
+## Private beta features
 
 ### For moderators and project owners
 * Ability to add moderators (beyond the project owner) to a project
@@ -71,7 +71,7 @@
   * Number of resolved issues with the reporter as the subject
   * Suspicious site activity (pattern of triggering 404s and 302s)
 
-### Additional post-prototype effort
+### Additional pre-public beta effort
 * UI/UX/accessibility improvements
 * Consultation with community management and code of conduct enforcement specialists
 * Security audit
