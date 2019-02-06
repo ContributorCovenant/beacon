@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'donotreply@coc-beacon.org'
+  default from: Setting.emails(:robot)
   layout 'mailer'
 end
