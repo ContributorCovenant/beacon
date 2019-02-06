@@ -4,12 +4,12 @@ class AdminMailer < ApplicationMailer
     @report = params[:report]
     @project = params[:project]
     @reporter = @report.account
-    mail(to: admin_emails, subject: "Beacon: New Abuse Report")
+    mail(to: Setting.emails(:abuse), subject: "Beacon: New Abuse Report")
   end
 
   def notify_on_new_contact_message
     @message = params[:contact_message]
-    mail(to: admin_emails, subject: "Beacon: New Contact Form")
+    mail(to: Setting.emails(:support), subject: "Beacon: New Contact Form")
   end
 
   def notify_on_flag_request
@@ -17,13 +17,7 @@ class AdminMailer < ApplicationMailer
     @account = params[:account]
     @reason = params[:reason]
     @report = params[:report]
-    mail(to: admin_emails, subject: "Beacon: New Account Block Request")
-  end
-
-  private
-
-  def admin_emails
-    Account.admins.pluck(:email)
+    mail(to: Setting.emails(:abuse), subject: "Beacon: New Account Block Request")
   end
 
 end
