@@ -5,12 +5,12 @@
 <%= form_for @contact_message, url: contact_messages_path do |f| %>
 
   <div class="form-group">
-    <label>Your email address</label><br />
+    <%= f.label :sender_email, "Your email address" %><br />
     <%= f.text_field :sender_email, class: "form-control" %>
   </div>
 
   <div class="form-group">
-    <label>Message</label><br />
+    <%= f.label :message %><br />
     <%= f.text_area :message, class: "form-control", rows: 10 %>
   </div>
 
