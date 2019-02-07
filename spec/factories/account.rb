@@ -2,7 +2,20 @@ FactoryBot.define do
   factory :account do
     confirmed_at { Time.zone.now }
     password { "1234567891011" }
+    email { Faker::Internet.email }
 
+    trait :with_github_account_linked do
+      after(:create) do |account, evaluator|
+        FactoryBot.create(:credential, account: account, provider: 'github')
+      end
+    end
+
+    trait :with_gitlab_account_linked do
+      after(:create) do |account, evaluator|
+        FactoryBot.create(:credential, account: account, provider: 'gitlab' )
+      end
+    end
+    
     # Danielle is a project maintainer for a small, one-person open source project.
     factory :danielle do
       email { "danielle@dax.com" }

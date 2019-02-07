@@ -20,6 +20,14 @@ GIT
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
 
+GIT
+  remote: https://github.com/stympy/faker.git
+  revision: fcbfaa282dc6c2d4c1393bcb65d9fb647c8a5bc0
+  branch: master
+  specs:
+    faker (1.9.1)
+      i18n (>= 0.7)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -419,6 +427,7 @@ DEPENDENCIES
   devise
   dotenv-rails
   factory_bot_rails
+  faker!
   google-cloud-storage
   jbuilder (~> 2.5)
   jquery-rails
@@ -455,4 +464,4 @@ RUBY VERSION
    ruby 2.5.3p105
 
 BUNDLED WITH
-   1.17.1
+   1.17.3

@@ -11,4 +11,10 @@ class ApplicationController < ActionController::Base
     render(status: :forbidden, plain: "Oh no you don't.")
   end
 
+  protected
+
+  def signed_in?
+    !!current_account
+  end
+
 end

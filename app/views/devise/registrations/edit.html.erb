@@ -31,6 +31,17 @@
     <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
   </div>
 
+  <%- if devise_mapping.omniauthable? %>
+    <%- resource_class.omniauth_providers.each do |provider| %>
+      <% if current_account.send("linked_to_#{provider}?") %>
+        <div>Linked to <%= provider %></div>
+      <% else %>
+        |<%= link_to "Link #{OmniAuth::Utils.camelize(provider)} Account", omniauth_authorize_path(resource_name, provider) %> <br />
+      <% end -%>
+    <% end -%>
+  <% end -%>
+  <br /><br />
+
   <div class="actions">
     <%= f.submit "Update", class: "btn btn-primary" %>
   </div>
