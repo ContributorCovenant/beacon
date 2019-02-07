@@ -2,12 +2,12 @@
 require 'spec_helper'
 require 'devise'
 require 'simplecov'
+require 'capybara/rspec'
 
 ENV['RAILS_ENV'] ||= 'test'
 
 SimpleCov.start
 SimpleCov.minimum_coverage 85
-
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production
 abort('The Rails environment is running in production mode!') if Rails.env.production?
@@ -44,6 +44,7 @@ RSpec.configure do |config|
   config.include Devise::Test::ControllerHelpers, type: :controller
   config.include Devise::Test::ControllerHelpers, type: :view
   config.include FactoryBot::Syntax::Methods
+  config.include Warden::Test::Helpers
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.

@@ -212,7 +212,7 @@ ActiveRecord::Schema.define(version: 2019_02_02_213322) do
     t.integer "minimum_3rd_party_auth_age_in_days", default: 30
     t.boolean "allow_anonymous_issues", default: false
     t.boolean "publish_stats", default: true
-    t.boolean "include_in_directory", default: true
+    t.boolean "include_in_directory", default: false
     t.uuid "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
