@@ -30,6 +30,15 @@ class Account < ApplicationRecord
     account_project_blocks.find_by(project_id: project.id).present?
   end
 
+  def submitted_abuse_report_for?(account)
+    abuse_reports
+      .submitted
+      .includes(:abuse_report_subject)
+      .map(&:abuse_report_subject)
+      .find{ |subject| subject.account_id == account.id }
+      .present?
+  end
+
   def issues
     @issues ||= AccountIssue.issues_for_account(id)
   end

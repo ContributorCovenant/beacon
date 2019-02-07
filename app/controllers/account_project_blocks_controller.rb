@@ -22,12 +22,16 @@ class AccountProjectBlocksController < ApplicationController
           flag_requested: true,
           flag_requested_reason: block_params[:reason]
         )
-        @report = AbuseReport.create!(
-          account: current_account,
-          description: block_params[:reason],
-          reportee: @account
-        )
-        notify_on_account_flag_requested
+        # Only create an abuse report if there are no existing 'submitted'
+        # abuse reports about this reportee from the current user
+        unless current_account.submitted_abuse_report_for?(@account)
+          @report = AbuseReport.create!(
+            account: current_account,
+            description: block_params[:reason],
+            reportee: @account
+          )
+          notify_on_account_flag_requested
+        end
       end
 
       if params[:return_to] == "respondent"

@@ -29,7 +29,7 @@
     <%= f.hidden_field :account_id, value: @actor.id %>
     <%= hidden_field_tag :return_to, "reporter" %>
     <div class="form-group">
-      <%= f.label "Reason" %><br />
+      <%= f.label :reason %><br />
       <%= f.text_area :reason, class: "form-control" %>
     </div>
     <div class="input-group mb-3">
