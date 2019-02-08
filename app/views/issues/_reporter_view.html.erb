@@ -78,7 +78,7 @@
 
   <%= form_for comment, url: project_issue_issue_comments_path(project, issue) do |f| %>
     <div class="form-group">
-      <%= f.label "Message to Moderators" %><br />
+      <%= f.label "Message to Moderators", for: :issue_comment_text %><br />
       <%= f.text_area :text, class: "form-control" %>
     </div>
 
@@ -88,4 +88,3 @@
   <% end %>
 
 </div>
-

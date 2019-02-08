@@ -151,3 +151,26 @@ describe "any user (signed in or not) using the general contact form" do
   end
 
 end
+
+describe "a reporter or respondent adding an issue comment" do
+
+  context "for a moderator who has unread notifications from the user on this issue" do
+
+    let(:maintainer) { FactoryBot.create(:danielle) }
+    let!(:project) { FactoryBot.create(:project, account: maintainer) }
+    let!(:reporter) { FactoryBot.create(:exene) }
+    let(:issue) { FactoryBot.create(:issue, project_id: project.id, reporter_id: reporter.id)}
+
+    it "sends an email notification only once" do
+      login_as(reporter, scope: :account)
+      visit issue_path(issue, project_slug: project.slug)
+      fill_in "issue_comment_text", with: "Trigger a notification"
+      click_button "Send Message"
+      expect(ActionMailer::Base.deliveries.size).to eq(1)
+      fill_in "issue_comment_text", with: "Trigger a notification"
+      click_button "Send Message"
+      expect(ActionMailer::Base.deliveries.size).to eq(1)
+    end
+
+  end
+end

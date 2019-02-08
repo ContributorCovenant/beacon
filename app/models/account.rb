@@ -30,13 +30,9 @@ class Account < ApplicationRecord
     account_project_blocks.find_by(project_id: project.id).present?
   end
 
-  def submitted_abuse_report_for?(account)
-    abuse_reports
-      .submitted
-      .includes(:abuse_report_subject)
-      .map(&:abuse_report_subject)
-      .find{ |subject| subject.account_id == account.id }
-      .present?
+  def has_notification_on_issue_of_kind(issue_id, commenter_kind)
+    issue_notifications = notifications.select{ |notification| notification.issue_id == issue_id }
+    !issue_notifications.map(&:issue_comment).find{ |comment| comment.commenter_kind == commenter_kind }.nil?
   end
 
   def issues
@@ -53,6 +49,15 @@ class Account < ApplicationRecord
 
   def reputation
     "good"
+  end
+
+  def submitted_abuse_report_for?(account)
+    abuse_reports
+      .submitted
+      .includes(:abuse_report_subject)
+      .map(&:abuse_report_subject)
+      .find{ |subject| subject.account_id == account.id }
+      .present?
   end
 
   def toggle_flagged
