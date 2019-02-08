@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class IssueCommentsController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_project
@@ -33,12 +31,16 @@ class IssueCommentsController < ApplicationController
     )
   end
 
-  def scope_project
-    @project = Project.where(slug: params[:project_slug]).includes(:account).first
+  def enforce_permissions
+    render_forbidden && return unless current_account.can_comment_on_issue?(@issue)
   end
 
   def scope_issue
     @issue = Issue.find(params[:issue_id])
+  end
+
+  def scope_project
+    @project = Project.where(slug: params[:project_slug]).includes(:account).first
   end
 
   def visible_only_to_moderators?
@@ -53,10 +55,6 @@ class IssueCommentsController < ApplicationController
     current_account == @issue.respondent || (@project.moderator?(current_account) && comment_params[:visible_to_respondent] == '1')
   end
 
-  def enforce_permissions
-    render_forbidden && return unless current_account.can_comment_on_issue?(@issue)
-  end
-
   def send_notifications
     if @project.moderator?(current_account) && visible_to_reporter?
       email = @issue.reporter.email
@@ -69,30 +67,38 @@ class IssueCommentsController < ApplicationController
     elsif @comment.commenter == @issue.reporter
       email = @project.moderator_emails
       commenter_kind = "reporter"
-      @project.moderators.each do |moderator|
-        NotificationService.notify(account: moderator, project_id: @project.id, issue_id: @issue.id, issue_comment_id: @comment.id)
-      end
     elsif @comment.commenter == @issue.respondent
       email = @project.moderator_emails
       commenter_kind = "respondent"
-      @project.moderators.each do |moderator|
-        NotificationService.notify(account: moderator, project_id: @project.id, issue_id: @issue.id, issue_comment_id: @comment.id)
-      end
     else
       email = @project.moderator_emails
       commenter_kind = "moderator"
+    end
+
+    if email == @project.moderator_emails
+      unnotified_moderators = @project.moderators.reject do |moderator|
+        moderator.notification_on_issue_of_kind?(@issue.id, commenter_kind)
+      end
       @project.moderators.each do |moderator|
         next if moderator == current_account
         NotificationService.notify(account: moderator, project_id: @project.id, issue_id: @issue.id, issue_comment_id: @comment.id)
       end
+      if unnotified_moderators.any?
+        IssueNotificationsMailer.with(
+          email: unnotified_moderators.map(&:email),
+          project: @project,
+          issue: @issue,
+          commenter_kind: commenter_kind
+        ).notify_of_new_comment.deliver_now
+      end
+    else
+      IssueNotificationsMailer.with(
+        email: email,
+        project: @project,
+        issue: @issue,
+        commenter_kind: commenter_kind
+      ).notify_of_new_comment.deliver_now
     end
-
-    IssueNotificationsMailer.with(
-      email: email,
-      project: @project,
-      issue: @issue,
-      commenter_kind: commenter_kind
-    ).notify_of_new_comment.deliver_now
   end
 
 end
