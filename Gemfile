@@ -16,7 +16,7 @@ gem 'bootswatch'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
 gem 'dotenv-rails'
-gem 'faker', :git => 'https://github.com/stympy/faker.git', :branch => 'master'
+gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
 gem "google-cloud-storage", require: false
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'

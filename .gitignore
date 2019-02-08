@@ -32,3 +32,7 @@
 /config/secrets/*
 
 .env.development
+.env.test
+
+# Ignore credentials
+/config/credentials.yml.enc

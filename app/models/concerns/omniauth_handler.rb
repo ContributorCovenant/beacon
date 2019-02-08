@@ -6,15 +6,8 @@ module OmniauthHandler
 
   Account.omniauth_providers.each do |provider|
     define_method("linked_to_#{provider}?") do
-      !!credentials.where(provider: provider.to_s).first
+      !credentials.where(provider: provider.to_s).first.nil?
     end
-  end
-
-  def link_provider(auth)
-    return false unless can_link_provider?(auth.provider)
-    credentials.create(email: auth.info.email,
-                       uid: auth.uid,
-                       provider: auth.provider)
   end
 
   module ClassMethods
