@@ -117,14 +117,13 @@ ActiveRecord::Schema.define(version: 2019_01_31_144757) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-<<<<<<< HEAD
   create_table "contact_messages", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "message"
     t.text "sender_ip"
     t.string "sender_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-=======
+
   create_table "credentials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "provider"
     t.string "uid"
@@ -132,7 +131,6 @@ ActiveRecord::Schema.define(version: 2019_01_31_144757) do
     t.uuid "account_id"
     t.index ["account_id"], name: "index_credentials_on_account_id"
     t.index ["provider", "uid"], name: "index_credentials_on_provider_and_uid", unique: true
->>>>>>> 44e1ade... enable github & gitlab authentication
   end
 
   create_table "issue_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
