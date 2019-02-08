@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class IssueCommentsController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_project
