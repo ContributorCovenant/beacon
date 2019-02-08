@@ -76,8 +76,8 @@ class IssueCommentsController < ApplicationController
     end
 
     if email == @project.moderator_emails
-      unnotified_moderators = @project.moderators.select do |moderator|
-        !moderator.has_notification_on_issue_of_kind(@issue.id, commenter_kind)
+      unnotified_moderators = @project.moderators.reject do |moderator|
+        moderator.notification_on_issue_of_kind?(@issue.id, commenter_kind)
       end
       @project.moderators.each do |moderator|
         next if moderator == current_account

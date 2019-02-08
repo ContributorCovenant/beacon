@@ -30,7 +30,7 @@ class Account < ApplicationRecord
     account_project_blocks.find_by(project_id: project.id).present?
   end
 
-  def has_notification_on_issue_of_kind(issue_id, commenter_kind)
+  def notification_on_issue_of_kind?(issue_id, commenter_kind)
     issue_notifications = notifications.select{ |notification| notification.issue_id == issue_id }
     !issue_notifications.map(&:issue_comment).find{ |comment| comment.commenter_kind == commenter_kind }.nil?
   end

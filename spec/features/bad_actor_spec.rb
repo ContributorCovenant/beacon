@@ -159,7 +159,7 @@ describe "a reporter or respondent adding an issue comment" do
     let(:maintainer) { FactoryBot.create(:danielle) }
     let!(:project) { FactoryBot.create(:project, account: maintainer) }
     let!(:reporter) { FactoryBot.create(:exene) }
-    let(:issue) { FactoryBot.create(:issue, project_id: project.id, reporter_id: reporter.id)}
+    let(:issue) { FactoryBot.create(:issue, project_id: project.id, reporter_id: reporter.id) }
 
     it "sends an email notification only once" do
       login_as(reporter, scope: :account)
