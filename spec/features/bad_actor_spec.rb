@@ -161,6 +161,10 @@ describe "a reporter or respondent adding an issue comment" do
     let!(:reporter) { FactoryBot.create(:exene) }
     let(:issue) { FactoryBot.create(:issue, project_id: project.id, reporter_id: reporter.id) }
 
+    before do
+      ActionMailer::Base.deliveries = []
+    end
+
     it "sends an email notification only once" do
       login_as(reporter, scope: :account)
       visit issue_path(issue, project_slug: project.slug)
