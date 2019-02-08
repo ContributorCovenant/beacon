@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def signed_in?
-    !!current_account
+    !current_account.nil?
   end
 
 end

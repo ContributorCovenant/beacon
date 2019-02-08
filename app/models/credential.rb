@@ -1,12 +1,10 @@
 class Credential < ApplicationRecord
   belongs_to :account, inverse_of: :credentials
 
-
   validates :account, presence: true
   validates :email, presence: true
   validates :uid, presence: true
   validates :provider, presence: true
-
 
   validate :provider_account_configuration
 
@@ -14,7 +12,7 @@ class Credential < ApplicationRecord
     find_by(uid: auth.uid, provider: auth.provider)
   end
 
-  def self.create_with_omniauth(auth)
+  def self.new_with_omniauth(auth)
     create(uid: auth.uid, provider: auth.provider, email: auth.info.email)
   end
 

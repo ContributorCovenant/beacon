@@ -31,7 +31,6 @@ class Account < ApplicationRecord
   before_create :hash_email
   after_create :associate_respondent_with_issues
 
-
   def blocked_from_project?(project)
     account_project_blocks.find_by(project_id: project.id).present?
   end
