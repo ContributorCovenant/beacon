@@ -16,6 +16,8 @@ class Issue < ApplicationRecord
   after_create :set_reporter_encrypted_id
   after_create :set_project_encrypted_id
 
+  scope :past_24_hours, -> { where("created_at >= ?", Time.zone.now - 24.hours) }
+
   OPEN_STATUSES = %w{submitted acknowledged reopened}.freeze
 
   aasm do
