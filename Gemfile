@@ -3,9 +3,9 @@
 source "https://rubygems.org"
 git_source(:github){ |repo| "https://github.com/#{repo}.git" }
 
-ruby "2.5.3"
+ruby '2.5.3'
 
-gem "rails", "~> 5.2.2"
+gem 'rails', '~> 5.2.2'
 
 gem "aasm"
 gem "autoprefixer-rails"
@@ -17,6 +17,7 @@ gem "coffee-rails", "~> 4.2"
 gem "devise"
 gem 'devise-authy'
 gem "dotenv-rails"
+gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
 gem "fittings"
 gem "google-cloud-storage", require: false
 gem 'inky-rb', require: 'inky'
