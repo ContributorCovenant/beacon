@@ -2,8 +2,7 @@
 require_relative 'application'
 
 # Initialize the Rails application.
-Setting.load(path:  "#{Rails.root}/config/settings",
-             files: ["default.yml", "environments/#{Rails.env}.yml"])
+Setting.load(path: "#{Rails.root}/config/settings", files: ["default.yml", "environments/#{Rails.env}.yml"])
 
 Rails.application.initialize!
 
