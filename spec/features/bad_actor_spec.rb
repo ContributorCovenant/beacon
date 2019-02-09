@@ -181,25 +181,25 @@ end
 
 describe "a malicious reporter attempting to open an issue" do
 
-    context "after submitting the maximum number of reports per day" do
+  context "after submitting the maximum number of reports per day" do
 
-      let(:maintainer) { FactoryBot.create(:danielle) }
-      let!(:project) { FactoryBot.create(:project, account: maintainer) }
-      let(:reporter) { FactoryBot.create(:michael) }
+    let(:maintainer) { FactoryBot.create(:danielle) }
+    let!(:project) { FactoryBot.create(:project, account: maintainer) }
+    let(:reporter) { FactoryBot.create(:michael) }
 
-      before do
-        Setting.throttling(:max_issues_per_day).times do
-          FactoryBot.create(:issue, reporter_id: reporter.id, project_id: project.id)
-        end
-        allow_any_instance_of(Project).to receive(:show_in_directory?).and_return(true)
+    before do
+      Setting.throttling(:max_issues_per_day).times do
+        FactoryBot.create(:issue, reporter_id: reporter.id, project_id: project.id)
       end
-
-      it "is prevented from opening new issues" do
-        login_as(reporter, scope: :account)
-        visit directory_project_path(slug: project.slug)
-        expect(page.has_content?("This project is not accepting issues at this time.")).to be_truthy
-      end
-
+      allow_any_instance_of(Project).to receive(:show_in_directory?).and_return(true)
     end
+
+    it "is prevented from opening new issues" do
+      login_as(reporter, scope: :account)
+      visit directory_project_path(slug: project.slug)
+      expect(page.has_content?("This project is not accepting issues at this time.")).to be_truthy
+    end
+
+  end
 
 end
