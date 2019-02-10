@@ -18,9 +18,7 @@ class Project < ApplicationRecord
 
   attr_accessor :consequence_ladder_default_source
 
-  def self.public_scope
-    ProjectSetting.includes(:project).where(include_in_directory: true).order("projects.name ASC").map(&:project)
-  end
+  scope :for_directory, -> { where(public: true, setup_complete: true).order("name ASC") }
 
   def accepting_issues?
     public? && !paused?
@@ -66,21 +64,19 @@ class Project < ApplicationRecord
     project_setting.paused?
   end
 
-  def public?
-    project_setting.include_in_directory
-  end
-
   def respondent_template?
     respondent_template.present?
   end
 
-  def setup_complete?
-    return false unless public?
-    return false unless verified_settings?
-    return false unless consequence_ladder?
-    return false unless ownership_confirmed?
-    return false unless respondent_template?
-    return true
+  def check_setup_complete?
+    complete = false unless public?
+    complete ||= false unless verified_settings?
+    complete ||= false unless consequence_ladder?
+    complete ||= false unless ownership_confirmed?
+    complete ||= false unless respondent_template?
+    complete = complete.nil? ? true : false
+    update_attribute(:setup_complete, complete) unless setup_complete == complete
+    return complete
   end
 
   def show_in_directory?

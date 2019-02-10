@@ -65,7 +65,7 @@ module Permissions
     return false if blocked_from_project?(project)
     return false if is_flagged
     return false if project.issue_count_from_past_24_hours == project.project_setting.rate_per_day
-    return false if issues.submitted.past_24_hours == Setting.throttling(:max_issues_per_day)
+    return false if issues.submitted.past_24_hours.count == Setting.throttling(:max_issues_per_day)
     return true
   end
 

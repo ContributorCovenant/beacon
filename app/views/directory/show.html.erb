@@ -27,12 +27,19 @@
       <% end %>
     </ul>
 
-    <% if current_account && current_account.can_open_issue_on_project?(@project) %>
-      <div class="actions">
-        <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-primary" %>
-      </div>
+    <% if current_account %>
+      <% if current_account.can_open_issue_on_project?(@project) %>
+        <div class="actions">
+          <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-primary" %>
+        </div>
+      <% else %>
+        <p><b>This project is not accepting issues at this time.</b></p>
+      <% end %>
     <% else %>
-      <p><b>This project is not accepting issues at this time.</b></p>
+      <p>
+        You must <%= link_to "create an account", new_account_registration_path %>
+        or <%= link_to "sign in", new_account_session_path %> to open an issue.
+      </p>
     <% end %>
 
     <h2 class="mt-5">Project Governance</h2>
@@ -40,9 +47,8 @@
 
     <% if @project.project_setting.publish_stats? %>
       <h2 class="mt-5">3-Month Activity</h2>
-      <p>Issues opened: 2</p>
-      <p>Issues resolved: 2</p>
-      <p>Average time to resolve an issue: 3 days</p>
+      <p>Reporter satisfaction with issue resolution: 5/5</p>
+      <p>Average time to resolve an issue: 4 days</p>
     <% end %>
 
   </div>

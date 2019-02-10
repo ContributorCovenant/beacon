@@ -24,7 +24,7 @@
             <% end %>
           </ul>
         </td>
-        <td><span class="badge"><%= project.setup_complete? ? "√" : "x" %></span></td>
+        <td><span class="badge"><%= project.check_setup_complete? ? "√" : "x" %></span></td>
         <td><%= project.is_flagged? ? "Flagged" : "" %></td>
       </tr>
     <% end %>

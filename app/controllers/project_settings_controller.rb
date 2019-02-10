@@ -10,12 +10,8 @@ class ProjectSettingsController < ApplicationController
 
   def update
     @settings.update_attributes(settings_params)
-    if @settings.save
-      redirect_to project_path(@project)
-    else
-      flash[:error] = @settings.errors.full_messages
-      render :edit
-    end
+    @settings.touch
+    redirect_to project_path(@project)
   end
 
   def toggle_pause

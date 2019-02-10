@@ -11,7 +11,7 @@
   </div>
 
   <div class="col">
-    <% unless @project.setup_complete? %>
+    <% unless @project.check_setup_complete? %>
       <div class="card mb-2" style="width: 18rem;">
         <div class="card-body">
           <h2 class="card-title">Setup Checklist</h2>
@@ -99,6 +99,9 @@
                 <%= link_to "View in Directory", directory_project_path(@project.slug) %>
               </li>
             <% end %>
+            <li>
+              <%= link_to "Project Settings", project_settings_path(@project)  %>
+            </li>
             <% if @project.consequence_ladder? %>
               <li>
                 <%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %>
@@ -134,12 +137,6 @@
   <li class="nav-item"><a class="nav-link " id="nav-dismissedissues-tab" data-toggle="pill" href="#nav-dismissedissues" role="tab" aria-controls="nav-dismissedissues" aria-selected="false">
     Dismissed <span class="badge badge-pill badge-dark"><%= @issues.dismissed.size %></span>
   </a></li>
-  <li class="nav-item"><a class="nav-link" id="nav-settings-tab" data-toggle="pill" href="#nav-settings" role="tab" aria-controls="nav-settings" aria-selected="false">
-    Settings
-    <% if @settings.paused? %>
-      <span class="badge badge-pill badge-danger">Paused</span>
-    <% end %>
-  </a></li>
 </ul>
 
 <div class="tab-content responsive" id="nav-tabContent">
@@ -160,85 +157,10 @@
     <%= render partial: "issues", locals: { issues: @issues.dismissed } %>
   </div>
 
-  <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-profile-tab">
-    <table class="table">
-      <tr>
-        <th scope="row">Show in Project Directory</th>
-        <td>
-          <% if @project.public? %>
-            <span class="badge badge-success">Yes</span>
-          <% else %>
-            <span class="badge badge-danger">No</span>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">Show Issues Report in Project Directory</th>
-        <td>
-          <% if @settings.publish_stats? %>
-            <span class="badge badge-success">Yes</span>
-          <% else %>
-            <span class="badge badge-danger">No</span>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">
-          Accepting Issues
-          <% if @settings.paused? %>
-            <p><i>Paused on <%= @settings.paused_at.strftime("%F") %></i></p>
-          <% end %>
-        </th>
-        <td>
-          <% if @settings.paused? %>
-            <span class="badge badge-danger">No</span>
-          <% else %>
-            <span class="badge badge-success">Yes</span>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">Hide Reporter Identity</th>
-        <td>
-          <% if @settings.allow_anonymous_issues? %>
-            <span class="badge badge-success">Yes</span>
-          <% else %>
-            <span class="badge badge-danger">No</span>
-          <% end %>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">Maximum Issues/Day</th>
-        <td>
-          <%= @settings.rate_per_day %>
-        </td>
-      </tr>
-      <tr>
-        <th scope="row">Require 3rd Party Account Verification</th>
-        <td>
-          <% if @settings.require_3rd_party_auth? %>
-            <span class="badge badge-success">Yes</span>
-          <% else %>
-            <span class="badge badge-danger">No</span>
-          <% end %>
-        </td>
-      </tr>
-      <% if @settings.require_3rd_party_auth? %>
-        <tr>
-          <th scope="row">Minimum 3rd Party Account Age</th>
-          <td>
-            <%= @settings.minimum_3rd_party_auth_age_in_days %> days
-          </td>
-        </tr>
-      <% end %>
-    </table>
-
-    <%= link_to "Edit Settings", project_settings_path(@project), class: "btn btn-warning float-left mr-5" %>
-    <% if @settings.paused? %>
-      <%= button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-warning" %>
-    <% else %>
-      <%= button_to "Pause Issues for 24 Hours", project_toggle_pause_path(@project), class: "btn btn-danger" %>
-    <% end %>
-
-  </div>
 </div>
+
+<% if @settings.paused? %>
+  <%= button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-warning" %>
+<% else %>
+  <%= button_to "Pause Issues for 24 Hours", project_toggle_pause_path(@project), class: "btn btn-danger" %>
+<% end %>

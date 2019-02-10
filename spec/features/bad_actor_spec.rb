@@ -191,7 +191,6 @@ describe "a malicious reporter attempting to open an issue" do
       Setting.throttling(:max_issues_per_day).times do
         FactoryBot.create(:issue, reporter_id: reporter.id, project_id: project.id)
       end
-      allow_any_instance_of(Project).to receive(:show_in_directory?).and_return(true)
     end
 
     it "is prevented from opening new issues" do

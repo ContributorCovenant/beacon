@@ -6,7 +6,7 @@ module Admin
     before_action :scope_project, except: [:index]
 
     def index
-      @projects = Project.public_scope
+      @projects = Project.all
     end
 
     def show
