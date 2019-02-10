@@ -5,7 +5,10 @@ class DirectoryController < ApplicationController
   end
 
   def show
-    redirect_to directory_path unless @project = Project.for_directory.find_by(slug: params[:slug])
-    @issue_severity_levels = @project.issue_severity_levels
+    if @project = Project.for_directory.find_by(slug: params[:slug])
+      @issue_severity_levels = @project.issue_severity_levels
+    else
+      redirect_to directory_path
+    end
   end
 end
