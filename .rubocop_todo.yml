@@ -17,6 +17,10 @@ Style/DoubleNegation:
   Exclude:
     - 'app/models/project_setting.rb'
 
+Layout/EmptyLinesAroundAccessModifier:
+  Exclude:
+    - 'spec/factories/project.rb'
+
 # Offense count: 71
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
