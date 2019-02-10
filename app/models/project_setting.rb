@@ -1,8 +1,17 @@
 class ProjectSetting < ApplicationRecord
+
   belongs_to :project
 
   def toggle_pause
     paused? ? unpause! : pause!
+  end
+
+  def include_in_directory=(value)
+    project.update_attribute(:public, value)
+  end
+
+  def include_in_directory
+    project.public?
   end
 
   def pause!

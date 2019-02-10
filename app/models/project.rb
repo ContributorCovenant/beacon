@@ -66,10 +66,6 @@ class Project < ApplicationRecord
     project_setting.paused?
   end
 
-  def public?
-    project_setting.include_in_directory
-  end
-
   def respondent_template?
     respondent_template.present?
   end
@@ -81,6 +77,10 @@ class Project < ApplicationRecord
     return false unless ownership_confirmed?
     return false unless respondent_template?
     return true
+  end
+
+  def update_setup_complete
+    update_attribute(:setup_complete, setup_complete?)
   end
 
   def show_in_directory?
