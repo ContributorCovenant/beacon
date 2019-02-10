@@ -18,7 +18,7 @@ class Project < ApplicationRecord
 
   attr_accessor :consequence_ladder_default_source
 
-  scope :directory, -> { where(public: true, setup_complete: true).order("name ASC") }
+  scope :for_directory, -> { where(public: true, setup_complete: true).order("name ASC") }
 
   def accepting_issues?
     public? && !paused?

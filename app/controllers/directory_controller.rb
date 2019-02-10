@@ -1,7 +1,7 @@
 class DirectoryController < ApplicationController
 
   def index
-    @projects = Project.directory
+    @projects = Project.for_directory
   end
 
   def show
