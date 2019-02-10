@@ -53,9 +53,12 @@
 * Projects are required to place a token proving ownership in their project’s repository or web site
 * Ability to mark an issue as spam/abuse/harassment
 * Rolling three-month transparency reporting on project performance
+* Template for auto-responder to reporters who just opened an issue
+* Template for initial contact between moderators and a reporter
 
 ### For reporters
 * Issue reporters can rate their satisfaction with outcomes once an issue is resolved
+* Auto-responder for confirming issue submissions for reporters
 
 ### For Beacon administrators
 * Beacon administrators have the responsibility to review and approve projects prior to them being public
