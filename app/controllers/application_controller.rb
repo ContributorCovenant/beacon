@@ -44,4 +44,10 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.permit(:account_update, keys: [:name, :phone_number, :send_sms_on_issue_open])
   end
 
+  protected
+
+  def signed_in?
+    !current_account.nil?
+  end
+
 end

@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :accounts, controllers: {
     registrations: "accounts/registrations",
     passwords: "accounts/passwords",
+    omniauth_callbacks: 'accounts/omniauth_callbacks'
     verify_authy: "/verify-token",
     enable_authy: "/enable-two-factor",
     verify_authy_installation: "/verify-installation",
