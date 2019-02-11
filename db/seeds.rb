@@ -1,3 +1,5 @@
+IssueSeverityLevel.where(scope: "template").destroy_all
+
 IssueSeverityLevel.create(
   scope: "template",
   severity: 1,
@@ -27,8 +29,10 @@ IssueSeverityLevel.create(
   severity: 4,
   label: "Permanent Ban",
   example: "Demonstrating a pattern of violation of community standards, including sustained inappropriate behavior or language,  harassment of an individual, or aggression or disparagement of class of individuals.",
-  consequence: "A permanent ban from any sort of interaction in the project community, including pull requests, issues, and comments, for a period specified by moderators."
+  consequence: "A permanent ban from any sort of interaction in the project community, including pull requests, issues, and comments."
 )
+
+RespondentTemplate.where(is_beacon_default: true).destroy_all
 
 RespondentTemplate.create(
   is_beacon_default: true,
