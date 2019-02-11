@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
 
+  http_basic_authenticate_with name: ENV['HTTP_AUTH_USER'], password: ENV['HTTP_AUTH_PASSWORD']
+
   def render_forbidden
     SuspiciousActivityLog.create(
       controller: self.class.to_s,
