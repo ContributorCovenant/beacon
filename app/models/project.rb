@@ -25,7 +25,7 @@ class Project < ApplicationRecord
   end
 
   def confirmation_token_url
-    url + "beacon.txt"
+    url + "/beacon.txt"
   end
 
   def consequence_ladder?

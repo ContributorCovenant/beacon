@@ -91,8 +91,6 @@
 
     <% if issue.submitted? %>
       <%= button_to "Acknowledge", project_issue_acknowledge_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
-    <% elsif issue.acknowledged? || issue.reopened? %>
-      <%= button_to "Dismiss", project_issue_dismiss_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
     <% elsif issue.dismissed? || issue.resolved? %>
       <%= button_to "Re-Open", project_issue_reopen_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
     <% end %>
@@ -235,6 +233,8 @@
             <%= f.submit "Resolve Issue", class: "btn btn-primary" %>
           </div>
         <% end %>
+        <%= button_to "Dismiss", project_issue_dismiss_path(project, issue), class: "float-left btn btn-warning mr-3 float-left" %>
+
       <% else %>
         <div class="card mb-3 ml-3 mr-3" style="width: 90%">
           <div class="card-body">
