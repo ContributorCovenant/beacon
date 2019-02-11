@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
   devise_for :accounts, controllers: {
     registrations: "accounts/registrations",
-    passwords: "accounts/passwords"
+    passwords: "accounts/passwords",
+    omniauth_callbacks: 'accounts/omniauth_callbacks'
   }
 
   root to: "static_content#main"

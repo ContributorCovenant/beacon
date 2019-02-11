@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_02_213322) do
+ActiveRecord::Schema.define(version: 2019_02_10_201349) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -123,6 +123,15 @@ ActiveRecord::Schema.define(version: 2019_02_02_213322) do
     t.string "sender_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "credentials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "provider"
+    t.string "uid"
+    t.string "email"
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_credentials_on_account_id"
+    t.index ["provider", "uid"], name: "index_credentials_on_provider_and_uid", unique: true
   end
 
   create_table "issue_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -266,6 +275,7 @@ ActiveRecord::Schema.define(version: 2019_02_02_213322) do
   add_foreign_key "account_project_blocks", "accounts"
   add_foreign_key "account_project_blocks", "projects"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "credentials", "accounts"
   add_foreign_key "issue_comments", "issues"
   add_foreign_key "issue_events", "issues"
   add_foreign_key "issue_severity_levels", "projects"
