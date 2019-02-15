@@ -46,7 +46,7 @@
 
     <% if @issue_severity_level %>
       <h2 class="mt-3">Issue Classification</h2>
-      <%= render partial: "issue_severity_levels/consequence", locals: { consequence: @issue_severity_level } %>
+      <%= render partial: "issue_severity_levels/consequence_public", locals: { consequence: @issue_severity_level } %>
     <% end %>
     <h2 class="mt-3">Status</h2>
     <p>
