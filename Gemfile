@@ -18,9 +18,9 @@ gem "devise"
 gem "dotenv-rails"
 gem "fittings"
 gem "google-cloud-storage", require: false
+gem 'inky-rb', require: 'inky'
 gem "jbuilder", "~> 2.5"
 gem "jquery-rails"
-gem 'inky-rb', require: 'inky'
 gem "normailize"
 gem "omniauth-github", github: "intridea/omniauth-github"
 gem "omniauth-gitlab", github: "linchus/omniauth-gitlab"
