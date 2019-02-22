@@ -17,7 +17,7 @@ class AdminMailer < ApplicationMailer
     @account = params[:account]
     @reason = params[:reason]
     @report = params[:report]
-    mail(to: Setting.emails(:abuse), subject: "Beacon: New Account Block Request")
+    mail(to: Setting.emails(:abuse), subject: "Beacon: New Account Flag Request")
   end
 
 end

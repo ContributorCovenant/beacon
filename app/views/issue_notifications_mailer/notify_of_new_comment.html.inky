@@ -1,0 +1,19 @@
+<% content_for :title do %>
+  New comment on <%= @project.name %> Issue #<%= @issue.issue_number %>
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p>
+        A new comment was made on this issue by a <%= @commenter_kind %>.
+      </p>
+    </columns>
+  </row>
+
+  <row>
+    <columns>
+      <button href="<%= project_issue_url(@project, @issue) %>">View Issue</button>
+    </columns>
+  </row>
+</container>

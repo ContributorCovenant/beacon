@@ -1,0 +1,18 @@
+<% content_for :title do %>
+  New Account Flag Request
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p><%= @account.email %> was flagged by <%= @reporter.email %>:</p>
+      <blockquote><%= @reason %></blockquote>
+    </columns>
+  </row>
+
+  <row>
+    <columns>
+      <button href="<%= admin_abuse_report_url(@report) %>">View Report</button>
+    </columns>
+  </row>
+</container>
