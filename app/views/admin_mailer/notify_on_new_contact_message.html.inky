@@ -1,0 +1,12 @@
+<% content_for :title do %>
+  New Contact Form Message
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p>A message from <%= @message.sender_email %>:</p>
+      <blockquote><%= @message.message %></blockquote>
+    </columns>
+  </row>
+</container>
