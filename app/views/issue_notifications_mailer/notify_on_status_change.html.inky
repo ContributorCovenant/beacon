@@ -1,0 +1,17 @@
+<% content_for :title do %>
+  Update to <%= @project.name %> Issue #<%= @issue.issue_number %>
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p>This issue's status was updated to <b><%= @issue.aasm_state.titleize %></b> by a moderator.</p>
+    </columns>
+  </row>
+
+  <row>
+    <columns>
+      <button href="<%= project_issue_url(@project, @issue) %>">View Issue</button>
+    </columns>
+  </row>
+</container>

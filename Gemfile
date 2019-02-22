@@ -20,11 +20,13 @@ gem "fittings"
 gem "google-cloud-storage", require: false
 gem "jbuilder", "~> 2.5"
 gem "jquery-rails"
+gem 'inky-rb', require: 'inky'
 gem "normailize"
 gem "omniauth-github", github: "intridea/omniauth-github"
 gem "omniauth-gitlab", github: "linchus/omniauth-gitlab"
 gem "pg"
 gem "popper_js", "~> 1.14.5"
+gem 'premailer-rails'
 gem "puma", "~> 3.11"
 gem "recaptcha"
 gem "sass-rails", "~> 5.0"

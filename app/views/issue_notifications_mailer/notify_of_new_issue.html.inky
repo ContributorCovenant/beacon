@@ -1,0 +1,19 @@
+<% content_for :title do %>
+  New Issue on <%= @project.name %>: Issue #<%= @issue.issue_number %>
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p>
+        A new issue has been opened on <%= @project.name %> on <%= @issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>
+      </p>
+    </columns>
+  </row>
+
+  <row>
+    <columns>
+      <button href="<%= project_issue_url(@project, @issue) %>">View Issue</button>
+    </columns>
+  </row>
+</container>
