@@ -1,5 +1,19 @@
-<p>Welcome <%= @email %>!</p>
+<% content_for :title do %>
+  Welcome to Beacon
+<% end %>
 
-<p>You can confirm your account email through the link below:</p>
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p>
+        You're almost done! Click the button below to confirm your email address.
+      </p>
+    </columns>
+  </row>
 
-<p><%= link_to 'Confirm my account', confirmation_url(@resource, confirmation_token: @token) %></p>
+  <row>
+    <columns>
+      <button href="<%= confirmation_url(@resource, confirmation_token: @token) %>">Confirm Email</button>
+    </columns>
+  </row>
+</container>
