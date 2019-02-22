@@ -1,11 +1,22 @@
-<h1>Code of Conduct Enforcement Issue</h1>
-<p>
-  A code of conduct issue has been filed in the <%= @project_name %> project and you
-  have been identified as the respondent.
-</p>
-<p>
-  To view the issue and respond, please sign in to Beacon and click on 'My Issues' in the navigation bar.
-</p>
-<p>
-  Thank you in advance for your prompt response to this issue.
-</p>
+<% content_for :title do %>
+  Code of Conduct Enforcement Issue on <%= @project_name %>
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p>
+        A code of conduct issue has been filed in the <%= @project_name %> project and you have been identified as the respondent.
+      </p>
+      <p>
+        To view the issue and respond, please sign in to Beacon and click on 'My Issues' in the navigation bar.
+      </p>
+    </columns>
+  </row>
+
+  <row>
+    <columns>
+      <button href="<%= new_account_session_url %>">Sign In to Beacon</button>
+    </columns>
+  </row>
+</container>
