@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   resources :abuse_reports, only: [:new, :create]
   resources :contact_messages, only: [:new, :create]
   resources :issues
+  resources :organizations, param: :slug
   resources :projects, param: :slug do
     resources :account_project_blocks
     resources :issues do

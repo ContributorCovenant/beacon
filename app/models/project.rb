@@ -6,7 +6,7 @@ class Project < ApplicationRecord
 
   belongs_to :account
   belongs_to :organization, optional: true
-  has_one :project_setting
+  has_one :project_setting, dependent: :destroy
   has_one :respondent_template
   has_many :abuse_report_subjects
   has_many :account_project_blocks

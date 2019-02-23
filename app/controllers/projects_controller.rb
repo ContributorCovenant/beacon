@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
     @projects = current_account.projects.order(:name)
   end
 
-  def clone_ladder
+  def clone_laddera
     source = ladder_params[:consequence_ladder_default_source]
     if source == "Beacon Default"
       IssueSeverityLevel.clone_from_template_for_project(@project)
@@ -22,15 +22,21 @@ class ProjectsController < ApplicationController
   end
 
   def new
-    @project = Project.new(name: 'My Project')
+    @project = Project.new(name: 'My Project', organization_id: params[:organization_id])
+    @organizations = current_account.organizations
   end
 
   def create
     @project = Project.new(project_params.merge(account_id: current_account.id))
+    if @project.organization
+      render_forbidden && return unless current_account.can_manage_organization?(@project.organization)
+    end
     if @project.save
+      Role.create(project_id: @project.id, account_id: current_account.id, is_owner: true)
       redirect_to @project
     else
       flash[:error] = @project.errors.full_messages
+      @organizations = current_account.organizations
       render :new
     end
   end
@@ -76,7 +82,7 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:name, :url, :coc_url, :description)
+    params.require(:project).permit(:name, :url, :coc_url, :description, :organization_id)
   end
 
   def scope_project

@@ -26,6 +26,13 @@ settings for managing your project after it is created.</p>
     <%= f.text_area :description, class: "form-control" %>
   </div>
 
+  <% if @organizations.any? %>
+    <div class="form-group col-sm-6">
+      <%= f.label "Organization" %><br />
+      <%= f.select :organization_id, @organizations.map{ |org| [org.name, org.id] }, include_blank: "None", class: "form-control" %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= f.submit "Create Project", class: "btn btn-primary" %>
   </div>

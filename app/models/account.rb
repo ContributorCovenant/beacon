@@ -20,7 +20,6 @@ class Account < ApplicationRecord
   has_many :account_project_blocks
   has_many :projects
   has_many :roles
-  has_many :organizations
 
   scope :admins, -> { where(is_admin: true) }
 
@@ -39,6 +38,12 @@ class Account < ApplicationRecord
 
   def issues
     @issues ||= AccountIssue.issues_for_account(id)
+  end
+
+  def organizations
+    roles.where("organization_id IS NOT NULL AND is_owner = ?", true)
+      .includes(:organization)
+      .map(&:organization)
   end
 
   def total_issues_past_24_hours

@@ -56,6 +56,14 @@ module Permissions
     project.moderator?(self)
   end
 
+  def can_view_organization?(organization)
+    organization.owners.include? self
+  end
+
+  def can_manage_organization?(organization)
+    organization.owners.include? self
+  end
+
   def can_manage_project?(project)
     project.account == self
   end

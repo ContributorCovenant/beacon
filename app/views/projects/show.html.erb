@@ -2,7 +2,12 @@
 
 <div class="row">
   <div class="col">
-    <h1><%= @project.name %></h1>
+    <h1>
+      <% if @project.organization %>
+        <%= @project.organization.name %>:
+      <% end %>
+      <%= @project.name %>
+    </h1>
     <p><%= @project.description %></p>
     <div class="actions">
       <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning" %>

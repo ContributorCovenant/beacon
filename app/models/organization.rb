@@ -10,12 +10,20 @@ class Organization < ApplicationRecord
 
   before_create :set_slug
 
+  def setup_complete?
+    false
+  end
+
   def default_moderators
     roles.where(is_default_moderator: true).map(&:account)
   end
 
   def owner?(account)
-    roles.where(is_owner: true, account_id: account.id).any?
+    owners.include?(account)
+  end
+
+  def owners
+    roles.where(is_owner: true).includes(:account).map(&:account)
   end
 
   def to_param
