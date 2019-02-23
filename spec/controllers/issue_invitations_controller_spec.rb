@@ -4,10 +4,10 @@ RSpec.describe IssueInvitationsController, type: :controller do
 
   describe "#create" do
 
-    let(:moderator)   { Account.new(confirmed_at: Time.zone.now) }
-    let(:respondent)  { Account.new(email: "respondent@example.com", confirmed_at: Time.zone.now) }
-    let(:rando)       { Account.new(confirmed_at: Time.zone.now) }
-    let(:project)     { Project.new(id: SecureRandom.uuid, slug: "sample-project", account: moderator) }
+    let(:moderator)   { FactoryBot.create(:kate) }
+    let(:respondent)  { FactoryBot.create(:exene) }
+    let(:rando)       { FactoryBot.create(:donnie) }
+    let(:project)     { FactoryBot.create(:project, account: moderator) }
     let(:issue)       { Issue.new(id: SecureRandom.uuid, issue_number: 1) }
 
     before do
@@ -15,6 +15,7 @@ RSpec.describe IssueInvitationsController, type: :controller do
       allow(Issue).to receive(:find).and_return(issue)
       allow(issue).to receive(:project).and_return(project)
       allow(issue).to receive(:set_issue_number)
+      Role.create!(account_id: moderator.id, project_id: project.id, is_owner: true)
     end
 
     context "permissions" do

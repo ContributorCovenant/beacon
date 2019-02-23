@@ -106,6 +106,7 @@ describe "bad project maintainer blocking an account" do
 
     before do
       allow(bad_maintainer).to receive(:submitted_abuse_report_for?).and_return(true)
+      Role.create(account_id: bad_maintainer.id, project_id: project.id, is_owner: true)
     end
 
     it "doesn't spam admins wtih multiple abuse reports" do
@@ -163,6 +164,7 @@ describe "a reporter or respondent adding an issue comment" do
 
     before do
       ActionMailer::Base.deliveries = []
+      Role.create(account_id: maintainer.id, project_id: project.id, is_owner: true)
     end
 
     it "sends an email notification only once" do

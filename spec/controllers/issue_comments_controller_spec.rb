@@ -19,6 +19,7 @@ RSpec.describe IssueCommentsController, type: :controller do
       allow(issue).to receive(:project).and_return(project)
       allow(issue).to receive(:reporter).and_return(reporter)
       allow(issue).to receive(:respondent).and_return(respondent)
+      Role.create(account_id: moderator.id, project_id: project.id, is_owner: true)
     end
 
     context "permissions" do

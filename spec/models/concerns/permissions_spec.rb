@@ -15,6 +15,7 @@ RSpec.describe Permissions do
     allow(public_project).to receive(:public?).and_return(true)
     allow(private_project).to receive(:public?).and_return(false)
     allow(paused_project).to receive(:paused?).and_return(true)
+    Role.create(account_id: kate.id, project_id: public_project.id)
   end
 
   describe "#can_create_project?" do
