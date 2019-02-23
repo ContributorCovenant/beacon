@@ -8,7 +8,7 @@ class ProjectsController < ApplicationController
     @projects = current_account.projects.order(:name)
   end
 
-  def clone_laddera
+  def clone_ladder
     source = ladder_params[:consequence_ladder_default_source]
     if source == "Beacon Default"
       IssueSeverityLevel.clone_from_template_for_project(@project)

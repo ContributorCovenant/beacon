@@ -29,6 +29,14 @@ class OrganizationsController < ApplicationController
     render :show
   end
 
+  def clone_ladder
+    source = ladder_params[:consequence_ladder_default_source]
+    if source == "Beacon Default"
+      IssueSeverityLevel.clone_from_template_for_organization(@organization)
+    end
+    redirect_to organization_issue_severity_levels_path(@organization)
+  end
+
   private
 
   def enforce_management_permissions
@@ -46,6 +54,10 @@ class OrganizationsController < ApplicationController
       :coc_url,
       :description
     )
+  end
+
+  def ladder_params
+    params.require(:organization).permit(:consequence_ladder_default_source)
   end
 
   def scope_organization

@@ -12,23 +12,40 @@
   </div>
 
   <div class="col">
-    <% unless @organization.setup_complete? %>
-      <div class="card mb-2" style="width: 18rem;">
-        <div class="card-body">
-          <h2 class="card-title">Setup Checklist</h2>
-          <div class="card-text">
-            <ul>
-              <li>
-                <%= link_to "Consequence Ladder", "#" %>
-              </li>
-              <li>
-                <%= link_to "Respondent Template", "#" %>
-              </li>
-            </ul>
-          </div>
+    <div class="card mb-2" style="width: 18rem;">
+      <div class="card-body">
+        <h2 class="card-title">Setup Checklist</h2>
+        <div class="card-text">
+          <ul>
+            <li>
+              <%= link_to "Consequence Ladder", organization_issue_severity_levels_path(@organization) %>
+              <% if @organization.consequence_ladder? %>
+                <span class="badge badge-pill badge-success">
+                  √
+                </span>
+              <% else %>
+                <span class="badge badge-pill badge-danger">
+                  x
+                </span>
+              <% end %>
+            </li>
+            <li>
+              <% if @organization.respondent_template? %>
+                <%= link_to "Respondent Template", organization_respondent_template_path(@organization, @organization.respondent_template) %>
+                <span class="badge badge-pill badge-success">
+                  √
+                </span>
+              <% else %>
+                <%= link_to "Respondent Template", new_organization_respondent_template_path(@organization) %>
+                <span class="badge badge-pill badge-danger">
+                  x
+                </span>
+              <% end %>
+            </li>
+          </ul>
         </div>
       </div>
-    <% end %>
+    </div>
   </div>
 </div>
 
