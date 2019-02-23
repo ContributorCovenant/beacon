@@ -7,9 +7,6 @@ class CreateOrganizations < ActiveRecord::Migration[5.2]
       t.string :slug
       t.text :description
       t.references :account, type: :uuid, foreign_key: true
-      t.datetime :flagged_at
-      t.text :flagged_reason
-      t.datetime :confirmed_at
     end
   end
 end
