@@ -8,7 +8,11 @@ class IssueSeverityLevelsController < ApplicationController
   def index
     if @project
       @issue_severity_level = IssueSeverityLevel.new(project: @project)
-      @available_ladders = ["beacon_default", current_account.projects.map(&:name)].flatten
+      if organization = @project.organization
+        @available_ladders = ["beacon_default", "organization_default", organization.projects.map(&:name)].flatten
+      else
+        @available_ladders = ["beacon_default", current_account.projects.map(&:name)].flatten
+      end
     else
       @issue_severity_level = IssueSeverityLevel.new(organization: @organization)
       @available_ladders = ["beacon_default", @organization.projects.map(&:name)].flatten
@@ -62,7 +66,7 @@ class IssueSeverityLevelsController < ApplicationController
 
   def scope_organization
     @organization = Organization.find_by(slug: params[:organization_slug])
-    @issue_severity_levels = @organization&.issue_severity_levels || []
+    @issue_severity_levels ||= @organization&.issue_severity_levels || []
     @scope ||= @organization
   end
 
