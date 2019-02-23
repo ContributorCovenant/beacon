@@ -19,6 +19,8 @@ class Account < ApplicationRecord
   has_many :account_issues
   has_many :account_project_blocks
   has_many :projects
+  has_many :roles
+  has_many :organizations
 
   scope :admins, -> { where(is_admin: true) }
 
