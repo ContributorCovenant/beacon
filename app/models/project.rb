@@ -10,6 +10,7 @@ class Project < ApplicationRecord
   has_one :respondent_template
   has_many :abuse_report_subjects
   has_many :account_project_blocks
+  has_many :invitations
   has_many :issue_severity_levels
   has_many :notifications
   has_many :project_issues

@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 
   resources :abuse_reports, only: [:new, :create]
   resources :contact_messages, only: [:new, :create]
+  resources :invitations, only: [:create, :index, :show] do
+    post "accept", to: "invitations#accept"
+    post "reject", to: "invitations#reject"
+  end
   resources :issues
   resources :organizations, param: :slug do
     resources :issue_severity_levels
@@ -23,6 +27,7 @@ Rails.application.routes.draw do
   end
   resources :projects, param: :slug do
     resources :account_project_blocks
+    resources :invitations, only: [:create]
     resources :issues do
       resources :uploads
       resources :issue_comments, only: [:create, :new]
@@ -33,15 +38,16 @@ Rails.application.routes.draw do
       post "reopen", to: "issues#reopen"
     end
     resources :issue_severity_levels
-    resources :project_invitations, only: [:new, :create]
-    resources :project_moderators, only: [:new, :index, :create, :destroy]
+    resources :invitations, only: [:new, :create]
     resources :reporters, only: [:show]
     resources :respondent_templates, only: [:new, :create, :edit, :update, :show]
     resources :respondents, only: [:show]
     get "settings", to: "project_settings#edit"
+    get "moderators", to: "projects#moderators"
     get "ownership", to: "projects#ownership"
-    patch "clone_ladder", to: "projects#clone_ladder"
     post "clone_respondent_template", to: "respondent_templates#clone"
+    post "remove_moderator", to: "projects#remove_moderator"
+    patch "clone_ladder", to: "projects#clone_ladder"
     patch "clone_respondent_template", to: "respondent_templates#clone"
     patch "confirm", to: "projects#confirm_ownership"
     patch "settings", to: "project_settings#update"

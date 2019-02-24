@@ -7,18 +7,26 @@
       <% @moderators.each do |moderator| %>
         <li>
           <%= moderator.email %>
-          <% unless moderator == @project.account %>
-            <%= link_to "Remove", "#" %>
+          <% unless moderator == @project.account || moderator == current_account %>
+            <%= button_to "Remove", project_remove_moderator_path(@project), params: { account_id: moderator.id }, class: "btn btn-sm btn-danger" %>
           <% end %>
         </li>
       <% end %>
     </ul>
+    <% if @invitations.any? %>
+      <h2>Moderators Awaiting Confirmation</h2>
+      <ul>
+        <% @invitations.each do |invitation| %>
+          <li><%= invitation.email %></li>
+        <% end %>
+      </ul>
+    <% end %>
   </div>
 
   <div class="col">
     <h2>Invite a New Moderator</h2>
 
-    <%= form_for @project_invitation, url: project_project_invitations_path(@project) do |f| %>
+    <%= form_for @invitation, url: project_invitations_path(@project) do |f| %>
       <div class="form-group col-sm-6">
         <%= f.label :email, for: :email %><br />
         <%= f.text_field :email %>

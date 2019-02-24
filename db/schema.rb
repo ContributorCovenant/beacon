@@ -125,6 +125,18 @@ ActiveRecord::Schema.define(version: 2019_02_24_191504) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "invitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.uuid "project_id"
+    t.uuid "organization_id"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_invitations_on_account_id"
+    t.index ["organization_id"], name: "index_invitations_on_organization_id"
+    t.index ["project_id"], name: "index_invitations_on_project_id"
+  end
+
   create_table "issue_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text"
     t.string "commenter_encrypted_id"
@@ -210,16 +222,6 @@ ActiveRecord::Schema.define(version: 2019_02_24_191504) do
     t.text "flagged_reason"
     t.datetime "confirmed_at"
     t.index ["account_id"], name: "index_organizations_on_account_id"
-  end
-
-  create_table "project_invitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "account_id"
-    t.uuid "project_id"
-    t.string "email"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_project_invitations_on_account_id"
-    t.index ["project_id"], name: "index_project_invitations_on_project_id"
   end
 
   create_table "project_issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -312,6 +314,9 @@ ActiveRecord::Schema.define(version: 2019_02_24_191504) do
   add_foreign_key "account_project_blocks", "accounts"
   add_foreign_key "account_project_blocks", "projects"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "invitations", "accounts"
+  add_foreign_key "invitations", "organizations"
+  add_foreign_key "invitations", "projects"
   add_foreign_key "issue_comments", "issues"
   add_foreign_key "issue_events", "issues"
   add_foreign_key "issue_severity_levels", "projects"
@@ -320,8 +325,6 @@ ActiveRecord::Schema.define(version: 2019_02_24_191504) do
   add_foreign_key "notifications", "issues"
   add_foreign_key "notifications", "projects"
   add_foreign_key "organizations", "accounts"
-  add_foreign_key "project_invitations", "accounts"
-  add_foreign_key "project_invitations", "projects"
   add_foreign_key "project_issues", "projects"
   add_foreign_key "project_settings", "projects"
   add_foreign_key "projects", "accounts"

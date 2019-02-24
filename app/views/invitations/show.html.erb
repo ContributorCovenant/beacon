@@ -1,0 +1,12 @@
+<% title "#{@project.name} Invitation" %>
+
+<h1>
+  <%= @project.name %>: Invitation to Moderate
+</h1>
+<p>You have been invited to moderate the <%= @project.name %> project.</p>
+
+<div class="actions">
+  <%= button_to "Accept", project_invitation_accept_path(@invitation), class: "btn btn-default" %>
+  <%= button_to "Decline", project_invitation_reject_path(@invitation), class: "btn btn-danger" %>
+  <% end %>
+</div>
