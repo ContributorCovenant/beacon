@@ -11,11 +11,20 @@
 <div class="container-fluid">
   <div class="row mt-5">
 
-    <% if current_account %>
+    <div class="col-sm">
+      <div class="card mr-5 mt-2" style="height: 14em;"" style="height: 14em;"">
+        <div class="card-body">
+          <h2 class="card-title">Browse the Directory</h2>
+          <p class="card-text">View a directory of events and open source projects that are currently using Beacon.</p>
+          <%= link_to "View Directory", directory_path, class: "btn btn-primary" %>
+        </div>
+      </div>
+    </div>
 
+    <% if current_account %>
       <% if current_account.can_create_project? %>
         <div class="col-sm">
-          <div class="card mr-5 mt-2">
+          <div class="card mr-5 mt-2" style="height: 14em;"">
             <div class="card-body">
               <h2 class="card-title">Register a Project</h2>
               <p class="card-text">Register a new project on Beacon.</p>
@@ -27,7 +36,7 @@
 
     <% else %>
       <div class="col-sm">
-        <div class="card mr-5 mt-2">
+        <div class="card mr-5 mt-2" style="height: 14em;"">
           <div class="card-body">
             <h2 class="card-title">Register</h2>
             <p class="card-text">Create an account to file a code of conduct issue or to set up your project or event on Beacon.</p>
@@ -37,7 +46,7 @@
       </div>
 
       <div class="col-sm">
-        <div class="card mr-5 mt-2">
+        <div class="card mr-5 mt-2" style="height: 14em;"">
           <div class="card-body">
             <h2 class="card-title">Sign In</h2>
             <p class="card-text">If you already have an account, sign in to access your projects or to open a code of conduct issue.</p>
@@ -46,15 +55,5 @@
         </div>
       </div>
     <% end %>
-
-    <div class="col-sm">
-      <div class="card mr-5 mt-2">
-        <div class="card-body">
-          <h2 class="card-title">Browse the Directory</h2>
-          <p class="card-text">View a directory of events and open source projects that are currently using Beacon.</p>
-          <%= link_to "View Directory", directory_path, class: "btn btn-primary" %>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
