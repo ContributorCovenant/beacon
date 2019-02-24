@@ -11,13 +11,16 @@
     <% @projects.each_with_index do |project,i| %>
       <div class="card mb-3 mr-3" style="width: 30%; min-height: 14rem">
         <div class="card-body">
-          <h2 class="card-title">
+          <h2 class="card-title mb-1">
             <%= link_to project.name, project %>
             <% count = current_account.notifications.for_project(project).size %>
             <% if count > 0 %>
               <span class="badge badge-pill badge-danger"><%= count %></span>
             <% end %>
           </h2>
+          <% if project.organization %>
+            <i><%= project.organization.name %></i>
+          <% end %>
           <div class="card-text">
             <p><%= project.description %></p>
             <p>

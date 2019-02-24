@@ -24,7 +24,15 @@
     <%= f.text_area :description, class: "form-control" %>
   </div>
 
+  <% if @organizations.any? %>
+    <div class="form-group col-sm-6">
+      <%= f.label "Organization" %><br />
+      <%= f.select :organization_id, @organizations.map{ |org| [org.name, org.id] }, include_blank: "None", class: "form-control" %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= f.submit "Update Project", class: "btn btn-primary" %>
+    <%= link_to "Cancel", @project, class: "btn btn-primary" %>
   </div>
 <% end %>

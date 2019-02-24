@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_project, except: [:index, :new, :create]
+  before_action :scope_organizations, only: [:new, :edit]
   before_action :enforce_existing_project_permissions, except: [:index, :new, :create]
   before_action :enforce_project_creation_permissions, only: [:new, :create]
 
@@ -25,7 +26,6 @@ class ProjectsController < ApplicationController
 
   def new
     @project = Project.new(name: 'My Project', organization_id: params[:organization_id])
-    @organizations = current_account.organizations
   end
 
   def create
@@ -85,6 +85,10 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:name, :url, :coc_url, :description, :organization_id)
+  end
+
+  def scope_organizations
+    @organizations = current_account.organizations
   end
 
   def scope_project
