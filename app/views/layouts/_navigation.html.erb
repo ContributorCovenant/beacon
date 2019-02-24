@@ -46,6 +46,12 @@
             <% end %>
           </li>
         <% end %>
+        <% if current_account.invitations.any? %>
+          <li class="nav-item nav-link">
+            <%= link_to "Invitations", invitations_path %>
+            <span class="badge badge-pill badge-danger"><%= current_account.invitations.size %></span>
+          </li>
+        <% end %>
       <% end %>
       <li class="nav-item nav-link">
         <%= link_to "About Beacon", about_path %>

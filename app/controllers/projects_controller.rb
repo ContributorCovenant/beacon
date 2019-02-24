@@ -24,6 +24,17 @@ class ProjectsController < ApplicationController
     redirect_to project_issue_severity_levels_path(@project)
   end
 
+  def moderators
+    @invitation = Invitation.new(project_id: @project.id)
+    @invitations = @project.invitations
+    @moderators = @project.all_moderators
+  end
+
+  def remove_moderator
+    Role.find_by(account_id: params[:account_id], project_id: @project.id).destroy
+    redirect_to project_moderators_path
+  end
+
   def new
     @project = Project.new(name: 'My Project', organization_id: params[:organization_id])
   end
@@ -72,7 +83,7 @@ class ProjectsController < ApplicationController
   private
 
   def enforce_existing_project_permissions
-    render_forbidden && return unless current_account.can_manage_project?(@project)
+    render_forbidden && return unless current_account.can_manage_project?(@project) || current_account.can_moderate_project?(@project)
   end
 
   def enforce_project_creation_permissions

@@ -10,7 +10,9 @@
     </h1>
     <p><%= @project.description %></p>
     <div class="actions">
-      <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning" %>
+      <% if current_account.can_manage_project?(@project) %>
+        <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning" %>
+      <% end %>
       <% if current_account.can_open_issue_on_project?(@project) %>
         <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-danger" %>
       <% end %>
@@ -25,7 +27,11 @@
           <div class="card-text">
             <ul>
               <li>
-                <%= link_to "Ownership Confirmation", project_ownership_path(@project) %>
+                <% if current_account.can_manage_project?(@project) %>
+                  <%= link_to "Ownership Confirmation", project_ownership_path(@project) %>
+                <% else %>
+                  Ownership Confirmation
+                <% end %>
                 <% if @project.ownership_confirmed? %>
                   <span class="badge badge-pill badge-success">
                     √
@@ -37,7 +43,11 @@
                 <% end %>
               </li>
               <li>
-                <%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %>
+                <% if current_account.can_manage_project?(@project) %>
+                  <%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %>
+                <% else %>
+                  Consequence Ladder
+                <% end %>
                 <% if @project.consequence_ladder? %>
                   <span class="badge badge-pill badge-success">
                     √
@@ -50,7 +60,11 @@
               </li>
               <li>
                 <% if @project.respondent_template? %>
+                <% if current_account.can_manage_project?(@project) %>
                   <%= link_to "Respondent Template", project_respondent_template_path(@project, @project.respondent_template) %>
+                <% else %>
+                  Respondent Template
+                <% end %>
                   <span class="badge badge-pill badge-success">
                     √
                   </span>
@@ -62,7 +76,11 @@
                 <% end %>
               </li>
               <li>
-                <%= link_to "Project Settings", project_settings_path(@project)  %>
+                <% if current_account.can_manage_project?(@project) %>
+                  <%= link_to "Project Settings", project_settings_path(@project)  %>
+                <% else %>
+                  Project Settings
+                <% end %>
                 <% if @project.verified_settings? %>
                   <span class="badge badge-pill badge-success">
                     √
@@ -74,7 +92,11 @@
                 <% end %>
               </li>
               <li>
-                <%= link_to "Visible in Directory", project_settings_path(@project)  %>
+                <% if current_account.can_manage_project?(@project) %>
+                  <%= link_to "Visible in Directory", project_settings_path(@project)  %>
+                <% else %>
+                  Visible in Directory
+                <% end %>
                 <% if @project.show_in_directory? %>
                   <span class="badge badge-pill badge-success">
                     √
@@ -106,6 +128,10 @@
                 <%= link_to "View in Directory", directory_project_path(@project.slug) %>
               </li>
             <% end %>
+            <li>
+              <%= link_to "Moderators", project_moderators_path(@project)  %>
+            </li>
+
             <% if @project.check_setup_complete? %>
               <li>
                 <%= link_to "Project Settings", project_settings_path(@project)  %>

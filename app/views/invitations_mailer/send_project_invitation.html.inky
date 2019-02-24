@@ -1,0 +1,20 @@
+<% content_for :title do %>
+  Invitation to Moderate <%= @project_name %> %>
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p>
+        <%= @inviter_email %> has invited you to join <%= @project_name %> as a
+        <%= @invitation.is_owner? ? "owner" : "moderator" %>.
+      </p>
+    </columns>
+  </row>
+
+  <row>
+    <columns>
+      <button href="<%= invitations_url %>">View Invitation</button>
+    </columns>
+  </row>
+</container>

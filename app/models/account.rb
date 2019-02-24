@@ -36,6 +36,10 @@ class Account < ApplicationRecord
     !issue_notifications.map(&:issue_comment).compact.find{ |comment| comment.commenter_kind == commenter_kind }.nil?
   end
 
+  def invitations
+    Invitation.where(email: self.email)
+  end
+
   def issues
     @issues ||= AccountIssue.issues_for_account(id)
   end
