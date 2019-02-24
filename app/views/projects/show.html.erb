@@ -106,9 +106,11 @@
                 <%= link_to "View in Directory", directory_project_path(@project.slug) %>
               </li>
             <% end %>
-            <li>
-              <%= link_to "Project Settings", project_settings_path(@project)  %>
-            </li>
+            <% if @project.check_setup_complete? %>
+              <li>
+                <%= link_to "Project Settings", project_settings_path(@project)  %>
+              </li>
+            <% end %>
             <% if @project.consequence_ladder? %>
               <li>
                 <%= link_to "Consequence Ladder", project_issue_severity_levels_path(@project) %>
