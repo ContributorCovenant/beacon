@@ -65,7 +65,7 @@ module Permissions
   end
 
   def can_manage_project?(project)
-    project.account == self
+    project.owners.include? self
   end
 
   def can_open_issue_on_project?(project)

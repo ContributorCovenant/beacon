@@ -6,7 +6,8 @@
   <row>
     <columns>
       <p>
-        <%= @inviter_email %> has invited you to join <%= @project_name %> as a moderator.
+        <%= @inviter_email %> has invited you to join <%= @project_name %> as a
+        <%= @invitation.is_owner? ? "owner" : "moderator" %>.
       </p>
     </columns>
   </row>

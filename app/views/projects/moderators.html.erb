@@ -31,6 +31,10 @@
         <%= f.label :email, for: :email %><br />
         <%= f.text_field :email %>
       </div>
+      <div class="form-group col-sm-6">
+        <%= f.check_box :is_owner, class: "mr-3", aria_label: "Make this account an owner" %>
+        <label class="form-check-label" for="invitation_is_owner">Make Co-Owner</label>
+      </div>
       <div class="form-group">
         <%= flash[:recaptcha_error] %>
         <%= recaptcha_tags %>

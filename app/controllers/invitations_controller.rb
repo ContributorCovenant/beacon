@@ -31,7 +31,7 @@ class InvitationsController < ApplicationController
 
   def accept
     flash[:info] = "You have accepted the invitation."
-    Role.create(account: current_account, project_id: @invitation.project_id)
+    Role.create(account: current_account, project_id: @invitation.project_id, is_owner: @invitation.is_owner)
     @invitation.destroy
     redirect_to @invitation.project
   end
@@ -61,7 +61,7 @@ class InvitationsController < ApplicationController
   end
 
   def scope_invitation
-    @invitation = Invitation.find_by(id: params[:id])
+    @invitation = Invitation.find_by(id: params[:invitation_id])
   end
 
 end

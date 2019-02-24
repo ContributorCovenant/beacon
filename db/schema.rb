@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(version: 2019_02_24_191504) do
     t.uuid "project_id"
     t.uuid "organization_id"
     t.string "email"
+    t.boolean "is_owner", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_invitations_on_account_id"
