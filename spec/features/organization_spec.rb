@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe "organization management", type: :feature do
 
-  let(:maintainer)    { FactoryBot.create(:danielle) }
+  let(:maintainer) { FactoryBot.create(:danielle) }
 
   it "lets a user create an organization" do
     login_as(maintainer, scope: :account)
@@ -29,7 +29,7 @@ describe "organization management", type: :feature do
         severity: 1,
         label: "Correction",
         example: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional or unwelcome in the community.",
-        consequence: "A private, written warning from project leadership, with clarity of violation and explanation of why the behavior was inappropriate."
+        consequence: "A private, written warning from a moderator, with clarity of violation and explanation of why the behavior was inappropriate."
       )
       RespondentTemplate.create(
         is_beacon_default: true,
@@ -45,7 +45,7 @@ describe "organization management", type: :feature do
       expect(page).to have_content("Setup Checklist")
       click_on("Consequence Ladder")
       expect(page).to have_content("Clone from")
-      select "Beacon Default", :from => "organization_consequence_ladder_default_source"
+      select "Beacon Default", from: "organization_consequence_ladder_default_source"
       click_on("Clone")
       expect(page).to have_content("Correction")
       fill_in "issue_severity_level_label", with: "Disciplinary Action"
