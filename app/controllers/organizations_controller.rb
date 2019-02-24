@@ -11,7 +11,7 @@ class OrganizationsController < ApplicationController
       "account_id = ? AND organization_id IS NOT NULL AND is_owner = ?",
       current_account.id,
       true
-    ).includes(:organization).map(&:organization).sort(&:name)
+    ).includes(:organization).map(&:organization).sort_by(&:name)
   end
 
   def new
