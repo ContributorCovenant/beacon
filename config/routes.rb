@@ -13,7 +13,7 @@ Rails.application.routes.draw do
 
   resources :abuse_reports, only: [:new, :create]
   resources :contact_messages, only: [:new, :create]
-  resources :invitations, only: [:create, :index, :show] do
+  resources :invitations, only: [:create, :index] do
     post "accept", to: "invitations#accept"
     post "reject", to: "invitations#reject"
   end

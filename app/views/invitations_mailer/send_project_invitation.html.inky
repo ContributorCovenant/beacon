@@ -13,7 +13,7 @@
 
   <row>
     <columns>
-      <button href="<%= invitation_url(@invitation) %>">View Invitation</button>
+      <button href="<%= invitations_url %>">View Invitation</button>
     </columns>
   </row>
 </container>
