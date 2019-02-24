@@ -84,3 +84,6 @@ Style/IfUnlessModifier:
 
 Style/DoubleNegation:
   Enabled: false
+
+Style/ConditionalAssignment:
+  Enabled: false

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_09_235535) do
+ActiveRecord::Schema.define(version: 2019_02_24_014850) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -162,6 +162,8 @@ ActiveRecord::Schema.define(version: 2019_02_09_235535) do
     t.uuid "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "organization_id"
+    t.index ["organization_id"], name: "index_issue_severity_levels_on_organization_id"
     t.index ["project_id"], name: "index_issue_severity_levels_on_project_id"
   end
 
@@ -195,6 +197,16 @@ ActiveRecord::Schema.define(version: 2019_02_09_235535) do
     t.index ["issue_comment_id"], name: "index_notifications_on_issue_comment_id"
     t.index ["issue_id"], name: "index_notifications_on_issue_id"
     t.index ["project_id"], name: "index_notifications_on_project_id"
+  end
+
+  create_table "organizations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "name"
+    t.string "url"
+    t.string "coc_url"
+    t.string "slug"
+    t.text "description"
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_organizations_on_account_id"
   end
 
   create_table "project_issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -234,7 +246,9 @@ ActiveRecord::Schema.define(version: 2019_02_09_235535) do
     t.datetime "flagged_at"
     t.boolean "public", default: false
     t.boolean "setup_complete", default: false
+    t.uuid "organization_id"
     t.index ["account_id"], name: "index_projects_on_account_id"
+    t.index ["organization_id"], name: "index_projects_on_organization_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
   end
 
@@ -244,7 +258,25 @@ ActiveRecord::Schema.define(version: 2019_02_09_235535) do
     t.boolean "is_beacon_default", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "organization_id"
+    t.index ["organization_id"], name: "index_respondent_templates_on_organization_id"
     t.index ["project_id"], name: "index_respondent_templates_on_project_id"
+  end
+
+  create_table "roles", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.uuid "organization_id"
+    t.uuid "project_id"
+    t.boolean "is_owner", default: false
+    t.boolean "is_default_moderator", default: false
+    t.boolean "can_manage_org", default: false
+    t.boolean "can_create_org_projects", default: false
+    t.boolean "can_see_historic_issues", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_roles_on_account_id"
+    t.index ["organization_id"], name: "index_roles_on_organization_id"
+    t.index ["project_id"], name: "index_roles_on_project_id"
   end
 
   create_table "suspicious_activity_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -274,9 +306,13 @@ ActiveRecord::Schema.define(version: 2019_02_09_235535) do
   add_foreign_key "notifications", "issue_comments"
   add_foreign_key "notifications", "issues"
   add_foreign_key "notifications", "projects"
+  add_foreign_key "organizations", "accounts"
   add_foreign_key "project_issues", "projects"
   add_foreign_key "project_settings", "projects"
   add_foreign_key "projects", "accounts"
   add_foreign_key "respondent_templates", "projects"
+  add_foreign_key "roles", "accounts"
+  add_foreign_key "roles", "organizations"
+  add_foreign_key "roles", "projects"
   add_foreign_key "suspicious_activity_logs", "accounts"
 end

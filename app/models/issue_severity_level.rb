@@ -1,5 +1,6 @@
 class IssueSeverityLevel < ApplicationRecord
 
+  belongs_to :organization, optional: true
   belongs_to :project, optional: true
   has_many :issues
 
@@ -7,7 +8,31 @@ class IssueSeverityLevel < ApplicationRecord
   scope :beacon_defaults, -> { where(scope: "template") }
 
   validates_presence_of :scope, :label, :severity, :example, :consequence
-  validates_uniqueness_of :severity, scope: :project
+
+  def self.clone_from_template_for_organization(organization)
+    organization.issue_severity_levels.destroy_all
+    beacon_defaults.each do |default|
+      organization.issue_severity_levels.create(
+        severity: default.severity,
+        label: default.label,
+        example: default.example,
+        consequence: default.consequence
+      )
+    end
+  end
+
+  def self.clone_from_org_template_for_project(project)
+    project.issues.each{ |issue| issue.update_attribute(:issue_severity_level_id, nil) }
+    project.issue_severity_levels.destroy_all
+    project.organization.issue_severity_levels.each do |default|
+      project.issue_severity_levels.create(
+        severity: default.severity,
+        label: default.label,
+        example: default.example,
+        consequence: default.consequence
+      )
+    end
+  end
 
   def self.clone_from_template_for_project(project)
     project.issues.each{ |issue| issue.update_attribute(:issue_severity_level_id, nil) }
@@ -36,6 +61,7 @@ class IssueSeverityLevel < ApplicationRecord
   end
 
   def can_be_safely_destroyed?
+    return true if organization
     return false if project.issues.where(issue_severity_level_id: self.id).any?
     true
   end

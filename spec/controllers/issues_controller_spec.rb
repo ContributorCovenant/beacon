@@ -10,6 +10,7 @@ RSpec.describe IssuesController, type: :controller do
 
     before do
       allow_any_instance_of(Issue).to receive(:set_issue_number)
+      Role.create(account_id: moderator.id, project_id: project.id, is_owner: true)
     end
 
     context "when a project is not accepting new issues" do

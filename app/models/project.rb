@@ -5,13 +5,16 @@ class Project < ApplicationRecord
   validates_presence_of :name, :url, :coc_url
 
   belongs_to :account
-  has_one :project_setting
+  belongs_to :organization, optional: true
+  has_one :project_setting, dependent: :destroy
   has_one :respondent_template
   has_many :abuse_report_subjects
   has_many :account_project_blocks
   has_many :issue_severity_levels
   has_many :notifications
   has_many :project_issues
+  has_many :roles
+  has_many :moderators, through: :roles, source: :account
 
   before_create :set_slug
   after_create :make_settings
@@ -24,12 +27,21 @@ class Project < ApplicationRecord
     public? && !paused?
   end
 
+  def all_moderators
+    (moderators + organization_moderators + owners).uniq
+  end
+
   def confirmation_token_url
     url + "/beacon.txt"
   end
 
   def consequence_ladder?
     issue_severity_levels.any?
+  end
+
+  def organization_moderators
+    return [] unless self.organization
+    self.organization.default_moderators
   end
 
   def issues
@@ -41,19 +53,23 @@ class Project < ApplicationRecord
   end
 
   def moderator?(account)
-    moderators.include?(account)
-  end
-
-  def moderators
-    @moderators ||= [self.account]
+    all_moderators.include?(account)
   end
 
   def moderator_emails
-    moderators.map(&:email)
+    all_moderators.map(&:email)
   end
 
   def obscure_reporter_email?
     project_setting.allow_anonymous_issues
+  end
+
+  def owner?(account)
+    roles.where(is_owner: true, account_id: account.id).any?
+  end
+
+  def owners
+    roles.where(is_owner: true).includes(:account).map(&:account)
   end
 
   def ownership_confirmed?

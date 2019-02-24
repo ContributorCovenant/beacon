@@ -1,6 +1,7 @@
 class RespondentTemplate < ApplicationRecord
 
   belongs_to :project, optional: true
+  belongs_to :organization, optional: true
 
   validates_presence_of :text
 
