@@ -4,13 +4,10 @@ class InvitationsController < ApplicationController
   before_action :scope_project, only: [:create]
   before_action :scope_invitation, except: [:create, :index]
   before_action :enforce_create_permissions, only: [:create]
-  before_action :enforce_view_permissions, only: [:show, :accept, :reject]
+  before_action :enforce_view_permissions, only: [:accept, :reject]
 
   def index
     @invitations = current_account.invitations
-  end
-
-  def show
   end
 
   def create
