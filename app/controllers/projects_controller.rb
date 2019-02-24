@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
   before_action :enforce_project_creation_permissions, only: [:new, :create]
 
   def index
-    @projects = current_account.projects.order(:name)
+    @projects = current_account.projects
   end
 
   def clone_ladder

@@ -4,10 +4,11 @@ class Organization < ApplicationRecord
   validates_presence_of :name
 
   belongs_to :account
-  has_many :issue_severity_levels
-  has_many :roles
+  has_many :issue_severity_levels, dependent: :destroy
+  has_many :roles, dependent: :destroy
   has_many :moderators, through: :roles, source: :account
-  has_many :projects
+  has_many :projects, dependent: :destroy
+  has_one :respondent_template, dependent: :destroy
 
   before_create :set_slug
 
@@ -35,7 +36,7 @@ class Organization < ApplicationRecord
   end
 
   def setup_complete?
-    false
+    self.respondent_template && consequence_ladder?
   end
 
   def to_param

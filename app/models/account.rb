@@ -46,6 +46,23 @@ class Account < ApplicationRecord
       .map(&:organization)
   end
 
+  def projects
+    (personal_projects + organization_projects).sort_by(&:name)
+  end
+
+  def organization_projects
+    organizations.map(&:projects).flatten
+  end
+
+  def personal_projects
+    roles.where("project_id IS NOT NULL AND is_owner = ?", true)
+      .includes(:project)
+      .map(&:project)
+      .select{ |project| project.organization_id.nil? }
+      .uniq
+      .sort_by(&:name)
+  end
+
   def total_issues_past_24_hours
     issues.select{ |issue| issue.created_at >= Time.zone.now - 24.hours }.size
   end

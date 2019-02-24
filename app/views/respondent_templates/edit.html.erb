@@ -1,13 +1,15 @@
-<% title "#{@project.name}: Edit Respondent Template" %>
+<% title "#{@subject.name}: Edit Respondent Template" %>
 
-<h1><%= link_to @project.name, @project %>: Respondent Contact Template</h1>
+<h1><%= link_to @subject.name, @subject %>: Respondent Contact Template</h1>
 
 <p>This template will be used when you first contact the respondent of an issue.</p>
 
 <div class="row">
 
   <div class="col">
-    <%= form_for @template, url: project_respondent_template_path(@project, @template) do |f| %>
+    <% url = project_respondent_template_path(@project, @template) if @project.present? %>
+    <% url = organization_respondent_template_path(@organization, @template) if @organization.present? %>
+    <%= form_for @template, url: url do |f| %>
       <div class="form-group">
         <%= f.text_area :text, class: "form-control", rows: 20 %>
       </div>
@@ -33,7 +35,9 @@
     <h2>Cloning a Template</h2>
     <p>You can customize your respondent template from Beacon defaults or another one of your projects, or create your own.</p>
 
-    <%= form_for @template, url: project_clone_respondent_template_path(@project) do |f| %>
+    <% url = project_clone_respondent_template_path(@project) if @project.present? %>
+    <% url = organization_clone_respondent_template_path(@organization) if @organization.present? %>
+    <%= form_for @template, url: url do |f| %>
       <div class="form-group col-sm-6">
         <%= f.label :clone_from %>
         <%= f.select :respondent_template_default_source, @available_templates, class: "form-control", include_blank: "Select..." %>

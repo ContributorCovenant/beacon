@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     resources :issue_severity_levels
     resources :respondent_templates, only: [:new, :create, :edit, :update, :show]
     patch "clone_ladder", to: "organizations#clone_ladder"
+    post "clone_respondent_template", to: "respondent_templates#clone"
+    patch "clone_respondent_template", to: "respondent_templates#clone"
   end
   resources :projects, param: :slug do
     resources :account_project_blocks

@@ -31,6 +31,10 @@ class Project < ApplicationRecord
     (moderators + organization_moderators + owners).uniq
   end
 
+  def account=(account)
+    Role.create(project_id: self.id, account_id: account.id, is_owner: true)
+  end
+
   def confirmation_token_url
     url + "/beacon.txt"
   end

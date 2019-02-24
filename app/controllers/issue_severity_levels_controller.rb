@@ -8,10 +8,10 @@ class IssueSeverityLevelsController < ApplicationController
   def index
     if @project
       @issue_severity_level = IssueSeverityLevel.new(project: @project)
-      if organization = @project.organization
-        @available_ladders = ["beacon_default", "organization_default", organization.projects.map(&:name)].flatten
+      if @project.organization
+        @available_ladders = ["beacon_default", "organization_default", @project.organization.projects.map(&:name)].flatten
       else
-        @available_ladders = ["beacon_default", current_account.projects.map(&:name)].flatten
+        @available_ladders = ["beacon_default", current_account.personal_projects.map(&:name)].flatten
       end
     else
       @issue_severity_level = IssueSeverityLevel.new(organization: @organization)
@@ -65,16 +65,17 @@ class IssueSeverityLevelsController < ApplicationController
   end
 
   def scope_organization
-    @organization = Organization.find_by(slug: params[:organization_slug])
-    @issue_severity_levels ||= @organization&.issue_severity_levels || []
-    @scope ||= @organization
+    return unless @organization = Organization.find_by(slug: params[:organization_slug])
+    @issue_severity_levels = @organization.issue_severity_levels || []
+    @available_severities = (1..10).to_a - @issue_severity_levels.map(&:severity)
+    @subject ||= @organization
   end
 
   def scope_project
-    @project = Project.where(slug: params[:project_slug]).includes(:issue_severity_levels).first
-    @issue_severity_levels = @project&.issue_severity_levels || []
+    return unless @project = Project.where(slug: params[:project_slug]).includes(:issue_severity_levels).first
+    @issue_severity_levels = @project.issue_severity_levels || []
     @available_severities = (1..10).to_a - @issue_severity_levels.map(&:severity)
-    @scope = @project
+    @subject = @project
   end
 
 end

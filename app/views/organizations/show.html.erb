@@ -14,27 +14,37 @@
   <div class="col">
     <div class="card mb-2" style="width: 18rem;">
       <div class="card-body">
-        <h2 class="card-title">Setup Checklist</h2>
+        <h2 class="card-title">
+          <% if @organization.setup_complete? %>
+            Templates
+          <% else %>
+            Setup Checklist
+          <% end %>
+        </h2>
         <div class="card-text">
           <ul>
             <li>
               <%= link_to "Consequence Ladder", organization_issue_severity_levels_path(@organization) %>
-              <% if @organization.consequence_ladder? %>
-                <span class="badge badge-pill badge-success">
-                  √
-                </span>
-              <% else %>
-                <span class="badge badge-pill badge-danger">
-                  x
-                </span>
+              <% if !@organization.setup_complete? %>
+                <% if @organization.consequence_ladder? %>
+                  <span class="badge badge-pill badge-success">
+                    √
+                  </span>
+                <% else %>
+                  <span class="badge badge-pill badge-danger">
+                    x
+                  </span>
+                <% end %>
               <% end %>
             </li>
             <li>
-              <% if @organization.respondent_template? %>
-                <%= link_to "Respondent Template", organization_respondent_template_path(@organization, @organization.respondent_template) %>
-                <span class="badge badge-pill badge-success">
-                  √
-                </span>
+              <% if @organization.respondent_template %>
+                <%= link_to "Respondent Template", edit_organization_respondent_template_path(@organization, @organization.respondent_template) %>
+                <% if !@organization.setup_complete? %>
+                  <span class="badge badge-pill badge-success">
+                    √
+                  </span>
+                <% end %>
               <% else %>
                 <%= link_to "Respondent Template", new_organization_respondent_template_path(@organization) %>
                 <span class="badge badge-pill badge-danger">
@@ -49,41 +59,39 @@
   </div>
 </div>
 
-<h1 class="float-left mr-3">Projects</h1>
+<h1 class="float-left mt-5 mr-3">Projects</h1>
 
-<div class="actions ml-3 mb-3">
+<div class="actions ml-3 mt-5 mb-3">
   <%= link_to "New Project", new_project_path(organization_id: @organization.id), class: "btn btn-primary" %>
 </div>
 
 <div class="container">
   <div class="row">
     <% @projects.each_with_index do |project,i| %>
-      <div class="col">
-        <div class="card mb-3" style="min-width: 50%; min-height: 14rem">
-          <div class="card-body">
-            <h2 class="card-title">
-              <%= link_to project.name, project %>
-              <% count = current_account.notifications.for_project(project).size %>
-              <% if count > 0 %>
-                <span class="badge badge-pill badge-danger"><%= count %></span>
+      <div class="card mb-3 mr-3" style="width: 30%; min-height: 14rem">
+        <div class="card-body">
+          <h2 class="card-title">
+            <%= link_to project.name, project %>
+            <% count = current_account.notifications.for_project(project).size %>
+            <% if count > 0 %>
+              <span class="badge badge-pill badge-danger"><%= count %></span>
+            <% end %>
+          </h2>
+          <div class="card-text">
+            <p><%= project.description %></p>
+            <p>
+              Visibility:
+              <% if project.show_in_directory? %>
+                <span class="badge badge-pill badge-success">Public</span>
+              <% else %>
+                <span class="badge badge-pill badge-danger">Private</span>
               <% end %>
-            </h2>
-            <div class="card-text">
-              <p><%= project.description %></p>
-              <p>
-                Visibility:
-                <% if project.show_in_directory? %>
-                  <span class="badge badge-pill badge-success">Public</span>
-                <% else %>
-                  <span class="badge badge-pill badge-danger">Private</span>
-                <% end %>
-              </p>
-              <p>
-                Issues:
-                <span class="badge badge-pill badge-danger"><%= project.issues.submitted.size %> New</span>
-                <span class="badge badge-pill badge-warning"><%= project.issues.acknowledged.size + project.issues.reopened.size %> In Progress</span>
-              </p>
-            </div>
+            </p>
+            <p>
+              Issues:
+              <span class="badge badge-pill badge-danger"><%= project.issues.submitted.size %> New</span>
+              <span class="badge badge-pill badge-warning"><%= project.issues.acknowledged.size + project.issues.reopened.size %> In Progress</span>
+            </p>
           </div>
         </div>
       </div>
