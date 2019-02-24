@@ -64,7 +64,7 @@ class InvitationsController < ApplicationController
   end
 
   def scope_invitation
-    @invitation = Invitation.find_by(params[:id])
+    @invitation = Invitation.find_by(id: params[:id])
   end
 
 end
