@@ -12,17 +12,17 @@ settings for managing your organization after it is created.</p>
   </div>
 
   <div class="form-group col-sm-6">
-    <%= f.label 'URL' %><br />
+    <%= f.label 'URL', for: :url %><br />
     <%= f.text_field :url, class: "form-control" %>
   </div>
 
   <div class="form-group col-sm-6">
-    <%= f.label "Code of Conduct URL" %><br />
+    <%= f.label "Code of Conduct URL", for: :coc_url %><br />
     <%= f.text_field :coc_url, class: "form-control" %>
   </div>
 
   <div class="form-group col-sm-6">
-    <%= f.label "Description" %><br />
+    <%= f.label "Description", for: :description %><br />
     <%= f.text_area :description, class: "form-control" %>
   </div>
 

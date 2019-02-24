@@ -72,7 +72,7 @@ class RespondentTemplatesController < ApplicationController
 
   def scope_available_templates
     projects_with_respondent_template = @organization.projects.select(&:respondent_template?) if @organization
-    projects_with_respondent_template = @project.organization.projects.select(&:respondent_template?) if @project.organization
+    projects_with_respondent_template = @project.organization.projects.select(&:respondent_template?) if @project && @project.organization
     projects_with_respondent_template ||= current_account.personal_projects.select(&:respondent_template?)
     @available_templates = projects_with_respondent_template.map(&:name).flatten
   end

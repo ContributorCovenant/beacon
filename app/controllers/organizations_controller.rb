@@ -18,6 +18,17 @@ class OrganizationsController < ApplicationController
     @organization = Organization.new(account_id: current_account.id)
   end
 
+  def create
+    @organization = Organization.new(organization_params.merge(account_id: current_account.id))
+    if @organization.save
+      Role.create(organization_id: @organization.id, account_id: current_account.id, is_owner: true)
+      redirect_to @organization
+    else
+      flash[:error] = @organization.errors.full_messages
+      render :new
+    end
+  end
+
   def show
   end
 
