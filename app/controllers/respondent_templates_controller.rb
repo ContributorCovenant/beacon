@@ -18,8 +18,11 @@ class RespondentTemplatesController < ApplicationController
   end
 
   def create
-    @template = RespondentTemplate.new(respondent_template_params.merge(project_id: @project.id)) if @project
-    @template ||= RespondentTemplate.new(respondent_template_params.merge(organization_id: @organization.id))
+    if @project
+      @template = RespondentTemplate.new(respondent_template_params.merge(project_id: @project.id))
+    elsif @organization
+      @template = RespondentTemplate.new(respondent_template_params.merge(organization_id: @organization.id))
+    end
     if @template.save
       redirect_to project_path(@project) if @project
       redirect_to organization_path(@organization) if @organization
@@ -71,8 +74,11 @@ class RespondentTemplatesController < ApplicationController
   end
 
   def scope_available_templates
-    projects_with_respondent_template = @organization.projects.select(&:respondent_template?) if @organization
-    projects_with_respondent_template = @project.organization.projects.select(&:respondent_template?) if @project.organization
+    if @project&.organization
+      projects_with_respondent_template = @project.organization.projects.select(&:respondent_template?)
+    elsif @organization
+      projects_with_respondent_template = @organization.projects.select(&:respondent_template?)
+    end
     projects_with_respondent_template ||= current_account.personal_projects.select(&:respondent_template?)
     @available_templates = projects_with_respondent_template.map(&:name).flatten
   end

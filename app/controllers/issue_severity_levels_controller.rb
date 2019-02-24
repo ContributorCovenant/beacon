@@ -24,7 +24,8 @@ class IssueSeverityLevelsController < ApplicationController
     @issue_severity_level ||= IssueSeverityLevel.new(issue_severity_level_params.merge(organization: @organization))
 
     if @issue_severity_level.save
-      redirect_to project_issue_severity_levels_path(@project)
+      redirect_to project_issue_severity_levels_path(@project) if @project
+      redirect_to organization_issue_severity_levels_path(@organization) if @organization
     else
       flash[:error] = @issue_severity_level.errors.full_messages
       render :index

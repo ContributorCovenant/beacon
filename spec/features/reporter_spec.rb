@@ -19,7 +19,6 @@ describe "the reporting process", type: :feature do
     fill_in "Password", with: reporter.password
     click_button "Sign In"
     expect(page).to have_content "Signed in successfully."
-
   end
 
   it "lets a reporter open an issue" do
