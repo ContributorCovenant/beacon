@@ -106,6 +106,9 @@
                 <%= link_to "View in Directory", directory_project_path(@project.slug) %>
               </li>
             <% end %>
+            <li>
+              <%= link_to "Moderators", project_project_moderators_path(@project)  %>
+            </li>
             <% if @project.check_setup_complete? %>
               <li>
                 <%= link_to "Project Settings", project_settings_path(@project)  %>

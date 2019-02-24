@@ -33,6 +33,8 @@ Rails.application.routes.draw do
       post "reopen", to: "issues#reopen"
     end
     resources :issue_severity_levels
+    resources :project_invitations, only: [:new, :create]
+    resources :project_moderators, only: [:new, :index, :create, :destroy]
     resources :reporters, only: [:show]
     resources :respondent_templates, only: [:new, :create, :edit, :update, :show]
     resources :respondents, only: [:show]

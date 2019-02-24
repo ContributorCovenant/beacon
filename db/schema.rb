@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_02_24_014850) do
+ActiveRecord::Schema.define(version: 2019_02_24_191504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -206,7 +206,20 @@ ActiveRecord::Schema.define(version: 2019_02_24_014850) do
     t.string "slug"
     t.text "description"
     t.uuid "account_id"
+    t.datetime "flagged_at"
+    t.text "flagged_reason"
+    t.datetime "confirmed_at"
     t.index ["account_id"], name: "index_organizations_on_account_id"
+  end
+
+  create_table "project_invitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.uuid "project_id"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_project_invitations_on_account_id"
+    t.index ["project_id"], name: "index_project_invitations_on_project_id"
   end
 
   create_table "project_issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -307,6 +320,8 @@ ActiveRecord::Schema.define(version: 2019_02_24_014850) do
   add_foreign_key "notifications", "issues"
   add_foreign_key "notifications", "projects"
   add_foreign_key "organizations", "accounts"
+  add_foreign_key "project_invitations", "accounts"
+  add_foreign_key "project_invitations", "projects"
   add_foreign_key "project_issues", "projects"
   add_foreign_key "project_settings", "projects"
   add_foreign_key "projects", "accounts"
