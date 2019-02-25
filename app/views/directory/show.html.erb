@@ -31,10 +31,10 @@
     <h2>Project Governance</h2>
     <p><%= @project.name %> is managed by a <%= @project.moderators.size == 1 ? "single individual" : "team of moderators" %>.</p>
 
-    <% if @project.project_setting.show_moderator_names? %>
+    <% if current_account && @project.project_setting.show_moderator_names? %>
       <ul>
-        <% @project.moderators.each do |moderator| %>
-          <li><%= moderator.display_name %></li>
+        <% @project.moderators.map(&:name).select(&:present?).each do |moderator| %>
+          <li><%= moderator.name %></li>
         <% end %>
       </ul>
     <% end %>
