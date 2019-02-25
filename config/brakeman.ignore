@@ -1,13 +1,33 @@
 {
   "ignored_warnings": [
     {
+      "warning_type": "Redirect",
+      "warning_code": 18,
+      "fingerprint": "a583e6883f5b0e3420a887a05cb27d915284fc814f9f8f512a7a8885c66ce04c",
+      "check_name": "Redirect",
+      "message": "Possible unprotected redirect",
+      "file": "app/controllers/invitations_controller.rb",
+      "line": 54,
+      "link": "https://brakemanscanner.org/docs/warning_types/redirect/",
+      "code": "redirect_to(Invitation.find_by(:id => params[:invitation_id]).subject)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "InvitationsController",
+        "method": "accept"
+      },
+      "user_input": "Invitation.find_by(:id => params[:invitation_id]).subject",
+      "confidence": "High",
+      "note": ""
+    },
+    {
       "warning_type": "Mass Assignment",
       "warning_code": 105,
       "fingerprint": "ebca4d3dc9658d7ddb3618392eb114513266763655794b31389baeb3e0b10127",
       "check_name": "PermitAttributes",
       "message": "Potentially dangerous key allowed for mass assignment",
       "file": "app/controllers/account_project_blocks_controller.rb",
-      "line": 59,
+      "line": 63,
       "link": "https://brakemanscanner.org/docs/warning_types/mass_assignment/",
       "code": "params.require(:account_project_block).permit(:account_id, :reason, :report_for_abuse)",
       "render_path": null,
@@ -21,6 +41,6 @@
       "note": ""
     }
   ],
-  "updated": "2019-02-02 17:12:18 -0600",
+  "updated": "2019-02-24 18:39:53 -0600",
   "brakeman_version": "4.3.1"
 }
