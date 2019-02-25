@@ -40,11 +40,6 @@ class Project < ApplicationRecord
     issue_severity_levels.any?
   end
 
-  def organization_moderators
-    return [] unless self.organization
-    self.organization.default_moderators
-  end
-
   def issues
     @issues ||= ProjectIssue.issues_for_project(id)
   end
@@ -63,6 +58,11 @@ class Project < ApplicationRecord
 
   def obscure_reporter_email?
     project_setting.allow_anonymous_issues
+  end
+
+  def organization_moderators
+    return [] unless self.organization
+    self.organization.default_moderators
   end
 
   def owner?(account)

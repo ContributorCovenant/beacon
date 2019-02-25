@@ -1,0 +1,10 @@
+Invitation to Moderate <%= @subject_name %> %>
+
+<%= @inviter_email %> has invited you to join <%= @subject_name %> as <%= @invitation.is_owner? ? "an owner" : "a moderator" %>.
+
+To accept or decline this invitation, visit:
+
+  <%= invitations_url %>">
+
+Thank you,
+The Friendly Beacon Mailer Robot

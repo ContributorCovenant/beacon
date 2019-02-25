@@ -4,9 +4,9 @@ class Organization < ApplicationRecord
   validates_presence_of :name
 
   belongs_to :account
+  has_many :invitations
   has_many :issue_severity_levels, dependent: :destroy
   has_many :roles, dependent: :destroy
-  has_many :moderators, through: :roles, source: :account
   has_many :projects, dependent: :destroy
   has_one :respondent_template, dependent: :destroy
 
@@ -18,8 +18,8 @@ class Organization < ApplicationRecord
     issue_severity_levels.any?
   end
 
-  def default_moderators
-    roles.where(is_default_moderator: true).map(&:account)
+  def moderators
+    roles.where("is_default_moderator = ? OR is_owner = ?", true, true).map(&:account)
   end
 
   def owner?(account)

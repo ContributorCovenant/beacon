@@ -1,17 +1,17 @@
-<% title "#{@project.name}: Moderators" %>
+<% title "#{@organization.name}: Moderators" %>
 
 <div class="row">
   <div class="col">
-    <h1><%= @project.name %>: Moderators</h1>
+    <h1><%= link_to @organization.name, @organization %>: Moderators</h1>
     <ul>
       <% @moderators.each do |moderator| %>
         <li>
           <%= moderator.email %>
-          <% if @project.owner?(moderator) %>
+          <% if @organization.owner?(moderator) %>
             (Owner)
           <% end %>
           <% unless moderator == current_account %>
-            <%= button_to "Remove", project_remove_moderator_path(@project), params: { account_id: moderator.id }, class: "btn btn-sm btn-danger" %>
+            <%= button_to "Remove", organization_remove_moderator_path(@organization), params: { account_id: moderator.id }, class: "btn btn-sm btn-danger" %>
           <% end %>
         </li>
       <% end %>
@@ -29,7 +29,7 @@
   <div class="col">
     <h2>Invite a New Moderator</h2>
 
-    <%= form_for @invitation, url: project_invitations_path(@project) do |f| %>
+    <%= form_for @invitation, url: organization_invitations_path(@organization) do |f| %>
       <div class="form-group col-sm-6">
         <%= f.label :email, for: :email %><br />
         <%= f.text_field :email %>

@@ -16,7 +16,7 @@
       <div class="card-body">
         <h2 class="card-title">
           <% if @organization.setup_complete? %>
-            Templates
+            Links
           <% else %>
             Setup Checklist
           <% end %>
@@ -51,6 +51,9 @@
                   x
                 </span>
               <% end %>
+            </li>
+            <li>
+              <%= link_to "Owners and Moderators", organization_moderators_path(@organization) %>
             </li>
           </ul>
         </div>
