@@ -31,6 +31,13 @@
     <h2>Project Governance</h2>
     <p><%= @project.name %> is managed by a <%= @project.moderators.size == 1 ? "single individual" : "team of moderators" %>.</p>
 
+    <% if @project.project_setting.show_moderator_names? %>
+      <ul>
+        <% @project.moderators.each do |moderator| %>
+          <li><%= moderator.display_name %></li>
+        <% end %>
+      </ul>
+    <% end %>
     <h2 class="mt-4">Issue Guidelines</h2>
     <p>This project has the following requirements for opening an issue:</p>
     <ul>

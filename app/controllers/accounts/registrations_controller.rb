@@ -2,9 +2,6 @@ module Accounts
   class RegistrationsController < Devise::RegistrationsController
     prepend_before_action :check_captcha, only: [:create]
 
-    # before_action :configure_sign_up_params, only: [:create]
-    # before_action :configure_account_update_params, only: [:update]
-
     # GET /resource/sign_up
     # def new
     #   super
@@ -72,4 +69,5 @@ module Accounts
       respond_with resource
     end
   end
+
 end

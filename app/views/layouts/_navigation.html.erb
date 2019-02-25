@@ -65,7 +65,7 @@
     </ul>
     <div>
       <% if current_account %>
-        <%= link_to current_account.email, edit_account_registration_path(current_account) %>
+        <%= link_to current_account.display_name, edit_account_registration_path(current_account) %>
         <%= link_to "Sign Out", destroy_account_session_path, method: :delete, class: "btn btn-primary" %>
       <% else %>
         <%= link_to "Sign In", new_account_session_path, class: "btn btn-primary" %>
