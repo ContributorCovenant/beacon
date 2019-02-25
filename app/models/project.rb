@@ -62,7 +62,7 @@ class Project < ApplicationRecord
 
   def organization_moderators
     return [] unless self.organization
-    self.organization.default_moderators
+    self.organization.moderators
   end
 
   def owner?(account)

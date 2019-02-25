@@ -3,7 +3,7 @@ class OrganizationsController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_organization, except: [:index, :new]
   before_action :scope_projects, only: [:show, :update]
-  before_action :enforce_view_permissions, except: [:index, :new]
+  before_action :enforce_view_permissions, except: [:index, :new, :create]
   before_action :enforce_management_permissions, only: [:edit, :update, :delete]
 
   def index
