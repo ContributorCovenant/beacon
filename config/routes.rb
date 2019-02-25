@@ -19,8 +19,11 @@ Rails.application.routes.draw do
   end
   resources :issues
   resources :organizations, param: :slug do
+    resources :invitations, only: [:create]
     resources :issue_severity_levels
     resources :respondent_templates, only: [:new, :create, :edit, :update, :show]
+    get "moderators", to: "organizations#moderators"
+    post "remove_moderator", to: "organizations#remove_moderator"
     patch "clone_ladder", to: "organizations#clone_ladder"
     post "clone_respondent_template", to: "respondent_templates#clone"
     patch "clone_respondent_template", to: "respondent_templates#clone"

@@ -219,9 +219,6 @@ ActiveRecord::Schema.define(version: 2019_02_24_191504) do
     t.string "slug"
     t.text "description"
     t.uuid "account_id"
-    t.datetime "flagged_at"
-    t.text "flagged_reason"
-    t.datetime "confirmed_at"
     t.index ["account_id"], name: "index_organizations_on_account_id"
   end
 

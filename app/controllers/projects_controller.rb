@@ -31,7 +31,7 @@ class ProjectsController < ApplicationController
   end
 
   def remove_moderator
-    Role.find_by(account_id: params[:account_id], project_id: @project.id).destroy
+    Role.where(account_id: params[:account_id], project_id: @project.id).destroy_all
     redirect_to project_moderators_path
   end
 

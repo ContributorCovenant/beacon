@@ -10,12 +10,12 @@
       <div class="card mb-3 mr-3" style="width: 30%; min-height: 14rem">
         <div class="card-body">
           <h2 class="card-title mb-1">
-            <%= link_to invitation.project.name, invitation.project %>
+            <%= invitation.subject.name %>
           </h2>
           <div class="card-text">
             <p>You have been invited to
               <%= invitation.is_owner? ? "become an owner" : "become a moderator" %>
-              for <%= invitation.project.name %>.
+              for <%= invitation.subject.name %>.
             </p>
             <div class="actions">
               <%= button_to "Accept", invitation_accept_path(invitation), class: "btn btn-primary" %>
