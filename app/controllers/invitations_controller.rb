@@ -47,11 +47,14 @@ class InvitationsController < ApplicationController
     flash[:info] = "You have accepted the invitation."
     if @invitation.project
       Role.create(account: current_account, project_id: @invitation.project_id, is_owner: @invitation.is_owner)
+      @invitation.destroy
+      redirect_to @invitation.project
     elsif @invitation.organization
       Role.create(account: current_account, organization_id: @invitation.organization_id, is_owner: @invitation.is_owner)
+      @invitation.destroy
+      redirect_to @invitation.project if @invitation.is_owner?
+      redirect_to projects_path
     end
-    @invitation.destroy
-    redirect_to @invitation.subject
   end
 
   def reject

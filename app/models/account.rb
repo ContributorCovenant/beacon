@@ -45,7 +45,7 @@ class Account < ApplicationRecord
   end
 
   def organizations
-    roles.where("organization_id IS NOT NULL AND is_owner = ?", true)
+    roles.where("organization_id IS NOT NULL")
       .includes(:organization)
       .map(&:organization)
   end
