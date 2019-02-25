@@ -6,7 +6,7 @@
     <ul>
       <% @moderators.each do |moderator| %>
         <li>
-          <%= moderator.email %>
+          <%= moderator.display_name %>
           <% if @organization.owner?(moderator) %>
             (Owner)
           <% end %>

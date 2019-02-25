@@ -18,7 +18,6 @@ class Account < ApplicationRecord
   has_many :abuse_reports
   has_many :account_issues
   has_many :account_project_blocks
-  has_many :projects
   has_many :roles
 
   scope :admins, -> { where(is_admin: true) }
@@ -31,9 +30,9 @@ class Account < ApplicationRecord
     account_project_blocks.find_by(project_id: project.id).present?
   end
 
-  def notification_on_issue_of_kind?(issue_id, commenter_kind)
-    issue_notifications = notifications.select{ |notification| notification.issue_id == issue_id }
-    !issue_notifications.map(&:issue_comment).compact.find{ |comment| comment.commenter_kind == commenter_kind }.nil?
+  def display_name
+    return self.name if self.name.present?
+    self.email
   end
 
   def invitations
@@ -44,14 +43,19 @@ class Account < ApplicationRecord
     @issues ||= AccountIssue.issues_for_account(id)
   end
 
+  def notification_on_issue_of_kind?(issue_id, commenter_kind)
+    issue_notifications = notifications.select{ |notification| notification.issue_id == issue_id }
+    !issue_notifications.map(&:issue_comment).compact.find{ |comment| comment.commenter_kind == commenter_kind }.nil?
+  end
+
+  def notifications
+    @notifications ||= Notification.notifications_for_account(self)
+  end
+
   def organizations
     roles.where("organization_id IS NOT NULL")
       .includes(:organization)
       .map(&:organization)
-  end
-
-  def projects
-    (personal_projects + organization_projects).sort_by(&:name)
   end
 
   def organization_projects
@@ -64,15 +68,10 @@ class Account < ApplicationRecord
       .map(&:project)
       .select{ |project| project.organization_id.nil? }
       .uniq
-      .sort_by(&:name)
   end
 
-  def total_issues_past_24_hours
-    issues.select{ |issue| issue.created_at >= Time.zone.now - 24.hours }.size
-  end
-
-  def notifications
-    @notifications ||= Notification.notifications_for_account(self)
+  def projects
+    (personal_projects + organization_projects).uniq.sort_by(&:name)
   end
 
   def reputation
@@ -92,6 +91,10 @@ class Account < ApplicationRecord
     self.update_attribute(:is_flagged, !is_flagged)
   end
 
+  def total_issues_past_24_hours
+    issues.select{ |issue| issue.created_at >= Time.zone.now - 24.hours }.size
+  end
+
   private
 
   def associate_respondent_with_issues
@@ -106,13 +109,13 @@ class Account < ApplicationRecord
     end
   end
 
+  def hash_email
+    self.hashed_email = EncryptionService.hash(self.normalized_email)
+  end
+
   def normalize_email
     normalized = Normailize::EmailAddress.new(self.email).normalized_address
     self.normalized_email = normalized.gsub(/\+.+\@/, "@")
-  end
-
-  def hash_email
-    self.hashed_email = EncryptionService.hash(self.normalized_email)
   end
 
 end

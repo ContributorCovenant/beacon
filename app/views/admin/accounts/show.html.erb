@@ -1,6 +1,6 @@
 <% title "Admin: #{@account.email}" %>
 
-<h1><%= @account.email %></h1>
+<h1><%= @account.email %> (<%= @account.display_name %>)</h1>
 
 <div class="actions mt-1">
   <% if current_account.can_lock_account? %>

@@ -34,6 +34,7 @@ class ProjectSettingsController < ApplicationController
     params.require(:project_setting).permit(
       :rate_per_day,
       :require_3rd_party_auth,
+      :show_moderator_names,
       :minimum_3rd_party_auth_age_in_days,
       :allow_anonymous_issues,
       :publish_stats,

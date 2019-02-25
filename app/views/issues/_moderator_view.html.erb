@@ -15,7 +15,7 @@
         <% if @project.obscure_reporter_email? %>
           Anonymous
         <% else %>
-          <%= @issue.reporter.email %><br />
+          <%= @issue.reporter.display_name %><br />
         <% end %>
         <% if @reporter_block %>
           <p>
@@ -34,7 +34,7 @@
     <% if @issue.respondent %>
       <ul>
         <li>
-          <%= @issue.respondent.email %><br />
+          <%= @issue.respondent.display_name %><br />
           <%= link_to "Details", project_respondent_path(@project, @issue.respondent.id), class: "btn btn-sm btn-warning" %>
           <% if @respondent_block %>
             <p>
@@ -259,12 +259,12 @@
           <% if project.project_setting.allow_anonymous_issues? %>
             by anonymous
           <% else %>
-            by <%= issue.reporter.email %>
+            by <%= issue.reporter.display_name %>
           <% end %>
           (<%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
         </li>
         <% issue.issue_events.each do |event| %>
-          <li><%= event.event %> by <%= event.actor.email %> (<%= event.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
+          <li><%= event.event %> by <%= event.actor.display_name %> (<%= event.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
         <% end %>
       </ul>
 

@@ -24,7 +24,8 @@ class InvitationsController < ApplicationController
       invitation = Invitation.new(
         invitation_params.merge(
           account_id: current_account.id,
-          organization_id: organization.id
+          organization_id: organization.id,
+          is_default_moderator: true
         )
       )
     else

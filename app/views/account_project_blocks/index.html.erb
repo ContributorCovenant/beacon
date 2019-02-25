@@ -12,7 +12,7 @@
               <% if @project.project_setting.allow_anonymous_issues && @project.issues.map(&:reporter).include?( block.account) %>
                 Anonymous Reporter
               <% else %>
-                <%= block.account.email %>
+                <%= block.account.display_name %>
               <% end %>
             </h2>
             <div class="card-text">

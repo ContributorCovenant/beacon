@@ -5,7 +5,7 @@
 <container style="margin-top: 2em;">
   <row>
     <columns>
-      <p>Submitted by <%= @reporter.email %>.</p>
+      <p>Submitted by <%= @reporter.display_name %>.</p>
       <blockquote><%= @report.description %></blockquote>
     </columns>
   </row>
