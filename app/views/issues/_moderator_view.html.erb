@@ -10,7 +10,7 @@
 
   <div class="col" style="border-left: 1px solid #eee;">
     <h2 class="mt-3">Reporter</h2>
-    <ul>
+    <ul id="reporter-details">
       <li>
         <% if @project.obscure_reporter_email? %>
           Anonymous
@@ -32,7 +32,7 @@
     </h2>
     <p><i>The respondent is the person whose behavior was flagged in the issue.</i></p>
     <% if @issue.respondent %>
-      <ul>
+      <ul id="respondent-details">
         <li>
           <%= @issue.respondent.display_name %><br />
           <%= link_to "Details", project_respondent_path(@project, @issue.respondent.id), class: "btn btn-sm btn-warning" %>
