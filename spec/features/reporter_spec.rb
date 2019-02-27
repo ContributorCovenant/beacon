@@ -4,7 +4,7 @@ describe "the reporting process", type: :feature do
 
   let(:maintainer) { FactoryBot.create(:danielle) }
   let!(:project) { FactoryBot.create(:project, account: maintainer, public: true) }
-  let(:reporter) { FactoryBot.create(:michael) }
+  let(:reporter) { FactoryBot.create(:ricky) }
 
   before do
     allow_any_instance_of(Project).to receive(:show_in_directory?).and_return(true)
