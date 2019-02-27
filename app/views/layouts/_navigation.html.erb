@@ -32,7 +32,7 @@
         </li>
         <li class="nav-item nav-link">
           <%= link_to "My Projects", projects_path %>
-          <% count = current_account.notifications.count %>
+          <% count = current_account.notifications.where(project_id: current_account.projects.map(&:id)).count %>
           <% if count > 0 %>
             <span class="badge badge-pill badge-danger"><%= count %></span>
           <% end %>
