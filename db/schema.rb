@@ -138,6 +138,15 @@ ActiveRecord::Schema.define(version: 2019_02_25_012143) do
     t.index ["project_id"], name: "index_invitations_on_project_id"
   end
 
+  create_table "credentials", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "provider"
+    t.string "uid"
+    t.string "email"
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_credentials_on_account_id"
+    t.index ["provider", "uid"], name: "index_credentials_on_provider_and_uid", unique: true
+  end
+
   create_table "issue_comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "text"
     t.string "commenter_encrypted_id"
@@ -316,6 +325,7 @@ ActiveRecord::Schema.define(version: 2019_02_25_012143) do
   add_foreign_key "invitations", "accounts"
   add_foreign_key "invitations", "organizations"
   add_foreign_key "invitations", "projects"
+  add_foreign_key "credentials", "accounts"
   add_foreign_key "issue_comments", "issues"
   add_foreign_key "issue_events", "issues"
   add_foreign_key "issue_severity_levels", "projects"

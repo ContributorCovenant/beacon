@@ -6,3 +6,8 @@ emails:
   robot: <%= ENV.fetch('ROBOT_EMAIL_ADDRESS', "donotreply@coc-beacon.net") %>
   support: <%= ENV.fetch('SUPPORT_EMAIL_ADDRESS', "support@coc-beacon.net") %>
   abuse: <%= ENV.fetch('ABUSE_EMAIL_ADDRESS', "abuse@coc-beacon.net") %>
+oauth:
+  github_app_id: <%= ENV['GITHUB_APP_ID'] %>
+  github_app_secret: <%= ENV['GITHUB_APP_SECRET'] %>
+  gitlab_app_id: <%= ENV['GITLAB_APP_ID'] %>
+  gitlab_app_secret: <%= ENV['GITLAB_APP_SECRET'] %>
