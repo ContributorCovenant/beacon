@@ -15,6 +15,7 @@ gem "bootstrap-toggle-rails"
 gem "bootswatch"
 gem "coffee-rails", "~> 4.2"
 gem "devise"
+gem 'devise-authy'
 gem "dotenv-rails"
 gem "fittings"
 gem "google-cloud-storage", require: false

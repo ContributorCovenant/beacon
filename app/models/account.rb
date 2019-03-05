@@ -5,10 +5,10 @@ class Account < ApplicationRecord
 
   include Permissions
 
-  devise :database_authenticatable, :registerable,
+  devise :authy_authenticatable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  devise :confirmable, :lockable, :timeoutable, :trackable, :omniauthable,
+  devise :authy_authenticatable, :confirmable, :lockable, :timeoutable, :trackable, :omniauthable,
          :database_authenticatable, :registerable, :recoverable, :rememberable,
          :validatable
 

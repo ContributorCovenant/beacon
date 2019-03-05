@@ -1,0 +1,13 @@
+<h2><%= I18n.t('authy_register_title', {:scope => 'devise'}) %></h2>
+
+<%= enable_authy_form do %>
+  <div class="form-group">
+    <%= text_field_tag :country_code, '', :autocomplete => :off, :placeholder => I18n.t('devise.country'), :id => "authy-countries"%>
+  </div>
+  <div class="form-group">
+    <%= text_field_tag :cellphone, '', :autocomplete => :off, :placeholder => I18n.t('devise.cellphone'), :id => "authy-cellphone"%>
+  </div>
+  <div class="actions">
+    <%= submit_tag I18n.t('enable_authy', {:scope => 'devise'}), class: "btn btn-primary" %>
+  </div>
+<% end %>
