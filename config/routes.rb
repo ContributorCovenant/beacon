@@ -3,9 +3,9 @@ Rails.application.routes.draw do
     registrations: "accounts/registrations",
     passwords: "accounts/passwords",
     verify_authy: "/verify-token",
-  	enable_authy: "/enable-two-factor",
-  	verify_authy_installation: "/verify-installation",
-  	authy_onetouch_status: "/onetouch-status"
+    enable_authy: "/enable-two-factor",
+    verify_authy_installation: "/verify-installation",
+    authy_onetouch_status: "/onetouch-status"
   }
 
   root to: "static_content#main"
