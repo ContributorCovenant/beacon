@@ -14,8 +14,6 @@ Rails.application.routes.draw do
 
   resources :accounts
 
-#  get "watermark.svg", to: "watermarks#show", format: :xml
-
   resources :abuse_reports, only: [:new, :create]
   resources :contact_messages, only: [:new, :create]
   resources :invitations, only: [:create, :index] do
