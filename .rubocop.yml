@@ -87,6 +87,3 @@ Style/DoubleNegation:
 
 Style/ConditionalAssignment:
   Enabled: false
-
-Style/GuardClause:
-  Enabled: false
