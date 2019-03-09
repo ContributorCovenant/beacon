@@ -11,11 +11,6 @@ Rails.application.routes.draw do
   root to: "static_content#main"
   get "about", to: "static_content#about"
 
-  # Error pages
-  get "/403", to: "errors#forbidden"
-  get "/404", to: "errors#not_found"
-  get "/500", to: "errors#server_error"
-
   resources :accounts
 
   resources :abuse_reports, only: [:new, :create]

@@ -85,24 +85,18 @@ class InvitationsController < ApplicationController
   end
 
   def scope_organization
-    unless @organization = Organization.find_by(slug: params[:organization_slug])
-      render "errors/not_found"
-      return false
-    end
+    @organization = Organization.find_by(slug: params[:organization_slug])
+    render_not_found unless @organization
   end
 
   def scope_project
-    unless @project = Project.find_by(slug: params[:project_slug])
-      render "errors/not_found"
-      return false
-    end
+    @project = Project.find_by(slug: params[:project_slug])
+    render_not_found unless @project
   end
 
   def scope_invitation
-    unless @invitation = Invitation.find_by(id: params[:invitation_id])
-      render "errors/not_found"
-      return false
-    end
+    @invitation = Invitation.find_by(id: params[:invitation_id])
+    render_not_found unless @invitation
   end
 
 end
