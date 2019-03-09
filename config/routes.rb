@@ -10,7 +10,6 @@ Rails.application.routes.draw do
 
   root to: "static_content#main"
   get "about", to: "static_content#about"
-  get "exception", to: "static_content#exception"
 
   resources :accounts
 
