@@ -9,9 +9,9 @@ If you are interested in working on a feature that is not explicitly marked "Hel
 ## Paid contributions
 We are in the process of securing funding for the 1.0 release of Beacon. Pending successful funding, we are committed to paying contributors for their contributions to the project according to the size of the feature as indicated in its label:
 
-* **Small feature or bug:** $500
-* **Medium feature:** $1000
-* **Large feature:** $2000
+* **Small feature or bug:** $400
+* **Medium feature:** $1200
+* **Large feature:** $2400
 * **X-Large feature:** these features are generally not available for anyone outside of the core team. If you are interested in working on one of these features, you must secure permission from maintainers in advance. Maintainers will negotiate with you on the pay rate.
 
 Payment for contributions is contingent on your pull request being approved and merged. As we will be invoicing our funding organization monthly, you will be paid within 30 days of the end of the month in which the work was completed.
