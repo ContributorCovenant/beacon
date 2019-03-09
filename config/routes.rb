@@ -10,10 +10,11 @@ Rails.application.routes.draw do
 
   root to: "static_content#main"
   get "about", to: "static_content#about"
+  get "exception", to: "static_content#exception"
 
   resources :accounts
 
-  get "watermark.svg", to: "watermarks#show", format: :xml
+#  get "watermark.svg", to: "watermarks#show", format: :xml
 
   resources :abuse_reports, only: [:new, :create]
   resources :contact_messages, only: [:new, :create]

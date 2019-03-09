@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   private
 
   def set_raven_context
-    Raven.user_context(id: session[:current_account_id])
+    Raven.user_context(email: current_account ? current_account.email : "public user")
     Raven.extra_context(params: params.to_unsafe_h, url: request.url)
   end
 
