@@ -6,4 +6,8 @@ class StaticContentController < ApplicationController
   def about
   end
 
+  def exception
+    return 1 / 0
+  end
+
 end
