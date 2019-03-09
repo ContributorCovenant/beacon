@@ -86,14 +86,17 @@ class InvitationsController < ApplicationController
 
   def scope_organization
     @organization = Organization.find_by(slug: params[:organization_slug])
+    render_not_found unless @organization
   end
 
   def scope_project
     @project = Project.find_by(slug: params[:project_slug])
+    render_not_found unless @project
   end
 
   def scope_invitation
     @invitation = Invitation.find_by(id: params[:invitation_id])
+    render_not_found unless @invitation
   end
 
 end

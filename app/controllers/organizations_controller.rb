@@ -1,7 +1,7 @@
 class OrganizationsController < ApplicationController
 
   before_action :authenticate_account!
-  before_action :scope_organization, except: [:index, :new]
+  before_action :scope_organization, except: [:index, :new, :create]
   before_action :scope_projects, only: [:show, :update]
   before_action :enforce_view_permissions, except: [:index, :new, :create]
   before_action :enforce_management_permissions, only: [:edit, :update, :delete]
@@ -84,6 +84,7 @@ class OrganizationsController < ApplicationController
 
   def scope_organization
     @organization = Organization.find_by(slug: params[:slug]) || Organization.find_by(slug: params[:organization_slug])
+    render_not_found unless @organization
   end
 
   def scope_projects

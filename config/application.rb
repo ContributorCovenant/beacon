@@ -6,10 +6,6 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-Raven.configure do |config|
-  config.dsn = "https://c9f4af900bad45e78ecc068356a35b0a@sentry.io/1411236"
-end
-
 module Beacon
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
