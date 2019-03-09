@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
       params: params.to_json,
       account_id: current_account ? current_account.id : nil
     )
-    render(status: :forbidden, plain: "Oh no you don't.")
+    render "errors/forbidden"
   end
 
   private

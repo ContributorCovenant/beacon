@@ -84,6 +84,7 @@ class OrganizationsController < ApplicationController
 
   def scope_organization
     @organization = Organization.find_by(slug: params[:slug]) || Organization.find_by(slug: params[:organization_slug])
+    render "errors/not_found" unless @organization
   end
 
   def scope_projects

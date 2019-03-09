@@ -156,7 +156,10 @@ class IssuesController < ApplicationController
   end
 
   def scope_issue
-    @issue = Issue.where(id: [params[:id], params[:issue_id]]).includes(:issue_comments).first
+    unless @issue = Issue.where(id: [params[:id], params[:issue_id]]).includes(:issue_comments).first
+      render "errors/not_found"
+      return false
+    end
   end
 
   def scope_project

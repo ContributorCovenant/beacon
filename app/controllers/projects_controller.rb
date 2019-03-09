@@ -103,8 +103,12 @@ class ProjectsController < ApplicationController
   end
 
   def scope_project
-    @project = Project.find_by(slug: params[:slug]) || Project.find_by(slug: params[:project_slug])
-    @settings = @project.project_setting
-    @issues = @project.issues
+    if @project = Project.find_by(slug: params[:slug]) || Project.find_by(slug: params[:project_slug])
+      @settings = @project.project_setting
+      @issues = @project.issues
+    else
+      render "errors/not_found"
+      return false
+    end
   end
 end
