@@ -1,3 +1,7 @@
+Raven.configure do |config|
+  config.dsn = "https://c9f4af900bad45e78ecc068356a35b0a@sentry.io/1411236"
+end
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
