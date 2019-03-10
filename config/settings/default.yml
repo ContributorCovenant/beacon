@@ -3,6 +3,10 @@ throttling:
   max_general_contacts_per_day: <%= ENV.fetch('MAX_GENERAL_CONTACTS_PER_DAY', 2) %>
   max_issues_per_day: <%= ENV.fetch('MAX_ISSUES_PER_DAY', 3) %>
 emails:
-  robot: <%= ENV.fetch('ROBOT_EMAIL_ADDRESS', "donotreply@coc-beacon.net") %>
-  support: <%= ENV.fetch('SUPPORT_EMAIL_ADDRESS', "support@coc-beacon.net") %>
-  abuse: <%= ENV.fetch('ABUSE_EMAIL_ADDRESS', "abuse@coc-beacon.net") %>
+  robot: <%= ENV.fetch('ROBOT_EMAIL_ADDRESS', "donotreply@coc-beacon.com") %>
+  support: <%= ENV.fetch('SUPPORT_EMAIL_ADDRESS', "support@coc-beacon.com") %>
+  abuse: <%= ENV.fetch('ABUSE_EMAIL_ADDRESS', "abuse@coc-beacon.com") %>
+sms:
+  from: <%= ENV.fetch('TWILIO_PHONE_NUMBER', nil) %>
+  account_sid: <%= ENV.fetch('TWILIO_ACCOUNT_SID', "") %>
+  auth_token: <%= ENV.fetch('TWILIO_AUTH_TOKEN', "") %>

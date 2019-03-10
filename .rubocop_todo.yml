@@ -21,7 +21,11 @@ Layout/EmptyLinesAroundAccessModifier:
   Exclude:
     - 'spec/factories/project.rb'
 
-# Offense count: 71
+Style/RescueStandardError:
+  Exclude:
+    - 'app/services/notification_service.rb'
+
+# Offense count: 72
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https
 Metrics/LineLength:

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_05_011745) do
+ActiveRecord::Schema.define(version: 2019_03_09_234827) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -92,6 +92,8 @@ ActiveRecord::Schema.define(version: 2019_03_05_011745) do
     t.string "authy_id"
     t.datetime "last_sign_in_with_authy"
     t.boolean "authy_enabled", default: false
+    t.string "phone_encrypted"
+    t.boolean "send_sms_on_issue_open", default: false
     t.index ["authy_id"], name: "index_accounts_on_authy_id"
     t.index ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true

@@ -54,7 +54,7 @@ RSpec.describe IssuesController, type: :controller do
         }
         expect(NotificationService).to have_received(:notify).with(
           account: moderator,
-          project_id: project.id,
+          project: project,
           issue_id: Issue.last.id
         )
       end

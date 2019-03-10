@@ -19,6 +19,18 @@
     <%= f.email_field :email, disabled: true, autocomplete: "email", class: "form-control" %>
   </div>
 
+  <div class="form-group">
+    <%= f.label :phone_number %><br />
+    (ex. +18881112222)<br />
+    <%= f.text_field :phone_number, class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :send_sms_on_issue_open, "Notify me via SMS of new issues in my projects" %>
+    <%= f.check_box :send_sms_on_issue_open %>
+  </div>
+
+
   <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
     <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
   <% end %>

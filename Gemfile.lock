@@ -400,6 +400,10 @@ GEM
     turbolinks (5.2.0)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
+    twilio-ruby (5.18.0)
+      faraday (~> 0.9)
+      jwt (>= 1.5, <= 2.5)
+      nokogiri (>= 1.6, < 2.0)
     tzinfo (1.2.5)
       thread_safe (~> 0.1)
     uber (0.1.0)
@@ -471,6 +475,7 @@ DEPENDENCIES
   spring-watcher-listen (~> 2.0.0)
   sprockets-es6
   turbolinks (~> 5)
+  twilio-ruby
   tzinfo-data
   uglifier (>= 1.3.0)
   valid_email2

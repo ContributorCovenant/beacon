@@ -32,7 +32,7 @@ describe "the respondent experience", type: :feature do
       before do
         NotificationService.notify(
           account: respondent,
-          project_id: project.id,
+          project: project,
           issue_id: issue.id,
           issue_comment_id: nil
         )
@@ -59,7 +59,7 @@ describe "the respondent experience", type: :feature do
       before do
         NotificationService.notify(
           account: respondent,
-          project_id: project.id,
+          project: project,
           issue_id: issue.id,
           issue_comment_id: issue_comment.id
         )

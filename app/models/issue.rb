@@ -4,10 +4,10 @@ class Issue < ApplicationRecord
 
   attr_accessor :reporter_id, :project_id
 
-  has_many :issue_events
-  has_many :issue_comments
-  has_many :notifications
-  has_many_attached :uploads
+  has_many :issue_events, dependent: :destroy
+  has_many :issue_comments, dependent: :destroy
+  has_many :notifications, dependent: :destroy
+  has_many_attached :uploads, dependent: :destroy
   belongs_to :issue_severity_level, optional: true
 
   before_save :validate_upload_file_type_and_size
