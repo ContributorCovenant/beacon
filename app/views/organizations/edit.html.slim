@@ -1,0 +1,22 @@
+- title "#{@organization.name}: Edit Details"
+h1= @organization.name
+= form_for @organization do |f|
+  .form-group.col-sm-6
+    = f.label :name
+    br/
+    = f.text_field :name, class: "form-control"
+  .form-group.col-sm-6
+    = f.label 'URL'
+    br/
+    = f.text_field :url, autofocus: true, class: "form-control"
+  .form-group.col-sm-6
+    = f.label "Code of Conduct URL"
+    br/
+    = f.text_field :coc_url, class: "form-control"
+  .form-group.col-sm-6
+    = f.label "Description"
+    br/
+    = f.text_area :description, class: "form-control"
+  .actions
+    = f.submit "Update Organization", class: "btn btn-primary"
+    = button_to "Cancel", @organization, class: "btn btn-warning"

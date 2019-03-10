@@ -1,0 +1,20 @@
+table.table
+  thead
+    tr
+      th Issue
+      th Description
+      th Opened
+      th.hide-portrait-phone Updated
+      th Status
+  tbody
+    - issues.each do |issue|
+      tr
+        td
+          - count = current_account.notifications.for_issue(issue).size
+          = link_to issue.issue_number, project_issue_path(@project, issue)
+          - if count > 0
+            span.badge.badge-pill.badge-danger= current_account.notifications.for_issue(issue).size
+        td= truncate(issue.description, length: 50)
+        td= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z")
+        td.hide-portrait-phone= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z")
+        td= issue.aasm_state.titleize

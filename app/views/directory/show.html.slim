@@ -1,0 +1,50 @@
+- title "#{@project.name}"
+.row
+  .col
+    h1= @project.name
+    p
+      = link_to "Home page", @project.url, target: "_new"
+      | \
+      | \#{link_to "Code of conduct", @project.coc_url, target: "_new"}
+      br/
+      = @project.description
+    - if current_account
+      - if current_account.can_open_issue_on_project?(@project)
+        .actions
+          = link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-primary"
+      - else
+        p
+          b This project is not accepting issues at this time.
+    - else
+      p
+        | You must #{link_to "create an account", new_account_registration_path}
+        | or #{link_to "sign in", new_account_session_path} to open an issue.
+  .col
+    h2 Project Governance
+    p
+      = @project.name
+      | is managed by a #{@project.moderators.size == 1 ? "single individual" : "team of moderators"}.
+    - if current_account && @project.project_setting.show_moderator_names?
+      ul
+        - @project.moderators.map(&:name).select(&:present?).each do |moderator|
+          li= moderator
+    h2.mt-4 Issue Guidelines
+    p This project has the following requirements for opening an issue:
+    ul
+      - if @project.project_setting.allow_anonymous_issues?
+        li Your email will be hidden from project maintainers when you open an issue.
+      - else
+        li Your email address will be visible to project maintainers.
+      - if @project.project_setting.require_3rd_party_auth?
+        li You must have a valid linked account on Github or GitLab
+    - if @project.project_setting.publish_stats?
+      h2.mt-5 3-Month Activity
+      p Reporter satisfaction with issue resolution: 5/5
+      p Average time to resolve an issue: 4 days
+    - if current_account
+      .actions
+        = link_to "Report This Project", new_abuse_report_path(project_slug: @project.slug), class: "btn btn-primary"
+- if @issue_severity_levels.any?
+  h2.mt-3 Consequence Ladder
+  - @issue_severity_levels.each do |consequence|
+    = render partial: "issue_severity_levels/consequence_public", locals: { consequence: consequence }

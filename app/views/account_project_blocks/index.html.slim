@@ -1,0 +1,35 @@
+- title "#{@project.name}: Blocked Users"
+h1
+  = link_to @project.name, @project
+  | \: Blocked Users
+- if @blocks.any?
+  .row
+    - @blocks.each do |block|
+      .col
+        .card.mb-3.mr-3
+          .card-body
+            h2.card-title
+              - if @project.project_setting.allow_anonymous_issues && @project.issues.map(&:reporter).include?( block.account)
+                | Anonymous Reporter
+              - else
+                = block.account.display_name
+            .card-text
+              p
+                | Reason: #{block.reason}
+              h2.mt-2 Associated Issues
+              ul
+                - if @project.project_setting.allow_anonymous_issues
+                  - issues = block.issues.select{ |issue| issue.reporter == block.account }
+                - else
+                  - issues = block.issues
+                - issues.each do |issue|
+                  - role = block.account == issue.reporter ? "Reporter" : "Respondent"
+                  li
+                    = link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue)
+                    | (#{role})
+              = form_for block, url: project_account_project_block_path(@project, block), method: :delete do |f|
+                .actions
+                  = f.hidden_field :account_id, value: block.account_id
+                  = f.submit "Unblock", class: "btn btn-danger", confirm: "Are you sure you want to unblock this account?"
+- else
+  p This project doesn't have any blocked accounts.

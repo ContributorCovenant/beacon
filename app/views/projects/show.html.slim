@@ -1,0 +1,133 @@
+- title @project.name
+.row
+  .col
+    h1
+      - if @project.organization
+        = @project.organization.name
+        | \:
+      = @project.name
+    p= @project.description
+    .actions
+      - if current_account.can_manage_project?(@project)
+        = link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning"
+      - if current_account.can_open_issue_on_project?(@project)
+        = link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-danger"
+  .col
+    - unless @project.check_setup_complete?
+      .card.mb-2 style: "width: 18rem;" 
+        .card-body
+          h2.card-title Setup Checklist
+          .card-text
+            ul
+              li
+                - if current_account.can_manage_project?(@project)
+                  = link_to "Ownership Confirmation", project_ownership_path(@project)
+                - else
+                  | Ownership Confirmation
+                - if @project.ownership_confirmed?
+                  span.badge.badge-pill.badge-success
+                    | √
+                - else
+                  span.badge.badge-pill.badge-danger
+                    | x
+              li
+                - if current_account.can_manage_project?(@project)
+                  = link_to "Consequence Ladder", project_issue_severity_levels_path(@project)
+                - else
+                  | Consequence Ladder
+                - if @project.consequence_ladder?
+                  span.badge.badge-pill.badge-success
+                    | √
+                - else
+                  span.badge.badge-pill.badge-danger
+                    | x
+              li
+                - if @project.respondent_template?
+                  - if current_account.can_manage_project?(@project)
+                    = link_to "Respondent Template", project_respondent_template_path(@project, @project.respondent_template)
+                  - else
+                    | Respondent Template
+                  span.badge.badge-pill.badge-success
+                    | √
+                - else
+                  = link_to "Respondent Template", new_project_respondent_template_path(@project)
+                  span.badge.badge-pill.badge-danger
+                    | x
+              li
+                - if current_account.can_manage_project?(@project)
+                  = link_to "Project Settings", project_settings_path(@project)
+                - else
+                  | Project Settings
+                - if @project.verified_settings?
+                  span.badge.badge-pill.badge-success
+                    | √
+                - else
+                  span.badge.badge-pill.badge-danger
+                    | x
+              li
+                - if current_account.can_manage_project?(@project)
+                  = link_to "Visible in Directory", project_settings_path(@project)
+                - else
+                  | Visible in Directory
+                - if @project.show_in_directory?
+                  span.badge.badge-pill.badge-success
+                    | √
+                - else
+                  span.badge.badge-pill.badge-danger
+                    | x
+    .card style: "width: 18rem;" 
+      .card-body
+        h2.card-title Links
+        .card-text
+          ul
+            li
+              = link_to "Home Page", @project.url, target: "_new"
+            li
+              = link_to "Code of Conduct", @project.coc_url, target: "_new"
+            - if @project.public?
+              li
+                = link_to "View in Directory", directory_project_path(@project.slug)
+            li
+              = link_to "Moderators", project_moderators_path(@project)
+            - if @project.check_setup_complete?
+              li
+                = link_to "Project Settings", project_settings_path(@project)
+            - if @project.consequence_ladder?
+              li
+                = link_to "Consequence Ladder", project_issue_severity_levels_path(@project)
+            - if @project.respondent_template?
+              li
+                = link_to "Respondent Template", edit_project_respondent_template_path(@project, @project.respondent_template)
+            - if @project.account_project_blocks.any?
+              li
+                = link_to "Blocked Accounts", project_account_project_blocks_path(@project)
+ul#nav-tab.nav.nav-tabs.mt-5.mb-3.responsive role: "tablist" 
+  li.nav-item
+    a#nav-newissues-tab.nav-link.active aria-controls="nav-newissues" aria-selected="true" data-toggle="pill", href: "#nav-newissues", role: "tab" 
+      | New Issues
+      span.badge.badge-pill.badge-danger= @issues.submitted.size
+  li.nav-item
+    a#nav-acknowledgedissues-tab.nav-link aria-controls="nav-acknowledgedissues" aria-selected="false" data-toggle="pill", href: "#nav-acknowledgedissues", role: "tab" 
+      | In Progress
+      span.badge.badge-pill.badge-warning= @issues.acknowledged.size + @issues.reopened.size
+  li.nav-item
+    a#nav-resolvedissues-tab.nav-link aria-controls="nav-resolvedissues" aria-selected="false" data-toggle="pill", href: "#nav-resolvedissues", role: "tab" 
+      | Resolved
+      span.badge.badge-pill.badge-light= @issues.resolved.size
+  li.nav-item
+    a#nav-dismissedissues-tab.nav-link aria-controls="nav-dismissedissues" aria-selected="false" data-toggle="pill", href: "#nav-dismissedissues", role: "tab" 
+      | Dismissed
+      span.badge.badge-pill.badge-dark= @issues.dismissed.size
+#nav-tabContent.tab-content.responsive
+  #nav-newissues.tab-pane.fade.show.active aria-labelledby="nav-newissues-tab", role: "tabpanel" 
+    = render partial: "issues", locals: { issues: @issues.submitted }
+  #nav-acknowledgedissues.tab-pane.fade aria-labelledby="nav-newissues-tab", role: "tabpanel" 
+    = render partial: "issues", locals: { issues: @issues.acknowledged + @issues.reopened }
+  #nav-resolvedissues.tab-pane.fade aria-labelledby="nav-newissues-tab", role: "tabpanel" 
+    = render partial: "issues", locals: { issues: @issues.resolved }
+  #nav-dismissedissues.tab-pane.fade aria-labelledby="nav-newissues-tab", role: "tabpanel" 
+    = render partial: "issues", locals: { issues: @issues.dismissed }
+- if @settings.paused?
+  = button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-warning"
+- else
+  = button_to "Pause Issues for 24 Hours", project_toggle_pause_path(@project), class: "btn btn-danger"

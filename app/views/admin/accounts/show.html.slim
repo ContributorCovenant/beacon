@@ -1,0 +1,33 @@
+- title "Admin: #{@account.email}"
+h1
+  = @account.email
+  | (#{@account.display_name})
+.actions.mt-1
+  - if current_account.can_lock_account?
+    - if !@account.is_flagged?
+      a#block-button.btn.btn-danger onclick: "$('#block-form').toggle(); $('#block-button').toggle(); "  Lock Account
+      #block-form style: "display: none;" 
+        = form_for @account, url: admin_account_flag_path(@account) do |f|
+          .form-group.col-sm-6
+            = f.label 'Reason for Locking'
+            br/
+            = f.text_area :flagged_reason, class: "form-control"
+          .actions
+            = f.submit "Lock", class: "btn btn-danger", confirm: "Are you sure you want to lock this account?"
+            a.btn.btn-warning onclick: "$('#block-form').toggle(); $('#block-button').toggle(); "  Cancel
+    - else
+      h2.mt-3 Account is Locked
+      p= @account.flagged_reason
+      = button_to "Unlock Account", admin_account_unflag_path(@account), class: "btn btn-danger"
+- if @projects.any?
+  h2.mt-3 Associated Projects
+  ul
+    - @projects.each do |project|
+      li
+        = link_to project.name, admin_project_path(project)
+h2.mt-3 Associated Issues
+ul
+  - @account.issues.each do |issue|
+    li
+      = link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue)
+      | (#{issue.aasm_state.titleize}, opened on #{issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z")})

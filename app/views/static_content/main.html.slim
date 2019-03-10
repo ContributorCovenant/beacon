@@ -1,0 +1,41 @@
+- title "Welcome"
+h1 Welcome to Beacon
+p Over the past several years, code of conduct adoptions by events and open source projects has become the norm for establishing and communicating community values. However, enforcement of a code of conduct is the real key to creating welcoming and inclusive communities. But up to now, only the largest organizations have had access to the kinds of resources that make enforcement even possible, let alone fair and manageable.
+h2 Safety. Transparency. Consistency.
+p
+  | Beacon is a resource designed to bring this potential to every event and open source project, large or small. Beacon provides a complete set of tools for managing your code of conduct at all stages: setting up your enforcement teams, documenting your processes, reporting incidents, managing incident reports, building consensus around enforcement decisions, and communicating clearly with reporters and respondents. Beacon brings
+  b safety, transparency, and consistency
+  | to community management in open source.
+.container-fluid
+  .row.mt-5
+    .col-sm
+      .card.mr-5.mt-2 style: "height: 14em;" 
+      | " style="height: 14em;""&gt;
+      .card-body
+        h2.card-title Browse the Directory
+        p.card-text View a directory of events and open source projects that are currently using Beacon.
+        = link_to View Directory, directory_path, class: btn btn-primary
+  - if current_account
+    - if current_account.can_create_project?
+      .col-sm
+        .card.mr-5.mt-2 style: "height: 14em;" 
+        | "&gt;
+        .card-body
+          h2.card-title Register a Project
+          p.card-text Register a new project on Beacon.
+          = link_to New Project, new_project_path, class: btn btn-primary
+- else
+  .col-sm
+    .card.mr-5.mt-2 style: "height: 14em;" 
+    | "&gt;
+    .card-body
+      h2.card-title Register
+      p.card-text Create an account to file a code of conduct issue or to set up your project or event on Beacon.
+      = link_to Create an Account, new_account_registration_path, class: btn btn-primary
+.col-sm
+  .card.mr-5.mt-2 style: "height: 14em;" 
+  | "&gt;
+  .card-body
+    h2.card-title Sign In
+    p.card-text If you already have an account, sign in to access your projects or to open a code of conduct issue.
+    = link_to Sign In, new_account_session_path, class: btn btn-primary

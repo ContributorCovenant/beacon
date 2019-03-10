@@ -1,0 +1,37 @@
+- title "Sign Up"
+h1 Sign up
+.container
+  .row
+    .col-sm
+      p.mt-3
+        a href: "#"  Sign up with GitHub
+        | \
+        a href: "#"  Sign up with GitLab
+      = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+        = devise_error_messages!.gsub(/^.+\^/,'').html_safe
+        .form-group
+          = f.label :name
+          br/
+          = f.text_field :name, autofocus: true, class: "form-control"
+        .form-group
+          = f.label :email
+          br/
+          = f.email_field :email, autocomplete: "email", class: "form-control"
+        .form-group
+          = f.label :password
+          - if @minimum_password_length
+            em
+              | (#{@minimum_password_length} characters minimum)
+          br/
+          = f.password_field :password, autocomplete: "new-password", class: "form-control"
+        .form-group
+          = f.label :password_confirmation
+          br/
+          = f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control"
+        .form-group
+          = flash[:recaptcha_error]
+          = recaptcha_tags
+        .actions.mt-3
+          = f.submit "Sign up", class: "btn btn-primary"
+    .col-sm
+      = render "devise/shared/links"

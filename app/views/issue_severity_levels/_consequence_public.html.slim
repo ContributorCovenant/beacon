@@ -1,0 +1,8 @@
+.card.mb-3.mr-3 id: "consequence-#{consequence.severity}-show" 
+  .card-body
+    h3.card-title
+      | Level #{consequence.severity}: #{consequence.label}
+    .card-text
+      p= consequence.example
+      h4 Consequence
+      p= consequence.consequence

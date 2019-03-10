@@ -1,0 +1,29 @@
+- title "Register a Project"
+h1 Register a Project
+p
+  | Use this form to register a new project on Beacon. You will be able to configure
+  | settings for managing your project after it is created.
+= form_for @project do |f|
+  .form-group.col-sm-6
+    = f.label :name
+    br/
+    = f.text_field :name, autofocus: true, class: "form-control"
+  .form-group.col-sm-6
+    = f.label 'Project URL'
+    br/
+    = f.text_field :url, class: "form-control"
+  .form-group.col-sm-6
+    = f.label "Code of Conduct URL"
+    br/
+    = f.text_field :coc_url, class: "form-control"
+  .form-group.col-sm-6
+    = f.label "Description"
+    br/
+    = f.text_area :description, class: "form-control"
+  - if @organizations.any?
+    .form-group.col-sm-6
+      = f.label "Organization"
+      br/
+      = f.select :organization_id, @organizations.map{ |org| [org.name, org.id] }, include_blank: "None", class: "form-control"
+  .actions
+    = f.submit "Create Project", class: "btn btn-primary"

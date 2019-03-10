@@ -1,0 +1,17 @@
+- title "Contact Administrators"
+h1 Contact Beacon Administrators
+p Use this form to send a message to the administrators of the Beacon application.
+= form_for @contact_message, url: contact_messages_path do |f|
+  .form-group
+    = f.label :sender_email, "Your email address"
+    br/
+    = f.text_field :sender_email, class: "form-control"
+  .form-group
+    = f.label :message
+    br/
+    = f.text_area :message, class: "form-control", rows: 10
+  .form-group
+    = flash[:recaptcha_error]
+    = recaptcha_tags
+  .actions
+    = f.submit "Send Message", class: "btn btn-primary"

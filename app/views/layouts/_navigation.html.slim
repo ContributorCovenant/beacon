@@ -1,0 +1,49 @@
+nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
+  a.navbar-brand href: "/" = image_tag "beacon_logo.png", id: "logo"
+  button.navbar-toggler aria-controls="navbarSupportedContent" aria-expanded="false" aria-label=("Toggle navigation") data-target="#navbarSupportedContent" data-toggle="collapse", type: "button" 
+    span.navbar-toggler-icon
+  #navbarSupportedContent.collapse.navbar-collapse
+    ul.navbar-nav.mr-auto
+      li.nav-item.nav-link
+        = link_to "Directory", directory_path
+      - if current_account && current_account.can_access_admin_dashboard?
+        li.nav-item.dropdown
+          a.nav-link.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown", href: "#", role: "button"  Admin
+          .dropdown-menu
+            - if current_account.can_access_abuse_reports?
+              = link_to "Abuse Reports", admin_abuse_reports_path, class: "dropdown-item"
+            - if current_account.can_access_admin_account_dashboard?
+              = link_to "Accounts", admin_accounts_path, class: "dropdown-item"
+            - if current_account.can_access_admin_project_dashboard?
+              = link_to "Projects", admin_projects_path, class: "dropdown-item"
+      - if current_account
+        li.nav-item.nav-link
+          = link_to "My Organizations", organizations_path
+        li.nav-item.nav-link
+          = link_to "My Projects", projects_path
+          - count = current_account.notifications.where(project_id: current_account.projects.map(&:id)).count
+          - if count > 0
+            span.badge.badge-pill.badge-danger= count
+        - if current_account.issues.any?
+          li.nav-item.nav-link
+            = link_to "My Issues", issues_path
+            - count = current_account.notifications.where(issue_id: current_account.issues.map(&:id)).count
+            - if count > 0
+              span.badge.badge-pill.badge-danger= count
+        - if current_account.invitations.any?
+          li.nav-item.nav-link
+            = link_to "Invitations", invitations_path
+            span.badge.badge-pill.badge-danger= current_account.invitations.size
+      li.nav-item.nav-link
+        = link_to "About Beacon", about_path
+      li.nav-item.nav-link
+        = link_to "FAQ", "#"
+      li.nav-item.nav-link
+        = link_to "Contact", new_contact_message_path
+    div
+      - if current_account
+        = link_to current_account.display_name, edit_account_registration_path(current_account)
+        = link_to "Sign Out", destroy_account_session_path, method: :delete, class: "btn btn-primary"
+      - else
+        = link_to "Sign In", new_account_session_path, class: "btn btn-primary"
+        = link_to "Register", new_account_registration_path, class: "btn btn-primary"

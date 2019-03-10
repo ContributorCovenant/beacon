@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    meta content: "text/html; charset=UTF-8" http-equiv="Content-Type" /
+    meta content: "width=device-width, initial-scale=1.0", name: "viewport" /
+    title= content_for?(:title) ? yield(:title) : "Beacon"
+    meta content: "#{content_for?(:description) ? yield(:description) : "Beacon"}", name: "description" /
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => 'reload'
+    link crossorigin: "anonymous", href: "https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css", integrity: "sha384-wvfXpqpZZVQGK6TAh2PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN", rel: "stylesheet" /
+    = javascript_include_tag 'application', 'data-turbolinks-track' => 'reload'
+    = csrf_meta_tags
+    = javascript_include_tag "https://www.authy.com/form.authy.min.js"
+    = stylesheet_link_tag "https://www.authy.com/form.authy.min.css"
+  body
+    header
+      = render 'layouts/navigation'
+    main.container.mt-3 role: "main" 
+      = render 'layouts/messages'
+      = yield
+    footer.page-footer.font-small.blue.pt-4
+      .footer-copyright.text-center.py-3
+        | © #{Date.today.year}
+        a href: "https://where.coraline.codes/"  Coraline Ada Ehmke
+        | \
+        a href: "https://github.com/contributorCovenant/beacon"  Github
+        | \
+        a href: "https://www.patreon.com/cocbeacon"  Patreon
+        | \
+        a href: "https://www.gofundme.com/coc-beacon"  GoFundMe
+    = javascript_tag do
+      | $(function () {
+      | $('[data-toggle="tooltip"]').tooltip()
+      | })

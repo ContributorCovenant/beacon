@@ -1,0 +1,12 @@
+- title "#{@project.name}: Report Abuse"
+h1
+  | Report Abuse: #{@project.name}
+p If you feel that this project is fraudulent or otherwise inappropriate, use this form to notify Beacon administrators.
+= form_for @abuse_report do |f|
+  = hidden_field_tag :project_slug, @project.slug
+  .form-group.col-sm-6
+    = f.label "Explanation", for: :abuse_report_description
+    br/
+    = f.text_area :description, class: "form-control"
+  .actions
+    = f.submit "Report Project", class: "btn btn-primary"

@@ -1,0 +1,29 @@
+- title "Admin: Abuse Reports"
+h1 Admin: Abuse Reports
+table#projects.table data-sorting="true" 
+  thead
+    tr
+      th Report #
+      th Subject
+      th Reporter
+      th Created At
+      th Updated At
+      th Status
+  tbody
+    - @reports.each do |report|
+      tr
+        td= link_to report.report_number, admin_abuse_report_path(report)
+        td= (report.project && report.project.name) || report.reportee.email
+        td= report.reporter.email
+        td= report.created_at.strftime("%D")
+        td= report.updated_at.strftime("%D")
+        td
+          - badge_kind = "warning" if report.aasm_state == "submitted"
+          - badge_kind = "danger" if report.aasm_state == "dismissed"
+          - badge_kind = "info" if report.aasm_state == "resolved"
+          span class: "badge badge-#{badge_kind}" = report.aasm_state.titleize
+  table
+    = javascript_tag do
+      | jQuery(function($){
+      | $('.table').footable();
+      | });

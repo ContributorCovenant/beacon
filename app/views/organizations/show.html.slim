@@ -1,0 +1,68 @@
+- title @organization.name
+.row
+  .col
+    h1= @organization.name
+    p= @organization.description
+    .actions
+      - if current_account.can_manage_organization?(@organization)
+        = link_to "Edit Organization", edit_organization_path(@organization), class: "btn btn-warning"
+  .col
+    .card.mb-2 style: "width: 18rem;" 
+      .card-body
+        h2.card-title
+          - if @organization.setup_complete?
+            | Links
+          - else
+            | Setup Checklist
+        .card-text
+          ul
+            li
+              = link_to "Consequence Ladder", organization_issue_severity_levels_path(@organization)
+              - if !@organization.setup_complete?
+                - if @organization.consequence_ladder?
+                  span.badge.badge-pill.badge-success
+                    | √
+                - else
+                  span.badge.badge-pill.badge-danger
+                    | x
+            li
+              - if @organization.respondent_template
+                = link_to "Respondent Template", edit_organization_respondent_template_path(@organization, @organization.respondent_template)
+                - if !@organization.setup_complete?
+                  span.badge.badge-pill.badge-success
+                    | √
+              - else
+                = link_to "Respondent Template", new_organization_respondent_template_path(@organization)
+                span.badge.badge-pill.badge-danger
+                  | x
+            li
+              = link_to "Owners and Moderators", organization_moderators_path(@organization)
+h1.float-left.mt-5.mr-3 Projects
+.actions.ml-3.mt-5.mb-3
+  = link_to "New Project", new_project_path(organization_id: @organization.id), class: "btn btn-primary"
+.container
+  .row
+    - @projects.each_with_index do |project,i|
+      .card.mb-3.mr-3 style: "width: 30%; min-height: 14rem" 
+        .card-body
+          h2.card-title
+            = link_to project.name, project
+            - count = current_account.notifications.for_project(project).size
+            - if count > 0
+              span.badge.badge-pill.badge-danger= count
+          .card-text
+            p= project.description
+            p
+              | Visibility:
+              - if project.show_in_directory?
+                span.badge.badge-pill.badge-success Public
+              - else
+                span.badge.badge-pill.badge-danger Private
+            p
+              | Issues:
+              span.badge.badge-pill.badge-danger
+                = project.issues.submitted.size
+                | New
+              span.badge.badge-pill.badge-warning
+                = project.issues.acknowledged.size + project.issues.reopened.size
+                | In Progress

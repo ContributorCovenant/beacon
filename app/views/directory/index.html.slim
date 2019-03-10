@@ -1,0 +1,9 @@
+- title "Directory"
+h1 Beacon Directory
+- @projects.each_with_index do |project,i|
+  - float_class = i < @projects.size - 1 ? "float-left" : "float-none"
+  div class: "card mb-3 mr-3 #{float_class}", style: "width: 15rem; height: 15rem" 
+    .card-body
+      h2.card-title= link_to project.name, directory_project_path(project.slug)
+      .card-text
+        p= project.description

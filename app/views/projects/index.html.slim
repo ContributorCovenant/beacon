@@ -1,0 +1,32 @@
+- title "My Projects"
+h1.float-left.mr-3 My Projects
+.actions.ml-3.mb-3
+  = link_to "New Project", new_project_path, class: "btn btn-primary"
+.container
+  .row
+    - @projects.each_with_index do |project,i|
+      .card.mb-3.mr-3 style: "width: 30%; min-height: 14rem" 
+        .card-body
+          h2.card-title.mb-1
+            = link_to project.name, project
+            - count = current_account.notifications.for_project(project).size
+            - if count > 0
+              span.badge.badge-pill.badge-danger= count
+          - if project.organization
+            i= project.organization.name
+          .card-text
+            p= project.description
+            p
+              | Visibility:
+              - if project.show_in_directory?
+                span.badge.badge-pill.badge-success Public
+              - else
+                span.badge.badge-pill.badge-danger Private
+            p
+              | Issues:
+              span.badge.badge-pill.badge-danger
+                = project.issues.submitted.size
+                | New
+              span.badge.badge-pill.badge-warning
+                = project.issues.acknowledged.size + project.issues.reopened.size
+                | In Progress

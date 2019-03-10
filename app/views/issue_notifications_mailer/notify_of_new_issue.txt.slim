@@ -1,0 +1,10 @@
+| New Issue on #{@project.name}: Issue ##{@issue.issue_number}
+| \------------------------------------------------------------------------
+
+| A new issue has been opened on #{@project.name} on #{@issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z")}
+| You can view the issue in Beacon at this URL:
+
+| \#{link_to "", project_issue_url(@project, @issue)}
+
+| Thank you,
+| The Friendly Beacon Mailer Robot

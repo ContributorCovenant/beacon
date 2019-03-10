@@ -1,0 +1,33 @@
+- title "#{@subject.name}: Edit Respondent Template"
+h1
+  = link_to @subject.name, @subject
+  | \: Respondent Contact Template
+p This template will be used when you first contact the respondent of an issue.
+.row
+  .col
+    - url = project_respondent_template_path(@project, @template) if @project.present?
+    - url = organization_respondent_template_path(@organization, @template) if @organization.present?
+    = form_for @template, url: url do |f|
+      .form-group
+        = f.text_area :text, class: "form-control", rows: 20
+      .actions
+        = f.submit "Save", class: "btn btn-primary"
+  .col
+    h2 Tags
+    p The following tags will be auto-populated from your project and the issue when you contact a respondent:
+    ul
+      li [[PROJECT_NAME]]
+      li [[CODE_OF_CONDUCT_URL]]
+      li [[VIOLATION_EXAMPLE]]: The example from the consequence ladder corresponding to the level of the issue.
+      li [[CONSEQUENCE]]: The relevant consequence corresponding to the level of the issue.
+      li [[ISSUE_URL]]
+    h2 Cloning a Template
+    p You can customize your respondent template from Beacon defaults or another one of your projects, or create your own.
+    - url = project_clone_respondent_template_path(@project) if @project.present?
+    - url = organization_clone_respondent_template_path(@organization) if @organization.present?
+    = form_for @template, url: url do |f|
+      .form-group.col-sm-6
+        = f.label :clone_from
+        = f.select :respondent_template_default_source, @available_templates, class: "form-control", include_blank: "Select..."
+      .actions.mb-3
+        = f.submit "Clone", class: "btn btn-primary"

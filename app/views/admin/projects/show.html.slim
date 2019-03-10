@@ -1,0 +1,164 @@
+- title "Admin: #{@project.name}"
+.row
+  .col
+    h1= @project.name
+    p= @project.description
+    .actions.mt-1
+      - if current_account.can_lock_project?
+        - if !@project.is_flagged?
+          a#block-button.btn.btn-danger onclick: "$('#block-form').toggle(); $('#block-button').toggle(); "  Lock Project
+          #block-form style: "display: none;" 
+            = form_for @project, url: admin_project_flag_path(@project) do |f|
+              .form-group.col-sm-6
+                = f.label 'Reason for Locking'
+                br/
+                = f.text_area :flagged_reason, class: "form-control"
+              .actions
+                = f.submit "Lock", class: "btn btn-danger", confirm: "Are you sure you want to lock this project?"
+                a.btn.btn-warning onclick: "$('#block-form').toggle(); $('#block-button').toggle(); "  Cancel
+        - else
+          h2.mt-3 Project is Locked
+          p= @project.flagged_reason
+          = button_to "Unlock Project", admin_project_unflag_path(@project), class: "btn btn-danger"
+    h2.mt-3 Project Home
+    = link_to @project.url, @project.url, target: "_blank"
+    h2.mt-3 Issues
+    ul
+      li
+        span.badge.badge-pill.badge-dark= @total_issues
+        | Total
+      li
+        span.badge.badge-pill.badge-primary= @submitted_issues.size
+        | Submitted.
+        - if @submitted_issues.any?
+          | Most recent: #{@submitted_issues.last&.created_at&.strftime("%D %r")}
+      li
+        span.badge.badge-pill.badge-info= @acknowledged_issues.size
+        | Acknowledged.
+        - if @acknowledged_issues.any?
+          | Most recent: #{@acknowledged_issues.last&.created_at&.strftime("%D %r")}
+      li
+        span.badge.badge-pill.badge-danger= @dismissed_issues.size
+        | Dismissed.
+        - if @dismissed_issues.any?
+          | Most recent: #{@dismissed_issues.last&.created_at&.strftime("%D %r")}
+      li
+        span.badge.badge-pill.badge-success= @resolved_issues.size
+        | Resolved.
+        - if @resolved_issues.any?
+          | Most recent: #{@resolved_issues.last&.created_at&.strftime("%D %r")}
+    h2.mt-3 Moderators
+    ul
+      - @project.moderators.each do |moderator|
+        li
+          = moderator.email
+          br/
+          | Joined on #{moderator.created_at.strftime("%D %r")}
+          br/
+          | Last login on #{moderator.updated_at.strftime("%D %r")}
+          br/
+          | Moderator on #{moderator.projects.count} projects
+        | Reputation: #{moderator.reputation.titleize}
+    h2.mt-3 Blocked Accounts
+    ul
+      - if @blocked_accounts.any?
+        - @blocked_accounts.each do |account|
+          li= account.email
+      - else
+        li No blocked accounts.
+  .col
+    .card.mb-2 style: "width: 18rem;" 
+      .card-body
+        h2.card-title Setup Checklist
+        .card-text
+          ul
+            li
+              | Ownership Confirmation
+              - if @project.ownership_confirmed?
+                span.badge.badge-pill.badge-success
+                  | √
+              - else
+                span.badge.badge-pill.badge-danger
+                  | x
+            li
+              | Consequence Ladder
+              - if @project.consequence_ladder?
+                span.badge.badge-pill.badge-success
+                  | √
+              - else
+                span.badge.badge-pill.badge-danger
+                  | x
+            li
+              | Visible in Directory
+              - if @project.show_in_directory?
+                span.badge.badge-pill.badge-success
+                  | √
+              - else
+                span.badge.badge-pill.badge-danger
+                  | x
+    .card style: "width: 18rem;" 
+      .card-body
+        h2.card-title Links
+        .card-text
+          ul
+            li= link_to "Home page", @project.url, target: "_new"
+            li= link_to "Code of conduct", @project.coc_url, target: "_new"
+            - if @project.public?
+              li= link_to "View in Directory", directory_project_path(@project.slug)
+#nav-settings.tab-pane.fade aria-labelledby="nav-profile-tab", role: "tabpanel" 
+  table.table
+    tr
+      th scope: "row"  Show in Project Directory
+      td
+        - if @project.public?
+          span.badge.badge-success Yes
+        - else
+          span.badge.badge-danger No
+    tr
+      th scope: "row"  Show Issues Report in Project Directory
+      td
+        - if @settings.publish_stats?
+          span.badge.badge-success Yes
+        - else
+          span.badge.badge-danger No
+    tr
+      th scope: "row" 
+        | Accepting Issues
+        - if @settings.paused?
+          p
+            i
+              | Paused on #{@settings.paused_at.strftime("%F")}
+      td
+        - if @settings.paused?
+          span.badge.badge-danger No
+        - else
+          span.badge.badge-success Yes
+    tr
+      th scope: "row"  Hide Reporter Identity
+      td
+        - if @settings.allow_anonymous_issues?
+          span.badge.badge-success Yes
+        - else
+          span.badge.badge-danger No
+    tr
+      th scope: "row"  Maximum Issues/Day
+      td
+        = @settings.rate_per_day
+    tr
+      th scope: "row"  Require 3rd Party Account Verification
+      td
+        - if @settings.require_3rd_party_auth?
+          span.badge.badge-success Yes
+        - else
+          span.badge.badge-danger No
+    - if @settings.require_3rd_party_auth?
+      tr
+        th scope: "row"  Minimum 3rd Party Account Age
+        td
+          = @settings.minimum_3rd_party_auth_age_in_days
+          | days
+  = link_to "Edit Settings", project_settings_path(@project), class: "btn btn-warning float-left mr-5"
+  - if @settings.paused?
+    = button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-warning"
+  - else
+    = button_to "Pause Issues for 24 Hours", project_toggle_pause_path(@project), class: "btn btn-danger"

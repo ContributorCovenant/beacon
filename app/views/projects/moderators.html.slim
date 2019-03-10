@@ -1,0 +1,34 @@
+- title "#{@project.name}: Moderators"
+.row
+  .col
+    h1
+      = @project.name
+      | \: Moderators
+    ul
+      - @moderators.each do |moderator|
+        li
+          = moderator.display_name
+          - if @project.owner?(moderator)
+            | (Owner)
+          - unless moderator == current_account
+            = button_to "Remove", project_remove_moderator_path(@project), params: { account_id: moderator.id }, class: "btn btn-sm btn-danger"
+    - if @invitations.any?
+      h2 Moderators Awaiting Confirmation
+      ul
+        - @invitations.each do |invitation|
+          li= invitation.email
+  .col
+    h2 Invite a New Moderator
+    = form_for @invitation, url: project_invitations_path(@project) do |f|
+      .form-group.col-sm-6
+        = f.label :email, for: :email
+        br/
+        = f.text_field :email
+      .form-group.col-sm-6
+        = f.check_box :is_owner, class: "mr-3", aria_label: "Make this account an owner"
+        label.form-check-label for: "invitation_is_owner"  Make Co-Owner
+      .form-group
+        = flash[:recaptcha_error]
+        = recaptcha_tags
+      .actions
+        = f.submit "Invite Moderator", class: "btn btn-primary"

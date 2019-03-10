@@ -1,0 +1,54 @@
+- title "Admin: Abuse Report #{@report.report_number}"
+h1
+  | Abuse Report #{@report.report_number}: #{(@report.project && @report.project.name) || @report.reportee.email}
+h2 Reporter
+ul
+  li= @reporter.email
+  li
+    span.badge.badge-pill.badge-success= @reporter.abuse_reports.resolved.count
+    | reports resolved
+  li
+    span.badge.badge-pill.badge-danger= @reporter.abuse_reports.dismissed.count
+    | reports dismissed
+h2 Explanation
+p= @report.description
+- if @project
+  h2.mt-3
+    | About #{link_to @project.name, admin_project_path(@project)}
+  p= @project.description
+  h2 Moderators:
+  ul
+    - @project.moderators.map(&:email).each do |email|
+      li= email
+- elsif @reportee
+  h2.mt-3 Reported Account
+  ul
+    li= @reportee.email
+  - projects = @reportee.projects
+  - if projects.any?
+    h2.mt-3 Associated Projects
+    ul
+      - project.each do |project|
+        li
+          = link_to project.name, admin_project_path(project)
+  h2.mt-3 Associated Issues
+  ul
+    - @reportee.issues.each do |issue|
+      li
+        = link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue)
+        | (#{issue.aasm_state.titleize}, opened on #{issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z")})
+h2 Resolution
+- if @report.aasm_state == "submitted"
+  = form_for @report, url: admin_abuse_report_path(@report) do |f|
+    .form-group.col-sm-6
+      = f.label "Admin Note"
+      br/
+      = f.text_area :admin_note, class: "form-control"
+    .actions
+      - if @reportee
+        = f.submit "Lock Account", class: "btn btn-primary"
+      - else
+        = f.submit "Lock Project", class: "btn btn-primary"
+      = f.submit "Dismiss Report", class: "btn btn-danger"
+- else
+  = @report.aasm_state.titleize

@@ -1,0 +1,15 @@
+- title "Account Confirmation"
+h1 Resend confirmation instructions
+.container
+  .row
+    .col-sm
+      = form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
+        = devise_error_messages!
+        .form-group
+          = f.label :email
+          br/
+          = f.email_field :email, autofocus: true, autocomplete: "email", value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: "form-control"
+        .actions
+          = f.submit "Send Again", class: "btn btn-primary"
+    .col-sm
+      = render "devise/shared/links"

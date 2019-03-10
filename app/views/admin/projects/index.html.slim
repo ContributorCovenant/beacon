@@ -1,0 +1,30 @@
+- title "Admin: Projects"
+h1
+  | Admin: Projects (#{@projects.size})
+table#projects.table data-sorting="true" 
+  thead
+    tr
+      th Project
+      th Created At
+      th Updated At
+      th Moderators
+      th Setup Complete?
+      th Flagged?
+  tbody
+    - @projects.each do |project|
+      tr
+        td= link_to project.name, admin_project_path(project)
+        td= project.created_at.strftime("%D")
+        td= project.updated_at.strftime("%D")
+        td
+          ul
+            - project.moderators.each do |moderator|
+              li= moderator.display_name
+        td
+          span.badge= project.check_setup_complete? ? "√" : "x"
+        td= project.is_flagged? ? "Flagged" : ""
+  table
+    = javascript_tag do
+      | jQuery(function($){
+      | $('.table').footable();
+      | });

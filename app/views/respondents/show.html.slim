@@ -1,0 +1,37 @@
+- title "#{@project.name}: Respondent Profile"
+h1
+  = link_to @project.name, @project
+  | \: Respondent Profile for #{@display_name}
+h2.mt-3 Associated Issues
+ul
+  - @issues.each do |issue|
+    li
+      = link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue)
+      | (#{issue.aasm_state.titleize}, opened on #{issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z")})
+- if @blocked
+  p
+    | This account is blocked from this project for the following reason:
+    br/
+    = @block.reason
+  = form_for @block, url: project_account_project_block_path(@project, @block), method: :delete do |f|
+    = f.hidden_field :account_id, value: @actor.id
+    = hidden_field_tag :return_to, "reporter"
+    .actions
+      = f.submit "Unblock", class: "btn btn-danger", confirm: "Are you sure you want to unblock this account?"
+- else
+  h3.mt-2 Block Account
+  p If you block this account, they will no longer be able to open or respond to issues on this project.
+  = form_for @block, url: project_account_project_blocks_path(@project) do |f|
+    = f.hidden_field :account_id, value: @actor.id
+    = hidden_field_tag :return_to, "reporter"
+    .form-group
+      = f.label :reason
+      br/
+      = f.text_area :reason, class: "form-control"
+    .input-group.mb-3
+      .input-group-prepend
+        .input-group-text
+          = f.check_box :report_for_abuse, class: "mr-3", aria_label: "Report this account to Beacon administrators"
+          label Report this account to Beacon administrators
+    .actions
+      = f.submit "Block", class: "btn btn-danger", confirm: "Are you sure you want to unblock this account?"

@@ -1,0 +1,50 @@
+- title "#{@subject.name}: Consequence Ladder"
+h1
+  = link_to @subject.name, @subject
+  | \: Consequence Ladder
+.mb-3 style: "border-bottom: 1px solid #ddd" 
+  p The consequence ladder establishes guidelines for how you will enforce your code of conduct, specifying different escalating levels of violations and their consequences. When your project is public, its ladder will be displayed on your project's directory page. As part of moderation of issues, you will be able to assign a level to the issue, and this level's description will be visible to both reporters and respondents.
+  p You can customize your consequence ladder from Beacon defaults or another one of your projects, or create your own.
+  p
+    b Important:
+    | If you clone the consequence ladder from another source, all of your current issues will lose their associated severity.
+  - if @project
+    - path = project_clone_ladder_path(slug: @project.slug)
+  - elsif @organization
+    - path = organization_clone_ladder_path(slug: @organization.slug)
+  = form_for @subject, url: path do |f|
+    .form-group.col-sm-6
+      = f.label :clone_from
+      = f.select :consequence_ladder_default_source, @available_ladders.map(&:titleize), class: "form-control", include_blank: "Select..."
+    .actions.mb-3
+      = f.submit "Clone", class: "btn btn-primary"
+.row
+  .col
+    #ladder
+    | \%&gt;
+    - @issue_severity_levels.each do |consequence|
+      = render partial: consequence_moderator, locals: { consequence: consequence }
+.col
+  h2 New Level
+  - if @project
+    - path = project_issue_severity_levels_path(project_slug: @project.slug)
+  - elsif @organization
+    - path = organization_issue_severity_levels_path(organization_slug: @organization.slug)
+  = form_for @issue_severity_level, url: path do |f|
+    .form-group.col-sm-6
+      = f.label :label
+      br/
+      = f.text_field :label, autofocus: true, class: form-control
+    .form-group.col-sm-6
+      = f.label :severity
+      = f.select :severity, @available_severities, class: form-control
+    .form-group.col-sm-6
+      = f.label :example
+      br/
+      = f.text_area :example, class: form-control
+    .form-group.col-sm-6
+      = f.label :consequence
+      br/
+      = f.text_area :consequence, class: form-control
+    .actions
+      = f.submit Update Ladder, class: btn btn-primary

@@ -1,0 +1,26 @@
+- title "Admin: Accounts"
+h1
+  | Admin: Accounts (#{@accounts.size})
+table#accounts.table data-sorting="true" 
+  thead
+    tr
+      th Name
+      th Email
+      th Created At
+      th Updated At
+      th # Projects
+      th Flagged?
+  tbody
+    - @accounts.each do |account|
+      tr
+        td= account.name
+        td= link_to account.email, admin_account_path(account)
+        td= account.created_at.strftime("%D")
+        td= account.updated_at.strftime("%D")
+        td= account.projects.count
+        td= account.is_flagged? ? "Flagged" : ""
+  table
+    = javascript_tag do
+      | jQuery(function($){
+      | $('.table').footable();
+      | });
