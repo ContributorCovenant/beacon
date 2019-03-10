@@ -1,6 +1,15 @@
 # Contributing Code to Beacon
 All contributions, including pull requests, issues, and comments, are governed by our [code of conduct](https://github.com/ContributorCovenant/beacon/blob/release/CODE_OF_CONDUCT.md).
 
+## General guidelines
+We prefer small, focused pull requests that do one thing and that can be rolled back easily. If you are working on a larger feature, please split your work into bite-sized pull requests and use the description field to connect each small PR to the others in the series, for example:
+
+```
+This is the first PR related to [feature]. It does [thing] in the [example] view, which will allow us to do [other thing] in the near future.
+```
+
+Your PR may be rejected if you try to change too much too quickly. Major shifts in technology (i.e. replacing gem x with gem y or UI framework a with b) must go through an "RFC" process so that the community and core team may weigh in. In a case like this, please open an issue to discuss your proposed approach before beginning any work.
+
 ## Claiming bugs or features
 If you intend to work on a bug or feature marked "Help Wanted", please leave a comment in the issue indicating that you will be working on it along with a target completion date. Report your ongoing status in additional comments.
 
