@@ -22,6 +22,7 @@ gem "google-cloud-storage", require: false
 gem 'inky-rb', require: 'inky'
 gem "jbuilder", "~> 2.5"
 gem "jquery-rails"
+gem "mini_racer"
 gem "normailize"
 gem "omniauth-github", github: "intridea/omniauth-github"
 gem "omniauth-gitlab", github: "linchus/omniauth-gitlab"
@@ -38,7 +39,6 @@ gem "turbolinks", "~> 5"
 gem "twilio-ruby"
 gem "uglifier", ">= 1.3.0"
 gem "valid_email2"
-gem "mini_racer"
 
 group :development, :test do
   gem "brakeman"
