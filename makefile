@@ -7,6 +7,7 @@ usage:
 	@echo "  * build        - Build images"
 	@echo "  * update-deps  - Install missing runtime dependencies"
 	@echo "  * db-migrate   - Runs the migrations"
+	@echo "  * db-seed      - Seed the database"
 	@echo "  * dev          - Connects to the server"
 	@echo "  * run          - Runs the server"
 	@echo "  * tear-down    - Removes all the containers and tears down the setup"
@@ -23,6 +24,8 @@ db-create:
 	$(call dc-run, bundle exec rake db:create)
 db-migrate:
 	$(call dc-run, bundle exec rake db:migrate)
+db-seed:
+	$(call dc-run, bundle exec rake db:seed)
 dev:
 	$(call dc-run, ash)
 console:

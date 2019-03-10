@@ -96,7 +96,7 @@ After adding the migration, you can either run
 
 ### Adding seed data
 
-`make dev` then `rake db:seed`
+`make db-seed` OR `make dev` then `rake db:seed`
 
 ### Running the specs
 
