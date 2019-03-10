@@ -13,7 +13,7 @@ describe "the respondent experience", type: :feature do
     allow_any_instance_of(Issue).to receive(:respondent).and_return(respondent)
   end
 
-  it "enables a reporter to sign in" do
+  it "enables a respondent to sign in" do
     visit new_account_session_path
     fill_in "Email", with: respondent.email
     fill_in "Password", with: respondent.password
