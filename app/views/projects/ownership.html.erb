@@ -6,18 +6,22 @@
 
 <%= form_for @project, url: project_confirm_path(@project) do |f| %>
 
-  <div class="form-group col-sm-6">
+  <div class="form-group">
     <%= f.label :token, "Confirmation Token" %>
-    <%= f.text_field :token, value: "BEACON_TOKEN=#{EncryptionService.hash(@project.id)}", disabled: true, class: "form-control" %>
+    <%= f.text_field :token, value: "BEACON_TOKEN=#{@project.confirmation_token}", disabled: true, class: "form-control" %>
   </div>
 
-  <div class="form-group col-sm-6">
+  <div class="form-group">
     <%= f.label :confirmation_token_url, "Confirmation Token URL" %>
-    <%= f.text_field :confirmation_token_url, disabled: true, class: "form-control" %>
+    <%= f.text_field :confirmation_token_url, value: (@project.confirmation_token_url || @project.confirmation_token_url_default), class: "form-control" %>
   </div>
 
   <div class="actions">
-    <%= f.submit "Verify Ownership", class: "btn btn-primary" %>
+    <% if @project.confirmed_at.present? %>
+      <%= f.submit "Re-Verify Ownership", class: "btn btn-primary" %>
+    <% else %>
+      <%= f.submit "Verify Ownership", class: "btn btn-primary" %>
+    <% end %>
   </div>
 
 <% end %>

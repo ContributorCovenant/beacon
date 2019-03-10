@@ -32,8 +32,12 @@ class Project < ApplicationRecord
     (moderators + organization_moderators + owners).uniq
   end
 
-  def confirmation_token_url
-    url + "/beacon.txt"
+  def confirmation_token
+    EncryptionService.hash(id)
+  end
+
+  def confirmation_token_url_default
+    (url + "/blob/master/beacon.txt").gsub(/\/\/blob/, "/blob")
   end
 
   def consequence_ladder?
