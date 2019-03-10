@@ -22,8 +22,5 @@ class EncryptionService
     key   = ActiveSupport::KeyGenerator.new(secret_key_base).generate_key(salt, len)
     crypt = ActiveSupport::MessageEncryptor.new(key)
     crypt.decrypt_and_verify(data)
-  rescue StandardError => e
-    Rails.logger.info("Failed to decrypt: #{e.backtrace}\n#{e}")
-    return nil
   end
 end
