@@ -6,21 +6,29 @@
     <div class="col-sm">
       <%= verify_authy_form do %>
         <div class="form-group">
-          <%= label_tag 'authy-token' %>
-          <%= text_field_tag :token, "", :autocomplete => :off, :id => 'authy-token' %>
+          <%= label_tag '2fa code' %><br />
+          <%= text_field_tag :token, "", :autocomplete => "one-time-code", id: 'authy-token' %>
         </div>
         <div class="form-group">
           <%= check_box_tag :remember_device %>
-          <span><%= I18n.t('remember_device', {:scope => 'devise'}) %></span>
+          <span><%= I18n.t('remember_device', {scope: 'devise'}) %></span>
         </div>
         <div class="actions">
-          <%= authy_request_sms_link %>
-          <%= submit_tag I18n.t('submit_token', {:scope => 'devise'}), :class => 'btn btn-primary' %>
+          <a id="authy-request-sms-link" data-remote="true" rel="nofollow" data-method="post" href="/accounts/request-sms" class="btn btn-primary">Send SMS</a>
+          <%= submit_tag I18n.t('submit_token', {scope: 'devise'}), :class => 'btn btn-primary' %>
         </div>
       <% end %>
     </div>
   </div>
 </div>
+
+<%= javascript_tag do %>
+  $(function () {
+    var token;
+    token=document.getElementById("authy-token");
+    token.setAttribute("autocomplete","one-time-code");
+  });
+<% end %>
 
 <% if @onetouch_uuid %>
     <script>
