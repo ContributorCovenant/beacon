@@ -9,6 +9,7 @@ RSpec.describe IssuesController, type: :controller do
     let!(:project)    { FactoryBot.create(:project, account: moderator) }
 
     before do
+      allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
       allow_any_instance_of(Issue).to receive(:set_issue_number)
       Role.create(account_id: moderator.id, project_id: project.id, is_owner: true)
     end

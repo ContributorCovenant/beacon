@@ -14,6 +14,7 @@ RSpec.describe IssueCommentsController, type: :controller do
     let(:issue)       { FactoryBot.create(:issue, project_id: project.id, reporter_id: reporter.id) }
 
     before do
+      allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
       allow(Project).to receive(:find_by).and_return(project)
       allow(Issue).to receive(:find).and_return(issue)
       allow(issue).to receive(:project).and_return(project)

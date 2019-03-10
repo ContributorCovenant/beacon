@@ -4,6 +4,10 @@ describe "organization management", type: :feature do
 
   let(:maintainer) { FactoryBot.create(:danielle) }
 
+  before do
+    allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
+  end
+
   it "lets a user create an organization" do
     login_as(maintainer, scope: :account)
     visit root_path

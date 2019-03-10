@@ -7,6 +7,7 @@ describe "the reporting process", type: :feature do
   let(:reporter) { FactoryBot.create(:ricky) }
 
   before do
+    allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
     allow_any_instance_of(Project).to receive(:show_in_directory?).and_return(true)
     allow_any_instance_of(Accounts::RegistrationsController).to receive(:verify_recaptcha).and_return(true)
     allow_any_instance_of(IssuesController).to receive(:verify_recaptcha).and_return(true)

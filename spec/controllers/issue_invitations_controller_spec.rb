@@ -11,6 +11,7 @@ RSpec.describe IssueInvitationsController, type: :controller do
     let(:issue)       { Issue.new(id: SecureRandom.uuid, issue_number: 1) }
 
     before do
+      allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
       allow(Project).to receive(:find_by).and_return(project)
       allow(Issue).to receive(:find).and_return(issue)
       allow(issue).to receive(:project).and_return(project)

@@ -3,6 +3,7 @@ require "rails_helper"
 describe "the registration process", type: :feature do
 
   before do
+    allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
     allow_any_instance_of(Accounts::RegistrationsController).to receive(:verify_recaptcha).and_return(true)
   end
 
