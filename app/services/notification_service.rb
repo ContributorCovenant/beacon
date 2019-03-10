@@ -33,7 +33,7 @@ class NotificationService
         to: account.phone_number,
         from: Setting.sms(:from)
       )
-    rescue Exception => e
+    rescue StandardError => e
       Rails.logger.info("Failed to send SMS: #{e} #{e.backtrace}")
     end
   end
