@@ -6,14 +6,22 @@
     <div class="col-sm">
       <%= verify_authy_installation_form do %>
         <div class="form-group">
-          <%= label_tag :token %>
-          <%= text_field_tag :token, "", autocomplete: :off, id: 'authy-token', class: "form-control" %>
-          <%= authy_request_sms_link %>
+          <%= label_tag :token, "2fa Token:" %>
+          <%= text_field_tag :token, "", autocomplete: "one-time-code", id: "authy-token", class: "form-control" %>
         </div>
         <div class="actions">
+          <a id="authy-request-sms-link" data-remote="true" rel="nofollow" data-method="post" href="/accounts/request-sms" class="btn btn-primary">Send Code</a>
           <%= submit_tag I18n.t('enable_my_account', {:scope => 'devise'}), :class => 'btn btn-primary' %>
         </div>
       <% end %>
     </div>
   </div>
 </div>
+
+<%= javascript_tag do %>
+  $(function () {
+    var token;
+    token=document.getElementById("authy-token");
+    token.setAttribute("autocomplete","one-time-code");
+  });
+<% end %>
