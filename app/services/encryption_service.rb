@@ -5,7 +5,7 @@ class EncryptionService
     Digest::MD5.hexdigest(text)
   end
 
-  def self.encrypt(text, secret_key_base=nil)
+  def self.encrypt(text, secret_key_base = nil)
     secret_key_base ||= Setting.encryption(:secret_key_base)
     len   = ActiveSupport::MessageEncryptor.key_len
     salt  = SecureRandom.hex len
@@ -15,7 +15,7 @@ class EncryptionService
     "#{salt}$$#{encrypted_data}"
   end
 
-  def self.decrypt(text, secret_key_base=nil)
+  def self.decrypt(text, secret_key_base = nil)
     secret_key_base ||= Setting.encryption(:secret_key_base)
     salt, data = text.split('$$')
     len   = ActiveSupport::MessageEncryptor.key_len
