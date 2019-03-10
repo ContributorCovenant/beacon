@@ -6,6 +6,7 @@ describe "The project setup process", type: :feature do
   let!(:project)      { FactoryBot.create(:project, account: maintainer, public: true) }
 
   before do
+    allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
     Role.create(account_id: maintainer.id, project_id: project.id, is_owner: true)
   end
 

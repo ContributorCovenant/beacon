@@ -9,6 +9,7 @@ describe "the respondent experience", type: :feature do
   let!(:issue)      { FactoryBot.create(:issue, reporter_id: reporter.id, project_id: project.id) }
 
   before do
+    allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
     AccountIssue.create(issue_id: issue.id, account: respondent)
     allow_any_instance_of(Issue).to receive(:respondent).and_return(respondent)
   end

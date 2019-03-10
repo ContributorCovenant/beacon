@@ -8,6 +8,10 @@ RSpec.describe NotificationService do
   let(:issue_2)   { FactoryBot.create(:issue, project_id: project.id) }
   let(:issue_3)   { FactoryBot.create(:issue, project_id: project.id) }
 
+  before do
+    allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
+  end
+
   describe "#notify" do
 
     it "creates a notification" do

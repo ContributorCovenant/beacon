@@ -17,6 +17,7 @@ describe "moderation", type: :feature do
   end
 
   before do
+    allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
     Role.create(account_id: moderator.id, project_id: project.id, is_owner: true)
     login_as(moderator, scope: :account)
   end
