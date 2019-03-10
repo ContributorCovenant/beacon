@@ -70,6 +70,15 @@ class Account < ApplicationRecord
       .uniq
   end
 
+  def phone_number=(number)
+    self.phone_encrypted = EncryptionService.encrypt(number)
+  end
+
+  def phone_number
+    return unless self.phone_encrypted
+    EncryptionService.decrypt(self.phone_encrypted)
+  end
+
   def projects
     (personal_projects + organization_projects).uniq.sort_by(&:name)
   end

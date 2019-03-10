@@ -130,7 +130,7 @@ class IssuesController < ApplicationController
 
   def notify_on_new_issue
     @project.moderators.each do |moderator|
-      NotificationService.notify(account: moderator, project_id: @project.id, issue_id: @issue.id)
+      NotificationService.notify(account: moderator, project: @project, issue_id: @issue.id)
     end
     IssueNotificationsMailer.with(
       email: @project.moderator_emails,

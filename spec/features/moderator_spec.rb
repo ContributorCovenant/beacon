@@ -26,13 +26,13 @@ describe "moderation", type: :feature do
     before do
       NotificationService.notify(
         account: moderator,
-        project_id: project.id,
+        project: project,
         issue_id: issue.id,
         issue_comment_id: nil
       )
       NotificationService.notify(
         account: moderator,
-        project_id: project.id,
+        project: project,
         issue_id: issue.id,
         issue_comment_id: issue_comment.id
       )

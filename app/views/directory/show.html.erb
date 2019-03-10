@@ -34,7 +34,7 @@
     <% if current_account && @project.project_setting.show_moderator_names? %>
       <ul>
         <% @project.moderators.map(&:name).select(&:present?).each do |moderator| %>
-          <li><%= moderator.name %></li>
+          <li><%= moderator %></li>
         <% end %>
       </ul>
     <% end %>
