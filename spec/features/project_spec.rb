@@ -50,12 +50,12 @@ describe "The project setup process", type: :feature do
       expect(page).to have_content("√")
     end
 
-    it "lets a user set up a consequence ladder" do
+    it "lets a user set up an impact and consequences guide" do
       login_as(maintainer, scope: :account)
       visit root_path
       click_on "My Projects"
       click_on(project.name)
-      click_on("Consequence Ladder")
+      click_on("Impact and Consequences")
       expect(page).to have_content("Clone from")
       select "Beacon Default", from: "project_consequence_ladder_default_source"
       click_on("Clone")
@@ -64,7 +64,7 @@ describe "The project setup process", type: :feature do
       select "2", from: "issue_severity_level_severity"
       fill_in "issue_severity_level_example", with: "Personal attacks"
       fill_in "issue_severity_level_consequence", with: "Reprimand from moderators"
-      click_on("Update Ladder")
+      click_on("Update Guide")
       expect(page).to have_content("Personal attacks")
     end
 
@@ -134,12 +134,12 @@ describe "The project setup process", type: :feature do
       expect(Project.find_by(name: "CoC Beacon").organization).to eq(organization)
     end
 
-    it "lets a user clone a consequence ladder" do
+    it "lets a user clone an impact and consequences guide" do
       login_as(maintainer, scope: :account)
       visit root_path
       click_on "My Projects"
       click_on(org_project.name)
-      click_on("Consequence Ladder")
+      click_on("Impact and Consequences")
       expect(page).to have_content("Clone from")
       select "Organization Default", from: "project_consequence_ladder_default_source"
       click_on("Clone")
@@ -148,7 +148,7 @@ describe "The project setup process", type: :feature do
       select "2", from: "issue_severity_level_severity"
       fill_in "issue_severity_level_example", with: "Personal attacks"
       fill_in "issue_severity_level_consequence", with: "Reprimand from moderators"
-      click_on("Update Ladder")
+      click_on("Update Guide")
       expect(page).to have_content("Personal attacks")
     end
 

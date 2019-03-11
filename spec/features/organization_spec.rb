@@ -41,13 +41,13 @@ describe "organization management", type: :feature do
       )
     end
 
-    it "lets a user add a consequence ladder" do
+    it "lets a user add an impact and consequences guide" do
       login_as(maintainer, scope: :account)
       visit root_path
       click_on("My Organizations")
       click_on(organization.name)
       expect(page).to have_content("Setup Checklist")
-      click_on("Consequence Ladder")
+      click_on("Impact and Consequences")
       expect(page).to have_content("Clone from")
       select "Beacon Default", from: "organization_consequence_ladder_default_source"
       click_on("Clone")
@@ -56,7 +56,7 @@ describe "organization management", type: :feature do
       select "2", from: "issue_severity_level_severity"
       fill_in "issue_severity_level_example", with: "Personal attacks"
       fill_in "issue_severity_level_consequence", with: "Reprimand from moderators"
-      click_on("Update Ladder")
+      click_on("Update Guide")
       expect(page).to have_content("Personal attacks")
     end
 
