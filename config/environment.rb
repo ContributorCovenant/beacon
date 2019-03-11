@@ -4,7 +4,6 @@ require_relative 'application'
 Setting.load(path: "#{Rails.root}/config/settings", files: ["default.yml", "environments/#{Rails.env}.yml"])
 
 Rails.application.initialize!
-require_relative './settings'
 
 ActionMailer::Base.smtp_settings = {
   user_name: ENV['SENDGRID_USERNAME'],

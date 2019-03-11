@@ -4,7 +4,7 @@ module OmniConcern
   def create
     @auth = request.env["omniauth.auth"]
     assign_credential
-    if signed_in?
+    if (!current_account.nil?)
       redirect_or_link_credential
     elsif @credential.account.present?
       # The credential we found had a user associated with it so let's

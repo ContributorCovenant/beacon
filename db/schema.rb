@@ -146,7 +146,8 @@ ActiveRecord::Schema.define(version: 2019_03_10_200320) do
     t.uuid "account_id"
     t.index ["account_id"], name: "index_credentials_on_account_id"
     t.index ["provider", "uid"], name: "index_credentials_on_provider_and_uid", unique: true
-
+  end
+  
   create_table "invitations", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "account_id"
     t.uuid "project_id"
