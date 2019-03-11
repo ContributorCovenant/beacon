@@ -131,7 +131,11 @@
             <li>
               <%= link_to "Moderators", project_moderators_path(@project)  %>
             </li>
-
+            <% if current_account.can_manage_project?(@project) && @project.check_setup_complete? %>
+              <li>
+                <%= link_to "Ownership Confirmation", project_ownership_path(@project) %>
+              </li>
+            <% end %>
             <% if @project.check_setup_complete? %>
               <li>
                 <%= link_to "Project Settings", project_settings_path(@project)  %>

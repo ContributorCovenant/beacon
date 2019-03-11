@@ -19,12 +19,16 @@ class ProjectConfirmationService
 
   # TODO: Use oauth to link account to GitHub or GitLab account and confirm project ownership
   def confirm_via_oauth
-    true
+    false
   end
 
-  # TODO: Visit project's confirmation_token_url to confirm project ownership
   def confirm_via_token
-    true
+    return true unless Rails.env.production?
+    token = URI.parse(project.confirmation_token_url).read.chomp
+    token =~ /#{project.confirmation_token}/
+  rescue StandardError => e
+    Rails.logger.info("Unable to verify token for #{project.name}: #{e}")
+    false
   end
 
 end

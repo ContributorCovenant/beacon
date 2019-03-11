@@ -64,8 +64,14 @@ class ProjectsController < ApplicationController
   end
 
   def confirm_ownership
-    ProjectConfirmationService.confirm!(@project)
-    redirect_to @project
+    @project.update_attribute(:confirmation_token_url, project_params[:confirmation_token_url])
+    if ProjectConfirmationService.confirm!(@project)
+      flash[:info] = 'Your ownership token has been verified.'
+      redirect_to @project
+    else
+      flash[:error] = 'No token found or invalid token.'
+      redirect_to project_ownership_path
+    end
   end
 
   def update
@@ -95,7 +101,7 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:name, :url, :coc_url, :description, :organization_id)
+    params.require(:project).permit(:name, :url, :coc_url, :description, :organization_id, :confirmation_token_url)
   end
 
   def scope_organizations
