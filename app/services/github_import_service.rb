@@ -37,9 +37,9 @@ class GithubImportService
       project.project_setting.touch
       project.check_setup_complete?
     end
-    results = { success: true, count: organization.projects.count - starting_count }
+    return { success: true, count: organization.projects.count - starting_count }
   rescue StandardError => e
-    results = { success: false, error: e }
+    return { success: false, error: e }
   end
 
   private
@@ -57,7 +57,8 @@ class GithubImportService
 
   def verify_membership
     true
-    #members.include?(account.credentials)
+    # TODO: wire up to account credentials and verify that the current account is in the org member list
+    # members.include?(account.credentials)
   end
 
 end
