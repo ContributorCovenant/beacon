@@ -7,14 +7,14 @@ class Project < ApplicationRecord
   belongs_to :account
   belongs_to :organization, optional: true
   has_one :project_setting, dependent: :destroy
-  has_one :respondent_template
-  has_many :abuse_report_subjects
-  has_many :account_project_blocks
-  has_many :invitations
-  has_many :issue_severity_levels
-  has_many :notifications
-  has_many :project_issues
-  has_many :roles
+  has_one :respondent_template, dependent: :destroy
+  has_many :abuse_report_subjects, dependent: :destroy
+  has_many :account_project_blocks, dependent: :destroy
+  has_many :invitations, dependent: :destroy
+  has_many :issue_severity_levels, dependent: :destroy
+  has_many :notifications, dependent: :destroy
+  has_many :project_issues, dependent: :destroy
+  has_many :roles, dependent: :destroy
   has_many :moderators, through: :roles, source: :account
 
   before_create :set_slug
@@ -95,6 +95,7 @@ class Project < ApplicationRecord
     complete ||= false unless consequence_ladder?
     complete ||= false unless ownership_confirmed?
     complete ||= false unless respondent_template?
+    complete ||= false unless coc_url.present?
     complete = complete.nil? ? true : false
     update_attribute(:setup_complete, complete) unless setup_complete == complete
     return complete

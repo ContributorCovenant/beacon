@@ -26,6 +26,11 @@ settings for managing your organization after it is created.</p>
     <%= f.text_area :description, class: "form-control" %>
   </div>
 
+  <div class="form-group col-sm-6">
+    <label for="organization_remote_org_name">GitHub/GitLab Organization Name</label><br />
+    <%= f.text_field :remote_org_name, class: "form-control" %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Create Organization", class: "btn btn-primary" %>
   </div>

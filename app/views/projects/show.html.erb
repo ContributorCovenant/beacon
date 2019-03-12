@@ -4,7 +4,7 @@
   <div class="col">
     <h1>
       <% if @project.organization %>
-        <%= @project.organization.name %>:
+        <%= link_to @project.organization.name, @project.organization %>:
       <% end %>
       <%= @project.name %>
     </h1>
