@@ -12,3 +12,8 @@ sms:
   from: <%= ENV.fetch('TWILIO_PHONE_NUMBER', nil) %>
   account_sid: <%= ENV.fetch('TWILIO_ACCOUNT_SID', "") %>
   auth_token: <%= ENV.fetch('TWILIO_AUTH_TOKEN', "") %>
+oauth:
+  github_app_id: <%= ENV['GITHUB_APP_ID'] %>
+  github_app_secret: <%= ENV['GITHUB_APP_SECRET'] %>
+  gitlab_app_id: <%= ENV['GITLAB_APP_ID'] %>
+  gitlab_app_secret: <%= ENV['GITLAB_APP_SECRET'] %>

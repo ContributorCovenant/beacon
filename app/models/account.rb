@@ -3,14 +3,19 @@ require 'normailize'
 
 class Account < ApplicationRecord
 
+  has_many :credentials, inverse_of: :account, dependent: :delete_all
+
   include Permissions
 
   devise :authy_authenticatable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  devise :authy_authenticatable, :confirmable, :lockable, :timeoutable, :trackable, :omniauthable,
-         :database_authenticatable, :registerable, :recoverable, :rememberable,
-         :validatable
+  devise :authy_authenticatable, :confirmable, :lockable, :timeoutable,
+         :trackable, :database_authenticatable, :registerable, :recoverable,
+         :rememberable, :validatable
+
+  devise :omniauthable, omniauth_providers: [:github, :gitlab]
+  include OmniauthHandler
 
   validates_uniqueness_of :normalized_email
   validates :email, 'valid_email_2/email': { disposable: true, mx: true }

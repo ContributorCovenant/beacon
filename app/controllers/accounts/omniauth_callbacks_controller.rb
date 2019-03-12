@@ -2,10 +2,17 @@ module Accounts
   class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # You should configure your model like this:
     # devise :omniauthable, omniauth_providers: [:twitter]
+    include OmniConcern
 
     # You should also create an action method in this controller like this:
     # def twitter
     # end
+
+    %w(github gitlab).each do |provider|
+      define_method(provider) do
+        create
+      end
+    end
 
     # More info at:
     # https://github.com/plataformatec/devise#omniauth
@@ -16,9 +23,9 @@ module Accounts
     # end
 
     # GET|POST /users/auth/twitter/callback
-    # def failure
-    #   super
-    # end
+    def failure
+      super
+    end
 
     # protected
 
