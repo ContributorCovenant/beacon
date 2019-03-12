@@ -40,6 +40,16 @@ class OrganizationsController < ApplicationController
     render :show
   end
 
+  def import_projects_from_github
+    results = GithubImportService.new(current_account, @organization).import_projects
+    if results[:success]
+      flash[:info] = "Successfully imported #{results[:count]} project(s)."
+    else
+      flash[:error] = "Could not import projects: #{results[:error]}."
+    end
+    redirect_to organization_path(@organization)
+  end
+
   def clone_ladder
     source = ladder_params[:consequence_ladder_default_source]
     if source == "Beacon Default"
@@ -74,7 +84,8 @@ class OrganizationsController < ApplicationController
       :name,
       :url,
       :coc_url,
-      :description
+      :description,
+      :remote_org_name
     )
   end
 

@@ -23,6 +23,7 @@ gem 'inky-rb', require: 'inky'
 gem "jbuilder", "~> 2.5"
 gem "jquery-rails"
 gem "normailize"
+gem "octokit"
 gem "omniauth-github", github: "intridea/omniauth-github"
 gem "omniauth-gitlab", github: "linchus/omniauth-gitlab"
 gem "pg"

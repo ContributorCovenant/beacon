@@ -30,3 +30,7 @@ Style/RescueStandardError:
 # URISchemes: http, https
 Metrics/LineLength:
   Max: 154
+
+Style/GuardClause:
+  Exclude:
+    - 'app/controllers/projects_controller.rb'
