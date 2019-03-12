@@ -18,6 +18,7 @@ gem "devise"
 gem 'devise-authy'
 gem "dotenv-rails"
 gem "fittings"
+gem "gitlab"
 gem "google-cloud-storage", require: false
 gem 'inky-rb', require: 'inky'
 gem "jbuilder", "~> 2.5"

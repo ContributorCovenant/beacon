@@ -68,6 +68,7 @@
   <div class="actions ml-3 mt-5 mb-3">
     <%= link_to "New Project", new_project_path(organization_id: @organization.id), class: "btn btn-primary" %>
     <%= link_to "Import Projects from GitHub", organization_import_projects_from_github_path(@organization), class: "btn btn-primary" %>
+    <%= link_to "Import Projects from GitLab", organization_import_projects_from_gitlab_path(@organization), class: "btn btn-primary" %>
   </div>
 <% end %>
 

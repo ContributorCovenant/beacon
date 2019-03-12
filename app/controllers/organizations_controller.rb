@@ -50,6 +50,16 @@ class OrganizationsController < ApplicationController
     redirect_to organization_path(@organization)
   end
 
+  def import_projects_from_gitlab
+    results = GitlabImportService.new(current_account, @organization).import_projects
+    if results[:success]
+      flash[:info] = "Successfully imported #{results[:count]} project(s)."
+    else
+      flash[:error] = "Could not import projects: #{results[:error]}."
+    end
+    redirect_to organization_path(@organization)
+  end
+
   def clone_ladder
     source = ladder_params[:consequence_ladder_default_source]
     if source == "Beacon Default"
