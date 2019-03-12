@@ -23,8 +23,13 @@
     <%= f.text_area :description, class: "form-control" %>
   </div>
 
+  <div class="form-group col-sm-6">
+    <label for="organization_remote_org_name">GitHub/GitLab Organization Name</label><br />
+    <%= f.text_field :remote_org_name, class: "form-control" %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Update Organization", class: "btn btn-primary" %>
-    <%= button_to "Cancel", @organization, class: "btn btn-warning" %>
+    <%= link_to "Cancel", @organization, class: "btn btn-warning" %>
   </div>
 <% end %>

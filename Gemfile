@@ -19,11 +19,13 @@ gem 'devise-authy'
 gem "dotenv-rails"
 gem 'faker', git: 'https://github.com/stympy/faker.git', branch: 'master'
 gem "fittings"
+gem "gitlab"
 gem "google-cloud-storage", require: false
 gem 'inky-rb', require: 'inky'
 gem "jbuilder", "~> 2.5"
 gem "jquery-rails"
 gem "normailize"
+gem "octokit"
 gem "omniauth-github", github: "intridea/omniauth-github"
 gem "omniauth-gitlab", github: "linchus/omniauth-gitlab"
 gem "pg"

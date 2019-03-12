@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     resources :issue_severity_levels
     resources :respondent_templates, only: [:new, :create, :edit, :update, :show]
     get "moderators", to: "organizations#moderators"
+    get "import_projects_from_github", to: "organizations#import_projects_from_github"
+    get "import_projects_from_gitlab", to: "organizations#import_projects_from_gitlab"
     post "remove_moderator", to: "organizations#remove_moderator"
     patch "clone_ladder", to: "organizations#clone_ladder"
     post "clone_respondent_template", to: "respondent_templates#clone"
