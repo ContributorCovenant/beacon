@@ -49,7 +49,7 @@ class GitlabImportService
   def client
     @client ||= Gitlab.client(
       endpoint: "https://gitlab.com/api/v4/",
-      # TODO when oauth PR is merged, grab the oauth token and use it here
+      # TODO: when oauth PR is merged, grab the oauth token and use it here
       private_token: account.credentials.gitlab.token
     )
   end
