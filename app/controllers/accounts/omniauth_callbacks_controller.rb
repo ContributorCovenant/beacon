@@ -9,9 +9,7 @@ module Accounts
     # end
 
     %w(github gitlab).each do |provider|
-      # def twitter
       define_method(provider) do
-        # end
         create
       end
     end

@@ -4,7 +4,7 @@ module OmniConcern
   def create
     @auth = request.env["omniauth.auth"]
     assign_credential
-    if (!current_account.nil?)
+    if current_account.present?
       redirect_or_link_credential
     elsif @credential.account.present?
       # The credential we found had a user associated with it so let's
@@ -45,7 +45,6 @@ module OmniConcern
     if @account.save!
       sign_in_account
     else
-      session["devise.facebook_data"] = request.env["omniauth.auth"]
       redirect_to new_user_registration_url
     end
   end
@@ -55,7 +54,6 @@ module OmniConcern
     if @credential.save!
       sign_in_account
     else
-      session["devise.facebook_data"] = request.env["omniauth.auth"]
       redirect_to new_user_registration_url
     end
   end

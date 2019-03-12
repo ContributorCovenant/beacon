@@ -6,7 +6,7 @@ module OmniauthHandler
 
   Account.omniauth_providers.each do |provider|
     define_method("linked_to_#{provider}?") do
-      !credentials.where(provider: provider.to_s).first.nil?
+      credentials.where(provider: provider.to_s).first.present?
     end
   end
 
