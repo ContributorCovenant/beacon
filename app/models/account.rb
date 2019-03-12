@@ -80,7 +80,7 @@ class Account < ApplicationRecord
   end
 
   def phone_number
-    return unless self.phone_encrypted
+    return unless self.phone_encrypted.present?
     EncryptionService.decrypt(self.phone_encrypted)
   end
 
