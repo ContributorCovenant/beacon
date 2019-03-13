@@ -21,11 +21,27 @@
 
   <div class="col">
     <% unless @project.check_setup_complete? %>
-      <div class="card mb-2" style="width: 18rem;">
+      <div class="card mb-2" style="width: 20rem;">
         <div class="card-body">
           <h2 class="card-title">Setup Checklist</h2>
           <div class="card-text">
             <ul>
+              <li>
+                <% if current_account.can_manage_project?(@project) %>
+                  <%= link_to "Code of Conduct URL", edit_project_path(@project) %>
+                <% else %>
+                  Code of Conduct URL
+                <% end %>
+                <% if @project.coc_url.present? %>
+                  <span class="badge badge-pill badge-success">
+                    √
+                  </span>
+                <% else %>
+                  <span class="badge badge-pill badge-danger">
+                    x
+                  </span>
+                <% end %>
+              </li>
               <li>
                 <% if current_account.can_manage_project?(@project) %>
                   <%= link_to "Ownership Confirmation", project_ownership_path(@project) %>
@@ -112,7 +128,7 @@
         </div>
       </div>
     <% end %>
-    <div class="card" style="width: 18rem;">
+    <div class="card" style="width: 20rem;">
       <div class="card-body">
         <h2 class="card-title">Links</h2>
         <div class="card-text">

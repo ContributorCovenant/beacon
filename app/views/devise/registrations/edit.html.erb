@@ -57,7 +57,7 @@
   <%- if devise_mapping.omniauthable? %>
     <%- resource_class.omniauth_providers.each do |provider| %>
       <% if current_account.send("linked_to_#{provider}?") %>
-        <div>Linked to <%= provider %></div>
+        <div>Linked to <%= OmniAuth::Utils.camelize(provider) %></div>
       <% else %>
         <%= link_to "Link #{OmniAuth::Utils.camelize(provider)} Account", omniauth_authorize_path(resource_name, provider) %> <br />
       <% end -%>

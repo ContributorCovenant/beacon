@@ -56,9 +56,10 @@ class GithubImportService
   end
 
   def verify_membership
+    return false unless credentials = account.credentials.find_by(provider: "github")
+    members = client.organization_members(organization.remote_org_name).map(&:id)
+    return false unless members.include?(credentials.uid.to_i)
     true
-    # TODO: wire up to account credentials and verify that the current account is in the org member list
-    # members.include?(account.credentials)
   end
 
 end

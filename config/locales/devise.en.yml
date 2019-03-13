@@ -28,9 +28,9 @@ en:
       password_change:
         subject: "Password Changed"
     omniauth_callbacks:
-      failure: "Could not authenticate you from %{kind.titleize} because \"%{reason}\"."
-      success: "Successfully authenticated from %{kind.titleize} account."
-      success_link: "Successfully linked your account to %{kind.titleize}."
+      failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
+      success: "Successfully authenticated from %{kind} account."
+      success_link: "Successfully linked your account to %{kind}."
     passwords:
       no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
       send_instructions: "You will receive an email with instructions on how to reset your password in a few minutes."

@@ -20,7 +20,7 @@ module OmniConcern
 
   def sign_in_account
     sign_in_and_redirect @account, event: :authentication
-    set_flash_message(:notice, :success, kind: @auth.provider) if is_navigational_format?
+    set_flash_message(:notice, :success, kind: OmniAuth::Utils.camelize(@auth.provider)) if is_navigational_format?
   end
 
   def assign_credential
@@ -30,14 +30,14 @@ module OmniConcern
 
   def redirect_and_notify
     redirect_to root_url, notice: "Already linked that account!"
-    set_flash_message(:notice, :success, kind: @auth.provider) if is_navigational_format?
+    set_flash_message(:notice, :success, kind: OmniAuth::Utils.camelize(@auth.provider)) if is_navigational_format?
   end
 
   def link_credential_and_notify
     @credential.account = current_account
     @credential.save
     redirect_to root_url, notice: "You have successfully linked your account.!"
-    set_flash_message(:notice, :success_link, kind: @auth.provider) if is_navigational_format?
+    set_flash_message(:notice, :success_link, kind: OmniAuth::Utils.camelize(@auth.provider)) if is_navigational_format?
   end
 
   def sign_up_account
