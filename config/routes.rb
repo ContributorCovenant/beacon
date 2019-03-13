@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
   root to: "static_content#main"
   get "about", to: "static_content#about"
+  get "user_guides", to: "static_content#guide"
 
   resources :accounts
 
