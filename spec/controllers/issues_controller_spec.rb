@@ -50,15 +50,17 @@ RSpec.describe IssuesController, type: :controller do
 
       it "notifies project moderators" do
         controller.sign_in(reporter, scope: :account)
-        post :create, params: {
-          project_slug: project.slug,
-          issue: { description: "My CoC issue description" }
-        }
-        expect(NotificationService).to have_received(:notify).with(
-          account_id: moderator.id,
-          project_id: project.id,
-          issue_id: Issue.last.id
-        )
+        Resque.inline do
+          post :create, params: {
+            project_slug: project.slug,
+            issue: { description: "My CoC issue description" }
+          }
+          expect(NotificationService).to have_received(:notify).with(
+            account_id: moderator.id,
+            project_id: project.id,
+            issue_id: Issue.last.id
+          )
+        end
       end
 
     end

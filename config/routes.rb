@@ -1,3 +1,6 @@
+require 'resque/server'
+
+
 Rails.application.routes.draw do
   devise_for :accounts, controllers: {
     registrations: "accounts/registrations",
@@ -8,6 +11,8 @@ Rails.application.routes.draw do
     verify_authy_installation: "/verify-installation",
     authy_onetouch_status: "/onetouch-status"
   }
+
+  mount Resque::Server.new, at: "/resque"
 
   root to: "static_content#main"
   get "about", to: "static_content#about"

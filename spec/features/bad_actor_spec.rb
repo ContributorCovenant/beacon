@@ -169,14 +169,16 @@ describe "a reporter or respondent adding an issue comment" do
     end
 
     it "sends an email notification only once" do
-      login_as(reporter, scope: :account)
-      visit issue_path(issue, project_slug: project.slug)
-      fill_in "issue_comment_text", with: "Trigger a notification"
-      click_button "Send Message"
-      expect(ActionMailer::Base.deliveries.size).to eq(1)
-      fill_in "issue_comment_text", with: "Trigger a notification"
-      click_button "Send Message"
-      expect(ActionMailer::Base.deliveries.size).to eq(1)
+      Resque.inline do
+        login_as(reporter, scope: :account)
+        visit issue_path(issue, project_slug: project.slug)
+        fill_in "issue_comment_text", with: "Trigger a notification"
+        click_button "Send Message"
+        expect(ActionMailer::Base.deliveries.size).to eq(1)
+        fill_in "issue_comment_text", with: "Trigger a notification"
+        click_button "Send Message"
+        expect(ActionMailer::Base.deliveries.size).to eq(1)
+      end
     end
 
   end
