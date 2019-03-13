@@ -32,11 +32,12 @@ describe "the respondent experience", type: :feature do
 
       before do
         NotificationService.notify(
-          account: respondent,
-          project: project,
+          account_id: respondent.id,
+          project_id: project.id,
           issue_id: issue.id,
           issue_comment_id: nil
         )
+        respondent.reload
       end
 
       it "indicates in the main navigation that there is an issue" do
@@ -59,11 +60,12 @@ describe "the respondent experience", type: :feature do
 
       before do
         NotificationService.notify(
-          account: respondent,
-          project: project,
+          account_id: respondent.id,
+          project_id: project.id,
           issue_id: issue.id,
           issue_comment_id: issue_comment.id
         )
+        respondent.reload
       end
 
       it "indicates in the main navigation that there is a new message" do

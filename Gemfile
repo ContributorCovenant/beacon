@@ -34,6 +34,7 @@ gem "popper_js", "~> 1.14.5"
 gem 'premailer-rails'
 gem "puma", "~> 3.11"
 gem "recaptcha"
+gem "resque"
 gem "sass-rails", "~> 5.0"
 gem "sendgrid-ruby"
 gem "sentry-raven"

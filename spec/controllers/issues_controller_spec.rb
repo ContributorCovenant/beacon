@@ -55,8 +55,8 @@ RSpec.describe IssuesController, type: :controller do
           issue: { description: "My CoC issue description" }
         }
         expect(NotificationService).to have_received(:notify).with(
-          account: moderator,
-          project: project,
+          account_id: moderator.id,
+          project_id: project.id,
           issue_id: Issue.last.id
         )
       end

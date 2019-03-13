@@ -1,6 +1,14 @@
 class NotificationService
 
-  def self.notify(account:, project:, issue_id:, issue_comment_id: nil)
+  def self.notify(account_id:, project_id:, issue_id:, issue_comment_id: nil)
+
+    project = Project.find(project_id)
+    account = Account.find(account_id)
+
+    self.do_notify(account, project, issue_id, issue_comment_id)
+  end
+
+  def self.do_notify(account, project, issue_id, issue_comment_id)
     notification = Notification.create(
       project_id: project.id,
       issue_id: issue_id,
