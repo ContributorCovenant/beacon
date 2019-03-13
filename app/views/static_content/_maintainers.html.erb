@@ -1,7 +1,131 @@
-<h2>Setting Up Your Projects</h2>
+<h2>Setting Up a Project</h2>
 
-Maecenas sed diam eget risus varius blandit sit amet non magna. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Nulla vitae elit libero, a pharetra augue. Nulla vitae elit libero, a pharetra augue.
+<p>To create a new project in Beacon, first click on 'My Projects' in the header.
+You will then see a page providing an overview of all your existing projects.</p>
 
-Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Donec ullamcorper nulla non metus auctor fringilla. Etiam porta sem malesuada magna mollis euismod. Sed posuere consectetur est at lobortis. Nullam id dolor id nibh ultricies vehicula ut id elit.
+<%= image_tag "projects", class: "guide-image", alt: "The Projects page" %>
 
-Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Maecenas sed diam eget risus varius blandit sit amet non magna. Donec sed odio dui. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+<p>Next, click the 'New Project' button. You will see a form where you can enter
+the basic information about your project. The project name, description, code of
+conduct link, and home page will be visible in the Directory and on your project's
+details page once you make the project public.</p>
+
+<%= image_tag "new_project", class: "guide-image", alt: "The New Project page" %>
+
+<p>Once you have created your project, you're ready to configure it. There is a
+checklist on the right-hand side of the page.</p>
+
+<%= image_tag "project_setup", class: "guide-image", alt: "A project ready for setup" %>
+
+<p>Click on 'Ownership Confirmation'. To confirm ownership of your project, you need to place a Beacon token file
+in the root directory of your repository (GitHub) or enter an OAuth token (GitLab). Then click 'Verify Ownership'.</p>
+
+<p>Next, you'll need to set up your Community Impact and Consequences Guide. This
+documents different kinds of code of conduct violations and their corresponding
+likely consequences. Take care in creating this document, as it is your public
+pledge to treat both reporters and respondents with respect.</p>
+
+<%= image_tag "project_consequences", class: "guide-image", alt: "Impact and Consequences Guide" %>
+
+<p>You can create the Guide level by level manually, or clone a Guide from the
+Beacon default (or another one of your projects) by selecting the 'Clone from' and
+clicking 'Clone'.</p>
+
+<p>The first contact with a code of conduct issue's respondent (the person named
+in the issue) is critical to establishing trust and cooperation. You can create a
+standard template to use in your initial message to the respondent.</p>
+
+<p>Click on 'Respondent Template'. You can write your own or clone the respondent
+template from the Beacon default (or one of your other projects). The template
+supports tags that will be auto-filled when the template is used. You can use any
+of the available tags as you see fit.</p>
+
+<%= image_tag "project_respondent_template", class: "guide-image", alt: "Respondent Contact template" %>
+
+<p>Finally, you need to confirm the project's default settings.</p>
+
+<%= image_tag "project_settings", class: "guide-image", alt: "Project Settings page" %>
+
+<p>Clicking 'Make Project Public' publishes your project page in the Directory and
+makes it accessible to reporters and respondents. If you would like Beacon to
+display statistics around your moderation activities on your project page in
+the Directory, click the checkbox for 'Publish Issue Statistics'.</p>
+
+<p>Decide if you want moderator user names (but not email addresses) to be visible
+on the project's Directory page. You can also enable 'Hide Reporter Identity',
+which will hide the email address and user name of anyone who opens an issue.</p>
+
+<p>'Maximum Issues / Day' lets you set a limit on the number of code of conduct
+issues that you will accept in one 24-hour period. If your project is being
+attacked by bad-faith actors, this is one of the tools that you can use to prevent
+too many hostile issues from being opened. (You can also 'Pause Issues for 24 Hours'
+from your Project page.)</p>
+
+<p>If you want reporters to have validated their identities with GitHub or GitLab
+accounts, enable "Require 3rd Party Account Verification".</p>
+
+<p>When you are satisfied with these settings, click 'Update Settings'. If you
+have successfully configured your project, it is now publicly accessible and
+ready to receive issues.</p>
+
+<h2>Sharing Your Project</h2>
+
+<p>Click on 'View in Directory' to access your project's public page on Beacon.
+This is the page that reporters and respondents will see when they access the
+project. Copy the URL of the Directory page for your project and add a link to
+this page in your published code of conduct. If someone needs to open a code of
+conduct issue, they will use the 'Open Issue' button on this page.</p>
+
+<h2>Adding Moderators</h2>
+
+<p>If your enforcement team has multiple members, you can invite them to moderate
+the project on Beacon. Click on 'Moderators' in the sidebar. You will see a list
+of all moderators, and a form for inviting someone to the project. If you would
+like them to have greater control over the project's settings, click 'Make Co-Owner'.</p>
+
+<h2>Managing Issues</h2>
+
+<p>You will receive an email (and an SMS message, if you have enabled this in your
+account) when a new issue is opened in one of your projects. For the safety and
+security of the reporter, the content of the issue will not be in the email
+notification. You will have to sign in to Beacon to see the issue. Click on
+'My Projects' and you will see a badge for any new issues. Click the project name.</p>
+
+<%= image_tag "project_issues", class: "guide-image", alt: "A page displaying issues for a project" %>
+
+<p>The tabs at the bottom collect issues in various stages of moderation. Click
+the issue number to see more details.</p>
+
+<%= image_tag "project_issue", class: "guide-image", alt: "An Issue page" %>
+
+<p>The first step in moderation is clicking the 'Acknowledge' button. This
+notifies the reporter that their issue is being looked at now. You can review
+the content of the issue and any supporting links. Scroll to the bottom of the
+page and click "Screenshots" to view any images that the reporter uploaded.</p>
+
+<p>Next, click 'Add Respondent' on the right-hand side of the page. You will then
+enter the respondent's email address and fill in the blank sections in the
+respondent email template. Note that any tags that you configured when you
+created the respondent template have automatically been filled in.</p>
+
+<%= image_tag "contact_respondent", class: "guide-image", alt: "The respondent contact page" %>
+
+<p>When you are composing the message to the respondent, keep in mind that they
+may have a strong reaction to being named in a code of conduct incident. Your
+job is to communicate the issue clearly and fairly, and assure the respondent
+that you are going to moderate the situation to the best of your ability and
+with complete respect for all parties. The language that you use in this initial
+communication will set the tone for all of your interactions on ths issue.</p>
+
+<p>You can send messages to your fellow moderators using the form at the bottom
+of the page. You can also send messages to the reporter or the respondent. They
+will be notified that there is a new message, but for your safety and security the
+contents of the message will not be present in the email.</p>
+
+<%= image_tag "moderator_chat", class: "guide-image", alt: "The issue page scrolled to the messages form" %>
+
+<p>When you have finished investigating the issue, click on the 'Resolution' tab
+at the bottom of the page. You will enter details of the resolution, and either
+'Resolve' or 'Dismiss' the issue.</p>
+
+<%= image_tag "resolution", class: "guide-image", alt: "The issue page scrolled to the resolution form" %>

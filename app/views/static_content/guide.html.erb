@@ -15,11 +15,16 @@
   </li>
   <li class="nav-item">
     <a class="nav-link " id="nav-maintainers-tab" data-toggle="pill" href="#nav-maintainers" role="tab" aria-controls="nav-maintainers" aria-selected="false">
-      For OSS Maintainters
+      For OSS Maintainers
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link " id="nav-events-tab" data-toggle="pill" href="#nav-events" role="tab" aria-controls="nav-maintainers" aria-selected="false">
+    <a class="nav-link " id="nav-organizations-tab" data-toggle="pill" href="#nav-organizations" role="tab" aria-controls="nav-organizations" aria-selected="false">
+      For OSS Organizations
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link " id="nav-events-tab" data-toggle="pill" href="#nav-events" role="tab" aria-controls="nav-events" aria-selected="false">
       For Event Organizers
     </a>
   </li>
@@ -35,11 +40,15 @@
     <%= render partial: "respondents" %>
   </div>
 
-  <div class="tab-pane fade" id="nav-maintainers" role="tabpanel" aria-labelledby="nav-events">
+  <div class="tab-pane fade" id="nav-maintainers" role="tabpanel" aria-labelledby="nav-maintainers-tab">
     <%= render partial: "maintainers" %>
   </div>
 
-  <div class="tab-pane fade" id="nav-events" role="tabpanel" aria-labelledby="nav-events">
+  <div class="tab-pane fade" id="nav-organizations" role="tabpanel" aria-labelledby="nav-organizations-tab">
+    <%= render partial: "organizations" %>
+  </div>
+
+  <div class="tab-pane fade" id="nav-events" role="tabpanel" aria-labelledby="nav-events-tab">
     <%= render partial: "events" %>
   </div>
 
