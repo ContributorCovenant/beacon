@@ -17,7 +17,7 @@ class ProjectsController < ApplicationController
       IssueSeverityLevel.clone_from_org_template_for_project(@project)
     else
       IssueSeverityLevel.clone_from_existing_project(
-        source: current_account.projects.find_by(name: source),
+        source: current_account.projects.find{ |project| project.name == source },
         target: @project
       )
     end
