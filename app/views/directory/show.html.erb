@@ -69,7 +69,7 @@
 </div>
 
 <% if @issue_severity_levels.any? %>
-  <h2 class="mt-3">Community Impact and Consequences</h2>
+  <h2 class="mt-3">Community Impact and Consequences Guide</h2>
   <% @issue_severity_levels.each do |consequence| %>
     <%= render partial: "issue_severity_levels/consequence_public", locals: { consequence: consequence } %>
   <% end %>
