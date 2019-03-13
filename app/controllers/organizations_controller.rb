@@ -51,7 +51,7 @@ class OrganizationsController < ApplicationController
   end
 
   def import_projects_from_gitlab
-    results = GitlabImportService.new(current_account, @organization).import_projects
+    results = GitlabImportService.new(@organization, params[:oauth_token]).import_projects
     if results[:success]
       flash[:info] = "Successfully imported #{results[:count]} project(s)."
     else

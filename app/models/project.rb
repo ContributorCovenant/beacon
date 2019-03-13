@@ -2,7 +2,7 @@ class Project < ApplicationRecord
   validates_uniqueness_of :name
   validates_uniqueness_of :url
   validates_uniqueness_of :slug
-  validates_presence_of :name, :url, :coc_url
+  validates_presence_of :name, :url
 
   belongs_to :account
   belongs_to :organization, optional: true
