@@ -26,6 +26,22 @@
         <%= link_to "Details", project_reporter_path(@project, @issue.reporter.id), class: "btn btn-sm btn-warning" %>
       </li>
     </ul>
+    <% if @project.moderator?(@issue.reporter) %>
+      <p>
+        This issue was opened by a moderator on someone else's behalf. Use the
+        form below to invite a reporter. Note that the reporter must already
+        have an account in Beacon.
+      </p>
+      <%= form_for IssueInvitation.new, url: project_issue_issue_invitations_path(@project, @issue) do |f| %>
+        <div class="form-group">
+          <%= f.label "Reporter Email" %><br />
+          <%= f.text_field :reporter_email, class: "form-control" %>
+        </div>
+        <div class="actions">
+          <%= f.submit "Invite Reporter", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    <% end %>
 
     <h2 class="mt-3">
       Respondent

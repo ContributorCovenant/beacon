@@ -8,6 +8,7 @@ class IssueInvitationsController < ApplicationController
   end
 
   def create
+    create_for_reporter && return if invitation_params[:reporter_email].present?
     if invitation_params[:summary].empty? || invitation_params[:email].empty?
       flash[:error] = "You must provide an email and an issue summary for the respondent."
       render :new && return
@@ -41,6 +42,24 @@ class IssueInvitationsController < ApplicationController
 
   private
 
+  def create_for_reporter
+    normalized_email = Normailize::EmailAddress.new(invitation_params[:reporter_email]).normalized_address
+
+    if account = Account.find_by(normalized_email: normalized_email)
+      ReporterMailer.with(
+        email: account.email,
+        project_name: @issue.project.name
+      ).notify_existing_account_of_issue.deliver_now
+      AccountIssue.create(issue_id: @issue.id, account: account)
+      NotificationService.notify(account: account, project: @project, issue_id: @issue.id)
+      @issue.update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(account.id))
+      flash[:message] = "The reporter has been invited to this issue."
+    else
+      flash[:error] = "No account found for that email address."
+    end
+    redirect_to project_issue_path(@project, @issue)
+  end
+
   def enforce_permissions
     render_forbidden && return unless current_account.can_invite_respondent?(@issue)
   end
@@ -51,7 +70,7 @@ class IssueInvitationsController < ApplicationController
   end
 
   def invitation_params
-    params[:issue_invitation].permit(:email, :summary)
+    params[:issue_invitation].permit(:email, :reporter_email, :summary)
   end
 
 end
