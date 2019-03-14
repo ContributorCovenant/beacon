@@ -7,6 +7,28 @@
         <%= @issue.description %>
       </div>
     </div>
+  </div>
+
+  <div class="col">
+    <% if @issue_severity_level %>
+      <h2 class="mt-3">Issue Classification</h2>
+      <%= render partial: "issue_severity_levels/consequence_public", locals: { consequence: @issue_severity_level } %>
+    <% end %>
+    <h2 class="mt-3">Status</h2>
+    <p>
+      <%= issue.aasm_state.titleize %> (<%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
+    </p>
+    <h2 class="mt-3">Supporting Links</h2>
+    <% if issue.urls.reject(&:empty?).any? %>
+      <ul>
+        <% issue.urls.reject(&:empty?).each do |url| %>
+          <li><%= link_to url, url, target: "_new" %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>No links provided.</p>
+    <% end %>
+
     <h2 class="mt-3">Screen Shots</h2>
     <div class="uploads">
       <% @issue.uploads.each do |upload| %>
@@ -29,29 +51,6 @@
       </div>
     <% end %>
 
-  </div>
-
-
-  <div class="col">
-    <h2 class="mt-3">Supporting Links</h2>
-    <% if issue.urls.reject(&:empty?).any? %>
-      <ul>
-        <% issue.urls.reject(&:empty?).each do |url| %>
-          <li><%= link_to url, url, target: "_new" %></li>
-        <% end %>
-      </ul>
-    <% else %>
-      <p>No links provided.</p>
-    <% end %>
-
-    <% if @issue_severity_level %>
-      <h2 class="mt-3">Issue Classification</h2>
-      <%= render partial: "issue_severity_levels/consequence_public", locals: { consequence: @issue_severity_level } %>
-    <% end %>
-    <h2 class="mt-3">Status</h2>
-    <p>
-      <%= issue.aasm_state.titleize %> (<%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
-    </p>
   </div>
 </div>
 

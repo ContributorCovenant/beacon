@@ -6,4 +6,7 @@ class StaticContentController < ApplicationController
   def about
   end
 
+  def guide
+  end
+
 end

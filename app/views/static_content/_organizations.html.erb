@@ -1,0 +1,111 @@
+<h2 class="mt-3">Creating an Organization</h2>
+
+<p>If you represent an organization with multiple open source projects, you can
+create an Organization in Beacon to help you streamline the process of managing
+code of conduct enforcement across a wide project portfolio.</p>
+
+<p>To create a new Organization, click on 'My Organizations' in the header, then
+click 'New Organization'. You will see a form that you can fill out with the
+basic details of your Organization.</p>
+
+<%= image_tag "organization_new", class: "guide-image", alt: "The New Organization form" %>
+
+<p>Note that the information that you provide about your organization is not public.</p>
+
+<p>Once you have created your organization, you are ready to create some defaults
+that all of your projects can inherit from. To get started, click on 'Impact and
+Consequences' in the Setup Checklist on the right-hand side of the page.</p>
+
+<p>This page lets you set up your Community Impact and Consequences Guide. The Guide
+documents different kinds of code of conduct violations and their corresponding
+likely consequences. Take care in creating this document, as it is your public
+pledge to treat both reporters and respondents with respect.</p>
+
+<%= image_tag "organization_consequences", class: "guide-image", alt: "Impact and Consequences Guide" %>
+
+<p>You can create the Guide level by level manually, or clone a Guide from the
+Beacon default by selecting the 'Clone from' and clicking 'Clone'. When you are
+done, click on the organization name in the header to go back to the Organization
+details page.</p>
+
+<p>Next, you will create a default Respondent Template. Click on 'Respondent Template'
+in the sidebar.</p>
+
+<%= image_tag "organization_respondent_template", class: "guide-image", alt: "Respondent Template page" %>
+
+<p>The first contact with a code of conduct issue's respondent (the person named
+in the issue) is critical to establishing trust and cooperation. The Respondent
+Template that you create will be used as the basis for your initial message to
+an issue's respondent.</p>
+
+<p>You can write your own or clone the respondent template from the Beacon default.
+The template supports tags that will be auto-filled when the template is used.
+You can use any of the available tags as you see fit. When you are done, click
+'Save' to return to the Organization Details page.</p>
+
+<h2 class="mt-3">Inviting Moderators to the Organization</h2>
+
+<p>Although you can invite moderators to individual projects, you can also create
+a default group of moderators that will have access to your entire project portfolio.
+You can invite moderators to your organization by clicking on 'Owners and Moderators'
+in the sidebar.</p>
+
+<p>From this page, you can invite people to the organization and optionally make
+them organization co-owners. They will receive an email notification and will be
+associated with your organization after creating a Beacon account and accepting it.</p>
+
+<%= image_tag "organization_moderators", class: "guide-image", alt: "Invite Moderators page" %>
+
+<h2 class="mt-3">Adding or Importing Projects</h2>
+
+<p>From the Organization Details page, you can manually add a project or import
+projects from GitHub or GitLab. To add a single project, click 'New Project'.
+The 'OSS Maintainers' guide provides complete instructions on creating and setting
+up a project. The difference between this process and the Organization project
+creation process is that you can clone the Impact and Consequences guide, the
+Respondent Template, and the moderator list from the organization.</p>
+
+<h3 class="mt-3">Importing Projects from GitHub</h3>
+
+<p>Before you can import projects from GitHub, you must link your Beacon account
+to your GitHub account. Click on your name or email address in the header and
+then click 'Link Account to GitHub'. You will be redirected to GitHub, where you
+will sign in and grant access to Beacon.</p>
+
+<p>When you click 'Import Projects from GitHub' on the Organization Details page,
+Beacon will import all of the projects in the GitHub organization matching the
+GitHub Organization Name that you entered when you created the organization. (You
+can also set the GitHub organization name by clicking 'Edit' on the Organization
+page and entering a value on the form.)</p>
+
+<%= image_tag "organization_projects_imported", class: "guide-image", alt: "Invite Moderators page" %>
+
+<p>Projects that have been imported will now appear under the 'Projects' header
+on the Organization Details page. By default, the projects that you import default
+to the Impact and Consequence Guide and Respondent Template that you have configured
+for the Organization.</p>
+
+<p>All of your projects are now in the Directory and ready to accept code of conduct
+issues.</p>
+
+<h3 class="mt-3">Importing Projects from GitLab</h2>
+
+<p>Before you can import projects from GitLab, you must link your Beacon account
+to your GitLab account. Click on your name or email address in the header and
+then click 'Link Account to GitLab'. You will be redirected to GitLab, where you
+will sign in and grant access to Beacon.</p>
+
+<p>Click on 'Import Projects from GitLab'. You will be presented with a form
+where you enter your GitLab OAuth token. You will need to create a token for
+Beacon in the account settings on GitLab. For security reasons, this token is
+not stored in the Beacon system.</p>
+
+<p>Submit the form. Projects that have been imported will now appear under the 'Projects' header
+on the Organization Details page. By default, the projects that you import default
+to the Impact and Consequence Guide and Respondent Template that you have configured
+for the Organization.</p>
+
+<p>Unless you have set a Code of Conduct URL for your organization, your newly
+imported Projects will not be visible in the Directory until you provide a Code
+of Conduct URL for each project individually. Due to a limitation in the GitLab
+API, Beacon is not able to auto-detect codes of conduct in GitLab projects.</p>
