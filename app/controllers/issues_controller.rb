@@ -137,6 +137,7 @@ class IssuesController < ApplicationController
       project: @project,
       issue: @issue
     ).notify_of_new_issue.deliver_now
+    NotificationService.notify_moderators_on_issue_via_sms(@project, @issue)
   end
 
   def notify_on_status_change

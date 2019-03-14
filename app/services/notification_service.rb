@@ -8,8 +8,6 @@ class NotificationService
     )
     account.notification_encrypted_ids << EncryptionService.encrypt(notification.id)
     account.save
-    # Notify on new issue creation
-    notify_via_sms(account, project, issue_id) if issue_comment_id.nil?
   end
 
   def self.notified!(account:, issue_id:)
@@ -19,22 +17,23 @@ class NotificationService
     account.save
   end
 
-  def self.notify_via_sms(account, project, issue_id)
-    return unless account.send_sms_on_issue_open
-    return unless account.phone_number
-    return unless project.moderator?(account)
-
-    issue = Issue.find(issue_id)
+  def self.notify_moderators_on_issue_via_sms(project, issue)
     client = Twilio::REST::Client.new(Setting.sms(:account_sid), Setting.sms(:auth_token))
 
-    begin
-      client.messages.create(
-        body: "Issue #{issue.issue_number} has been opened on the #{project.name} project. Please sign in to Beacon to review the issue.",
-        to: account.phone_number,
-        from: Setting.sms(:from)
-      )
-    rescue StandardError => e
-      Rails.logger.info("Failed to send SMS: #{e} #{e.backtrace}")
+    project.moderators.each do |account|
+      next unless account.send_sms_on_issue_open
+      next unless account.phone_number
+      next unless project.moderator?(account)
+
+      begin
+        client.messages.create(
+          body: "Issue #{issue.issue_number} has been opened on the #{project.name} project. Please sign in to Beacon to review the issue.",
+          to: account.phone_number,
+          from: Setting.sms(:from)
+        )
+      rescue StandardError => e
+        Rails.logger.info("Failed to send SMS: #{e} #{e.backtrace}")
+      end
     end
   end
 
