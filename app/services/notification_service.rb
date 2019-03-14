@@ -8,8 +8,6 @@ class NotificationService
     )
     account.notification_encrypted_ids << EncryptionService.encrypt(notification.id)
     account.save
-    # Notify on new issue creation
-    notify_via_sms(account, project, issue_id) if issue_comment_id.nil?
   end
 
   def self.notified!(account:, issue_id:)
