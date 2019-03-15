@@ -1,8 +1,22 @@
 namespace :rotate_keys do
 
   task :help do
-    %w{account account_issue issue_comment issue_event issue issue_invitation project_issue}.each do |t|
+    %w{account account_issue credential issue_comment issue_event issue issue_invitation project_issue}.each do |t|
       puts "rake rotate_keys:#{t}"
+    end
+  end
+
+  task :credential, [:old_key, :new_key] => :environment do |task, args|
+    old_key = args[:old_key]
+    new_key = args[:new_key]
+    Credential.all.each do |i|
+      next unless i.token_encrypted.present?
+      begin
+        token = EncryptionService.decrypt(i.token_encrypted, old_key)
+        i.update_attribute(:token_encrypted, EncryptionService.encrypt(token, new_key))
+      rescue ActiveSupport::MessageEncryptor::InvalidMessage => e
+        puts "Unable to decrypt token for credentials #{i.id}: #{e}"
+      end
     end
   end
 

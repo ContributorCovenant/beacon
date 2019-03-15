@@ -2,7 +2,7 @@ require 'octokit'
 
 class GithubImportService
 
-  attr_reader :account, :organization
+  attr_reader :access_token, :account, :organization
 
   def initialize(account, organization)
     @account = account
@@ -45,7 +45,12 @@ class GithubImportService
   private
 
   def client
-    @client ||= Octokit::Client.new
+    @client ||= Octokit::Client.new(access_token: account.github_token)
+  end
+
+  def uid
+    @credentials ||= account.credentials.find_by(provider: "github")
+    @uid ||= @credentials.uid.to_i
   end
 
   def repositories
@@ -56,10 +61,8 @@ class GithubImportService
   end
 
   def verify_membership
-    return false unless credentials = account.credentials.find_by(provider: "github")
-    members = client.organization_members(organization.remote_org_name).map(&:id)
-    return false unless members.include?(credentials.uid.to_i)
-    true
+    return false unless uid
+    return client.organization_members(organization.remote_org_name).map(&:id).include?(uid)
   end
 
 end

@@ -40,6 +40,16 @@ class Account < ApplicationRecord
     self.email
   end
 
+  def github_token
+    return unless encrypted_token = credentials.find_by(provider: "github")&.token_encrypted
+    EncryptionService.decrypt(encrypted_token)
+  end
+
+  def gitlab_token
+    return unless encrypted_token = credentials.find_by(provider: "gitlab")&.token_encrypted
+    EncryptionService.decrypt(encrypted_token)
+  end
+
   def invitations
     Invitation.where(email: self.email)
   end
@@ -107,6 +117,16 @@ class Account < ApplicationRecord
 
   def total_issues_past_24_hours
     issues.select{ |issue| issue.created_at >= Time.zone.now - 24.hours }.size
+  end
+
+  def update_github_token(token)
+    return unless github_credentials = credentials.find_by(provider: "github")
+    github_credentials.update_attribute(:token_encrypted, EncryptionService.encrypt(token))
+  end
+
+  def update_gitlab_token(token)
+    return unless gitlab_credentials = credentials.find_by(provider: "gitlab")
+    gitlab_credentials.update_attribute(:token_encrypted, EncryptionService.encrypt(token))
   end
 
   private

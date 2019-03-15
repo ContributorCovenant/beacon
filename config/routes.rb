@@ -30,6 +30,8 @@ Rails.application.routes.draw do
     get "import_projects_from_github", to: "organizations#import_projects_from_github"
     get "gitlab_auth_token", to: "organizations#gitlab_auth_token"
     post "import_projects_from_gitlab", to: "organizations#import_projects_from_gitlab"
+    get "github_auth_token", to: "organizations#github_auth_token"
+    post "import_projects_from_github", to: "organizations#import_projects_from_github"
     post "remove_moderator", to: "organizations#remove_moderator"
     patch "clone_ladder", to: "organizations#clone_ladder"
     post "clone_respondent_template", to: "respondent_templates#clone"
