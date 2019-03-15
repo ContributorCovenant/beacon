@@ -3,8 +3,20 @@
 <h1>Edit <%= resource_name.to_s.humanize %></h1>
 
 <% unless current_account.authy_enabled? %>
-  <%= link_to "Enable 2-factor SMS", account_enable_authy_path(resource) %>
+  <%= link_to "Enable 2-factor SMS", account_enable_authy_path(resource), class: "btn btn-primary" %>
 <% end %>
+
+<%- if devise_mapping.omniauthable? %>
+  <%- resource_class.omniauth_providers.each do |provider| %>
+    <% if current_account.send("linked_to_#{provider}?") %>
+      <div>Linked to <%= OmniAuth::Utils.camelize(provider) %></div>
+    <% else %>
+      <%= link_to "Link #{OmniAuth::Utils.camelize(provider)} Account", omniauth_authorize_path(resource_name, provider), class: "btn btn-primary" %>
+    <% end -%>
+  <% end -%>
+<% end -%>
+
+<h2 class="mt-5">Account Details</h2>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= devise_error_messages! %>
@@ -54,24 +66,8 @@
     <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
   </div>
 
-  <%- if devise_mapping.omniauthable? %>
-    <%- resource_class.omniauth_providers.each do |provider| %>
-      <% if current_account.send("linked_to_#{provider}?") %>
-        <div>Linked to <%= OmniAuth::Utils.camelize(provider) %></div>
-      <% else %>
-        <%= link_to "Link #{OmniAuth::Utils.camelize(provider)} Account", omniauth_authorize_path(resource_name, provider) %> <br />
-      <% end -%>
-    <% end -%>
-  <% end -%>
-  <br /><br />
-
   <div class="actions">
     <%= f.submit "Update", class: "btn btn-primary" %>
+    <%= link_to "Done", :back, class: "btn btn-warning" %>
   </div>
 <% end %>
-
-<h3 class="mt-5">Cancel my account</h3>
-
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete, class: 'btn btn-danger' %></p>
-
-<%= link_to "Back", :back %>

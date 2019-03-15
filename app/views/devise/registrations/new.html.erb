@@ -7,12 +7,6 @@
   <div class="row">
     <div class="col-sm">
 
-      <%- if devise_mapping.omniauthable? %>
-        <%- resource_class.omniauth_providers.each do |provider| %>
-          <%= link_to "Sign up with #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider) %> |
-        <% end -%>
-      <% end -%>
-
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
         <%= devise_error_messages!.gsub(/^.+\^/,'').html_safe %>
 
