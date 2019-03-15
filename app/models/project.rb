@@ -23,6 +23,7 @@ class Project < ApplicationRecord
   attr_accessor :consequence_ladder_default_source
 
   scope :for_directory, -> { where(public: true, setup_complete: true).order("name ASC") }
+  scope :starting_with, ->(letter) { where("name ILIKE ?", letter + '%') }
 
   def accepting_issues?
     public? && !paused?
