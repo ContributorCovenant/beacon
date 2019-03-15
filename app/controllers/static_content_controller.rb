@@ -1,6 +1,7 @@
 class StaticContentController < ApplicationController
 
-  def home
+  def main
+    @project_count = Project.for_directory.count
   end
 
   def about
