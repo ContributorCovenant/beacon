@@ -17,3 +17,5 @@ oauth:
   github_app_secret: <%= ENV['GITHUB_APP_SECRET'] %>
   gitlab_app_id: <%= ENV['GITLAB_APP_ID'] %>
   gitlab_app_secret: <%= ENV['GITLAB_APP_SECRET'] %>
+google:
+  google_analytics_id: <%= ENV['GOOGLE_ANALYTICS_ID'] %>

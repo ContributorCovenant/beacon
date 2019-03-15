@@ -8,9 +8,16 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"     integrity="sha384-wvfXpqpZZVQGK6TAh2PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => 'reload' %>
     <%= csrf_meta_tags %>
-  <%=javascript_include_tag "https://www.authy.com/form.authy.min.js" %>
-  <%=stylesheet_link_tag "https://www.authy.com/form.authy.min.css" %>
+    <%=javascript_include_tag "https://www.authy.com/form.authy.min.js" %>
+    <%=stylesheet_link_tag "https://www.authy.com/form.authy.min.css" %>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= Setting.google_analytics_id %>"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
 
+      gtag('config', 'UA-101929377-5');
+    </script>
   </head>
   <body>
     <header>
