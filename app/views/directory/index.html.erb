@@ -2,6 +2,22 @@
 
 <h1>Beacon Directory</h1>
 
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <%= link_to "Previous", directory_path(params: { page: @previous_index }), class: "page-link" %>
+    </li>
+    <% @page_index.each do |i| %>
+      <li class="page-item <%= @current_index == i ? 'active' : '' %>">
+        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+      </li>
+    <% end %>
+    <li class="page-item">
+      <%= link_to "Next", directory_path(params: { page: @next_index }), class: "page-link" %>
+    </li>
+  </ul>
+</nav>
+
 <% @projects.each_with_index do |project,i| %>
 
   <% float_class = i < @projects.size - 1 ? "float-left" : "float-none" %>
