@@ -10,12 +10,12 @@
     <%= csrf_meta_tags %>
     <%=javascript_include_tag "https://www.authy.com/form.authy.min.js" %>
     <%=stylesheet_link_tag "https://www.authy.com/form.authy.min.css" %>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= Setting.google_analytics_id %>"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=<%= Setting.google(:analytics_id) %>"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', '<%= Setting.google_analytics_id %>');
+      gtag('config', '<%= Setting.google(:analytics_id) %>');
     </script>
   </head>
   <body>
