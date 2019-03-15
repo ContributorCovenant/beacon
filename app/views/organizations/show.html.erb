@@ -81,6 +81,23 @@
 <% end %>
 
 <div class="container">
+  <% if @page_index.present? %>
+    <nav aria-label="pagination">
+      <ul class="pagination">
+        <li class="page-item">
+          <%= link_to "Previous", organization_path(@organization, params: { page: @previous_index }), class: "page-link" %>
+        </li>
+        <% @page_index.each do |i| %>
+          <li class="page-item <%= @current_index == i ? 'active' : '' %>">
+            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+          </li>
+        <% end %>
+        <li class="page-item">
+          <%= link_to "Next", organization_path(@organization, params: { page: @next_index }), class: "page-link" %>
+        </li>
+      </ul>
+    </nav>
+  <% end %>
   <div class="row">
     <% @projects.each_with_index do |project,i| %>
       <div class="card mb-3 mr-3" style="width: 30%; min-height: 14rem">
