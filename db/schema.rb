@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_11_231942) do
+ActiveRecord::Schema.define(version: 2019_03_15_230048) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -144,6 +144,8 @@ ActiveRecord::Schema.define(version: 2019_03_11_231942) do
     t.string "uid"
     t.string "email"
     t.uuid "account_id"
+    t.string "oauth_token"
+    t.string "token_encrypted"
     t.index ["account_id"], name: "index_credentials_on_account_id"
     t.index ["provider", "uid"], name: "index_credentials_on_provider_and_uid", unique: true
   end
@@ -242,6 +244,10 @@ ActiveRecord::Schema.define(version: 2019_03_11_231942) do
     t.string "slug"
     t.text "description"
     t.uuid "account_id"
+    t.datetime "flagged_at"
+    t.text "flagged_reason"
+    t.datetime "confirmed_at"
+    t.string "confirmation_token_url"
     t.string "remote_org_name"
     t.index ["account_id"], name: "index_organizations_on_account_id"
   end

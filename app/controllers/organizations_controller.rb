@@ -40,7 +40,12 @@ class OrganizationsController < ApplicationController
     render :show
   end
 
+  def github_auth_token
+    @token = current_account.github_token
+  end
+
   def import_projects_from_github
+    current_account.update_github_token(params[:token])
     results = GithubImportService.new(current_account, @organization).import_projects
     if results[:success]
       flash[:info] = "Successfully imported #{results[:count]} project(s)."
@@ -50,8 +55,13 @@ class OrganizationsController < ApplicationController
     redirect_to organization_path(@organization)
   end
 
+  def gitlab_auth_token
+    @token = current_account.gitlab_token
+  end
+
   def import_projects_from_gitlab
-    results = GitlabImportService.new(@organization, params[:oauth_token]).import_projects
+    current_account.update_gitlab_token(params[:token])
+    results = GitlabImportService.new(account, @organization).import_projects
     if results[:success]
       flash[:info] = "Successfully imported #{results[:count]} project(s)."
     else

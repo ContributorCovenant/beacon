@@ -1,0 +1,19 @@
+<% title "#{@organization.name}: Import from GitHub" %>
+
+<h1><%= @organization.name %>: Import Projects from GitHub</h1>
+
+<p>If you do not already have a GitHub token associated with your account, create
+a new token on GitHub through Settings&gt;Developer&gt;Personal Access Tokens.
+Check the box labeled "read:org" to add the required permissions.</p>
+
+<%= form_with url: organization_import_projects_from_github_path(@organization) do |f| %>
+  <div class="form-group col-sm-6">
+    <label for="token">OAuth Token</label><br />
+    <%= f.password_field :token, value: @token, class: "form-control" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Import", class: "btn btn-primary" %>
+    <%= link_to "Cancel", @organization, class: "btn btn-warning" %>
+  </div>
+<% end %>

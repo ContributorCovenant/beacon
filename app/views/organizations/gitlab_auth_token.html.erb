@@ -4,8 +4,8 @@
 
 <%= form_with url: organization_import_projects_from_gitlab_path(@organization) do |f| %>
   <div class="form-group col-sm-6">
-    <label for="oauth_token">OAuth_Token</label><br />
-    <%= f.text_field :oauth_token, class: "form-control" %>
+    <label for="token">OAuth Token</label><br />
+    <%= f.password_field :token, value: @token, class: "form-control" %>
   </div>
 
   <div class="actions">

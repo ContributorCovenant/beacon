@@ -2,10 +2,10 @@ require 'gitlab'
 
 class GitlabImportService
 
-  attr_reader :oauth_token, :organization
+  attr_reader :account, :organization
 
-  def initialize(organization, oauth_token)
-    @oauth_token = oauth_token
+  def initialize(account, organization)
+    @account = account
     @organization = organization
   end
 
@@ -49,7 +49,7 @@ class GitlabImportService
   def client
     @client ||= Gitlab.client(
       endpoint: "https://gitlab.com/api/v4/",
-      private_token: oauth_token
+      private_token: account.gitlab_token
     )
   end
 
