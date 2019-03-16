@@ -20,7 +20,7 @@ class Project < ApplicationRecord
   before_create :set_slug
   after_create :make_settings
 
-  attr_accessor :consequence_ladder_default_source
+  attr_accessor :consequence_ladder_default_source, :token
 
   scope :for_directory, -> { where(public: true, setup_complete: true, is_flagged: false).order("name ASC") }
   scope :starting_with, ->(letter) { where("name ILIKE ?", letter + '%') }
@@ -38,7 +38,11 @@ class Project < ApplicationRecord
   end
 
   def confirmation_token_url_default
-    (url + "/blob/master/beacon.txt").gsub(/\/\/blob/, "/blob")
+    if repo_url
+      (repo_url + "/blob/master/beacon.txt").gsub(/\/\/blob/, "/blob")
+    else
+      (url + "/beacon.txt").gsub(/\/\/beacon/, "/beacon")
+    end
   end
 
   def consequence_ladder?
@@ -82,6 +86,10 @@ class Project < ApplicationRecord
     confirmed_at.present?
   end
 
+  def unconfirm_ownership!
+    update_attribute(:confirmed_at, nil)
+  end
+
   def paused?
     project_setting.paused?
   end
@@ -117,6 +125,12 @@ class Project < ApplicationRecord
     self.update_attribute(:is_flagged, true)
   end
 
+  def repo_name
+    return unless repo_url.present?
+    segments = repo_url.split("/")
+    "#{segments[-2]}/#{segments[-1]}"
+  end
+
   def require_3rd_party_auth?
     !!project_setting.require_3rd_party_auth
   end
@@ -135,7 +149,6 @@ class Project < ApplicationRecord
     self.slug = name.downcase.gsub(/[^a-z0-9]/i, '_')
   end
 
-  # TODO: Eventually this will inherit from an org's project template
   def make_settings
     create_project_setting
   end

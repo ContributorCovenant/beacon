@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_15_230048) do
+ActiveRecord::Schema.define(version: 2019_03_16_205109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -292,6 +292,7 @@ ActiveRecord::Schema.define(version: 2019_03_15_230048) do
     t.boolean "setup_complete", default: false
     t.uuid "organization_id"
     t.string "confirmation_token_url"
+    t.string "repo_url"
     t.index ["account_id"], name: "index_projects_on_account_id"
     t.index ["organization_id"], name: "index_projects_on_organization_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true

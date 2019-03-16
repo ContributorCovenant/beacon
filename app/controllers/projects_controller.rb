@@ -64,24 +64,50 @@ class ProjectsController < ApplicationController
   end
 
   def ownership
+    @github_token = current_account.github_token
+    @gitlab_token = current_account.gitlab_token
   end
 
   def confirm_ownership
     @project.update_attribute(:confirmation_token_url, project_params[:confirmation_token_url])
-    if ProjectConfirmationService.confirm!(@project)
-      flash[:info] = 'Your ownership token has been verified.'
+    if params[:commit] == "Confirm via GitHub"
+      method = "github"
+      current_account.update_github_token(project_params[:token])
+      confirmation = ProjectConfirmationService.confirm!(
+        @project,
+        current_account.credentials.find_by(provider: "github"),
+        "github"
+      )
+    elsif params[:commit] == "Confirm via GitLab"
+      current_account.update_gitlab_token(project_params[:token])
+      method = "gitlab"
+      confirmation = ProjectConfirmationService.confirm!(
+        @project,
+        current_account.credentials.find_by(provider: "gitlab"),
+        "gitlab"
+      )
+    else
+      confirmation = ProjectConfirmationService.confirm!(@project, project_params[:confirmation_token_url], "file")
+      method = "file"
+    end
+    if confirmation
+      flash[:info] = 'Your ownership has been verified.'
       redirect_to @project
     else
-      flash[:error] = 'No token found or invalid token.'
+      if method == "file"
+        flash[:error] = "No token found or invalid token."
+      else
+        flash[:error] = "You are either not the owner of this project, or this project is a fork."
+      end
       redirect_to project_ownership_path
     end
   end
 
   def update
     project_params.delete(:name)
-    previous_url = @project.url
+    previous_repo_url = @project.repo_url.to_s
     if @project.update_attributes(project_params)
-      @project.update_attribute(:confirmed_at, nil) if previous_url != project_params[:url]
+      @project.unconfirm_ownership! if previous_repo_url != project_params[:repo_url].to_s
       flash[:notice] = 'The project was successfully updated.'
       redirect_to @project
     else
@@ -104,7 +130,16 @@ class ProjectsController < ApplicationController
   end
 
   def project_params
-    params.require(:project).permit(:name, :url, :coc_url, :description, :organization_id, :confirmation_token_url)
+    params.require(:project).permit(
+      :name,
+      :url,
+      :coc_url,
+      :repo_url,
+      :description,
+      :organization_id,
+      :confirmation_token_url,
+      :token
+    )
   end
 
   def scope_organizations

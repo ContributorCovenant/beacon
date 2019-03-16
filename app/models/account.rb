@@ -62,6 +62,14 @@ class Account < ApplicationRecord
     @issues ||= AccountIssue.issues_for_account(id)
   end
 
+  def linked_to_github?
+    credentials.find_by(provider: "github").present?
+  end
+
+  def linked_to_gitlab?
+    credentials.find_by(provider: "gitlab").present?
+  end
+
   def notification_on_issue_of_kind?(issue_id, commenter_kind)
     issue_notifications = notifications.select{ |notification| notification.issue_id == issue_id }
     !issue_notifications.map(&:issue_comment).compact.find{ |comment| comment.commenter_kind == commenter_kind }.nil?

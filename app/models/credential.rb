@@ -16,11 +16,15 @@ class Credential < ApplicationRecord
     create(uid: auth.uid, provider: auth.provider, email: auth.info.email)
   end
 
+  def token
+    EncryptionService.decrypt(token_encrypted)
+  end
+
   private
 
   def provider_account_configuration
     return true if Account.omniauth_providers.include?(self.provider.to_sym)
-    errors.add(:provider, "This Provider is not configured")
+    errors.add(:provider, "This provider is not configured.")
   end
 
 end
