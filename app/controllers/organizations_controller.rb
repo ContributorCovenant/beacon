@@ -30,6 +30,15 @@ class OrganizationsController < ApplicationController
   end
 
   def show
+    if @organization.projects.count > 12
+      @page_index = @organization.projects.order('name ASC').pluck(:name).map(&:first).uniq
+      @current_index = params[:page] || @page_index.first
+      @previous_index = @page_index[@page_index.index(@current_index) - 1]
+      @next_index = @page_index[@page_index.index(@current_index) - 1]
+      @projects = @organization.projects.starting_with(@current_index)
+    else
+      @projects = @organization.projects.order('name ASC')
+    end
   end
 
   def edit
