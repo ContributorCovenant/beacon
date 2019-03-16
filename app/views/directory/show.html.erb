@@ -15,7 +15,7 @@
           <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-primary" %>
         </div>
       <% else %>
-        <% if @project.require_3rd_party_auth? && current_account.3rd_party_credentials? %>
+        <% if @project.require_3rd_party_auth? && current_account.third_party_credentials? %>
           <p><b>You cannot open an issue on this project at this time.</b></p>
         <% else %>
           <p><b>
