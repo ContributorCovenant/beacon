@@ -11,7 +11,12 @@
   <div class="form-group col-sm-6">
     <%= f.label 'Project URL' %><br />
     <%= f.text_field :url, autofocus: true, class: "form-control" %>
-    <i>If you change your project's URL, you will have to re-verify your token.</i>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <label for="project_repo_url">GitHub or GitLab URL</label><br />
+    <%= f.text_field :repo_url, class: "form-control" %>
+    <i>If you change this URL, you will have to re-verify your ownership.</i>
   </div>
 
   <div class="form-group col-sm-6">

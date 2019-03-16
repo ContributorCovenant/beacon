@@ -17,6 +17,11 @@ settings for managing your project after it is created.</p>
   </div>
 
   <div class="form-group col-sm-6">
+    <label for="project_repo_url">GitHub or GitLab URL</label><br />
+    <%= f.text_field :repo_url, class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
     <%= f.label "Code of Conduct URL" %><br />
     <%= f.text_field :coc_url, class: "form-control" %>
   </div>
