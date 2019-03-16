@@ -40,6 +40,10 @@ class Account < ApplicationRecord
     self.email
   end
 
+  def has_3rd_party_credentials?
+    credentials.any?
+  end
+
   def github_token
     return unless encrypted_token = credentials.find_by(provider: "github")&.token_encrypted
     EncryptionService.decrypt(encrypted_token)

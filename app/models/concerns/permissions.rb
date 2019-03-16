@@ -70,6 +70,7 @@ module Permissions
 
   def can_open_issue_on_project?(project)
     return false unless project.accepting_issues?
+    return false if project.require_3rd_party_auth? && !has_3rd_party_credentials?
     return false if blocked_from_project?(project)
     return false if is_flagged
     return false if project.issue_count_from_past_24_hours == project.project_setting.rate_per_day

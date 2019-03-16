@@ -56,6 +56,24 @@ RSpec.describe Permissions do
       end
     end
 
+    context "project requiring 3rd party auth" do
+
+      before do
+        allow(exene).to receive(:has_3rd_party_credentials?).and_return(true)
+        allow(donnie).to receive(:has_3rd_party_credentials?).and_return(false)
+        allow_any_instance_of(ProjectSetting).to receive(:require_3rd_party_auth).and_return(true)
+      end
+
+      it "allows an account with 3rd party credentials" do
+        expect(exene.can_open_issue_on_project?(public_project)).to be_truthy
+      end
+
+      it "denies an account without 3rd party credentials" do
+        expect(donnie.can_open_issue_on_project?(public_project)).to be_falsey
+      end
+
+    end
+
   end
 
   describe "#can_comment_on_issue?" do

@@ -6,7 +6,7 @@ module Admin
     before_action :scope_project, except: [:index]
 
     def index
-      @projects = Project.all
+      @projects = Project.all.order('name ASC')
     end
 
     def show

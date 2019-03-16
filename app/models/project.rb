@@ -117,6 +117,10 @@ class Project < ApplicationRecord
     self.update_attribute(:is_flagged, true)
   end
 
+  def require_3rd_party_auth?
+    !!project_setting.require_3rd_party_auth
+  end
+
   def toggle_flagged
     self.update_attribute(:is_flagged, !is_flagged)
   end
