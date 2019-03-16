@@ -40,7 +40,7 @@ class Account < ApplicationRecord
     self.email
   end
 
-  def has_3rd_party_credentials?
+  def 3rd_party_credentials?
     credentials.any?
   end
 

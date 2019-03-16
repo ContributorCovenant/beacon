@@ -59,8 +59,8 @@ RSpec.describe Permissions do
     context "project requiring 3rd party auth" do
 
       before do
-        allow(exene).to receive(:has_3rd_party_credentials?).and_return(true)
-        allow(donnie).to receive(:has_3rd_party_credentials?).and_return(false)
+        allow(exene).to receive(:3rd_party_credentials?).and_return(true)
+        allow(donnie).to receive(:3rd_party_credentials?).and_return(false)
         allow_any_instance_of(ProjectSetting).to receive(:require_3rd_party_auth).and_return(true)
       end
 
