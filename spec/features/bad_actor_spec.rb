@@ -199,7 +199,7 @@ describe "a malicious reporter attempting to open an issue" do
     it "is prevented from opening new issues" do
       login_as(reporter, scope: :account)
       visit directory_project_path(slug: project.slug)
-      expect(page.has_content?("This project is not accepting issues at this time.")).to be_truthy
+      expect(page.has_content?("You cannot open an issue on this project at this time.")).to be_truthy
     end
 
   end

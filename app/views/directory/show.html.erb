@@ -15,7 +15,18 @@
           <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-primary" %>
         </div>
       <% else %>
-        <p><b>This project is not accepting issues at this time.</b></p>
+        <% if @project.require_3rd_party_auth? %>
+          <% if current_account.third_party_credentials? %>
+            <p><b>You cannot open an issue on this project at this time.</b></p>
+          <% else %>
+            <p><b>
+              You must link your account to GitHub or GitLab before opening an issue.
+              Click on your username in the header to link your account.
+            </b></p>
+          <% end %>
+        <% else %>
+          <p><b>You cannot open an issue on this project at this time.</b></p>
+        <% end %>
       <% end %>
     <% else %>
       <p>

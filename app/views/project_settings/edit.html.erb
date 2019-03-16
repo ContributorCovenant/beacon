@@ -20,23 +20,18 @@
   </div>
 
   <div class="form-group col-sm-6">
-    <%= f.label :allow_anonymous_issues, "Hide Reporter Identity" %>
+    <%= f.label :allow_anonymous_issues, "Hide Reporter Identity from Moderators" %>
     <%= f.check_box :allow_anonymous_issues, class: "toggle", :data => { :toggle => 'toggle' } %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :rate_per_day, "Require 3rd Party Account Verification for Reporters" %>
+    <%= f.check_box :require_3rd_party_auth, class: "toggle", :data => { :toggle => 'toggle' } %>
   </div>
 
   <div class="form-group col-sm-6">
     <%= f.label :rate_per_day, "Maximum Issues / Day" %><br />
     <%= f.text_field :rate_per_day, autofocus: true, class: "form-control" %>
-  </div>
-
-  <div class="form-group col-sm-6">
-    <%= f.label :rate_per_day, "Require 3rd Party Account Verification" %>
-    <%= f.check_box :require_3rd_party_auth, class: "toggle", :data => { :toggle => 'toggle' } %>
-  </div>
-
-  <div class="form-group col-sm-6">
-    <%= f.label :rate_per_day, "Minimum 3rd Party Account Age (days)" %><br />
-    <%= f.text_field :minimum_3rd_party_auth_age_in_days, class: "form-control" %>
   </div>
 
   <div class="actions">
