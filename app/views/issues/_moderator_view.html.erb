@@ -117,19 +117,19 @@
 
   <div class="nav nav-tabs mt-5 mb-3" id="nav-tab" role="tablist" style="width: 100%;">
     <a class="nav-link active" id="nav-internal-discussion-tab" data-toggle="pill" href="#nav-internal-discussion" role="tab" aria-controls="nav-internal-discussion" aria-selected="true">
-      Moderator Discussion
+      Moderator Talk
       <% if @notifications_for_internal_comments_count > 0 %>
         <span class="badge badge-pill badge-danger"><%= @notifications_for_internal_comments_count %></span>
       <% end %>
     </a>
     <a class="nav-link " id="nav-reporter-discussion-tab" data-toggle="pill" href="#nav-reporter-discussion" role="tab" aria-controls="nav-reporter-discussion" aria-selected="false">
-      Reporter Discussion
+      Reporter Talk
       <% if @notifications_for_reporter_comments_count > 0 %>
         <span class="badge badge-pill badge-danger"><%= @notifications_for_reporter_comments_count %></span>
       <% end %>
     </a>
     <a class="nav-link " id="nav-respondent-discussion-tab" data-toggle="pill" href="#nav-respondent-discussion" role="tab" aria-controls="nav-respondent-discussion" aria-selected="false">
-      Respondent Discussion
+      Respondent Talk
       <% if @notifications_for_respondent_comments_count > 0 %>
         <span class="badge badge-pill badge-danger"><%= @notifications_for_respondent_comments_count %></span>
       <% end %>
@@ -140,6 +140,11 @@
     <a class="nav-link " id="nav-resolution-tab" data-toggle="pill" href="#nav-resolution" role="tab" aria-controls="nav-resolution" aria-selected="false">
       Resolution
     </a>
+    <% if @surveys.any? %>
+      <a class="nav-link " id="nav-surveys-tab" data-toggle="pill" href="#nav-surveys" role="tab" aria-controls="nav-surveys" aria-selected="false">
+        Surveys
+      </a>
+    <% end %>
     <a class="nav-link " id="nav-history-tab" data-toggle="pill" href="#nav-history" role="tab" aria-controls="nav-history" aria-selected="false">
       Issue History
     </a>
@@ -266,6 +271,17 @@
           </div>
         </div>
       <% end %>
+    </div>
+
+    <div class="tab-pane fade" id="nav-surveys" role="tabpanel" aria-labelledby="nav-surveys-tab">
+      <ul>
+        <% @surveys.each do |survey| %>
+          <li>
+            <% kind = survey.account == @issue.reporter ? "Reporter Survey" : "Respondent Survey" %>
+            <%= link_to kind, project_issue_survey_path(@project, @issue, survey) %>
+          </li>
+        <% end %>
+      </ul>
     </div>
 
     <div class="tab-pane fade" id="nav-history" role="tabpanel" aria-labelledby="nav-history-tab">

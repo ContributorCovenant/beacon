@@ -22,4 +22,13 @@ class IssueNotificationsMailer < ApplicationMailer
     mail(to: @email, subject: "Beacon: #{@project.name} Issue ##{@issue.issue_number} issue has a new comment")
   end
 
+  def notify_of_new_survey
+    @project = params[:project]
+    @issue = params[:issue]
+    @survey = params[:survey]
+    @kind = @survey.kind
+    @email = params[:email]
+    mail(to: @email, subject: "Beacon: #{@project.name} Issue ##{@issue.issue_number} issue has a new survey")
+  end
+
 end
