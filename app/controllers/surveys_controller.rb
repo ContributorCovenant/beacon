@@ -1,5 +1,6 @@
 class SurveysController < ApplicationController
 
+  before_action :authenticate_account!
   before_action :scope_project
   before_action :scope_issue
   before_action :enforce_permissions

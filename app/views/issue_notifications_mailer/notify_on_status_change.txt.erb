@@ -3,9 +3,18 @@ Update to #{@project.name} Issue ##{@issue.issue_number}
 
 This issue's status was updated to <%= @issue.aasm_state.titleize %> by a moderator.
 
-You can view the issue in Beacon at this URL for updates:
+<% if @issue.resolved? %>
+  <p>
+    The moderators would like you to complete a brief survey about your feelings about how
+    the issue was handled.
 
-  <%= project_issue_url(@project, @issue) %>
+    <%= new_project_issue_survey_url(@project, @issue) %>
+
+<% else %>
+  You can view the issue in Beacon at this URL for updates:
+
+    <%= project_issue_url(@project, @issue) %>
+<% end %>
 
 Thank you,
 The Friendly Beacon Mailer Robot
