@@ -1,0 +1,79 @@
+<% title "Admin: #{@organization.name}" %>
+
+<div class="row">
+  <div class="col">
+    <h1><%= @organization.name %></h1>
+    <p>
+      <%= link_to @organization.url, @organization.url, target: "_blank" %><br />
+      <%= @organization.description %>
+    </p>
+
+    <div class="actions mt-1">
+      <% if current_account.can_lock_organization? %>
+        <% if !@organization.is_flagged? %>
+          <a id="block-button" class="btn btn-danger" onclick="$('#block-form').toggle(); $('#block-button').toggle(); ">Lock Organization</a>
+          <div id="block-form" style="display: none;">
+            <%= form_for @organization, url: admin_organization_flag_path(@organization) do |f| %>
+              <div class="form-group col-sm-6">
+                <%= f.label 'Reason for Locking' %><br />
+                <%= f.text_area :flagged_reason, class: "form-control" %>
+              </div>
+              <div class="actions">
+                <%= f.submit "Lock", class: "btn btn-danger", confirm: "Are you sure you want to lock this organization?" %>
+                <a class="btn btn-warning" onclick="$('#block-form').toggle(); $('#block-button').toggle(); ">Cancel</a>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <h2 class="mt-3">Organization is Locked</h2>
+          <p><%= @organization.flagged_reason %></p>
+          <%= button_to "Unlock Organization", admin_organization_unflag_path(@organization), class: "btn btn-danger" %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col">
+    <h2>Moderators</h2>
+    <ul>
+      <% @organization.moderators.each do |moderator| %>
+        <li>
+          <%= moderator.display_name %><br />
+          <%= link_to moderator.email, admin_account_path(moderator) %><br />
+          Joined on <%= moderator.created_at.strftime("%D %r") %><br />
+          Last login on <%= moderator.updated_at.strftime("%D %r") %><br />
+        </li>
+      <% end%>
+    </ul>
+  </div>
+</div>
+
+<h2 class="mt-3">Projects <span class="badge badge-pill badge-dark"><%= @projects.size %></span></h2>
+<table class="table" id="projects" data-sorting="true">
+  <thead>
+    <tr>
+      <th>Project</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+      <th>Setup Complete?</th>
+      <th>Flagged?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @projects.each do |project| %>
+      <tr>
+        <td><%= link_to project.name, admin_project_path(project) %></td>
+        <td><%= project.created_at.strftime("%D") %></td>
+        <td><%= project.updated_at.strftime("%D") %></td>
+        <td><span class="badge"><%= project.check_setup_complete? ? "√" : "x" %></span></td>
+        <td><%= project.is_flagged? ? "Flagged" : "" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>
+
+<%= javascript_tag do %>
+  jQuery(function($){
+	  $('.table').footable();
+  });
+<% end %>

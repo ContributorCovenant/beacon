@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_16_205109) do
+ActiveRecord::Schema.define(version: 2019_03_17_010218) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -249,6 +249,9 @@ ActiveRecord::Schema.define(version: 2019_03_16_205109) do
     t.datetime "confirmed_at"
     t.string "confirmation_token_url"
     t.string "remote_org_name"
+    t.datetime "created_at", default: "2019-03-16 00:00:00"
+    t.datetime "updated_at", default: "2019-03-16 00:00:00"
+    t.boolean "is_flagged", default: false
     t.index ["account_id"], name: "index_organizations_on_account_id"
   end
 

@@ -20,6 +20,9 @@
             <% if current_account.can_access_admin_account_dashboard? %>
               <%= link_to "Accounts", admin_accounts_path, class: "dropdown-item" %>
             <% end %>
+            <% if current_account.can_access_admin_organization_dashboard? %>
+              <%= link_to "Organizations", admin_organizations_path, class: "dropdown-item" %>
+            <% end %>
             <% if current_account.can_access_admin_project_dashboard? %>
               <%= link_to "Projects", admin_projects_path, class: "dropdown-item" %>
             <% end %>

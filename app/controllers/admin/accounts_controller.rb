@@ -13,6 +13,7 @@ module Admin
       @blocks = @account.account_project_blocks.includes(:projects).map(&:project)
       @reports = AbuseReportSubject.where(account_id: @account.id).includes(:abuse_report)
       @projects = @account.projects
+      @organizations = @account.organizations
     end
 
     def flag

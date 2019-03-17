@@ -79,6 +79,10 @@ Rails.application.routes.draw do
       patch "flag", to: "projects#flag"
       post "unflag", to: "projects#unflag"
     end
+    resources :organizations do
+      patch "flag", to: "organizations#flag"
+      post "unflag", to: "organizations#unflag"
+    end
   end
 
   get "directory", to: "directory#index"

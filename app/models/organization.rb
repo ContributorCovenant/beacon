@@ -18,6 +18,28 @@ class Organization < ApplicationRecord
     issue_severity_levels.any?
   end
 
+  def flag!(reason)
+    self.update_attributes(
+      is_flagged: true,
+      flagged_reason: reason,
+      flagged_at: Time.zone.now
+    )
+    projects.each { |project| project.flag!("Organization flagged") }
+  end
+
+  def unflag!
+    self.update_attributes(
+      is_flagged: false,
+      flagged_reason: nil,
+      flagged_at: nil
+    )
+    projects.each { |project| project.unflag! }
+  end
+
+  def flagged?
+    !!is_flagged
+  end
+
   def moderators
     roles.where("is_default_moderator = ? OR is_owner = ?", true, true).map(&:account)
   end
@@ -37,6 +59,10 @@ class Organization < ApplicationRecord
 
   def setup_complete?
     self.respondent_template && consequence_ladder?
+  end
+
+  def toggle_flagged
+    self.update_attribute(:is_flagged, !is_flagged)
   end
 
   def to_param
