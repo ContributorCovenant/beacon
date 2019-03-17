@@ -1,10 +1,16 @@
+<h2 class="mt-3">Description</h2>
+<p><%= @issue.respondent_summary %></p>
+
 <h2 class="mt-3">Status</h2>
 <p>
   <%= issue.aasm_state.titleize %> (<%= issue.updated_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
 </p>
 
-<h2 class="mt-3">Description</h2>
-<p><%= @issue.respondent_summary %></p>
+<% if @issue.resolved? && current_account.can_complete_survey_on_issue?(@issue, @project) %>
+  <h2>Feedback</h2>
+  <p>Would you like to complete a short survey on the resolution of this issue?</p>
+  <%= link_to "Take Survey", new_project_issue_survey_path(@project, @issue), class: "btn btn-primary" %>
+<% end %>
 
 <h2 class="mt-3">Discussion with Moderators</h2>
 
@@ -37,4 +43,3 @@
     <%= f.submit "Send Message", class: "btn btn-primary" %>
   </div>
 <% end %>
-

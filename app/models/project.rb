@@ -16,6 +16,7 @@ class Project < ApplicationRecord
   has_many :project_issues, dependent: :destroy
   has_many :roles, dependent: :destroy
   has_many :moderators, through: :roles, source: :account
+  has_many :surveys
 
   before_create :set_slug
   after_create :make_settings

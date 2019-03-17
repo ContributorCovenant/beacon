@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_17_010218) do
+ActiveRecord::Schema.define(version: 2019_03_17_181358) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -144,6 +144,7 @@ ActiveRecord::Schema.define(version: 2019_03_17_010218) do
     t.string "uid"
     t.string "email"
     t.uuid "account_id"
+    t.string "oauth_token"
     t.string "token_encrypted"
     t.index ["account_id"], name: "index_credentials_on_account_id"
     t.index ["provider", "uid"], name: "index_credentials_on_provider_and_uid", unique: true
@@ -243,6 +244,10 @@ ActiveRecord::Schema.define(version: 2019_03_17_010218) do
     t.string "slug"
     t.text "description"
     t.uuid "account_id"
+    t.datetime "flagged_at"
+    t.text "flagged_reason"
+    t.datetime "confirmed_at"
+    t.string "confirmation_token_url"
     t.string "remote_org_name"
     t.datetime "created_at", default: "2019-03-16 00:00:00"
     t.datetime "updated_at", default: "2019-03-16 00:00:00"
@@ -323,6 +328,21 @@ ActiveRecord::Schema.define(version: 2019_03_17_010218) do
     t.index ["project_id"], name: "index_roles_on_project_id"
   end
 
+  create_table "surveys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.string "issue_encrypted_id"
+    t.string "account_encrypted_id"
+    t.boolean "fairness"
+    t.boolean "responsiveness"
+    t.boolean "sensitivity"
+    t.boolean "community"
+    t.integer "would_recommend"
+    t.text "recommendation_note"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["project_id"], name: "index_surveys_on_project_id"
+  end
+
   create_table "suspicious_activity_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "controller"
     t.string "action"
@@ -363,5 +383,6 @@ ActiveRecord::Schema.define(version: 2019_03_17_010218) do
   add_foreign_key "roles", "accounts"
   add_foreign_key "roles", "organizations"
   add_foreign_key "roles", "projects"
+  add_foreign_key "surveys", "projects"
   add_foreign_key "suspicious_activity_logs", "accounts"
 end

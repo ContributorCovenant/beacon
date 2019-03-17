@@ -10,6 +10,7 @@ RSpec.describe Permissions do
   let(:public_project)  { FactoryBot.create(:project, account: kate) }
   let(:paused_project)  { FactoryBot.create(:project, account: kate) }
   let(:private_project) { FactoryBot.create(:project, account: kate) }
+  let(:issue) { FactoryBot.create(:issue, project_id: public_project.id) }
 
   before do
     allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
@@ -146,6 +147,53 @@ RSpec.describe Permissions do
 
     it "does not allow a rando" do
       expect(donnie.can_invite_respondent?(issue)).to be_falsey
+    end
+
+  end
+
+  describe "#can_complete_survey_on_issue?" do
+
+    let(:survey) { Survey.new }
+
+    before do
+      allow_any_instance_of(Issue).to receive(:reporter).and_return(exene)
+      allow_any_instance_of(Issue).to receive(:respondent).and_return(donnie)
+    end
+
+    context "reporters and respondents who have not submitted a survey" do
+
+      it "allows a reporter" do
+        expect(exene.can_complete_survey_on_issue?(issue, public_project)).to be_truthy
+      end
+
+      it "allows a respondent" do
+        expect(donnie.can_complete_survey_on_issue?(issue, public_project)).to be_truthy
+      end
+
+    end
+
+    context "reporters who have already submitted a survey" do
+      before do
+        allow_any_instance_of(Survey).to receive(:account).and_return(exene)
+        allow_any_instance_of(Project).to receive(:surveys).and_return([survey])
+      end
+      it "does not allow" do
+        expect(exene.can_complete_survey_on_issue?(issue, public_project)).to be_falsey
+      end
+    end
+
+    context "respondents who have already submitted a survey" do
+      before do
+        allow_any_instance_of(Survey).to receive(:account).and_return(donnie)
+        allow_any_instance_of(Project).to receive(:surveys).and_return([survey])
+      end
+      it "does not allow" do
+        expect(donnie.can_complete_survey_on_issue?(issue, public_project)).to be_falsey
+      end
+    end
+
+    it "does not permit randos" do
+      expect(ricky.can_complete_survey_on_issue?(issue, public_project)).to be_falsey
     end
 
   end
