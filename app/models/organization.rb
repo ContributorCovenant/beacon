@@ -33,7 +33,7 @@ class Organization < ApplicationRecord
       flagged_reason: nil,
       flagged_at: nil
     )
-    projects.each { |project| project.unflag! }
+    projects.each(&:unflag!)
   end
 
   def flagged?
