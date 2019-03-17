@@ -1,0 +1,44 @@
+<% title "#{@project.name} Satisfaction Survey" %>
+
+<h1>Issue Resolution Satisfaction Survey</h1>
+<p>You can improve the experience for other participants in code of conduct issues for
+this project by providing feedback to the moderators.</p>
+
+<%= form_for @survey, url: project_issue_surveys_path do |f| %>
+
+  <div class="form-group col-sm-6">
+  <%= f.label :responsiveness, "Do you feel that the moderators were responsive?" %><br />
+  <%= f.select :responsiveness, options_for_select([["Yes", true], ["No", false]]), include_blank: "Select...", class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+  <%= f.label :sensitivity, "Do you feel that the moderators were sensitive to your situation?" %><br />
+  <%= f.select :sensitivity, options_for_select([["Yes", true], ["No", false]]), include_blank: "Select...", class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :fairness, "Do you feel that the moderators were fair?" %><br />
+    <%= f.select :fairness, options_for_select([["Yes", true], ["No", false]]), include_blank: "Select...", class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :community, "Do you feel that the moderators acted in the best interests of the community?" %><br />
+    <%= f.select :community, options_for_select([["Yes", true], ["No", false]]), include_blank: "Select...", class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :would_recommend, "How likely would you be to recommend someone opening an issue on this project for a future code of conduct violation? (0 = strong 'no', 10 = strong 'yes')" %><br />
+    <%= f.select :would_recommend, (0..10).to_a, include_blank: "Select...", class: "form-control" %>
+  </div>
+
+  <div class="form-group col-sm-6">
+    <%= f.label :recommendation_note, "Why or why not?" %><br />
+    <%= f.text_area :recommendation_note, rows: 5, style: "width: 100%" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Submit Survey", class: "btn btn-primary" %>
+    <%= link_to "Cancel", project_issue_path(@project, @issue), class: "btn btn-warning" %>
+  </div>
+
+<% end %>

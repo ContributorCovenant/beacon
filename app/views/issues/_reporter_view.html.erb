@@ -7,6 +7,12 @@
         <%= @issue.description %>
       </div>
     </div>
+
+    <% if @issue.resolved? && current_account.can_complete_survey_on_issue?(@issue, @project) %>
+      <h2>Feedback</h2>
+      <p>Would you like to complete a short survey on the resolution of this issue?</p>
+      <%= link_to "Take Survey", new_project_issue_survey_path(@project, @issue), class: "btn btn-primary" %>
+    <% end %>
   </div>
 
   <div class="col">

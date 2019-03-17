@@ -11,7 +11,15 @@
 
   <row>
     <columns>
-      <button href="<%= project_issue_url(@project, @issue) %>">View Issue</button>
+      <% if @issue.resolved? %>
+        <p>
+          The moderators would like you to complete a brief survey about your feelings about how
+          the issue was handled.
+        </p>
+        <button href="<%= new_project_issue_survey_url(@project, @issue) %>">View Issue</button>
+      <% else %>
+        <button href="<%= project_issue_url(@project, @issue) %>">View Issue</button>
+      <% end %>
     </columns>
   </row>
 </container>
