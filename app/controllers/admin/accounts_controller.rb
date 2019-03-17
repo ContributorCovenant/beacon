@@ -17,20 +17,12 @@ module Admin
     end
 
     def flag
-      @account.toggle_flagged
-      @account.update_attributes(
-        flagged_reason: flag_account_params[:flagged_reason],
-        flagged_at: Time.zone.now
-      )
+      @account.flag!(flag_account_params[:flagged_reason])
       redirect_to admin_account_path(@account)
     end
 
     def unflag
-      @account.toggle_flagged
-      @account.update_attributes(
-        flagged_reason: nil,
-        flagged_at: nil
-      )
+      @account.unflag!
       redirect_to admin_account_path(@account)
     end
 

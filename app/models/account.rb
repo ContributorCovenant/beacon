@@ -40,8 +40,26 @@ class Account < ApplicationRecord
     self.email
   end
 
-  def third_party_credentials?
-    credentials.any?
+  def flag!(reason)
+    self.update_attributes(
+      is_flagged: true,
+      flagged_reason: reason,
+      flagged_at: Time.zone.now
+    )
+    projects.each { |project| project.flag!("Owner flagged") }
+  end
+
+  def unflag!
+    self.update_attributes(
+      is_flagged: false,
+      flagged_reason: nil,
+      flagged_at: nil
+    )
+    projects.each(&:unflag!)
+  end
+
+  def flagged?
+    !!is_flagged
   end
 
   def github_token
@@ -123,8 +141,8 @@ class Account < ApplicationRecord
       .present?
   end
 
-  def toggle_flagged
-    self.update_attribute(:is_flagged, !is_flagged)
+  def third_party_credentials?
+    credentials.any?
   end
 
   def total_issues_past_24_hours
