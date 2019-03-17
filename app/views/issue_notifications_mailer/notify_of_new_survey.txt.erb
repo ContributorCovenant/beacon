@@ -1,0 +1,10 @@
+New survey on <%= @project.name %>: Issue #<%= @issue.issue_number %>
+------------------------------------------------------------------------
+
+A new satisfaction survey for <%= @project.name %> issue #<%= @issue.issue_number %>
+has been submitted by a <%= @kind %>. You can view the survey in Beacon at this URL:
+
+  <%= project_issue_survey_url(@project, @issue, @survey) %>
+
+Thank you,
+The Friendly Beacon Mailer Robot

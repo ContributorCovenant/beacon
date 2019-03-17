@@ -1,0 +1,19 @@
+<% content_for :title do %>
+  New survey submitted for <%= @project.name %> Issue #<%= @issue.issue_number %>
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p>
+        The <%= @kind %> submitted a satisfaction survey for this issue.
+      </p>
+    </columns>
+  </row>
+
+  <row>
+    <columns>
+      <button href="<%= project_issue_survey_url(@project, @issue, @survey) %>">View Survey</button>
+    </columns>
+  </row>
+</container>

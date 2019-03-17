@@ -110,4 +110,10 @@ module Permissions
     false
   end
 
+  def can_view_survey_on_issue?(project)
+    return true if is_admin?
+    return true if project.moderators.include?(self)
+    false
+  end
+
 end

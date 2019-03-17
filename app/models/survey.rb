@@ -7,12 +7,15 @@ class Survey < ApplicationRecord
   before_save :encrypt_account_id
   before_save :encrypt_issue_id
 
+  scope :reporter, -> { where(kind: "reporter") }
+  scope :respondent, -> { where(kind: "respondent") }
+
   def account
-    Account.find(EncryptionService.decrypt(self.account_encrypted_id))
+    @account ||= Account.find(EncryptionService.decrypt(self.account_encrypted_id))
   end
 
   def issue
-    Issue.find(EncryptionService.decrypt(issue_encrypted_id))
+    @issue ||= Issue.find(EncryptionService.decrypt(issue_encrypted_id))
   end
 
   private

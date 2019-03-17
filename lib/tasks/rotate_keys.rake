@@ -1,7 +1,7 @@
 namespace :rotate_keys do
 
   task :help do
-    %w{account account_issue credential issue_comment issue_event issue issue_invitation project_issue}.each do |t|
+    %w{account account_issue credential issue_comment issue_event issue issue_invitation project_issue survey}.each do |t|
       puts "rake rotate_keys:#{t}"
     end
   end
@@ -128,6 +128,23 @@ namespace :rotate_keys do
         i.update_attribute(:issue_encrypted_id, EncryptionService.encrypt(id, new_key))
       rescue ActiveSupport::MessageEncryptor::InvalidMessage => e
         puts "Unable to decrypt for project_issue #{i.id}: #{e}"
+      end
+    end
+  end
+
+  task :survey, [:old_key, :new_key] => :environment do |task, args|
+    old_key = args[:old_key]
+    new_key = args[:new_key]
+    Survey.all.each do |i|
+      begin
+        account_id = EncryptionService.decrypt(i.account_encrypted_id, old_key)
+        issue_id = EncryptionService.decrypt(i.issue_encrypted_id, old_key)
+        i.update_attributes(
+          :issue_encrypted_id, EncryptionService.encrypt(issue_id, new_key),
+          :account_encrypted_id, EncryptionService.encrypt(account_id, new_key)
+        )
+      rescue ActiveSupport::MessageEncryptor::InvalidMessage => e
+        puts "Unable to decrypt for survey #{i.id}: #{e}"
       end
     end
   end

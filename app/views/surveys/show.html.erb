@@ -1,0 +1,46 @@
+<% title "Issue ##{@issue.issue_number}:  Satisfaction Survey" %>
+
+<h1>
+  <%= link_to @project.name, @project %>: Issue <%= link_to @issue.issue_number, project_issue_path(@project, @issue) %>:
+  <%= @survey.kind %> Satisfaction Survey</h1>
+</h1>
+
+<ol>
+  <li>
+    Do you feel that the moderators were responsive?<br />
+    <% badge_class = @survey.responsiveness ? 'badge-warning' : 'badge-danger' %>
+    <span class="badge badge-pill <%= badge_class %>"><%= @survey.responsiveness ? "Yes" : "No" %></span>
+  </li>
+
+  <li>
+  Do you feel that the moderators were sensitive to your situation?<br />
+  <% badge_class = @survey.sensitivity ? 'badge-warning' : 'badge-danger' %>
+  <span class="badge badge-pill <%= badge_class %>"><%= @survey.sensitivity ? "Yes" : "No" %></span>
+  </li>
+
+  <li>
+    Do you feel that the moderators were fair?<br />
+    <% badge_class = @survey.fairness ? 'badge-warning' : 'badge-danger' %>
+    <span class="badge badge-pill <%= badge_class %>"><%= @survey.fairness ? "Yes" : "No" %></span>
+  </li>
+
+  <li>
+    Do you feel that the moderators acted in the best interests of the community?<br />
+    <% badge_class = @survey.community ? 'badge-warning' : 'badge-danger' %>
+    <span class="badge badge-pill <%= badge_class %>"><%= @survey.community ? "Yes" : "No" %></span>
+  </li>
+
+  <li>
+    How likely would you be to recommend someone opening an issue on this project for a future code of conduct violation?<br />
+    (0 = strong 'no', 10 = strong 'yes')<br />
+    <% badge_class = @survey.would_recommend.to_i > 6 ? 'badge-warning' : 'badge-danger' %>
+    <span class="badge badge-pill <%= badge_class %>"><%= @survey.would_recommend %></span>
+  </li>
+
+  <li>
+    Why or why not?<br />
+    <%= @survey.recommendation_note %>
+  </li>
+</ol>
+
+<%= link_to "Done", :back, class: "btn btn-primary" %>

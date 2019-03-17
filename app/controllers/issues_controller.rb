@@ -47,6 +47,7 @@ class IssuesController < ApplicationController
   def show
     @invitation = IssueInvitation.new
     @comment = IssueComment.new
+    @surveys = @project.surveys
 
     @internal_comments = @issue.comments_visible_only_to_moderators
     @reporter_discussion_comments = @issue.comments_visible_to_reporter

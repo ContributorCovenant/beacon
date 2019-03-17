@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     resources :issues do
       resources :issue_comments, only: [:create, :new]
       resources :issue_invitations, only: [:create, :new]
-      resources :surveys, only: [:create, :new]
+      resources :surveys, only: [:create, :new, :show]
       resources :uploads
       post "acknowledge", to: "issues#acknowledge"
       post "dismiss", to: "issues#dismiss"
