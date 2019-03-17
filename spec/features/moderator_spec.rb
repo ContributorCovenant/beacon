@@ -62,7 +62,7 @@ describe "moderation", type: :feature do
       visit projects_path
       click_on project.name
       click_on issue.issue_number
-      expect(page).to have_content("Reporter Discussion 1")
+      expect(page).to have_content("Reporter Talk 1")
     end
 
   end
@@ -163,7 +163,7 @@ describe "moderation", type: :feature do
     end
 
     it "allows the moderator to send a message to other moderators" do
-      click_on "Moderator Discussion"
+      click_on "Moderator Talk"
       within("#nav-internal-discussion") do
         fill_in("issue_comment_text", with: "Sarah, what do you think?")
       end
@@ -182,7 +182,7 @@ describe "moderation", type: :feature do
     end
 
     it "allows the moderator to send a message to a reporter" do
-      click_on "Reporter Discussion"
+      click_on "Reporter Talk"
       within("#nav-reporter-discussion") do
         fill_in("issue_comment_text", with: "Can you provide some more details?")
       end
@@ -237,7 +237,7 @@ describe "moderation", type: :feature do
       end
 
       it "allows the moderator to send a message to a respondent" do
-        click_on "Respondent Discussion"
+        click_on "Respondent Talk"
         within("#nav-respondent-discussion") do
           fill_in("issue_comment_text", with: "When are you free to discuss this?")
         end
