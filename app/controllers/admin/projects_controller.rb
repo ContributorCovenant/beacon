@@ -6,7 +6,7 @@ module Admin
     before_action :scope_project, except: [:index]
 
     def index
-      @projects = Project.all.order('name ASC')
+      @projects = Project.all.includes(:account).order('name ASC')
     end
 
     def show
@@ -20,20 +20,12 @@ module Admin
     end
 
     def flag
-      @project.toggle_flagged
-      @project.update_attributes(
-        flagged_reason: flag_project_params[:flagged_reason],
-        flagged_at: Time.zone.now
-      )
+      @project.flag!(flag_project_params[:flagged_reason])
       redirect_to admin_project_path(@project)
     end
 
     def unflag
-      @project.toggle_flagged
-      @project.update_attributes(
-        flagged_reason: nil,
-        flagged_at: nil
-      )
+      @project.unflag!
       redirect_to admin_project_path(@project)
     end
 

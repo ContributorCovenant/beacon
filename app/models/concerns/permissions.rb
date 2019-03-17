@@ -12,6 +12,10 @@ module Permissions
     !!is_admin
   end
 
+  def can_access_admin_organization_dashboard?
+    !!is_admin
+  end
+
   def can_access_admin_project_dashboard?
     !!is_admin
   end
@@ -37,6 +41,10 @@ module Permissions
   end
 
   def can_lock_account?
+    !!is_admin
+  end
+
+  def can_lock_organization?
     !!is_admin
   end
 

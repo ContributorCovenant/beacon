@@ -13,23 +13,16 @@ module Admin
       @blocks = @account.account_project_blocks.includes(:projects).map(&:project)
       @reports = AbuseReportSubject.where(account_id: @account.id).includes(:abuse_report)
       @projects = @account.projects
+      @organizations = @account.organizations
     end
 
     def flag
-      @account.toggle_flagged
-      @account.update_attributes(
-        flagged_reason: flag_account_params[:flagged_reason],
-        flagged_at: Time.zone.now
-      )
+      @account.flag!(flag_account_params[:flagged_reason])
       redirect_to admin_account_path(@account)
     end
 
     def unflag
-      @account.toggle_flagged
-      @account.update_attributes(
-        flagged_reason: nil,
-        flagged_at: nil
-      )
+      @account.unflag!
       redirect_to admin_account_path(@account)
     end
 

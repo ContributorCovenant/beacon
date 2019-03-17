@@ -121,8 +121,20 @@ class Project < ApplicationRecord
     slug
   end
 
-  def flag!
-    self.update_attribute(:is_flagged, true)
+  def flag!(reason)
+    update_attributes(
+      is_flagged: true,
+      flagged_reason: reason,
+      flagged_at: Time.zone.now
+    )
+  end
+
+  def unflag!
+    self.update_attributes(
+      is_flagged: false,
+      flagged_reason: nil,
+      flagged_at: nil
+    )
   end
 
   def repo_name
@@ -133,10 +145,6 @@ class Project < ApplicationRecord
 
   def require_3rd_party_auth?
     !!project_setting.require_3rd_party_auth
-  end
-
-  def toggle_flagged
-    self.update_attribute(:is_flagged, !is_flagged)
   end
 
   def verified_settings?

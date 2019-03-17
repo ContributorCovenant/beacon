@@ -1,0 +1,40 @@
+<% title "Admin: Organizations" %>
+
+<h1>Admin: Organizations (<%= @organizations.size %>)</h1>
+
+<table class="table" id="organizations" data-sorting="true">
+  <thead>
+    <tr>
+      <th>Organization</th>
+      <th>Created At</th>
+      <th>Updated At</th>
+      <th>Owner</th>
+      <th># Projects</th>
+      <th>Setup Complete?</th>
+      <th>Flagged?</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @organizations.each do |organization| %>
+      <tr>
+        <td><%= link_to organization.name, admin_organization_path(organization) %></td>
+        <td><%= organization.created_at.strftime("%D") %></td>
+        <td><%= organization.updated_at.strftime("%D") %></td>
+        <td>
+          <%= organization.account.display_name %>
+          <br />
+          <%= organization.account.email %>
+        </td>
+        <td><%= organization.projects.count %></td>
+        <td><span class="badge"><%= organization.setup_complete? ? "√" : "x" %></span></td>
+        <td><%= organization.is_flagged? ? "Flagged" : "" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+<table>
+
+<%= javascript_tag do %>
+  jQuery(function($){
+	  $('.table').footable();
+  });
+<% end %>

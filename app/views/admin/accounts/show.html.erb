@@ -27,7 +27,7 @@
 </div>
 
 <% if @projects.any? %>
-  <h2 class="mt-3">Associated Projects</h2>
+  <h2 class="mt-3">Projects</h2>
   <ul>
     <% @projects.each do |project| %>
       <li>
@@ -37,12 +37,26 @@
   </ul>
 <% end %>
 
-<h2 class="mt-3">Associated Issues</h2>
-<ul>
-  <% @account.issues.each do |issue| %>
-    <li>
-      <%= link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue) %>
-      (<%= issue.aasm_state.titleize %>, opened on <%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
-    </li>
-  <% end %>
-</ul>
+<% if @organizations.any? %>
+  <h2 class="mt-3">Organizations</h2>
+  <ul>
+    <% @organizations.each do |organization| %>
+      <li>
+        <%= link_to organization.name, admin_organization_path(organization) %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% issues = @account.issues  %>
+<% if issues.any? %>
+  <h2 class="mt-3">Associated Issues</h2>
+  <ul>
+    <% issues.each do |issue| %>
+      <li>
+        <%= link_to "Issue ##{issue.issue_number}", project_issue_path(issue.project, issue) %>
+        (<%= issue.aasm_state.titleize %>, opened on <%= issue.created_at.in_time_zone.strftime("%a %b %d %Y at %l:%M %p %Z") %>)
+      </li>
+    <% end %>
+  </ul>
+<% end %>

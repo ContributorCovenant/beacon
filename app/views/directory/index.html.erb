@@ -2,32 +2,36 @@
 
 <h1>Beacon Directory</h1>
 
-<nav aria-label="pagination">
-  <ul class="pagination">
-    <li class="page-item">
-      <%= link_to "Previous", directory_path(params: { page: @previous_index }), class: "page-link" %>
-    </li>
-    <% @page_index.each do |i| %>
-      <li class="page-item <%= @current_index == i ? 'active' : '' %>">
-        <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+<% if @projects %>
+  <nav aria-label="pagination">
+    <ul class="pagination">
+      <li class="page-item">
+        <%= link_to "Previous", directory_path(params: { page: @previous_index }), class: "page-link" %>
       </li>
-    <% end %>
-    <li class="page-item">
-      <%= link_to "Next", directory_path(params: { page: @next_index }), class: "page-link" %>
-    </li>
-  </ul>
-</nav>
+      <% @page_index.each do |i| %>
+        <li class="page-item <%= @current_index == i ? 'active' : '' %>">
+          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+        </li>
+      <% end %>
+      <li class="page-item">
+        <%= link_to "Next", directory_path(params: { page: @next_index }), class: "page-link" %>
+      </li>
+    </ul>
+  </nav>
 
-<% @projects.each_with_index do |project,i| %>
+  <% @projects.each_with_index do |project,i| %>
 
-  <% float_class = i < @projects.size - 1 ? "float-left" : "float-none" %>
-  <div class="card mb-3 mr-3 <%= float_class %>" style="width: 15rem; height: 15rem">
-    <div class="card-body">
-      <h2 class="card-title"><%= link_to project.name, directory_project_path(project.slug) %></h2>
-      <div class="card-text">
-        <p><%= project.description %></p>
+    <% float_class = i < @projects.size - 1 ? "float-left" : "float-none" %>
+    <div class="card mb-3 mr-3 <%= float_class %>" style="width: 15rem; height: 15rem">
+      <div class="card-body">
+        <h2 class="card-title"><%= link_to project.name, directory_project_path(project.slug) %></h2>
+        <div class="card-text">
+          <p><%= project.description %></p>
+        </div>
       </div>
     </div>
-  </div>
 
+  <% end %>
+<% else %>
+  <p>No projects or events available.</p>
 <% end %>
