@@ -5,7 +5,7 @@
 <div class="mb-3" style="border-bottom: 1px solid #ddd">
   <p>The Community Impact and Consequences Guide lets you establish guidelines for how you will enforce your code of conduct, specifying different escalating levels of violations and their consequences. When your project is public, this map will be displayed on your project's directory page. As part of moderation of issues, you will be able to assign a level to the issue.</p>
 
-  <% if current_account.can_manage_project?(@project) %>
+  <% if current_account.can_manage_consequence_ladder?(@project) || current_account.can_manage_organization?(@organization) %>
     <p>You can customize this guide from Beacon defaults or another one of your projects, or create your own.</p>
 
     <p><b>Important:</b> If you clone the guide from another source, all of your current issues will lose their associated severity.</p>
@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <% if current_account.can_manage_project?(@project) %>
+  <% if current_account.can_manage_consequence_ladder?(@project) || current_account.can_manage_organization?(@organization) %>
     <div class="col">
       <h2>New Level</h2>
       <% if @project %>

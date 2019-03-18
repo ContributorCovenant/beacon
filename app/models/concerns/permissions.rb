@@ -58,6 +58,7 @@ module Permissions
   end
 
   def can_manage_consequence_ladder?(project)
+    return false unless project.present?
     project.moderator?(self)
   end
 
@@ -74,6 +75,7 @@ module Permissions
   end
 
   def can_manage_organization?(organization)
+    return false unless organization
     organization.owners.include? self
   end
 
