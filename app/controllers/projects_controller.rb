@@ -61,6 +61,7 @@ class ProjectsController < ApplicationController
     unless @project.coc_url.present?
       flash[:error] = "This project does not have a code of conduct URL. To set it, click 'Edit' below."
     end
+    @report = TransparencyReportingService.new(@project)
   end
 
   def ownership
