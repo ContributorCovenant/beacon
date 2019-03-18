@@ -63,7 +63,7 @@
     </ul>
 
     <% if @project.show_transparency_report? && @report.suitable_for_public? %>
-      <h2 class="mt-5">Project Health</h2>
+      <h2 class="mt-4">Project Health</h2>
       <ul>
         <% if @report.average_time_to_resolution.present? %>
           <li>
