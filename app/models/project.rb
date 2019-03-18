@@ -80,7 +80,7 @@ class Project < ApplicationRecord
   end
 
   def owners
-    roles.where(is_owner: true).includes(:account).map(&:account)
+    roles.where(is_owner: true).includes(:account).map(&:account) + [account]
   end
 
   def ownership_confirmed?
@@ -146,6 +146,10 @@ class Project < ApplicationRecord
 
   def require_3rd_party_auth?
     !!project_setting.require_3rd_party_auth
+  end
+
+  def show_transparency_report?
+    !!project_setting.publish_stats
   end
 
   def verified_settings?

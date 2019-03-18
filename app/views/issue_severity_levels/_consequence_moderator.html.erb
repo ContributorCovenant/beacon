@@ -5,14 +5,14 @@
       <p><%= consequence.example %></p>
       <h3>Consequence</h3>
       <p><%= consequence.consequence %></p>
-      <% if @current_account_can_manage_ladder %>
+      <% if current_account.can_manage_consequence_ladder?(@project) %>
         <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')">Edit</a>
       <% end %>
     </div>
   </div>
 </div>
 
-<% if @current_account_can_manage_ladder %>
+<% if current_account.can_manage_consequence_ladder?(@project) || current_account.can_manage_organization?(@organization) %>
   <div id="consequence-<%= consequence.severity %>-form" class="card mb-3 mr-3" style="display: none; width: 30rem">
     <div class="card-body">
       <div class="card-text">

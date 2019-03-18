@@ -17,6 +17,47 @@
         <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-danger" %>
       <% end %>
     </div>
+    <h2 class="mt-3">Project Statistics</h2>
+    <ul>
+      <% if @report.average_time_to_resolution.present? %>
+        <li>
+          Average issue resolution: <%= @report.average_time_to_resolution %> days
+        </li>
+      <% end %>
+      <li>
+        Overall satisfaction: <%= @report.net_promoter_score %>
+      </li>
+      <li>
+        Overall project health: <%= @report.health %>
+      </li>
+      <li>
+        Fair treatment: <%= @report.labelled_scores[:fairness] %>
+      </li>
+      <li>
+        Responsiveness: <%= @report.labelled_scores[:responsiveness] %>
+      </li>
+      <li>
+        Sensitivity: <%= @report.labelled_scores[:sensitivity] %>
+      </li>
+      <li>
+        Community focus: <%= @report.labelled_scores[:community] %>
+      </li>
+    </ul>
+    <% if @project.show_transparency_report? %>
+      <% if @report.suitable_for_public? %>
+        <p>These statistics are visible in your project's directory page. To change
+        this setting, click on 'Project Settings' and uncheck the 'Publish project
+        statistics in Directory' checkbox.</p>
+      <% else %>
+        <p>Although you have enabled transparency reporting in your project's
+        directory page, there is not yet enough data to display.</p>
+      <% end %>
+    <% else %>
+      <p>Transparency reporting for this project's directory page is currently
+      not enabled. To make this report visible, click on 'Project Settings' and
+      enable the 'Publish project statistics in Directory' checkbox.</p>
+    <% end %>
+
   </div>
 
   <div class="col">
@@ -152,7 +193,7 @@
                 <%= link_to "Ownership Confirmation", project_ownership_path(@project) %>
               </li>
             <% end %>
-            <% if @project.check_setup_complete? %>
+            <% if @project.check_setup_complete? && current_account.can_manage_project?(@project) %>
               <li>
                 <%= link_to "Project Settings", project_settings_path(@project)  %>
               </li>

@@ -25,9 +25,9 @@ class Issue < ApplicationRecord
   aasm do
     state :submitted, initial: true
     state :acknowledged, before_enter: Proc.new{ |args| log_event(args) }
-    state :dismissed, before_enter: Proc.new{ |args| log_event(args) }
-    state :resolved, before_enter: Proc.new{ |args| log_event(args) }
-    state :reopened, before_enter: Proc.new{ |args| log_event(args) }
+    state :dismissed,    before_enter: Proc.new{ |args| log_event(args) }
+    state :resolved,     before_enter: Proc.new{ |args| log_event(args) }
+    state :reopened,     before_enter: Proc.new{ |args| log_event(args) }
 
     event :acknowledge do
       transitions from: :submitted, to: :acknowledged
@@ -112,6 +112,7 @@ class Issue < ApplicationRecord
   end
 
   def log_event(args)
+    update_attribute(:closed_at, Time.zone.now) if aasm_state == "resolved" || aasm_state == "dismissed"
     IssueEvent.create(
       issue_id: self.id,
       actor_id: args[:account_id],
