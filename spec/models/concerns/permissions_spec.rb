@@ -175,6 +175,7 @@ RSpec.describe Permissions do
     context "reporters who have already submitted a survey" do
       before do
         allow_any_instance_of(Survey).to receive(:account).and_return(exene)
+        allow_any_instance_of(Survey).to receive(:issue).and_return(issue)
         allow_any_instance_of(Project).to receive(:surveys).and_return([survey])
       end
       it "does not allow" do
@@ -185,6 +186,7 @@ RSpec.describe Permissions do
     context "respondents who have already submitted a survey" do
       before do
         allow_any_instance_of(Survey).to receive(:account).and_return(donnie)
+        allow_any_instance_of(Survey).to receive(:issue).and_return(issue)
         allow_any_instance_of(Project).to receive(:surveys).and_return([survey])
       end
       it "does not allow" do

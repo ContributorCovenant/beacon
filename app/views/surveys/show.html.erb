@@ -2,7 +2,7 @@
 
 <h1>
   <%= link_to @project.name, @project %>: Issue <%= link_to @issue.issue_number, project_issue_path(@project, @issue) %>:
-  <%= @survey.kind %> Satisfaction Survey</h1>
+  <%= @survey.kind.titleize %> Satisfaction Survey</h1>
 </h1>
 
 <ol>

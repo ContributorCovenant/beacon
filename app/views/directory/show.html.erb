@@ -62,11 +62,21 @@
       <% end %>
     </ul>
 
-    <% if @project.project_setting.publish_stats? %>
-      <h2 class="mt-5">3-Month Activity</h2>
-      <p><span class="badge badge-pill badge-primary">90%</span> reporter satisfaction with issue resolution</p>
-      <p><span class="badge badge-pill badge-primary">75%</span> respondent satisfaction with issue resolution</p>
-      <p><span class="badge badge-pill badge-primary">4 days</span> on average to resolve an issue</p>
+    <% if @project.show_transparency_report? && @report.suitable_for_public? %>
+      <h2 class="mt-4">Project Health</h2>
+      <ul>
+        <% if @report.average_time_to_resolution.present? %>
+          <li>
+            Average issue resolution: <%= @report.average_time_to_resolution %> days
+          </li>
+        <% end %>
+        <li>
+          Overall satisfaction: <%= @report.net_promoter_score %>
+        </li>
+        <li>
+          Overall project health: <%= @report.health %>
+        </li>
+      </ul>
     <% end %>
 
     <% if current_account %>
