@@ -90,3 +90,9 @@ Style/ConditionalAssignment:
 
 Style/RegexpLiteral:
   Enabled: false
+
+Style/EachWithObject:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false

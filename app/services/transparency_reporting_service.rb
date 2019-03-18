@@ -2,7 +2,7 @@ class TransparencyReportingService
 
   attr_reader :project
 
-  FEATURES = [:fairness, :responsiveness, :sensitivity, :community]
+  FEATURES = [:fairness, :responsiveness, :sensitivity, :community].freeze
 
   def initialize(project)
     @project = project
@@ -19,7 +19,7 @@ class TransparencyReportingService
   end
 
   def health
-    return "Not enough data" unless raw_scores.values.compact.size > 0
+    return "Not enough data" unless raw_scores.values.compact.any?
     label(raw_scores.values.compact.sum / raw_scores.values.compact.size)
   end
 
@@ -57,10 +57,10 @@ class TransparencyReportingService
   private
 
   def calculate_score(feature)
-    return nil if reporter_surveys.size == 0
-    reporter_percentage = reporter_surveys.map(&feature).compact.sum{ |f| f ? 1 : 0} / reporter_surveys.size.to_f
+    return nil if reporter_surveys.empty?
+    reporter_percentage = reporter_surveys.map(&feature).compact.sum{ |f| f ? 1 : 0 } / reporter_surveys.size.to_f
     if respondent_surveys.any?
-      respondent_percentage = respondent_surveys.map(&feature).compact.sum{ |f| f ? 1 : 0} / reporter_surveys.size.to_f
+      respondent_percentage = respondent_surveys.map(&feature).compact.sum{ |f| f ? 1 : 0 } / reporter_surveys.size.to_f
     else
       respondent_percentage = 1
     end
