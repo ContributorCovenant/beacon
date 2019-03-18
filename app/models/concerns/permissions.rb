@@ -38,7 +38,7 @@ module Permissions
 
   def can_complete_survey_on_issue?(issue, project)
     return false unless issue.respondent == self || issue.reporter == self
-    return !project.surveys.map(&:account).find{ |account| account == self }.present?
+    return !project.surveys.select{ |s| s.issue == issue }.map(&:account).find{ |account| account == self }.present?
   end
 
   def can_invite_respondent?(issue)

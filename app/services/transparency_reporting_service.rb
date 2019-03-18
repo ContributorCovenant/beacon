@@ -31,7 +31,7 @@ class TransparencyReportingService
   end
 
   def suitable_for_public?
-    reporter_surveys.size > 2
+    reporter_surveys.size >= 2
   end
 
   def net_promoter_score
