@@ -4,7 +4,8 @@ class Organization < ApplicationRecord
   validates_presence_of :name
 
   belongs_to :account
-  has_many :invitations
+  has_one :consequence_guide, dependent: :destroy
+  has_many :invitations, dependent: :destroy
   has_many :issue_severity_levels, dependent: :destroy
   has_many :roles, dependent: :destroy
   has_many :projects, dependent: :destroy
