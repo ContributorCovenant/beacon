@@ -7,6 +7,7 @@ class Project < ApplicationRecord
   belongs_to :account
   belongs_to :organization, optional: true
   has_one :project_setting, dependent: :destroy
+  has_one :consequence_guide, dependent: :destroy
   has_one :respondent_template, dependent: :destroy
   has_many :abuse_report_subjects, dependent: :destroy
   has_many :account_project_blocks, dependent: :destroy
@@ -16,7 +17,7 @@ class Project < ApplicationRecord
   has_many :project_issues, dependent: :destroy
   has_many :roles, dependent: :destroy
   has_many :moderators, through: :roles, source: :account
-  has_many :surveys
+  has_many :surveys, dependent: :destroy
 
   before_create :set_slug
   after_create :make_settings
