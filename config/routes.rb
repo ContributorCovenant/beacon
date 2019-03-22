@@ -14,9 +14,7 @@ Rails.application.routes.draw do
   get "user_guides", to: "static_content#guide"
 
   resources :abuse_reports, only: [:new, :create]
-
   resources :accounts
-
   resources :contact_messages, only: [:new, :create]
 
   resources :invitations, only: [:create, :index] do
@@ -28,8 +26,11 @@ Rails.application.routes.draw do
 
   resources :organizations, param: :slug do
     resources :invitations, only: [:create]
-    resources :issue_severity_levels
     resources :respondent_templates, only: [:new, :create, :edit, :update, :show]
+    resources :consequence_guides do
+      resources :consequences
+      patch "clone", to: "consequence_guides#clone"
+    end
     get "moderators", to: "organizations#moderators"
     get "import_projects_from_github", to: "organizations#import_projects_from_github"
     get "gitlab_auth_token", to: "organizations#gitlab_auth_token"
@@ -37,14 +38,16 @@ Rails.application.routes.draw do
     get "github_auth_token", to: "organizations#github_auth_token"
     post "import_projects_from_github", to: "organizations#import_projects_from_github"
     post "remove_moderator", to: "organizations#remove_moderator"
-    patch "clone_ladder", to: "organizations#clone_ladder"
     post "clone_respondent_template", to: "respondent_templates#clone"
     patch "clone_respondent_template", to: "respondent_templates#clone"
   end
 
   resources :projects, param: :slug do
     resources :account_project_blocks
-    resources :invitations, only: [:create]
+    resources :consequence_guides do
+      resources :consequences
+    end
+    resources :invitations, only: [:new, :create]
     resources :issues do
       resources :issue_comments, only: [:create, :new]
       resources :issue_invitations, only: [:create, :new]
@@ -55,9 +58,6 @@ Rails.application.routes.draw do
       patch "resolve", to: "issues#resolve"
       post "reopen", to: "issues#reopen"
     end
-
-    resources :issue_severity_levels
-    resources :invitations, only: [:new, :create]
     resources :reporters, only: [:show]
     resources :respondent_templates, only: [:new, :create, :edit, :update, :show]
     resources :respondents, only: [:show]

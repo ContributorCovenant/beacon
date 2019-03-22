@@ -24,7 +24,7 @@
         <div class="card-text">
           <ul>
             <li>
-              <%= link_to "Impact and Consequences", organization_issue_severity_levels_path(@organization) %>
+              <%= link_to "Impact and Consequences", organization_consequence_guide_path(@organization, @organization.consequence_guide) %>
               <% if !@organization.setup_complete? %>
                 <% if @organization.consequence_ladder? %>
                   <span class="badge badge-pill badge-success">
@@ -64,7 +64,7 @@
 
 <h1 class="float-left mt-5 mr-3">Projects</h1>
 
-<% if current_account.can_manage_organization?(@organization) %>
+<% if @organization.setup_complete? && current_account.can_manage_organization?(@organization) %>
   <div class="actions ml-3 mt-5 mb-3">
     <%= link_to "New Project", new_project_path(organization_id: @organization.id), class: "btn btn-primary" %>
     <% if current_account.credentials.find_by(provider: "github") %>
@@ -77,7 +77,6 @@
   <% unless current_account.credentials.any? %>
     <p>To import projects from GitHub or GitLab, <%= link_to "your Beacon account", edit_account_registration_path(current_account) %> must be linked to one of these providers.</p>
   <% end %>
-
 <% end %>
 
 <div class="container">
