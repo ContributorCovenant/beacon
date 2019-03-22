@@ -1,0 +1,51 @@
+<div id="consequence-<%= consequence.severity %>-show" class="card mb-3 mr-3" style="width: 30rem">
+  <div class="card-body">
+    <h2 class="card-title">Level <%= consequence.severity %>: <%= consequence.label %></h2>
+    <div class="card-text">
+      <p><%= consequence.action %></p>
+      <h3>Consequence</h3>
+      <p><%= consequence.consequence %></p>
+      <% if current_account.can_manage_organization_consequence_guide?(@organization) %>
+        <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')">Edit</a>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<% if current_account.can_manage_organization_consequence_guide?(@organization) %>
+  <div id="consequence-<%= consequence.severity %>-form" class="card mb-3 mr-3" style="display: none; width: 30rem">
+    <div class="card-body">
+      <div class="card-text">
+        <%= form_for consequence, url: organization_consequence_guide_consequence_path(@organization, @guide, consequence), style: "width: 100%" do |f| %>
+          <div class="form-group">
+            <%= f.label :label %><br />
+            <%= f.text_field :label, autofocus: true, class: "form-control" %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :severity %>
+            <%= f.select :severity, (1..10).to_a, class: "form-control" %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :action %><br />
+            <%= f.text_area :action, rows: 5, class: "form-control" %>
+          </div>
+
+          <div class="form-group">
+            <%= f.label :consequence %><br />
+            <%= f.text_area :consequence, rows: 5, class: "form-control" %>
+          </div>
+
+          <div class="actions">
+            <%= f.submit "Save", class: "btn btn-primary" %>
+            <% if consequence.can_be_safely_destroyed? %>
+             <%= f.submit "Delete", class: "btn btn-danger" %>
+            <% end %>
+            <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')" class="btn btn-warning">Cancel</a>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

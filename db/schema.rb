@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_20_232809) do
+ActiveRecord::Schema.define(version: 2019_03_22_224338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -134,7 +134,7 @@ ActiveRecord::Schema.define(version: 2019_03_20_232809) do
   create_table "consequence_guides", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "organization_id"
     t.uuid "project_id"
-    t.string "scope", default: "template"
+    t.string "scope"
     t.index ["organization_id"], name: "index_consequence_guides_on_organization_id"
     t.index ["project_id"], name: "index_consequence_guides_on_project_id"
   end
@@ -210,20 +210,6 @@ ActiveRecord::Schema.define(version: 2019_03_20_232809) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "issue_severity_levels", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.string "scope", default: "project", null: false
-    t.string "label", null: false
-    t.integer "severity", null: false
-    t.text "example", null: false
-    t.text "consequence", null: false
-    t.uuid "project_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.uuid "organization_id"
-    t.index ["organization_id"], name: "index_issue_severity_levels_on_organization_id"
-    t.index ["project_id"], name: "index_issue_severity_levels_on_project_id"
-  end
-
   create_table "issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "description"
     t.string "reporter_encrypted_id"
@@ -241,8 +227,7 @@ ActiveRecord::Schema.define(version: 2019_03_20_232809) do
     t.text "respondent_encrypted_id"
     t.text "resolution_text"
     t.datetime "resolved_at"
-    t.uuid "issue_severity_level_id"
-    t.index ["issue_severity_level_id"], name: "index_issues_on_issue_severity_level_id"
+    t.uuid "consequence_id"
   end
 
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -393,8 +378,6 @@ ActiveRecord::Schema.define(version: 2019_03_20_232809) do
   add_foreign_key "invitations", "projects"
   add_foreign_key "issue_comments", "issues"
   add_foreign_key "issue_events", "issues"
-  add_foreign_key "issue_severity_levels", "projects"
-  add_foreign_key "issues", "issue_severity_levels"
   add_foreign_key "notifications", "issue_comments"
   add_foreign_key "notifications", "issues"
   add_foreign_key "notifications", "projects"

@@ -6,17 +6,17 @@ class Organization < ApplicationRecord
   belongs_to :account
   has_one :consequence_guide, dependent: :destroy
   has_many :invitations, dependent: :destroy
-  has_many :issue_severity_levels, dependent: :destroy
   has_many :roles, dependent: :destroy
   has_many :projects, dependent: :destroy
   has_one :respondent_template, dependent: :destroy
 
   before_create :set_slug
+  after_create :create_consequence_guide
 
-  attr_accessor :consequence_ladder_default_source
+  attr_accessor :default_source
 
-  def consequence_ladder?
-    issue_severity_levels.any?
+  def consequence_guide?
+    consequence_guide.consequences.any?
   end
 
   def flag!(reason)
@@ -54,12 +54,11 @@ class Organization < ApplicationRecord
   end
 
   def respondent_template?
-    # respondent_template.present?
-    false
+    respondent_template.present?
   end
 
   def setup_complete?
-    self.respondent_template && consequence_ladder?
+    respondent_template && consequence_guide?
   end
 
   def toggle_flagged
@@ -71,6 +70,10 @@ class Organization < ApplicationRecord
   end
 
   private
+
+  def create_consequence_guide
+    ConsequenceGuide.create(organization_id: id)
+  end
 
   def set_slug
     self.slug = name.downcase.gsub(/[^a-z0-9]/i, '_')

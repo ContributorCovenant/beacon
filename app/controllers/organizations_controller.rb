@@ -79,14 +79,6 @@ class OrganizationsController < ApplicationController
     redirect_to organization_path(@organization)
   end
 
-  def clone_ladder
-    source = ladder_params[:consequence_ladder_default_source]
-    if source == "Beacon Default"
-      IssueSeverityLevel.clone_from_template_for_organization(@organization)
-    end
-    redirect_to organization_issue_severity_levels_path(@organization)
-  end
-
   def moderators
     @invitation = Invitation.new(organization_id: @organization.id)
     @invitations = @organization.invitations
@@ -116,10 +108,6 @@ class OrganizationsController < ApplicationController
       :description,
       :remote_org_name
     )
-  end
-
-  def ladder_params
-    params.require(:organization).permit(:consequence_ladder_default_source)
   end
 
   def scope_organization

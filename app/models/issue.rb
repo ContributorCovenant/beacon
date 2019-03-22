@@ -6,11 +6,11 @@ class Issue < ApplicationRecord
 
   validates_presence_of :description
 
+  belongs_to :consequence, optional: true
   has_many :issue_events, dependent: :destroy
   has_many :issue_comments, dependent: :destroy
   has_many :notifications, dependent: :destroy
   has_many_attached :uploads, dependent: :destroy
-  belongs_to :issue_severity_level, optional: true
 
   before_save :validate_upload_file_type_and_size
 

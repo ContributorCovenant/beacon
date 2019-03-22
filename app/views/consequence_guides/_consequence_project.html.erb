@@ -2,26 +2,21 @@
   <div class="card-body">
     <h2 class="card-title">Level <%= consequence.severity %>: <%= consequence.label %></h2>
     <div class="card-text">
-      <p><%= consequence.example %></p>
+      <p><%= consequence.action %></p>
       <h3>Consequence</h3>
       <p><%= consequence.consequence %></p>
-      <% if current_account.can_manage_consequence_ladder?(@project) %>
+      <% if current_account.can_manage_project_consequence_guide?(@project) %>
         <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')">Edit</a>
       <% end %>
     </div>
   </div>
 </div>
 
-<% if current_account.can_manage_consequence_ladder?(@project) || current_account.can_manage_organization?(@organization) %>
+<% if current_account.can_manage_project_consequence_guide?(@project) %>
   <div id="consequence-<%= consequence.severity %>-form" class="card mb-3 mr-3" style="display: none; width: 30rem">
     <div class="card-body">
       <div class="card-text">
-        <% if @project %>
-          <% url = project_issue_severity_level_path(@project, consequence) %>
-        <% else %>
-          <% url = project_issue_severity_level_path(@organization, consequence) %>
-        <% end %>
-        <%= form_for consequence, url: url, style: "width: 100%" do |f| %>
+        <%= form_for consequence, url: project_consequence_guide_consequence_path(@project, @guide, consequence), style: "width: 100%" do |f| %>
           <div class="form-group">
             <%= f.label :label %><br />
             <%= f.text_field :label, autofocus: true, class: "form-control" %>
@@ -33,8 +28,8 @@
           </div>
 
           <div class="form-group">
-            <%= f.label :description %><br />
-            <%= f.text_area :example, rows: 5, class: "form-control" %>
+            <%= f.label :action %><br />
+            <%= f.text_area :action, rows: 5, class: "form-control" %>
           </div>
 
           <div class="form-group">
@@ -47,7 +42,7 @@
             <% if consequence.can_be_safely_destroyed? %>
              <%= f.submit "Delete", class: "btn btn-danger" %>
             <% end %>
-            <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')" class="btn">Cancel</a>
+            <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')" class="btn btn-warning">Cancel</a>
           </div>
         <% end %>
       </div>

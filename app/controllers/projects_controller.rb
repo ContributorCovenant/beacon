@@ -9,21 +9,6 @@ class ProjectsController < ApplicationController
     @projects = current_account.projects
   end
 
-  def clone_ladder
-    source = ladder_params[:consequence_ladder_default_source]
-    if source == "Beacon Default"
-      IssueSeverityLevel.clone_from_template_for_project(@project)
-    elsif source == "Organization Default"
-      IssueSeverityLevel.clone_from_org_template_for_project(@project)
-    else
-      IssueSeverityLevel.clone_from_existing_project(
-        source: current_account.projects.find{ |project| project.name == source },
-        target: @project
-      )
-    end
-    redirect_to project_issue_severity_levels_path(@project)
-  end
-
   def moderators
     @invitation = Invitation.new(project_id: @project.id)
     @invitations = @project.invitations
@@ -124,10 +109,6 @@ class ProjectsController < ApplicationController
 
   def enforce_project_creation_permissions
     render_forbidden && return unless current_account.can_create_project?
-  end
-
-  def ladder_params
-    params.require(:project).permit(:consequence_ladder_default_source)
   end
 
   def project_params
