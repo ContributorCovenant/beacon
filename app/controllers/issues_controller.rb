@@ -53,7 +53,8 @@ class IssuesController < ApplicationController
     @reporter_discussion_comments = @issue.comments_visible_to_reporter
     @respondent_discussion_comments = @issue.comments_visible_to_respondent
 
-    @issue_severity_level = @issue.issue_severity_level
+    @consequence = @issue.consequence
+    @consequences = @project.consequence_guide.consequences
 
     @notifications_for_internal_comments_count = (
       @internal_comments
@@ -127,7 +128,7 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
-    params.require(:issue).permit(:description, :resolution_text, :issue_severity_level_id, uploads: [], urls: [])
+    params.require(:issue).permit(:description, :resolution_text, :consequence_id, uploads: [], urls: [])
   end
 
   def notify_on_new_issue

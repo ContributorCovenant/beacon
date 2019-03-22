@@ -18,6 +18,7 @@ RSpec.describe Permissions do
     allow(private_project).to receive(:public?).and_return(false)
     allow(paused_project).to receive(:paused?).and_return(true)
     Role.create(account_id: kate.id, project_id: public_project.id, is_owner: true)
+    Role.create(account_id: peter.id, project_id: public_project.id)
     Role.create(account_id: kate.id, project_id: paused_project.id, is_owner: true)
     Role.create(account_id: kate.id, project_id: private_project.id, is_owner: true)
   end
@@ -214,12 +215,12 @@ RSpec.describe Permissions do
 
   describe "#can_manage_project?" do
 
-    it "allows a projec owner" do
+    it "allows a project owner" do
       expect(kate.can_manage_project?(public_project)).to be_truthy
     end
 
     it "does not allow a moderator" do
-      expect(peter.can_moderate_project?(public_project)).to be_falsey
+      expect(peter.can_manage_project?(public_project)).to be_falsey
     end
 
     it "does not allow a rando" do
@@ -228,4 +229,19 @@ RSpec.describe Permissions do
 
   end
 
+  describe "#can_manage_project_consequence_guide?" do
+
+    it "allows a project owner" do
+      expect(kate.can_manage_project_consequence_guide?(public_project)).to be_truthy
+    end
+
+    it "allows a moderator" do
+      expect(peter.can_manage_project_consequence_guide?(public_project)).to be_truthy
+    end
+
+    it "does not allow a rando" do
+      expect(donnie.can_manage_project_consequence_guide?(public_project)).to be_falsey
+    end
+
+  end
 end

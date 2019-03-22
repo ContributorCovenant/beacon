@@ -95,20 +95,18 @@ describe "moderation", type: :feature do
   context "issue lifecycle" do
 
     before do
-      IssueSeverityLevel.create(
-        scope: "project",
-        project_id: project.id,
+      Consequence.create(
+        consequence_guide_id: project.consequence_guide.id,
         severity: 1,
         label: "Correction",
-        example: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional.",
+        action: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional.",
         consequence: "A private, written warning from a moderator, with clarity of violation and explanatione."
       )
-      IssueSeverityLevel.create(
-        scope: "project",
-        project_id: project.id,
+      Consequence.create(
+        consequence_guide_id: project.consequence_guide.id,
         severity: 2,
         label: "Warning",
-        example: "A violation through a single incident or series of actions that create toxicity.",
+        action: "A violation through a single incident or series of actions that create toxicity.",
         consequence: "A warning with consequences of continued behavior."
       )
       visit projects_path
@@ -117,7 +115,7 @@ describe "moderation", type: :feature do
     end
 
     it "allows a moderator to assign a severity" do
-      select "1: Correction", from: "issue_issue_severity_level_id"
+      select "1: Correction", from: "issue_consequence_id"
       click_on "Save"
       expect(page).to have_content("1 (Correction)")
     end

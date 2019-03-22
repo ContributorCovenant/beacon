@@ -12,7 +12,6 @@ class Project < ApplicationRecord
   has_many :abuse_report_subjects, dependent: :destroy
   has_many :account_project_blocks, dependent: :destroy
   has_many :invitations, dependent: :destroy
-  has_many :issue_severity_levels, dependent: :destroy
   has_many :notifications, dependent: :destroy
   has_many :project_issues, dependent: :destroy
   has_many :roles, dependent: :destroy
@@ -21,8 +20,7 @@ class Project < ApplicationRecord
 
   before_create :set_slug
   after_create :make_settings
-
-  attr_accessor :consequence_ladder_default_source, :token
+  after_create :create_consequence_guide
 
   scope :for_directory, -> { where(public: true, setup_complete: true, is_flagged: false).order("name ASC") }
   scope :starting_with, ->(letter) { where("name ILIKE ?", letter + '%') }
@@ -47,8 +45,8 @@ class Project < ApplicationRecord
     end
   end
 
-  def consequence_ladder?
-    issue_severity_levels.any?
+  def consequence_guide?
+    @has_consequence_guide ||= consequence_guide.consequences.any?
   end
 
   def issues
@@ -103,7 +101,7 @@ class Project < ApplicationRecord
   def check_setup_complete?
     complete = false unless public?
     complete ||= false unless verified_settings?
-    complete ||= false unless consequence_ladder?
+    complete ||= false unless consequence_guide?
     complete ||= false unless ownership_confirmed?
     complete ||= false unless respondent_template?
     complete ||= false unless coc_url.present?
@@ -158,6 +156,10 @@ class Project < ApplicationRecord
   end
 
   private
+
+  def create_consequence_guide
+    ConsequenceGuide.create(project_id: id)
+  end
 
   def set_slug
     self.slug = name.downcase.gsub(/[^a-z0-9]/i, '_')

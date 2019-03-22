@@ -6,7 +6,7 @@ class Issue < ApplicationRecord
 
   validates_presence_of :description
 
-  has_one  :consequence
+  belongs_to :consequence, optional: true
   has_many :issue_events, dependent: :destroy
   has_many :issue_comments, dependent: :destroy
   has_many :notifications, dependent: :destroy

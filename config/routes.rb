@@ -46,6 +46,7 @@ Rails.application.routes.draw do
     resources :account_project_blocks
     resources :consequence_guides do
       resources :consequences
+      patch "clone", to: "consequence_guides#clone"
     end
     resources :invitations, only: [:new, :create]
     resources :issues do
@@ -67,7 +68,6 @@ Rails.application.routes.draw do
     get "ownership", to: "projects#ownership"
     post "clone_respondent_template", to: "respondent_templates#clone"
     post "remove_moderator", to: "projects#remove_moderator"
-    patch "clone_ladder", to: "projects#clone_ladder"
     patch "clone_respondent_template", to: "respondent_templates#clone"
     patch "confirm", to: "projects#confirm_ownership"
     patch "settings", to: "project_settings#update"

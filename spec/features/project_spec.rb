@@ -13,11 +13,11 @@ describe "The project setup process", type: :feature do
   context "without an organization" do
 
     before do
-      IssueSeverityLevel.create(
-        scope: "template",
+      guide = ConsequenceGuide.create(scope: "template")
+      guide.consequences.create(
         severity: 1,
         label: "Correction",
-        example: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional or unwelcome in the community.",
+        action: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional or unwelcome in the community.",
         consequence: "A private, written warning from a moderator, with clarity of violation and explanation of why the behavior was inappropriate."
       )
       RespondentTemplate.create(
@@ -57,13 +57,13 @@ describe "The project setup process", type: :feature do
       click_on(project.name)
       click_on("Impact and Consequences")
       expect(page).to have_content("Clone from")
-      select "Beacon Default", from: "project_consequence_ladder_default_source"
+      select "Beacon Default", from: "consequence_guide_default_source"
       click_on("Clone")
       expect(page).to have_content("Correction")
-      fill_in "issue_severity_level_label", with: "Disciplinary Action"
-      select "2", from: "issue_severity_level_severity"
-      fill_in "issue_severity_level_example", with: "Personal attacks"
-      fill_in "issue_severity_level_consequence", with: "Reprimand from moderators"
+      fill_in "consequence_label", with: "Disciplinary Action"
+      select "2", from: "consequence_severity"
+      fill_in "consequence_action", with: "Personal attacks"
+      fill_in "consequence_consequence", with: "Reprimand from moderators"
       click_on("Update Guide")
       expect(page).to have_content("Personal attacks")
     end
@@ -104,12 +104,11 @@ describe "The project setup process", type: :feature do
     before do
       Role.create(account_id: maintainer.id, organization_id: organization.id, is_owner: true)
       Role.create(account_id: maintainer.id, project_id: org_project.id, is_owner: true)
-      IssueSeverityLevel.create(
-        scope: "organization",
-        organization_id: organization.id,
+      guide = ConsequenceGuide.find_or_create_by(organization_id: organization.id)
+      guide.consequences.create!(
         severity: 1,
         label: "Correction",
-        example: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional or unwelcome in the community.",
+        action: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional or unwelcome in the community.",
         consequence: "A private, written warning from a moderator, with clarity of violation and explanation of why the behavior was inappropriate."
       )
       RespondentTemplate.create(
@@ -141,13 +140,13 @@ describe "The project setup process", type: :feature do
       click_on(org_project.name)
       click_on("Impact and Consequences")
       expect(page).to have_content("Clone from")
-      select "Organization Default", from: "project_consequence_ladder_default_source"
+      select "Organization Default", from: "consequence_guide_default_source"
       click_on("Clone")
       expect(page).to have_content("Correction")
-      fill_in "issue_severity_level_label", with: "Disciplinary Action"
-      select "2", from: "issue_severity_level_severity"
-      fill_in "issue_severity_level_example", with: "Personal attacks"
-      fill_in "issue_severity_level_consequence", with: "Reprimand from moderators"
+      fill_in "consequence_label", with: "Disciplinary Action"
+      select "2", from: "consequence_severity"
+      fill_in "consequence_action", with: "Personal attacks"
+      fill_in "consequence_consequence", with: "Reprimand from moderators"
       click_on("Update Guide")
       expect(page).to have_content("Personal attacks")
     end

@@ -16,7 +16,7 @@ class RespondentTemplate < ApplicationRecord
     text.gsub!("[[CODE_OF_CONDUCT_URL]]", project.coc_url)
     text.gsub!("[[ISSUE_URL]]", issue_url)
 
-    if severity = project.issue_severity_levels.find_by(severity: issue.issue_severity_level)
+    if issue.consequence
       text.gsub!("[[VIOLATION_EXAMPLE]]", severity.example)
       text.gsub!("[[CONSEQUENCE]]", severity.consequence)
     end

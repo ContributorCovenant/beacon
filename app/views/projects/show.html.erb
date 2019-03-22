@@ -100,12 +100,8 @@
                 <% end %>
               </li>
               <li>
-                <% if current_account.can_manage_project?(@project) %>
-                  <%= link_to "Impact and Consequences", project_issue_severity_levels_path(@project) %>
-                <% else %>
-                  Impact and Consequences
-                <% end %>
-                <% if @project.consequence_ladder? %>
+                <%= link_to "Impact and Consequences", project_consequence_guide_path(@project, @project.consequence_guide) %>
+                <% if @project.consequence_guide? %>
                   <span class="badge badge-pill badge-success">
                     √
                   </span>
@@ -198,9 +194,9 @@
                 <%= link_to "Project Settings", project_settings_path(@project)  %>
               </li>
             <% end %>
-            <% if @project.consequence_ladder? %>
+            <% if @project.consequence_guide? %>
               <li>
-                <%= link_to "Impact and Consequences", project_issue_severity_levels_path(@project) %>
+                <%= link_to "Impact and Consequences", project_consequence_guide_path(@project, @project.consequence_guide) %>
               </li>
             <% end %>
             <% if @project.respondent_template? %>

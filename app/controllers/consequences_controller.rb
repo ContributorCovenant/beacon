@@ -5,7 +5,7 @@ class ConsequencesController < ApplicationController
   before_action :enforce_permissions
 
   def create
-    consequence = @guide.consequences.create!(consequence_params)
+    @guide.consequences.create!(consequence_params)
     if organization = @guide.organization
       redirect_to organization_consequence_guide_path(organization, @guide)
     else

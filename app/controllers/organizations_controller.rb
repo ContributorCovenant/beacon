@@ -110,10 +110,6 @@ class OrganizationsController < ApplicationController
     )
   end
 
-  def ladder_params
-    params.require(:organization).permit(:consequence_ladder_default_source)
-  end
-
   def scope_organization
     @organization = Organization.find_by(slug: params[:slug]) || Organization.find_by(slug: params[:organization_slug])
     render_not_found unless @organization

@@ -96,3 +96,6 @@ Style/EachWithObject:
 
 Style/NumericPredicate:
   Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false

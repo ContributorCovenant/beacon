@@ -27,7 +27,7 @@ class GitlabImportService
         public: true
       )
 
-      IssueSeverityLevel.clone_from_org_template_for_project(project) if organization.issue_severity_levels.any?
+      project.consequence_guide.clone_from(organization) if organization.consequence_guide.consequences.any?
 
       if respondent_template = organization.respondent_template
         RespondentTemplate.create(

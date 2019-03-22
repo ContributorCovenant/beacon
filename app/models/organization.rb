@@ -6,7 +6,6 @@ class Organization < ApplicationRecord
   belongs_to :account
   has_one :consequence_guide, dependent: :destroy
   has_many :invitations, dependent: :destroy
-  has_many :issue_severity_levels, dependent: :destroy
   has_many :roles, dependent: :destroy
   has_many :projects, dependent: :destroy
   has_one :respondent_template, dependent: :destroy

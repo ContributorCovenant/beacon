@@ -65,7 +65,7 @@ class RespondentTemplatesController < ApplicationController
   private
 
   def enforce_permissions
-    render_forbidden && return if @project && !current_account.can_manage_respondent_template?(@project)
+    render_forbidden && return if @project && !current_account.can_manage_project_respondent_template?(@project)
     render_forbidden && return if @organization && !current_account.can_manage_organization?(@organization)
   end
 

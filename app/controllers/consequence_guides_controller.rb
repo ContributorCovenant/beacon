@@ -10,10 +10,12 @@ class ConsequenceGuidesController < ApplicationController
     @consequences = @guide.consequences
     @available_guides = ["beacon_default"]
     if @project
-      @available_guides << ["organization_default", @organization.projects.map(&:name)] if @organization
+      @available_guides << ["organization_default", @project.organization.projects.map(&:name)] if @project.organization
       @available_guides << current_account.projects.map(&:name)
+      @available_guides.delete(@project.name)
     end
     @available_guides.flatten!
+    @available_guides.uniq!
     @severities = (1..10).to_a - @consequences.map(&:severity)
 
     @subject = @organization || @project
@@ -22,9 +24,9 @@ class ConsequenceGuidesController < ApplicationController
   def clone
     clone_from(guide_params[:default_source])
     if @organization
-      redirect_to organization_consequence_guide_path(@organization, @guide) and return
+      redirect_to(organization_consequence_guide_path(@organization, @guide)) && return
     elsif @project
-      redirect_to project_consequence_guide_path(@project, @guide) and return
+      redirect_to(project_consequence_guide_path(@project, @guide)) && return
     end
   end
 
@@ -34,13 +36,11 @@ class ConsequenceGuidesController < ApplicationController
     if source == "Beacon Default"
       @guide.clone_from(ConsequenceGuide.find_by(scope: "template"))
     elsif source == "Organization Default"
-      @guide.clone_from(ConsequenceGuide.find_by(organization_id: project.organization_id))
+      @guide.clone_from(ConsequenceGuide.find_by(organization_id: @project.organization_id))
+    elsif project = current_account.projects.find{ |p| p.name == source }
+      @guide.clone_from(project.consequence_guide)
     else
-      if project = current_account.projects.find{ |project| project.name == source }
-        @guide.clone_from(project.consequence_guide)
-      else
-        render_forbidden && return
-      end
+      render_forbidden && return
     end
   end
 

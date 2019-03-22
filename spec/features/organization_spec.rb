@@ -28,11 +28,11 @@ describe "organization management", type: :feature do
 
     before do
       Role.create(account_id: maintainer.id, organization_id: organization.id, is_owner: true)
-      IssueSeverityLevel.create(
-        scope: "template",
+      guide = ConsequenceGuide.create(scope: "template")
+      guide.consequences.create(
         severity: 1,
         label: "Correction",
-        example: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional or unwelcome in the community.",
+        action: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional or unwelcome in the community.",
         consequence: "A private, written warning from a moderator, with clarity of violation and explanation of why the behavior was inappropriate."
       )
       RespondentTemplate.create(
@@ -49,13 +49,13 @@ describe "organization management", type: :feature do
       expect(page).to have_content("Setup Checklist")
       click_on("Impact and Consequences")
       expect(page).to have_content("Clone from")
-      select "Beacon Default", from: "organization_consequence_ladder_default_source"
+      select "Beacon Default", from: "consequence_guide_default_source"
       click_on("Clone")
       expect(page).to have_content("Correction")
-      fill_in "issue_severity_level_label", with: "Disciplinary Action"
-      select "2", from: "issue_severity_level_severity"
-      fill_in "issue_severity_level_example", with: "Personal attacks"
-      fill_in "issue_severity_level_consequence", with: "Reprimand from moderators"
+      fill_in "consequence_label", with: "Disciplinary Action"
+      select "2", from: "consequence_severity"
+      fill_in "consequence_action", with: "Personal attacks"
+      fill_in "consequence_consequence", with: "Reprimand from moderators"
       click_on("Update Guide")
       expect(page).to have_content("Personal attacks")
     end
@@ -77,6 +77,7 @@ describe "organization management", type: :feature do
     end
 
     it "lets a user create a project" do
+      allow_any_instance_of(Organization).to receive(:setup_complete?).and_return(true)
       login_as(maintainer, scope: :account)
       visit root_path
       click_on("My Organizations")
