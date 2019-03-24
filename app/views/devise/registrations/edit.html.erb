@@ -2,72 +2,91 @@
 
 <h1>Edit <%= resource_name.to_s.humanize %></h1>
 
-<% unless current_account.authy_enabled? %>
-  <%= link_to "Enable 2-factor SMS", account_enable_authy_path(resource), class: "btn btn-primary" %>
-<% end %>
+<div class="row">
+  <div class="col">
+    <h2>Account Details</h2>
 
-<%- if devise_mapping.omniauthable? %>
-  <%- resource_class.omniauth_providers.each do |provider| %>
-    <% if current_account.send("linked_to_#{provider}?") %>
-      <div>Linked to <%= OmniAuth::Utils.camelize(provider) %></div>
-    <% else %>
-      <%= link_to "Link #{OmniAuth::Utils.camelize(provider)} Account", omniauth_authorize_path(resource_name, provider), class: "btn btn-primary" %>
-    <% end -%>
-  <% end -%>
-<% end -%>
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= devise_error_messages! %>
 
-<h2 class="mt-5">Account Details</h2>
+      <div class="form-group">
+        <%= f.label :name %><br />
+        <%= f.text_field :name, autofocus: true, class: "form-control" %>
+      </div>
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-  <%= devise_error_messages! %>
+      <div class="form-group">
+        <%= f.label :email %><br />
+        <%= f.email_field :email, disabled: true, autocomplete: "email", class: "form-control" %>
+      </div>
 
-  <div class="form-group">
-    <%= f.label :name %><br />
-    <%= f.text_field :name, autofocus: true, class: "form-control" %>
-  </div>
+      <div class="form-group">
+        <label for="account_current_password">Current password (to confirm your changes)</label><br />
+        <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
+      </div>
 
-  <div class="form-group">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, disabled: true, autocomplete: "email", class: "form-control" %>
-  </div>
+      <div class="form-group">
+        <label for="account_phone_number">Phone number (ex. +18881112222)</label><br />
+        <%= f.text_field :phone_number, class: "form-control" %>
+      </div>
 
-  <div class="form-group">
-    <%= f.label :phone_number %><br />
-    (ex. +18881112222)<br />
-    <%= f.text_field :phone_number, class: "form-control" %>
-  </div>
-
-  <div class="form-group col-sm-6">
-    <%= f.label :send_sms_on_issue_open, "Notify me via SMS of new issues in my projects" %>
-    <%= f.check_box :send_sms_on_issue_open %>
-  </div>
+      <div class="form-group col-sm-6">
+        <%= f.check_box :send_sms_on_issue_open, class: "form-check-input" %>
+        <label class="form-check-label" for="account_send_sms_on_issue_open">Notify me via SMS of new issues in my projects</label>
+      </div>
 
 
-  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-  <% end %>
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+        <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+      <% end %>
 
-  <div class="form-group">
-    <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
-    <% if @minimum_password_length %>
-      <br />
-      <em><%= @minimum_password_length %> characters minimum</em>
+      <div class="form-group">
+        <label for="account_password">New Password (<%= @minimum_password_length %> characters minimum)</label><br />
+        <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password_confirmation %><br />
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Update", class: "btn btn-primary" %>
+        <%= link_to "Done", :back, class: "btn btn-warning" %>
+      </div>
     <% end %>
   </div>
+  <div class="col">
+    <div class="card mb-2" style="width: 18rem;">
+      <div class="card-body">
+        <h2 class="card-title">Security</h2>
+        <div class="card-text">
+          <ul>
+            <%- if devise_mapping.omniauthable? %>
+              <%- resource_class.omniauth_providers.each do |provider| %>
+                <% if current_account.send("linked_to_#{provider}?") %>
+                  <li>Linked to <%= OmniAuth::Utils.camelize(provider) %></li>
+                <% end -%>
+              <% end -%>
+            <% end -%>
+            <% if current_account.authy_enabled? %>
+              <li>SMS 2fa Enabled</li>
+            <% end %>
+          </ul>
+          <% if current_account.authy_enabled? %>
+            <%= button_to "Disable 2-factor SMS", account_disable_authy_path, method: :post, class: "btn btn-danger" %>
+          <% else %>
+            <%= link_to "Enable 2-factor SMS", account_enable_authy_path(resource), class: "btn btn-primary" %>
+          <% end %>
+          <%- if devise_mapping.omniauthable? %>
+            <%- resource_class.omniauth_providers.each do |provider| %>
+              <% unless current_account.send("linked_to_#{provider}?") %>
+                <%= link_to "Link #{OmniAuth::Utils.camelize(provider)} Account", omniauth_authorize_path(resource_name, provider), class: "btn btn-primary" %>
+              <% end %>
+            <% end %>
+          <% end %>
 
-  <div class="form-group">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "form-control" %>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="form-group">
-    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Update", class: "btn btn-primary" %>
-    <%= link_to "Done", :back, class: "btn btn-warning" %>
-  </div>
-<% end %>
+</div>
