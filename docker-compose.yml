@@ -16,9 +16,27 @@ services:
       - "3000:3000"
     depends_on:
       - db
+      - redis
   db:
     image: "postgres:11.1"
     environment:
       POSTGRES_PASSWORD: postgres
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis:/data
+  resque:
+    build:
+      context: .
+    command: bundle exec rake resque:work QUEUE='*'
+    volumes:
+      - .:/myapp
+      - bundle:/bundle
+    depends_on:
+      - db
+      - redis
 volumes:
-  bundle:
+  bundle: {}
+  redis: {}

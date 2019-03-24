@@ -1,0 +1,5 @@
+development: redis://redis:6379
+test: redis://redis:6379
+staging: <%= ENV['REDIS_URL'] %>
+fi: redis://redis:6379
+production: <%= ENV['REDIS_URL'] %>
