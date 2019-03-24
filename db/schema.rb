@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_23_000310) do
+ActiveRecord::Schema.define(version: 2019_03_24_200806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -131,6 +131,17 @@ ActiveRecord::Schema.define(version: 2019_03_23_000310) do
     t.index ["account_id"], name: "index_activity_logs_on_account_id"
   end
 
+  create_table "autoresponders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "project_id"
+    t.uuid "organization_id"
+    t.string "scope"
+    t.text "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["organization_id"], name: "index_autoresponders_on_organization_id"
+    t.index ["project_id"], name: "index_autoresponders_on_project_id"
+  end
+
   create_table "consequence_guides", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "organization_id"
     t.uuid "project_id"
@@ -163,7 +174,6 @@ ActiveRecord::Schema.define(version: 2019_03_23_000310) do
     t.string "uid"
     t.string "email"
     t.uuid "account_id"
-    t.string "oauth_token"
     t.string "token_encrypted"
     t.index ["account_id"], name: "index_credentials_on_account_id"
     t.index ["provider", "uid"], name: "index_credentials_on_provider_and_uid", unique: true
@@ -248,14 +258,11 @@ ActiveRecord::Schema.define(version: 2019_03_23_000310) do
     t.string "slug"
     t.text "description"
     t.uuid "account_id"
-    t.datetime "flagged_at"
-    t.text "flagged_reason"
-    t.datetime "confirmed_at"
-    t.string "confirmation_token_url"
     t.string "remote_org_name"
-    t.datetime "created_at", default: "2019-03-16 00:00:00"
-    t.datetime "updated_at", default: "2019-03-16 00:00:00"
+    t.datetime "created_at", default: "2019-03-24 00:00:00"
+    t.datetime "updated_at", default: "2019-03-24 00:00:00"
     t.boolean "is_flagged", default: false
+    t.text "flagged_reason"
     t.index ["account_id"], name: "index_organizations_on_account_id"
   end
 
@@ -369,6 +376,8 @@ ActiveRecord::Schema.define(version: 2019_03_23_000310) do
   add_foreign_key "account_project_blocks", "projects"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "activity_logs", "accounts"
+  add_foreign_key "autoresponders", "organizations"
+  add_foreign_key "autoresponders", "projects"
   add_foreign_key "consequence_guides", "organizations"
   add_foreign_key "consequence_guides", "projects"
   add_foreign_key "consequences", "consequence_guides"

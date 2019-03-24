@@ -1,0 +1,50 @@
+<% title "#{@subject.name}: Reporter Autoresponder" %>
+
+<h1><%= link_to @subject.name, @subject %>: Reporter Autoresponder</h1>
+
+<p>This is the email that will be automatically sent when a reporter opens a new issue.</p>
+
+<div class="row">
+
+  <div class="col">
+    <% url = project_autoresponder_path(@project) if @project.present? %>
+    <% url = organization_autoresponder_path(@organization) if @organization.present? %>
+    <%= form_for @autoresponder, url: url do |f| %>
+      <div class="form-group">
+        <%= f.text_area :text, class: "form-control", rows: 20 %>
+      </div>
+      <div class="actions">
+        <%= f.submit "Save", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col">
+    <h2>Cloning an Autoresponder</h2>
+    <p>You can customize your autoresponder from Beacon defaults or another one of your projects, or create your own.</p>
+
+    <% url = project_clone_autoresponder_path(@project) if @project.present? %>
+    <% url = organization_clone_autoresponder_path(@organization) if @organization.present? %>
+    <%= form_for @autoresponder, url: url do |f| %>
+      <div class="form-group col-sm-6">
+        <%= f.label :clone_from %>
+        <%= f.select :default_source, @available_sources, class: "form-control", include_blank: "Select..." %>
+      </div>
+
+      <div class="actions mb-3">
+        <%= f.submit "Clone", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+    <h2>Tags</h2>
+    <p>The following tags will be auto-populated in the email that the reporter receives:</p>
+
+    <ul>
+      <li>[[PROJECT_NAME]]</li>
+      <li>[[CODE_OF_CONDUCT_URL]]</li>
+      <li>[[PROJECT_URL]]</li>
+      <li>[[ISSUE_URL]]</li>
+    </ul>
+
+  </div>
+</div>

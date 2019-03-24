@@ -1,3 +1,36 @@
+Autoresponder.create(
+  scope: "template",
+  text: %{
+Thank you for opening a code of conduct issue for [[PROJECT_NAME]].
+
+We take code of conduct violations very seriously. We commit to you that we will
+fully investigate the issue, with fairness and the health of our community at the
+forefront.
+
+One of our moderators will acknowledge your issue within 24 hours. You will receive
+an email notification when this occurs. At this point, our investigation will begin.
+You can message the moderators with additional details using the contact form at the
+bottom of the issue page. You can also attach additional screenshots as needed.
+Moderators can respond to your messages, and you will also receive a notification
+when this occurs.
+
+For your safety and security, the respondent (the person named in your issue)
+will not be able to see the issue description that you have provided, nor any
+subsequence communication between you and the moderators. The respondent will also
+not be given any identifying information about you.
+
+You can reference the Community Impact and Consequences guide on our
+project page at [[PROJECT_PAGE]] for more information. You can also see our code of
+conduct at [[CODE_OF_CONDUCT_URL]].
+
+Thank you again, and please feel free to reach out should you have any questions
+about this issue or our enforcement policies.
+
+The issue URL for your reference is [[ISSUE_URL]].
+
+  }
+)
+
 template = ConsequenceGuide.find_or_create_by(scope: "template")
 template.consequences.destroy_all
 

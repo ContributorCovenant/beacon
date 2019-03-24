@@ -16,9 +16,9 @@ class RespondentTemplate < ApplicationRecord
     text.gsub!("[[CODE_OF_CONDUCT_URL]]", project.coc_url)
     text.gsub!("[[ISSUE_URL]]", issue_url)
 
-    if issue.consequence
-      text.gsub!("[[VIOLATION_EXAMPLE]]", severity.example)
-      text.gsub!("[[CONSEQUENCE]]", severity.consequence)
+    if consequence = issue.consequence
+      text.gsub!("[[VIOLATION_EXAMPLE]]", consequence.action)
+      text.gsub!("[[CONSEQUENCE]]", consequence.consequence)
     end
 
     return text

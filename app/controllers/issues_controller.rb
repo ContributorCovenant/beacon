@@ -141,6 +141,12 @@ class IssuesController < ApplicationController
       issue: @issue
     ).notify_of_new_issue.deliver_now
     NotificationService.notify_moderators_on_issue_via_sms(@project, @issue)
+    IssueNotificationsMailer.with(
+      email: current_account.email,
+      project: @project,
+      issue: @issue,
+      text: @project.autoresponder.populate_from(issue_url(@issue), project_url(@project))
+    ).autoresponder.deliver_now
   end
 
   def notify_on_status_change

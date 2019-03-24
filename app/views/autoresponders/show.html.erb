@@ -1,0 +1,33 @@
+<% title "#{@subject.name}: Reporter Autoresponder" %>
+
+<h1><%= link_to @subject.name, @subject %>: Reporter Autoresponder</h1>
+
+<div class="row">
+
+  <div class="col">
+    <p>This is the email that will be automatically sent when a reporter opens a new issue.</p>
+
+    <textarea disabled="disabled" style="width: 100%" rows="30">
+      <%= @autoresponder.text %>
+    </textarea>
+
+    <% if @project && current_account.can_manage_project_autoresponder?(@project) %>
+      <%= link_to "Edit", edit_project_autoresponder_path(@project), class: "btn btn-primary" %>
+    <% elsif @organization && current_account.can_manage_organization_autoresponder?(@organization) %>
+      <%= link_to "Edit", edit_organization_autoresponder_path(@organization), class: "btn btn-primary" %>
+    <% end %>
+  </div>
+
+  <div class="col">
+    <h2>Tags</h2>
+    <p>The following tags will be auto-populated in the email that the reporter receives:</p>
+
+    <ul>
+      <li>[[PROJECT_NAME]]</li>
+      <li>[[CODE_OF_CONDUCT_URL]]</li>
+      <li>[[PROJECT_URL]]</li>
+      <li>[[ISSUE_URL]]</li>
+    </ul>
+
+  </div>
+</div>
