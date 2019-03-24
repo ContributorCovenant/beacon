@@ -5,9 +5,9 @@
 <container style="margin-top: 2em;">
   <row>
     <columns>
-      <pre style="white-space: normal">
-        <%= @text %>
-      </pre>
+      <% @text.split(/\n/).each do |paragraph| %>
+        <p><%= paragraph %></p>
+      <% end %>
     </columns>
   </row>
 
