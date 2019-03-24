@@ -12,6 +12,7 @@ describe "the reporting process", type: :feature do
     allow_any_instance_of(Accounts::RegistrationsController).to receive(:verify_recaptcha).and_return(true)
     allow_any_instance_of(IssuesController).to receive(:verify_recaptcha).and_return(true)
     Role.create(account_id: maintainer.id, project_id: project.id, is_owner: true)
+    Autoresponder.create(project: project, text: "Foo")
   end
 
   it "enables a reporter to sign in" do
