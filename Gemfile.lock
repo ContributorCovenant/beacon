@@ -20,14 +20,6 @@ GIT
       omniauth (~> 1.0)
       omniauth-oauth2 (~> 1.0)
 
-GIT
-  remote: https://github.com/stympy/faker.git
-  revision: a2c25730f093372bbc5b6afe92e26a8469cf06d0
-  branch: master
-  specs:
-    faker (1.9.1)
-      i18n (>= 0.7)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -152,6 +144,8 @@ GEM
     factory_bot_rails (4.11.1)
       factory_bot (~> 4.11.1)
       railties (>= 3.0.0)
+    faker (1.9.3)
+      i18n (>= 0.7)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
@@ -466,7 +460,7 @@ DEPENDENCIES
   devise-authy
   dotenv-rails
   factory_bot_rails
-  faker!
+  faker
   fittings
   gitlab
   google-cloud-storage

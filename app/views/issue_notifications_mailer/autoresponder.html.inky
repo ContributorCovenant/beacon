@@ -5,9 +5,9 @@
 <container style="margin-top: 2em;">
   <row>
     <columns>
-      <p>
+      <pre style="white-space: normal">
         <%= @text %>
-      </p>
+      </pre>
     </columns>
   </row>
 
