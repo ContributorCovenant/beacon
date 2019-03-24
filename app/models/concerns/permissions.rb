@@ -57,6 +57,11 @@ module Permissions
     !!is_admin
   end
 
+  def can_manage_project_autoresponder?(project)
+    return false unless project.present?
+    project.moderator?(self)
+  end
+
   def can_manage_project_consequence_guide?(project)
     return false unless project.present?
     project.moderator?(self)
@@ -64,6 +69,11 @@ module Permissions
 
   def can_manage_project_respondent_template?(project)
     project.moderator?(self)
+  end
+
+  def can_manage_organization_autoresponder?(organization)
+    return false unless organization.present?
+    organization.owner?(self)
   end
 
   def can_manage_organization_consequence_guide?(organization)

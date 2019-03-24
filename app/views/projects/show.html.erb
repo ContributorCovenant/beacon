@@ -100,6 +100,24 @@
                 <% end %>
               </li>
               <li>
+                <% if @project.autoresponder? %>
+                  <%= link_to "Autoresponder", project_autoresponder_path(@project, @project.autoresponder) %>
+                <% else %>
+                  <%= link_to "Autoresponder", new_project_autoresponder_path(@project) %>
+                <% end %>
+                <% if !@project.setup_complete? %>
+                  <% if @project.autoresponder? %>
+                    <span class="badge badge-pill badge-success">
+                      √
+                    </span>
+                  <% else %>
+                    <span class="badge badge-pill badge-danger">
+                      x
+                    </span>
+                  <% end %>
+                <% end %>
+              </li>
+              <li>
                 <%= link_to "Impact and Consequences", project_consequence_guide_path(@project, @project.consequence_guide) %>
                 <% if @project.consequence_guide? %>
                   <span class="badge badge-pill badge-success">
@@ -192,6 +210,11 @@
             <% if @project.check_setup_complete? && current_account.can_manage_project?(@project) %>
               <li>
                 <%= link_to "Project Settings", project_settings_path(@project)  %>
+              </li>
+            <% end %>
+            <% if @project.autoresponder? %>
+              <li>
+                <%= link_to "Autoresponder", project_autoresponder_path(@project, @project.autoresponder) %>
               </li>
             <% end %>
             <% if @project.consequence_guide? %>

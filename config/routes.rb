@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   resources :issues
 
   resources :organizations, param: :slug do
+    resource :autoresponder, only: [:new, :create, :edit, :show]
     resources :invitations, only: [:create]
     resources :respondent_templates, only: [:new, :create, :edit, :update, :show]
     resources :consequence_guides do
@@ -38,12 +39,14 @@ Rails.application.routes.draw do
     get "github_auth_token", to: "organizations#github_auth_token"
     post "import_projects_from_github", to: "organizations#import_projects_from_github"
     post "remove_moderator", to: "organizations#remove_moderator"
+    post "clone_autoresponder", to: "autoresponders#clone"
     post "clone_respondent_template", to: "respondent_templates#clone"
     patch "clone_respondent_template", to: "respondent_templates#clone"
   end
 
   resources :projects, param: :slug do
     resources :account_project_blocks
+    resource :autoresponder, only: [:new, :create, :edit, :show]
     resources :consequence_guides do
       resources :consequences
       patch "clone", to: "consequence_guides#clone"
@@ -66,6 +69,7 @@ Rails.application.routes.draw do
     get "settings", to: "project_settings#edit"
     get "moderators", to: "projects#moderators"
     get "ownership", to: "projects#ownership"
+    post "clone_autoresponder", to: "autoresponders#clone"
     post "clone_respondent_template", to: "respondent_templates#clone"
     post "remove_moderator", to: "projects#remove_moderator"
     patch "clone_respondent_template", to: "respondent_templates#clone"

@@ -1,0 +1,19 @@
+<% content_for :title do %>
+  Code of Conduct Issue Confirmation
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p>
+        <%= @text %>
+      </p>
+    </columns>
+  </row>
+
+  <row>
+    <columns>
+      <button href="<%= project_issue_url(@project, @issue) %>">View Issue</button>
+    </columns>
+  </row>
+</container>

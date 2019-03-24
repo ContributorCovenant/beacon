@@ -6,6 +6,7 @@ class Project < ApplicationRecord
 
   belongs_to :account
   belongs_to :organization, optional: true
+  has_one :autoresponder, dependent: :destroy
   has_one :project_setting, dependent: :destroy
   has_one :consequence_guide, dependent: :destroy
   has_one :respondent_template, dependent: :destroy
@@ -31,6 +32,10 @@ class Project < ApplicationRecord
 
   def all_moderators
     (moderators + organization_moderators + owners).uniq
+  end
+
+  def autoresponder?
+    autoresponder.present?
   end
 
   def confirmation_token
@@ -105,6 +110,7 @@ class Project < ApplicationRecord
     complete ||= false unless ownership_confirmed?
     complete ||= false unless respondent_template?
     complete ||= false unless coc_url.present?
+    complete ||= false unless autoresponder?
     complete = complete.nil? ? true : false
     update_attribute(:setup_complete, complete) unless setup_complete == complete
     return complete

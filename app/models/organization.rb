@@ -4,6 +4,7 @@ class Organization < ApplicationRecord
   validates_presence_of :name
 
   belongs_to :account
+  has_one :autoresponder, dependent: :destroy
   has_one :consequence_guide, dependent: :destroy
   has_many :invitations, dependent: :destroy
   has_many :roles, dependent: :destroy
@@ -14,6 +15,10 @@ class Organization < ApplicationRecord
   after_create :create_consequence_guide
 
   attr_accessor :default_source
+
+  def autoresponder?
+    autoresponder.present?
+  end
 
   def consequence_guide?
     consequence_guide.consequences.any?
@@ -58,7 +63,7 @@ class Organization < ApplicationRecord
   end
 
   def setup_complete?
-    respondent_template && consequence_guide?
+    respondent_template && consequence_guide? && autoresponder?
   end
 
   def toggle_flagged

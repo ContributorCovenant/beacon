@@ -15,11 +15,14 @@ class IssueInvitationsController < ApplicationController
     end
 
     normalized_email = Normailize::EmailAddress.new(invitation_params[:email]).normalized_address
+    project = @issue.project
 
     if account = Account.find_by(normalized_email: normalized_email)
       RespondentMailer.with(
         email: account.email,
-        project_name: @issue.project.name
+        project_name: project.name,
+        text: project.respondent_template.populate_from(@issue, issue_url(@issue)),
+        issue: @issue
       ).notify_existing_account_of_issue.deliver_now
       AccountIssue.create(issue_id: @issue.id, account: account)
       NotificationService.notify(account: account, project: @project, issue_id: @issue.id)
@@ -30,9 +33,9 @@ class IssueInvitationsController < ApplicationController
         issue_encrypted_id: EncryptionService.encrypt(@issue.id)
       )
       RespondentMailer.with(
-        email: invitation_params[:email],
-        project_name: @project.name,
-        url: new_account_registration_url
+        email: account.email,
+        project_name: project.name,
+        text: project.respondent_template.populate_from(@issue, issue_url(@issue))
       ).notify_new_account_of_issue.deliver_now
     end
     @issue.update_attribute(:respondent_summary, invitation_params[:summary])

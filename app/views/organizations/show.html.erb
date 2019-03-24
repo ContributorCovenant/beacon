@@ -38,6 +38,24 @@
               <% end %>
             </li>
             <li>
+              <% if @organization.autoresponder? %>
+                <%= link_to "Autoresponder", organization_autoresponder_path(@organization, @organization.autoresponder) %>
+              <% else %>
+                <%= link_to "Autoresponder", new_organization_autoresponder_path(@organization) %>
+              <% end %>
+              <% if !@organization.setup_complete? %>
+                <% if @organization.autoresponder? %>
+                  <span class="badge badge-pill badge-success">
+                    √
+                  </span>
+                <% else %>
+                  <span class="badge badge-pill badge-danger">
+                    x
+                  </span>
+                <% end %>
+              <% end %>
+            </li>
+            <li>
               <% if @organization.respondent_template %>
                 <%= link_to "Respondent Template", edit_organization_respondent_template_path(@organization, @organization.respondent_template) %>
                 <% if !@organization.setup_complete? %>

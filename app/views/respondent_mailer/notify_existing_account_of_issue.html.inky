@@ -5,18 +5,13 @@
 <container style="margin-top: 2em;">
   <row>
     <columns>
-      <p>
-        A code of conduct issue has been filed in the <%= @project_name %> project and you have been identified as the respondent.
-      </p>
-      <p>
-        To view the issue and respond, please sign in to Beacon and click on 'My Issues' in the navigation bar.
-      </p>
+      <p><%= @text.gsub(/\n\n/, "</p><p>") %></p>
     </columns>
   </row>
 
   <row>
     <columns>
-      <button href="<%= new_account_session_url %>">Sign In to Beacon</button>
+      <button href="<%= issue_url(@issue) %>">View Issue on Beacon</button>
     </columns>
   </row>
 </container>

@@ -5,12 +5,7 @@
 <container style="margin-top: 2em;">
   <row>
     <columns>
-      <p>
-        A code of conduct issue has been filed in the <%= @project_name %> project and you have been identified as the respondent.
-      </p>
-      <p>
-        To view the issue and respond, please create an account on Beacon: <%= @url %>
-      </p>
+      <p><%= @text.gsub(/\n\n/, "</p><p>") %></p>
     </columns>
   </row>
 

@@ -1,5 +1,13 @@
 class IssueNotificationsMailer < ApplicationMailer
 
+  def autoresponder
+    @project = params[:project]
+    @issue = params[:issue]
+    @email = params[:email]
+    @text = params[:text]
+    mail(to: @email, subject: "Beacon: #{@project.name} Issue ##{@issue.issue_number} has been opened")
+  end
+
   def notify_on_status_change
     @project = params[:project]
     @issue = params[:issue]
