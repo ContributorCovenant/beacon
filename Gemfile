@@ -26,8 +26,8 @@ gem "jbuilder", "~> 2.5"
 gem "jquery-rails"
 gem "normailize"
 gem "octokit"
-gem "omniauth-github", github: "intridea/omniauth-github"
-gem "omniauth-gitlab", github: "linchus/omniauth-gitlab"
+gem "omniauth-github"
+gem "omniauth-gitlab"
 gem "pg"
 gem "popper_js", "~> 1.14.5"
 gem 'premailer-rails'
@@ -44,11 +44,11 @@ gem "valid_email2"
 
 group :development, :test do
   gem "brakeman"
-  gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "rspec-rails"
 end
 
 group :development do
+  gem "byebug", platforms: [:mri, :mingw, :x64_mingw]
   gem "listen", ">= 3.0.5", "< 3.2"
   gem "pry"
   gem "rails_layout", github: "RailsApps/rails_layout"
