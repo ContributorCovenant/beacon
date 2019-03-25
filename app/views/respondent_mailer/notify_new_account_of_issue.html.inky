@@ -5,7 +5,9 @@
 <container style="margin-top: 2em;">
   <row>
     <columns>
-      <p><%= @text.gsub(/\n\n/, "</p><p>") %></p>
+      <% @text.split(/\n/).each do |paragraph| %>
+        <p><%= paragraph %></p>
+      <% end %>
     </columns>
   </row>
 

@@ -4,30 +4,6 @@ GIT
   specs:
     rails_layout (1.0.42)
 
-GIT
-  remote: https://github.com/intridea/omniauth-github.git
-  revision: 2e77639f32c35598e398c0c591ffab37691cdee7
-  specs:
-    omniauth-github (1.3.0)
-      omniauth (~> 1.5)
-      omniauth-oauth2 (>= 1.4.0, < 2.0)
-
-GIT
-  remote: https://github.com/linchus/omniauth-gitlab.git
-  revision: be3ae87b082aa06d81774fe6a0bc0d9f11de50db
-  specs:
-    omniauth-gitlab (2.0.0)
-      omniauth (~> 1.0)
-      omniauth-oauth2 (~> 1.0)
-
-GIT
-  remote: https://github.com/stympy/faker.git
-  revision: a2c25730f093372bbc5b6afe92e26a8469cf06d0
-  branch: master
-  specs:
-    faker (1.9.1)
-      i18n (>= 0.7)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -152,6 +128,8 @@ GEM
     factory_bot_rails (4.11.1)
       factory_bot (~> 4.11.1)
       railties (>= 3.0.0)
+    faker (1.9.3)
+      i18n (>= 0.7)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.25)
@@ -250,6 +228,12 @@ GEM
     omniauth (1.9.0)
       hashie (>= 3.4.6, < 3.7.0)
       rack (>= 1.6.2, < 3)
+    omniauth-github (1.3.0)
+      omniauth (~> 1.5)
+      omniauth-oauth2 (>= 1.4.0, < 2.0)
+    omniauth-gitlab (2.0.0)
+      omniauth (~> 1.0)
+      omniauth-oauth2 (~> 1.0)
     omniauth-oauth2 (1.6.0)
       oauth2 (~> 1.1)
       omniauth (~> 1.9)
@@ -466,7 +450,7 @@ DEPENDENCIES
   devise-authy
   dotenv-rails
   factory_bot_rails
-  faker!
+  faker
   fittings
   gitlab
   google-cloud-storage
@@ -477,8 +461,8 @@ DEPENDENCIES
   listen (>= 3.0.5, < 3.2)
   normailize
   octokit
-  omniauth-github!
-  omniauth-gitlab!
+  omniauth-github
+  omniauth-gitlab
   pg
   popper_js (~> 1.14.5)
   premailer-rails
