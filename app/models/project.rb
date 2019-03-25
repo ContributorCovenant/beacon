@@ -3,6 +3,7 @@ class Project < ApplicationRecord
   validates_uniqueness_of :url
   validates_uniqueness_of :slug
   validates_presence_of :name, :url
+  validates_with EventValidator
 
   belongs_to :account
   belongs_to :organization, optional: true

@@ -4,6 +4,9 @@
   <div class="col">
     <h1><%= @project.name %></h1>
     <p><%= @project.description %></p>
+    <% if @project.is_event? %>
+      <p>This is a <%= @project.duration %>-day event with approximately <%= @project.attendees %> attendees.</p>
+    <% end %>
 
     <div class="actions mt-1">
       <% if current_account.can_lock_project? %>

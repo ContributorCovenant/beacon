@@ -38,7 +38,33 @@ settings for managing your project after it is created.</p>
     </div>
   <% end %>
 
+  <div class="form-group col-sm-6">
+    <%= f.check_box :is_event, class: "form-check-input", onclick: "toggleEventFields();" %>
+    <label class="form-check-label" for="project_is_event">This is an event</label>
+  </div>
+
+  <div class="event form-group col-sm-6" style="display: none;">
+    <%= f.label "Duration (days)" %><br />
+    <%= f.text_field :duration, class: "form-control" %>
+  </div>
+
+  <div class="event form-group col-sm-6" style="display: none;">
+    <%= f.label "Frequency" %><br />
+    <%= f.select :frequency, [["Weekly", "weekly"], ["Biweekly", "biweekly"], ["Monthly", "monthly"], ["Annually", "annually"]], include_blank: "Select...", class: "form-control" %>
+  </div>
+
+  <div class="event form-group col-sm-6" style="display: none;">
+    <%= f.label "# Attendees" %><br />
+    <%= f.select :attendees, ["1-50", "50-100", "100-250", "250+"], include_blank: "Select...", class: "form-control" %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Create Project", class: "btn btn-primary" %>
   </div>
+<% end %>
+
+<%= javascript_tag do %>
+  function toggleEventFields() {
+    $('.event').toggle();
+  }
 <% end %>
