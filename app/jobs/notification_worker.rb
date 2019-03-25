@@ -1,5 +1,5 @@
 class NotificationWorker
-  @queue = :notification
+  @queue = :sms_notifications
 
   def self.perform(account_id, project_id, issue_id, issue_comment_id)
     NotificationService.notify(account_id: account_id,
