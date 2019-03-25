@@ -27,8 +27,6 @@ class Project < ApplicationRecord
   scope :for_directory, -> { where(public: true, setup_complete: true, is_flagged: false).order("name ASC") }
   scope :starting_with, ->(letter) { where("name ILIKE ?", letter + '%') }
 
-  attr_accessor :start_date_mm_dd_yy
-
   def accepting_issues?
     public? && !paused?
   end
@@ -164,14 +162,6 @@ class Project < ApplicationRecord
 
   def require_3rd_party_auth?
     !!project_setting.require_3rd_party_auth
-  end
-
-  def start_date_mm_dd_yy
-    start_date.strftime("%m/%d/%y")
-  end
-
-  def start_date_mm_dd_yy=(date)
-    start_date = Date.strptime(date, "%m/%d/%y")
   end
 
   def show_transparency_report?

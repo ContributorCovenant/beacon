@@ -10,7 +10,7 @@
     </h1>
     <p><%= @project.description %></p>
     <% if @project.is_event? %>
-      <p>This is a <%= @project.duration %>-day event with approximately <%= @project.attendees %> attendees.</p>
+      <p>This is a <%= @project.duration %>-day event with <%= @project.attendees %> attendees.</p>
 
       <% unless current_account.send_sms_on_issue_open %>
         <div class="alert alert-danger" role="alert">
