@@ -11,7 +11,10 @@ Rails.application.routes.draw do
     authy_onetouch_status: "/onetouch-status"
   }
 
-  mount Resque::Server.new, at: "/resque"
+  # Resque background jobs
+  authenticate :account, ->(u) { u.is_admin? } do
+    mount Resque::Server.new, at: "/resque"
+  end
 
   root to: "static_content#main"
   get "about", to: "static_content#about"
@@ -84,6 +87,7 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+
     resources :abuse_reports do
       post "dismiss", to: "abuse_reports#dismiss"
       post "resolve", to: "abuse_reports#resolve"
