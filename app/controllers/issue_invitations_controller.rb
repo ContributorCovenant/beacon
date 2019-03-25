@@ -25,7 +25,7 @@ class IssueInvitationsController < ApplicationController
         issue: @issue
       ).notify_existing_account_of_issue.deliver_now
       AccountIssue.create(issue_id: @issue.id, account: account)
-      Resque.enqueue(NotificationWorker, account.id,  @project.id, @issue.id)      
+      Resque.enqueue(NotificationWorker, account.id, @project.id, @issue.id)
       @issue.update_attribute(:respondent_encrypted_id, EncryptionService.encrypt(account.id))
     else
       IssueInvitation.create(

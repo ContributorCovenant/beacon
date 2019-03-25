@@ -1,6 +1,5 @@
 require 'resque/server'
 
-
 Rails.application.routes.draw do
   devise_for :accounts, controllers: {
     registrations: "accounts/registrations",

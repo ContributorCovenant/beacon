@@ -59,11 +59,11 @@ class IssueCommentsController < ApplicationController
     if @project.moderator?(current_account) && visible_to_reporter?
       email = @issue.reporter.email
       commenter_kind = "moderator"
-      Resque.enqueue(NotificationWorker, @issue.reporter.id,  @project.id, @issue.id, @comment.id)
+      Resque.enqueue(NotificationWorker, @issue.reporter.id, @project.id, @issue.id, @comment.id)
     elsif @project.moderator?(current_account) && visible_to_respondent?
       email = @issue.respondent.email
       commenter_kind = "moderator"
-      Resque.enqueue(NotificationWorker, @issue.respondent.id,  @project.id, @issue.id, @comment.id)
+      Resque.enqueue(NotificationWorker, @issue.respondent.id, @project.id, @issue.id, @comment.id)
     elsif @comment.commenter == @issue.reporter
       email = @project.moderator_emails
       commenter_kind = "reporter"
@@ -81,7 +81,7 @@ class IssueCommentsController < ApplicationController
       end
       @project.moderators.each do |moderator|
         next if moderator == current_account
-        Resque.enqueue(NotificationWorker, moderator.id,  @project.id, @issue.id, @comment.id)
+        Resque.enqueue(NotificationWorker, moderator.id, @project.id, @issue.id, @comment.id)
       end
       if unnotified_moderators.any?
         IssueNotificationsMailer.with(

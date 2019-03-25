@@ -1,7 +1,6 @@
 class NotificationService
 
   def self.notify(account_id:, project_id:, issue_id:, issue_comment_id: nil)
-
     project = Project.find(project_id)
     account = Account.find(account_id)
 
