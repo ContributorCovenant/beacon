@@ -11,6 +11,15 @@
     <p><%= @project.description %></p>
     <% if @project.is_event? %>
       <p>This is a <%= @project.duration %>-day event with approximately <%= @project.attendees %> attendees.</p>
+
+      <% unless current_account.send_sms_on_issue_open %>
+        <div class="alert alert-danger" role="alert">
+          <p>
+            As a moderator, you may want to enable SMS notifications on new issues being opened for this event.
+            To activate this setting, click on your account in the upper right navigation bar.
+          </p>
+        </div>
+      <% end %>
     <% end %>
     <div class="actions">
       <% if current_account.can_manage_project?(@project) %>
@@ -282,5 +291,5 @@
 <% if @settings.paused? %>
   <%= button_to "Unpause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-warning" %>
 <% else %>
-  <%= button_to "Pause Issues for 24 Hours", project_toggle_pause_path(@project), class: "btn btn-danger" %>
+  <%= button_to "Pause Issue Reporting", project_toggle_pause_path(@project), class: "btn btn-danger" %>
 <% end %>
