@@ -27,7 +27,7 @@ class ProjectConfirmationService
   def confirm_via_oauth
     if method == "github"
       return false unless repo = github_client.search_repositories(project.repo_name)
-      !!repo.fork?
+      !repo.fork?
     elsif method == "gitlab"
       return false unless repo = gitlab_client.project(project.repo_name)
       !repo.respond_to?(:forked_from_project)
