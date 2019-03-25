@@ -311,11 +311,11 @@ ActiveRecord::Schema.define(version: 2019_03_25_135412) do
     t.uuid "organization_id"
     t.string "confirmation_token_url"
     t.string "repo_url"
-    t.boolean "is_event", default: false
     t.datetime "start_date"
+    t.boolean "is_event", default: false
     t.integer "duration"
     t.string "frequency"
-    t.integer "attendees"
+    t.string "attendees"
     t.index ["account_id"], name: "index_projects_on_account_id"
     t.index ["organization_id"], name: "index_projects_on_organization_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true

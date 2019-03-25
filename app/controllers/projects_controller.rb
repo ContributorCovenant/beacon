@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_project, except: [:index, :new, :create]
-  before_action :scope_organizations, only: [:new, :edit]
+  before_action :scope_organizations, expect: [:index]
   before_action :enforce_existing_project_permissions, except: [:index, :new, :create]
   before_action :enforce_project_creation_permissions, only: [:new, :create]
 
@@ -97,6 +97,7 @@ class ProjectsController < ApplicationController
       flash[:notice] = 'The project was successfully updated.'
       redirect_to @project
     else
+      flash[:error] = @project.errors.full_messages
       render :edit
     end
   end
@@ -120,7 +121,11 @@ class ProjectsController < ApplicationController
       :description,
       :organization_id,
       :confirmation_token_url,
-      :token
+      :token,
+      :is_event,
+      :duration,
+      :frequency,
+      :attendees
     )
   end
 
