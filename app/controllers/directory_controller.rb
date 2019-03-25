@@ -10,7 +10,7 @@ class DirectoryController < ApplicationController
 
   def show
     if @project = Project.for_directory.find_by(slug: params[:slug])
-      @consequences = @project.consequence_guide.consequences
+      @consequences = @project.consequence_guide_from_org_or_project.consequences
       @report = TransparencyReportingService.new(@project)
     else
       redirect_to directory_path

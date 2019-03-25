@@ -7,9 +7,9 @@ class ConsequencesController < ApplicationController
   def create
     @guide.consequences.create!(consequence_params)
     if organization = @guide.organization
-      redirect_to organization_consequence_guide_path(organization, @guide)
+      redirect_to organization_consequence_guide_path(organization)
     else
-      redirect_to project_consequence_guide_path(@guide.project, @guide)
+      redirect_to project_consequence_guide_path(@guide.project)
     end
   end
 
@@ -21,18 +21,18 @@ class ConsequencesController < ApplicationController
       consequence.update_attributes(consequence_params)
     end
     if organization = @guide.organization
-      redirect_to organization_consequence_guide_path(organization, @guide)
+      redirect_to organization_consequence_guide_path(organization)
     else
-      redirect_to project_consequence_guide_path(@guide.project, @guide)
+      redirect_to project_consequence_guide_path(@guide.project)
     end
   end
 
   def destroy
     @guide.consequences.find(:id).destroy
     if organization = @guide.organization
-      redirect_to organization_consequence_guide_path(organization, @guide)
+      redirect_to organization_consequence_guide_path(organization)
     else
-      redirect_to project_consequence_guide_path(@guide.project, @guide)
+      redirect_to project_consequence_guide_path(@guide.project)
     end
   end
 
@@ -57,7 +57,9 @@ class ConsequencesController < ApplicationController
   end
 
   def scope_guide
-    @guide = ConsequenceGuide.find(params[:consequence_guide_id])
+    @subject = Project.find_by(slug: params[:project_slug])
+    @subject ||= Organization.find_by(slug: params[:organization_slug])
+    @guide = @subject.consequence_guide
   end
 
 end

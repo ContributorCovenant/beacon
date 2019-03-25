@@ -25,10 +25,10 @@ Rails.application.routes.draw do
   resources :issues
 
   resources :organizations, param: :slug do
-    resource :autoresponder, only: [:new, :create, :edit, :show]
+    resource :autoresponder
     resources :invitations, only: [:create]
-    resources :respondent_templates, only: [:new, :create, :edit, :update, :show]
-    resources :consequence_guides do
+    resource :respondent_template
+    resource :consequence_guide do
       resources :consequences
       patch "clone", to: "consequence_guides#clone"
     end
@@ -46,8 +46,8 @@ Rails.application.routes.draw do
 
   resources :projects, param: :slug do
     resources :account_project_blocks
-    resource :autoresponder, only: [:new, :create, :edit, :show]
-    resources :consequence_guides do
+    resource :autoresponder
+    resource :consequence_guide do
       resources :consequences
       patch "clone", to: "consequence_guides#clone"
     end
@@ -63,7 +63,7 @@ Rails.application.routes.draw do
       post "reopen", to: "issues#reopen"
     end
     resources :reporters, only: [:show]
-    resources :respondent_templates, only: [:new, :create, :edit, :update, :show]
+    resource :respondent_template
     resources :respondents, only: [:show]
 
     get "settings", to: "project_settings#edit"

@@ -7,6 +7,7 @@ class ConsequenceGuide < ApplicationRecord
   attr_accessor :default_source
 
   def clone_from(source)
+    return if source == self
     consequences.destroy_all
     source.consequences.each do |consequence|
       Consequence.create(

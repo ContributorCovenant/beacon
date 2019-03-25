@@ -58,6 +58,12 @@ class Issue < ApplicationRecord
     issue_comments.select(&:visible_only_to_moderators)
   end
 
+  def consequence
+    Consequence.find(consequence_id)
+  rescue StandardError
+    nil
+  end
+
   def open?
     OPEN_STATUSES.include?(self.aasm_state)
   end

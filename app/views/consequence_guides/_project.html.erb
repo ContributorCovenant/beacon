@@ -3,7 +3,7 @@
 
   <p><b>Important:</b> If you clone the guide from another source, all of your current issues will lose their associated severity.</p>
 
-  <%= form_for guide, url: project_consequence_guide_clone_path(@project, @guide) do |f| %>
+  <%= form_for guide, url: clone_project_consequence_guide_path(@project) do |f| %>
     <div class="form-group col-sm-6">
       <label for="consequence_guide_default_source">Clone from</label>
       <%= f.select :default_source, @available_guides.map(&:titleize), class: "form-control", include_blank: "Select..." %>

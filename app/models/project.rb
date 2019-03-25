@@ -50,7 +50,12 @@ class Project < ApplicationRecord
     end
   end
 
+  def consequence_guide_from_org_or_project
+    consequence_guide || organization_consequence_guide
+  end
+
   def consequence_guide?
+    @has_consequence_guide = organization_consequence_guide.present?
     @has_consequence_guide ||= consequence_guide.consequences.any?
   end
 
@@ -72,6 +77,11 @@ class Project < ApplicationRecord
 
   def obscure_reporter_email?
     project_setting.allow_anonymous_issues
+  end
+
+  def organization_consequence_guide
+    return unless organization
+    organization.consequence_guide
   end
 
   def organization_moderators

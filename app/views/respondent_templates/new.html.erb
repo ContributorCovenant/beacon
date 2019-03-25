@@ -7,8 +7,8 @@
 <div class="row">
 
   <div class="col">
-    <% url = project_respondent_templates_path(@project, @template) if @project.present? %>
-    <% url = organization_respondent_templates_path(@organization, @template) if @organization.present? %>
+    <% url = project_respondent_template_path(@project) if @project.present? %>
+    <% url = organization_respondent_template_path(@organization) if @organization.present? %>
     <%= form_for @template, url: url do |f| %>
       <div class="form-group">
         <%= f.text_area :text, class: "form-control", rows: 20 %>

@@ -24,7 +24,7 @@
         <div class="card-text">
           <ul>
             <li>
-              <%= link_to "Impact and Consequences", organization_consequence_guide_path(@organization, @organization.consequence_guide) %>
+              <%= link_to "Impact and Consequences", organization_consequence_guide_path(@organization) %>
               <% if !@organization.setup_complete? %>
                 <% if @organization.consequence_guide? %>
                   <span class="badge badge-pill badge-success">

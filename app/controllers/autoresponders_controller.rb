@@ -95,7 +95,7 @@ class AutorespondersController < ApplicationController
 
   def scope_project
     @project = Project.find_by(slug: params[:project_slug])
-    @subject = @project
+    @subject ||= @project
   end
 
 end
