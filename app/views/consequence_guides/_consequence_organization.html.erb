@@ -16,7 +16,7 @@
   <div id="consequence-<%= consequence.severity %>-form" class="card mb-3 mr-3" style="display: none; width: 30rem">
     <div class="card-body">
       <div class="card-text">
-        <%= form_for consequence, url: organization_consequence_guide_consequence_path(@organization, @guide, consequence), style: "width: 100%" do |f| %>
+        <%= form_for consequence, url: organization_consequence_guide_consequence_path(@organization, consequence), style: "width: 100%" do |f| %>
           <div class="form-group">
             <%= f.label :label %><br />
             <%= f.text_field :label, autofocus: true, class: "form-control" %>

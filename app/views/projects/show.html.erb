@@ -118,7 +118,7 @@
                 <% end %>
               </li>
               <li>
-                <%= link_to "Impact and Consequences", project_consequence_guide_path(@project, @project.consequence_guide) %>
+                <%= link_to "Impact and Consequences", project_consequence_guide_path(@project) %>
                 <% if @project.consequence_guide? %>
                   <span class="badge badge-pill badge-success">
                     √
@@ -212,20 +212,22 @@
                 <%= link_to "Project Settings", project_settings_path(@project)  %>
               </li>
             <% end %>
-            <% if @project.autoresponder? %>
-              <li>
-                <%= link_to "Autoresponder", project_autoresponder_path(@project, @project.autoresponder) %>
-              </li>
-            <% end %>
-            <% if @project.consequence_guide? %>
-              <li>
-                <%= link_to "Impact and Consequences", project_consequence_guide_path(@project, @project.consequence_guide) %>
-              </li>
-            <% end %>
-            <% if @project.respondent_template? %>
-              <li>
-                <%= link_to "Respondent Template", edit_project_respondent_template_path(@project, @project.respondent_template) %>
-              </li>
+            <% if @project.setup_complete? %>
+              <% if @project.autoresponder? %>
+                <li>
+                  <%= link_to "Autoresponder", project_autoresponder_path(@project, @project.autoresponder) %>
+                </li>
+              <% end %>
+              <% if @project.consequence_guide? %>
+                <li>
+                  <%= link_to "Impact and Consequences", project_consequence_guide_path(@project) %>
+                </li>
+              <% end %>
+              <% if @project.respondent_template? %>
+                <li>
+                  <%= link_to "Respondent Template", edit_project_respondent_template_path(@project, @project.respondent_template) %>
+                </li>
+              <% end %>
             <% end %>
             <% if @project.account_project_blocks.any? %>
               <li>

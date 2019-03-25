@@ -54,7 +54,7 @@ class IssuesController < ApplicationController
     @respondent_discussion_comments = @issue.comments_visible_to_respondent
 
     @consequence = @issue.consequence
-    @consequences = @project.consequence_guide.consequences
+    @consequences = @project.consequence_guide_from_org_or_project.consequences
 
     @notifications_for_internal_comments_count = (
       @internal_comments

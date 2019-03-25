@@ -3,16 +3,18 @@ class ConsequenceGuidesController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_organization
   before_action :scope_project
-  before_action :scope_guide
   before_action :enforce_permissions, only: [:clone]
 
   def show
     @consequences = @guide.consequences
     @available_guides = ["beacon_default"]
     if @project
-      @available_guides << ["organization_default", @project.organization.projects.map(&:name)] if @project.organization
-      @available_guides << current_account.projects.map(&:name)
-      @available_guides.delete(@project.name)
+      if @project.organization
+        @available_guides << "organization_default"
+      else
+        @available_guides << current_account.projects.map(&:name)
+        @available_guides.delete(@project.name)
+      end
     end
     @available_guides.flatten!
     @available_guides.uniq!
@@ -24,9 +26,9 @@ class ConsequenceGuidesController < ApplicationController
   def clone
     clone_from(guide_params[:default_source])
     if @organization
-      redirect_to(organization_consequence_guide_path(@organization, @guide)) && return
+      redirect_to(organization_consequence_guide_path(@organization)) && return
     elsif @project
-      redirect_to(project_consequence_guide_path(@project, @guide)) && return
+      redirect_to(project_consequence_guide_path(@project)) && return
     end
   end
 
@@ -58,15 +60,14 @@ class ConsequenceGuidesController < ApplicationController
 
   def scope_organization
     @organization = Organization.find_by(slug: params[:organization_slug])
+    @subject = @organization
+    @guide = @organization&.consequence_guide
   end
 
   def scope_project
     @project = Project.find_by(slug: params[:project_slug])
-  end
-
-  def scope_guide
-    @guide = ConsequenceGuide.find_by(id: params[:id])
-    @guide ||= ConsequenceGuide.find_by(id: params[:consequence_guide_id])
+    @subject ||= @project
+    @guide ||= @project&.consequence_guide_from_org_or_project
   end
 
 end
