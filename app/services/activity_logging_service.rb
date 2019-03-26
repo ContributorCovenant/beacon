@@ -11,8 +11,8 @@ class ActivityLoggingService
     :failed_logins,
     :password_resets,
     :recaptcha_failures,
-    :four_o_fours,
-  ]
+    :four_o_fours
+  ].freeze
 
   def self.log(account, action)
     return unless ACTIVITIES.include?(action)
