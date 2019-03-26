@@ -21,19 +21,24 @@ class IssuesController < ApplicationController
 
   def create
     @issue = Issue.new(issue_params.merge(project_id: @project.id, reporter_id: current_account.id))
-    if verify_recaptcha(model: @issue) && @issue.save
+    recaptcha_success = verify_recaptcha(model: @issue)
+    if recaptcha_success && @issue.save
+      ActivityLoggingService.log(current_account, :issues_opened)
       notify_on_new_issue
       redirect_to project_issue_path(@project, @issue)
     else
+      ActivityLoggingService.log(current_account, :recaptcha_failures) unless recaptcha_success
       flash[:error] = @issue.errors.full_messages
       render :new
     end
   end
 
   def upload
-    if verify_recaptcha(model: @issue) && @issue.update_attributes(uploads: issue_params[:uploads])
+    recaptcha_success = verify_recaptcha(model: @issue)
+    if recaptcha_success && @issue.update_attributes(uploads: issue_params[:uploads])
       redirect_to project_issue_path(@project, @issue)
     else
+      ActivityLoggingService.log(current_account, :recaptcha_failures) unless recaptcha_success
       flash[:error] = @issue.errors.full_messages
       render :show
     end
@@ -88,6 +93,7 @@ class IssuesController < ApplicationController
 
   def dismiss
     @issue.dismiss!(account_id: current_account.id)
+    ActivityLoggingService.log(@issue.reporter, :issues_dismissed)
     notify_on_status_change
     redirect_to [@project, @issue]
   end

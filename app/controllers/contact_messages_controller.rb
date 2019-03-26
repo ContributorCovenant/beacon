@@ -7,11 +7,13 @@ class ContactMessagesController < ApplicationController
   def create
     @contact_message = ContactMessage.new(contact_message_params)
     @contact_message.sender_ip = request.remote_ip
-    if verify_recaptcha(model: @contact_message) && @contact_message.save
+    recaptcha_success = verify_recaptcha(model: @contact_message)
+    if recaptcha_success && @contact_message.save
       notify_on_new_contact_message
       flash[:info] = "Your message has been sent. A Beacon administrator will reply soon."
       redirect_to root_path
     else
+      ActivityLoggingService.log(current_account, :recaptcha_failures) unless recaptcha_success
       flash[:error] = @contact_message.errors.full_messages
       render :new
     end

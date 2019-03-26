@@ -18,6 +18,7 @@ module Admin
 
     def flag
       @account.flag!(flag_account_params[:flagged_reason])
+      ActivityLoggingService.log(@account, :times_flagged)
       redirect_to admin_account_path(@account)
     end
 

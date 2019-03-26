@@ -18,9 +18,10 @@ module Accounts
     # end
 
     # PUT /resource/password
-    # def update
-    #   super
-    # end
+    def update
+      ActivityLoggingService.log(current_account, :password_resets)
+      super
+    end
 
     # protected
 
@@ -37,7 +38,7 @@ module Accounts
 
     def check_captcha
       return if verify_recaptcha
-
+      ActivityLoggingService.log(current_account, :recaptcha_failures)
       self.resource = resource_class.new
       resource.validate
       respond_with_navigational(resource){ render :new }

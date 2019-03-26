@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   breadcrumb 'Home', :root_path
 
   def render_not_found
+    ActivityLoggingService.log(current_account, :four_o_fours) if current_account
     SuspiciousActivityLog.create(
       controller: self.class.to_s,
       action: action_name,

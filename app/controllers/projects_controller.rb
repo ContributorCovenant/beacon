@@ -46,6 +46,7 @@ class ProjectsController < ApplicationController
     end
     if @project.save
       Role.create(project_id: @project.id, account_id: current_account.id, is_owner: true)
+      ActivityLoggingService.log(current_account, :projects_created)
       redirect_to @project
     else
       flash[:error] = @project.errors.full_messages

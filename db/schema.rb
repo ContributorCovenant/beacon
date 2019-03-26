@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_25_135412) do
+ActiveRecord::Schema.define(version: 2019_03_26_224530) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -174,6 +174,7 @@ ActiveRecord::Schema.define(version: 2019_03_25_135412) do
     t.string "uid"
     t.string "email"
     t.uuid "account_id"
+    t.string "oauth_token"
     t.string "token_encrypted"
     t.index ["account_id"], name: "index_credentials_on_account_id"
     t.index ["provider", "uid"], name: "index_credentials_on_provider_and_uid", unique: true
@@ -258,11 +259,14 @@ ActiveRecord::Schema.define(version: 2019_03_25_135412) do
     t.string "slug"
     t.text "description"
     t.uuid "account_id"
-    t.string "remote_org_name"
-    t.datetime "created_at", default: "2019-03-25 00:00:00"
-    t.datetime "updated_at", default: "2019-03-25 00:00:00"
-    t.boolean "is_flagged", default: false
+    t.datetime "flagged_at"
     t.text "flagged_reason"
+    t.datetime "confirmed_at"
+    t.string "confirmation_token_url"
+    t.string "remote_org_name"
+    t.datetime "created_at", default: "2019-03-16 00:00:00"
+    t.datetime "updated_at", default: "2019-03-16 00:00:00"
+    t.boolean "is_flagged", default: false
     t.index ["account_id"], name: "index_organizations_on_account_id"
   end
 
@@ -307,6 +311,7 @@ ActiveRecord::Schema.define(version: 2019_03_25_135412) do
     t.uuid "organization_id"
     t.string "confirmation_token_url"
     t.string "repo_url"
+    t.datetime "start_date"
     t.boolean "is_event", default: false
     t.integer "duration"
     t.string "frequency"
@@ -370,6 +375,23 @@ ActiveRecord::Schema.define(version: 2019_03_25_135412) do
     t.index ["account_id"], name: "index_suspicious_activity_logs_on_account_id"
   end
 
+  create_table "user_activity_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.integer "issues_opened", default: 0
+    t.integer "issues_dismissed", default: 0
+    t.integer "issues_marked_spam", default: 0
+    t.integer "times_blocked", default: 0
+    t.integer "times_flagged", default: 0
+    t.integer "projects_created", default: 0
+    t.integer "failed_logins", default: 0
+    t.integer "password_resets", default: 0
+    t.integer "recaptcha_failures", default: 0
+    t.integer "four_o_fours", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_user_activity_logs_on_account_id"
+  end
+
   add_foreign_key "abuse_report_subjects", "abuse_reports"
   add_foreign_key "abuse_report_subjects", "accounts"
   add_foreign_key "abuse_report_subjects", "issues"
@@ -404,4 +426,5 @@ ActiveRecord::Schema.define(version: 2019_03_25_135412) do
   add_foreign_key "roles", "projects"
   add_foreign_key "surveys", "projects"
   add_foreign_key "suspicious_activity_logs", "accounts"
+  add_foreign_key "user_activity_logs", "accounts"
 end
