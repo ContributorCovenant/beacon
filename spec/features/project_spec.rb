@@ -89,7 +89,7 @@ describe "The project setup process", type: :feature do
       click_on "My Projects"
       click_on(project.name)
       click_on("Project Settings")
-      expect(page).to have_content("#{project.name}: Settings")
+      expect(page).to have_content("Settings")
       check("project_setting_include_in_directory")
       click_on("Update Settings")
     end

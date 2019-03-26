@@ -7,6 +7,14 @@ class RespondentTemplatesController < ApplicationController
   before_action :scope_available_templates, except: [:update]
 
   def new
+    if organization = @organization || @project.organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb organization.name, organization_path(organization)
+      breadcrumb(@project.name, project_path(@project)) if @project
+    else
+      breadcrumb "Projects", projects_path if @project
+      breadcrumb(@project.name, project_path(@project))
+    end
     if @project
       @template = RespondentTemplate.new(project_id: @project.id)
       org_template = @project.organization.present? ? "Organization Default" : nil
@@ -50,6 +58,14 @@ class RespondentTemplatesController < ApplicationController
   end
 
   def edit
+    if organization = @organization || @project.organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb organization.name, organization_path(organization)
+      breadcrumb(@project.name, project_path(@project)) if @project
+    else
+      breadcrumb "Projects", projects_path if @project
+      breadcrumb(@project.name, project_path(@project))
+    end
     @template = @subject.respondent_template
   end
 

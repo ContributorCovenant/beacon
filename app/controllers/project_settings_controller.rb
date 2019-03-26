@@ -6,6 +6,13 @@ class ProjectSettingsController < ApplicationController
   before_action :enforce_permissions
 
   def edit
+    if @organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb @organization.name, organization_path(@organization)
+    else
+      breadcrumb "Projects", projects_path
+    end
+    breadcrumb @project.name, project_path(@project)
   end
 
   def update
@@ -27,6 +34,7 @@ class ProjectSettingsController < ApplicationController
 
   def scope_project_and_settings
     @project = Project.where(slug: params[:project_slug]).includes(:project_setting).first
+    @organization = @project.organization
     @settings = @project.project_setting
   end
 

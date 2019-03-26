@@ -8,6 +8,13 @@ class AutorespondersController < ApplicationController
   before_action :scope_available_sources, only: [:new, :edit]
 
   def new
+    if organization = @organization || @project.organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb organization.name, organization_path(organization)
+    else
+      breadcrumb "Projects", projects_path
+    end
+    breadcrumb(@project.name, project_path(@project)) if @project
     if @project
       @autoresponder = Autoresponder.new(project_id: @project.id)
       org_autoresponder = @project.organization.present? ? "Organization Default" : nil
@@ -18,6 +25,13 @@ class AutorespondersController < ApplicationController
   end
 
   def show
+    if organization = @organization || @project.organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb organization.name, organization_path(organization)
+    else
+      breadcrumb "Projects", projects_path
+    end
+    breadcrumb(@project.name, project_path(@project)) if @project
   end
 
   def create
@@ -53,6 +67,13 @@ class AutorespondersController < ApplicationController
   end
 
   def edit
+    if organization = @organization || @project.organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb organization.name, organization_path(organization)
+    else
+      breadcrumb "Projects", projects_path
+    end
+    breadcrumb(@project.name, project_path(@project)) if @project
   end
 
   def update

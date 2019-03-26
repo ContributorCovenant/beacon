@@ -6,6 +6,14 @@ class ConsequenceGuidesController < ApplicationController
   before_action :enforce_permissions, only: [:clone]
 
   def show
+    if organization = @organization || @project.organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb organization.name, organization_path(organization)
+      breadcrumb(@project.name, project_path(@project)) if @project
+    else
+      breadcrumb "Projects", projects_path if @project
+      breadcrumb(@project.name, project_path(@project))
+    end
     @consequences = @guide.consequences
     @available_guides = ["beacon_default"]
     if @project

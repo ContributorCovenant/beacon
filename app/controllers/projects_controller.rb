@@ -1,6 +1,7 @@
 class ProjectsController < ApplicationController
   before_action :authenticate_account!
   before_action :scope_project, except: [:index, :new, :create]
+  before_action :scope_organization, except: [:index, :create, :update]
   before_action :scope_organizations, expect: [:index]
   before_action :enforce_existing_project_permissions, except: [:index, :new, :create]
   before_action :enforce_project_creation_permissions, only: [:new, :create]
@@ -10,6 +11,13 @@ class ProjectsController < ApplicationController
   end
 
   def moderators
+    if @organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb @organization.name, organization_path(@organization)
+    else
+      breadcrumb "Projects", projects_path
+    end
+    breadcrumb @project.name, project_path(@project)
     @invitation = Invitation.new(project_id: @project.id)
     @invitations = @project.invitations
     @moderators = @project.all_moderators
@@ -21,6 +29,12 @@ class ProjectsController < ApplicationController
   end
 
   def new
+    if @organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb @organization.name, organization_path(@organization)
+    else
+      breadcrumb "Projects", projects_path
+    end
     @project = Project.new(name: 'My Project', organization_id: params[:organization_id])
   end
 
@@ -40,9 +54,17 @@ class ProjectsController < ApplicationController
   end
 
   def edit
+    breadcrumb @project.name, project_path(@project)
   end
 
   def show
+    if @organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb @organization.name, organization_path(@organization)
+    else
+      breadcrumb "Projects", projects_path
+    end
+    breadcrumb @project.name, project_path(@project)
     unless @project.coc_url.present?
       flash[:error] = "This project does not have a code of conduct URL. To set it, click 'Edit' below."
     end
@@ -50,6 +72,13 @@ class ProjectsController < ApplicationController
   end
 
   def ownership
+    if @organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb @organization.name, organization_path(@organization)
+    else
+      breadcrumb "Projects", projects_path
+    end
+    breadcrumb @project.name, project_path(@project)
     @github_token = current_account.github_token
     @gitlab_token = current_account.gitlab_token
   end
@@ -127,6 +156,14 @@ class ProjectsController < ApplicationController
       :frequency,
       :attendees
     )
+  end
+
+  def scope_organization
+    if @project
+      @organization = @project.organization
+    else
+      @organization = Organization.find_by(id: params[:organization_id])
+    end
   end
 
   def scope_organizations
