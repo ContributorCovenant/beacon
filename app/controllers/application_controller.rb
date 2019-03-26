@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
     http_basic_authenticate_with name: ENV['HTTP_AUTH_USER'], password: ENV['HTTP_AUTH_PASSWORD']
   end
 
+  breadcrumb 'Home', :root_path
+
   def render_not_found
     SuspiciousActivityLog.create(
       controller: self.class.to_s,

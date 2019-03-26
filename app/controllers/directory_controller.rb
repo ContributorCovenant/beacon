@@ -1,5 +1,7 @@
 class DirectoryController < ApplicationController
 
+  breadcrumb "Directory", :directory_path
+
   def index
     @page_index = Project.for_directory.pluck(:name).map(&:first).uniq
     return unless @current_index = params[:page] || @page_index.first
@@ -10,6 +12,7 @@ class DirectoryController < ApplicationController
 
   def show
     if @project = Project.for_directory.find_by(slug: params[:slug])
+      breadcrumb @project.name, directory_project_path(@project)
       @consequences = @project.consequence_guide_from_org_or_project.consequences
       @report = TransparencyReportingService.new(@project)
     else

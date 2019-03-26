@@ -6,6 +6,8 @@ class OrganizationsController < ApplicationController
   before_action :enforce_view_permissions, except: [:index, :new, :create]
   before_action :enforce_management_permissions, only: [:edit, :update, :delete]
 
+  breadcrumb "Organizations", :organizations_path
+
   def index
     @organizations = Role.where(
       "account_id = ? AND organization_id IS NOT NULL AND is_owner = ?",
@@ -30,6 +32,7 @@ class OrganizationsController < ApplicationController
   end
 
   def show
+    breadcrumb @organization.name, organization_path(@organization)
     if @organization.projects.count > 12
       @page_index = @organization.projects.order('name ASC').pluck(:name).map(&:first).uniq
       @current_index = params[:page] || @page_index.first
@@ -42,6 +45,7 @@ class OrganizationsController < ApplicationController
   end
 
   def edit
+    breadcrumb @organization.name, organization_path(@organization)
   end
 
   def update
@@ -50,10 +54,12 @@ class OrganizationsController < ApplicationController
   end
 
   def github_auth_token
+    breadcrumb @organization.name, organization_path(@organization)
     @token = current_account.github_token
   end
 
   def import_projects_from_github
+    breadcrumb @organization.name, organization_path(@organization)
     current_account.update_github_token(params[:token])
     results = GithubImportService.new(current_account, @organization).import_projects
     if results[:success]
@@ -65,6 +71,7 @@ class OrganizationsController < ApplicationController
   end
 
   def gitlab_auth_token
+    breadcrumb @organization.name, organization_path(@organization)
     @token = current_account.gitlab_token
   end
 
@@ -80,6 +87,7 @@ class OrganizationsController < ApplicationController
   end
 
   def moderators
+    breadcrumb @organization.name, organization_path(@organization)
     @invitation = Invitation.new(organization_id: @organization.id)
     @invitations = @organization.invitations
     @moderators = @organization.moderators

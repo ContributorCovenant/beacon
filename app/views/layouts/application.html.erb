@@ -23,8 +23,17 @@
       <%= render 'layouts/navigation' %>
     </header>
     <main role="main" class="container mt-3">
-       <%= render 'layouts/messages' %>
-       <%= yield %>
+      <nav aria-label="breadcrumb">
+        <ol class='breadcrumb'>
+          <% breadcrumb_trail do |crumb| %>
+            <li class="breadcrumb-item <%= crumb.current? ? 'active' : '' %>">
+              <%= link_to crumb.name, crumb.url, (crumb.current? ? {'aria-current' => 'page'} : {}) %>
+            </li>
+          <% end %>
+        </ol>
+      </nav>
+      <%= render 'layouts/messages' %>
+      <%= yield %>
     </main>
     <footer class="page-footer font-small blue pt-4">
       <div class="footer-copyright text-center py-3">© <%= Date.today.year %>

@@ -26,9 +26,11 @@ module Permissions
   end
 
   def can_comment_on_issue?(issue)
+    project = issue.project
     return true if issue.project.moderators.include?(self)
-    return true if issue.reporter == self && !blocked_from_project?(issue.project)
-    return true if issue.respondent == self && !blocked_from_project?(issue.project)
+    return false if blocked_from_project?(project)
+    return true if issue.reporter == self
+    return true if issue.respondent == self
     false
   end
 
@@ -103,10 +105,10 @@ module Permissions
   end
 
   def can_open_issue_on_project?(project)
+    return false if is_flagged
     return false unless project.accepting_issues?
     return false if project.require_3rd_party_auth? && !third_party_credentials?
     return false if blocked_from_project?(project)
-    return false if is_flagged
     return false if project.issue_count_from_past_24_hours == project.project_setting.rate_per_day
     return false if issues.submitted.past_24_hours.count == Setting.throttling(:max_issues_per_day)
     return true
@@ -124,10 +126,12 @@ module Permissions
   end
 
   def can_view_issue?(issue)
+    project = issue.project
     return true if is_admin?
-    return true if issue.project.moderator?(self)
-    return true if issue.reporter == self && !blocked_from_project?(issue.project)
-    return true if issue.respondent == self && !blocked_from_project?(issue.project)
+    return true if project.moderator?(self)
+    return false if blocked_from_project?(project)
+    return true if issue.reporter == self
+    return true if issue.respondent == self
     false
   end
 

@@ -5,6 +5,7 @@ class AccountProjectBlocksController < ApplicationController
   before_action :enforce_permissions
 
   def index
+    breadcrumb @project.name, project_path(@project)
     @blocks = @project.account_project_blocks.includes(:account)
     @issues = @project.issues
   end
