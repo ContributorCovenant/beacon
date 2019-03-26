@@ -69,6 +69,7 @@ Rails.application.routes.draw do
     get "settings", to: "project_settings#edit"
     get "moderators", to: "projects#moderators"
     get "ownership", to: "projects#ownership"
+    get "token", to: "projects#token"
     post "clone_autoresponder", to: "autoresponders#clone"
     post "clone_respondent_template", to: "respondent_templates#clone"
     post "remove_moderator", to: "projects#remove_moderator"

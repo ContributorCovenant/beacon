@@ -44,10 +44,10 @@ class Project < ApplicationRecord
   end
 
   def confirmation_token_url_default
-    if repo_url
-      (repo_url + "/blob/master/beacon.txt").gsub(/\/\/blob/, "/blob")
+    if repo_url.present?
+      "#{repo_url}/blob/master/.beacon".gsub(/\/\/blob/, "/blob")
     else
-      (url + "/beacon.txt").gsub(/\/\/beacon/, "/beacon")
+      "#{url}/beacon.txt".gsub(/\/\/beacon/, "/beacon")
     end
   end
 
