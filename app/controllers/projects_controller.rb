@@ -7,6 +7,7 @@ class ProjectsController < ApplicationController
   before_action :enforce_project_creation_permissions, only: [:new, :create]
 
   def index
+    breadcrumb "Projects", projects_path
     @projects = current_account.projects
   end
 
@@ -54,6 +55,12 @@ class ProjectsController < ApplicationController
   end
 
   def edit
+    if @organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb @organization.name, organization_path(@organization)
+    else
+      breadcrumb "Projects", projects_path
+    end
     breadcrumb @project.name, project_path(@project)
   end
 
@@ -128,6 +135,15 @@ class ProjectsController < ApplicationController
     else
       flash[:error] = @project.errors.full_messages
       render :edit
+    end
+  end
+
+  def token
+    token = "BEACON_TOKEN=#{@project.confirmation_token}"
+    if @project.repo_url
+      send_data token, filename: "beacon", type: "text/plain"
+    else
+      send_data token, filename: "beacon.txt", type: "text/plain"
     end
   end
 

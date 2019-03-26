@@ -34,6 +34,10 @@ module Permissions
     false
   end
 
+  def can_create_organization?
+    !is_flagged
+  end
+
   def can_create_project?
     !is_flagged
   end

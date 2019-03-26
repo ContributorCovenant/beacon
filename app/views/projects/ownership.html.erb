@@ -6,8 +6,10 @@
 
 <%= form_for @project, url: project_confirm_path(@project) do |f| %>
   <div class="form-group">
-    <%= f.label :token, "Confirmation Token" %>
-    <%= f.text_field :token, value: "BEACON_TOKEN=#{@project.confirmation_token}", disabled: true, class: "form-control" %>
+    <label>Confirmation Token</label><br />
+    <pre>
+      BEACON_TOKEN=<%= @project.confirmation_token %>
+    </pre>
   </div>
   <div class="form-group">
     <%= f.label :confirmation_token_url, "Confirmation Token URL" %>
@@ -19,15 +21,17 @@
     <% else %>
       <%= f.submit "Verify Ownership", class: "btn btn-primary" %>
     <% end %>
+    <%= link_to "Download Token", project_token_path(@project), class: "btn btn-warning" %>
     <%= link_to "Back", @project, class: "btn btn-warning" %>
   </div>
 <% end %>
 
-<p class="mt-5">If <%= link_to "your account is linked", edit_account_path(current_account) %>
+<h2 class="mt-5">OAuth Confirmation</h2>
+<p>If <%= link_to "your account is linked", edit_account_path(current_account) %>
 to GitHub or GitLab, you can use an oauth token to confirm.</p>
 
 <% if current_account.linked_to_github? %>
-  <h2>Confirm GitHub Project</h2>
+  <h3>Confirm GitHub Project</h3>
   <p>Provide a <a href="https://github.com/settings/tokens/new" target="_new">personal access token</a>
   with "public_repo" permissions.</p>
   <%= form_for @project, url: project_confirm_path(@project) do |f| %>
@@ -44,7 +48,7 @@ to GitHub or GitLab, you can use an oauth token to confirm.</p>
 <% end %>
 
 <% if current_account.linked_to_gitlab? %>
-  <h2>Confirm GitLab Project</h2>
+  <h3>Confirm GitLab Project</h3>
   <%= form_for @project, url: project_confirm_path(@project) do |f| %>
     <div class="form-group col-sm-6">
       <label for="token">OAuth Token</label><br />
