@@ -11,11 +11,10 @@ class AutorespondersController < ApplicationController
     if organization = @organization || @project.organization
       breadcrumb "Organizations", organizations_path
       breadcrumb organization.name, organization_path(organization)
-      breadcrumb(@project.name, project_path(@project)) if @project
     else
-      breadcrumb "Projects", projects_path if @project
-      breadcrumb(@project.name, project_path(@project)) if @project
+      breadcrumb "Projects", projects_path
     end
+    breadcrumb(@project.name, project_path(@project)) if @project
     if @project
       @autoresponder = Autoresponder.new(project_id: @project.id)
       org_autoresponder = @project.organization.present? ? "Organization Default" : nil
@@ -29,11 +28,10 @@ class AutorespondersController < ApplicationController
     if organization = @organization || @project.organization
       breadcrumb "Organizations", organizations_path
       breadcrumb organization.name, organization_path(organization)
-      breadcrumb(@project.name, project_path(@project)) if @project
     else
-      breadcrumb "Projects", projects_path if @project
-      breadcrumb(@project.name, project_path(@project)) if @project
+      breadcrumb "Projects", projects_path
     end
+    breadcrumb(@project.name, project_path(@project)) if @project
   end
 
   def create
@@ -72,11 +70,10 @@ class AutorespondersController < ApplicationController
     if organization = @organization || @project.organization
       breadcrumb "Organizations", organizations_path
       breadcrumb organization.name, organization_path(organization)
-      breadcrumb(@project.name, project_path(@project)) if @project
     else
-      breadcrumb "Projects", projects_path if @project
-      breadcrumb(@project.name, project_path(@project))
+      breadcrumb "Projects", projects_path
     end
+    breadcrumb(@project.name, project_path(@project)) if @project
   end
 
   def update
