@@ -27,8 +27,19 @@
           <div class="card mr-5 mt-2" style="height: 14em;"">
             <div class="card-body">
               <h2 class="card-title">Register a Project</h2>
-              <p class="card-text">Register a new project on Beacon.</p>
+              <p class="card-text">Register and configure a new project on Beacon.</p>
               <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <% if current_account.can_create_organization? %>
+        <div class="col-sm">
+          <div class="card mr-5 mt-2" style="height: 14em;"">
+            <div class="card-body">
+              <h2 class="card-title">Create an Organization</h2>
+              <p class="card-text">Manage a portfolio of projects or events.</p>
+              <%= link_to "New Organization", new_organization_path, class: "btn btn-primary" %>
             </div>
           </div>
         </div>

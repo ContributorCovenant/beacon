@@ -7,6 +7,7 @@ class ProjectsController < ApplicationController
   before_action :enforce_project_creation_permissions, only: [:new, :create]
 
   def index
+    breadcrumb "Projects", projects_path
     @projects = current_account.projects
   end
 
