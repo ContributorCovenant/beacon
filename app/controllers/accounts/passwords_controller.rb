@@ -13,15 +13,15 @@ module Accounts
     # end
 
     # GET /resource/password/edit?reset_password_token=abcdef
-    # def edit
-    #   super
-    # end
-
-    # PUT /resource/password
-    def update
+    def edit
       ActivityLoggingService.log(current_account, :password_resets)
       super
     end
+
+    # PUT /resource/password
+    # def update
+    #   super
+    # end
 
     # protected
 
@@ -38,7 +38,6 @@ module Accounts
 
     def check_captcha
       return if verify_recaptcha
-      ActivityLoggingService.log(current_account, :recaptcha_failures)
       self.resource = resource_class.new
       resource.validate
       respond_with_navigational(resource){ render :new }

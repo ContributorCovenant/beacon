@@ -3,8 +3,6 @@ require 'normailize'
 
 class Account < ApplicationRecord
 
-  has_many :credentials, inverse_of: :account, dependent: :delete_all
-
   include Permissions
 
   devise :authy_authenticatable, :database_authenticatable, :registerable,
@@ -20,9 +18,11 @@ class Account < ApplicationRecord
   validates_uniqueness_of :normalized_email
   validates :email, 'valid_email_2/email': { disposable: true, mx: true }
 
+  has_one  :account_activity_log
   has_many :abuse_reports
   has_many :account_issues
   has_many :account_project_blocks
+  has_many :credentials, inverse_of: :account, dependent: :delete_all
   has_many :roles
 
   scope :admins, -> { where(is_admin: true) }

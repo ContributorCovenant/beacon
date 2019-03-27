@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_26_224530) do
+ActiveRecord::Schema.define(version: 2019_03_26_234755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -37,6 +37,22 @@ ActiveRecord::Schema.define(version: 2019_03_26_224530) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_abuse_reports_on_account_id"
+  end
+
+  create_table "account_activity_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "account_id"
+    t.integer "issues_opened", default: 0
+    t.integer "issues_dismissed", default: 0
+    t.integer "issues_marked_spam", default: 0
+    t.integer "times_blocked", default: 0
+    t.integer "times_flagged", default: 0
+    t.integer "projects_created", default: 0
+    t.integer "password_resets", default: 0
+    t.integer "recaptcha_failures", default: 0
+    t.integer "four_o_fours", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_account_activity_logs_on_account_id"
   end
 
   create_table "account_issues", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -121,14 +137,6 @@ ActiveRecord::Schema.define(version: 2019_03_26_224530) do
     t.string "checksum", null: false
     t.datetime "created_at", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
-  end
-
-  create_table "activity_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "account_id"
-    t.string "label", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_activity_logs_on_account_id"
   end
 
   create_table "autoresponders", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -375,33 +383,16 @@ ActiveRecord::Schema.define(version: 2019_03_26_224530) do
     t.index ["account_id"], name: "index_suspicious_activity_logs_on_account_id"
   end
 
-  create_table "user_activity_logs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
-    t.uuid "account_id"
-    t.integer "issues_opened", default: 0
-    t.integer "issues_dismissed", default: 0
-    t.integer "issues_marked_spam", default: 0
-    t.integer "times_blocked", default: 0
-    t.integer "times_flagged", default: 0
-    t.integer "projects_created", default: 0
-    t.integer "failed_logins", default: 0
-    t.integer "password_resets", default: 0
-    t.integer "recaptcha_failures", default: 0
-    t.integer "four_o_fours", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_user_activity_logs_on_account_id"
-  end
-
   add_foreign_key "abuse_report_subjects", "abuse_reports"
   add_foreign_key "abuse_report_subjects", "accounts"
   add_foreign_key "abuse_report_subjects", "issues"
   add_foreign_key "abuse_report_subjects", "projects"
   add_foreign_key "abuse_reports", "accounts"
+  add_foreign_key "account_activity_logs", "accounts"
   add_foreign_key "account_issues", "accounts"
   add_foreign_key "account_project_blocks", "accounts"
   add_foreign_key "account_project_blocks", "projects"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "activity_logs", "accounts"
   add_foreign_key "autoresponders", "organizations"
   add_foreign_key "autoresponders", "projects"
   add_foreign_key "consequence_guides", "organizations"
@@ -426,5 +417,4 @@ ActiveRecord::Schema.define(version: 2019_03_26_224530) do
   add_foreign_key "roles", "projects"
   add_foreign_key "surveys", "projects"
   add_foreign_key "suspicious_activity_logs", "accounts"
-  add_foreign_key "user_activity_logs", "accounts"
 end

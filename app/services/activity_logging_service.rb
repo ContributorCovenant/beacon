@@ -8,15 +8,15 @@ class ActivityLoggingService
     :times_flagged,
     :issues_dismissed,
     :projects_created,
-    :failed_logins,
     :password_resets,
     :recaptcha_failures,
     :four_o_fours
   ].freeze
 
   def self.log(account, action)
+    return unless account
     return unless ACTIVITIES.include?(action)
-    log = account.activity_log || ActivityLog.create(account_id: account.id)
+    log = account.account_activity_log || AccountActivityLog.create(account_id: account.id)
     previous_count = log.send(action)
     log.update_attribute(action, previous_count + 1)
   end

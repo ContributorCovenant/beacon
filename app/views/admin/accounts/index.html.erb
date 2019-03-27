@@ -8,7 +8,6 @@
       <th>Name</th>
       <th>Email</th>
       <th>Created At</th>
-      <th>Updated At</th>
       <th># Projects</th>
       <th>Organizations</th>
       <th>Flagged?</th>
@@ -20,7 +19,6 @@
         <td><%= account.name %></td>
         <td><%= link_to account.email, admin_account_path(account) %></td>
         <td><%= account.created_at.strftime("%D") %></td>
-        <td><%= account.updated_at.strftime("%D") %></td>
         <td><%= account.projects.count %></td>
         <td>
           <% account.organizations.each do |organization| %>

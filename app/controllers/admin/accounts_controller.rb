@@ -5,15 +5,19 @@ module Admin
     before_action :enforce_account_permissions
     before_action :scope_account, except: [:index]
 
+    breadcrumb "Accounts Admin", :admin_accounts_path
+
     def index
       @accounts = Account.all.order("email ASC")
     end
 
     def show
-      @blocks = @account.account_project_blocks.includes(:projects).map(&:project)
+      breadcrumb @account.display_name, admin_account_path(@account)
+      @blocks = @account.account_project_blocks.map(&:project)
       @reports = AbuseReportSubject.where(account_id: @account.id).includes(:abuse_report)
       @projects = @account.projects
       @organizations = @account.organizations
+      @log = @account.account_activity_log
     end
 
     def flag
