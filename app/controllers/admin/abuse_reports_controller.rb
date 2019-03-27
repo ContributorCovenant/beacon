@@ -5,11 +5,14 @@ module Admin
     before_action :enforce_account_permissions
     before_action :scope_report, except: [:index]
 
+    breadcrumb "Organizations Admin", :admin_organizations_path
+
     def index
       @reports = AbuseReport.all.includes(:abuse_report_subject).order("created_at DESC")
     end
 
     def show
+      breadcrumb "Abuse Report #{@report.report_number}", admin_abuse_report_path(@report)
       @project = @report.project
       @reporter = @report.account
       @reportee = @report.reportee

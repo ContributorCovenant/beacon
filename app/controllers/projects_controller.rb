@@ -189,7 +189,7 @@ class ProjectsController < ApplicationController
 
   def scope_project
     @project = Project.find_by(slug: params[:slug]) || Project.find_by(slug: params[:project_slug])
-    render_not_found and return unless @project
+    render_not_found && return unless @project
     @settings = @project.project_setting
     @issues = @project.issues
   end

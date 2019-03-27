@@ -6,7 +6,6 @@ class ActivityLoggingService
     :issues_marked_spam,
     :times_blocked,
     :times_flagged,
-    :issues_dismissed,
     :projects_created,
     :password_resets,
     :recaptcha_failures,

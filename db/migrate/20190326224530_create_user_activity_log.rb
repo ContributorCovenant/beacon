@@ -7,7 +7,6 @@ class CreateUserActivityLog < ActiveRecord::Migration[5.2]
       t.integer :issues_marked_spam, default: 0
       t.integer :times_blocked, default: 0
       t.integer :times_flagged, default: 0
-      t.integer :issues_dismissed, default: 0
       t.integer :projects_created, default: 0
       t.integer :password_resets, default: 0
       t.integer :recaptcha_failures, default: 0
