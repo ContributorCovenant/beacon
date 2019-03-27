@@ -139,7 +139,9 @@ class IssuesController < ApplicationController
 
   def notify_on_new_issue
     @project.moderators.each do |moderator|
-      Resque.enqueue(NotificationWorker, moderator.id, @project.id, @issue.id)
+      NotificationService.notify(account_id: moderator.id,
+                                 project_id: @project.id,
+                                 issue_id: @issue.id)
     end
     IssueNotificationsMailer.with(
       email: @project.moderator_emails,
