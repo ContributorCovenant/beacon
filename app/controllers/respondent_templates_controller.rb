@@ -17,12 +17,9 @@ class RespondentTemplatesController < ApplicationController
     end
     if @project
       @template = RespondentTemplate.new(project_id: @project.id)
-      org_template = @project.organization.present? ? "Organization Default" : nil
     else
       @template = RespondentTemplate.new(organization_id: @organization.id)
-      org_template = "Organization Default"
     end
-    @available_templates = ["Beacon Default", org_template, @available_templates].flatten.compact - [@project&.name]
   end
 
   def create
@@ -41,6 +38,13 @@ class RespondentTemplatesController < ApplicationController
   end
 
   def clone
+    if @organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb @organization.name, organization_path(@organization)
+    else
+      breadcrumb "Projects", projects_path
+    end
+    breadcrumb @project.name, project_path(@project)
     if existing = @subject.respondent_template
       existing.destroy
     end
@@ -48,7 +52,7 @@ class RespondentTemplatesController < ApplicationController
     if source == "Beacon Default"
       @template = @subject.create_respondent_template(text: RespondentTemplate.beacon_default.text)
     elsif source == "Organization Default"
-      @template = @subject.create_respondent_template(text: @organization&.respondent_template&.text || @project.organization.respondent_template.text)
+      @template = @subject.create_respondent_template(text: @organization&.respondent_template&.text || @project.organization&.respondent_template.text)
     else
       source = current_account.projects.find_by(name: source).respondent_template
       @template = @subject.create_respondent_template(text: source.text)
@@ -91,16 +95,22 @@ class RespondentTemplatesController < ApplicationController
 
   def scope_available_templates
     if @project&.organization
-      projects_with_respondent_template = @project.organization.projects.select(&:respondent_template?)
+      projects_with_respondent_template = @project.organization.projects.select(&:respondent_template?).map(&:name)
     elsif @organization
-      projects_with_respondent_template = @organization.projects.select(&:respondent_template?)
+      projects_with_respondent_template = @organization.projects.select(&:respondent_template?).map(&:name)
     end
-    projects_with_respondent_template ||= current_account.personal_projects.select(&:respondent_template?)
-    @available_templates = projects_with_respondent_template.map(&:name).flatten
+    projects_with_respondent_template ||= current_account.personal_projects.select(&:respondent_template?).map(&:name)
+    if @project
+      org_template = @project.organization.present? && @project.organization.respondent_template? ? "Organization Default" : nil
+    else
+      org_template = "Organization Default"
+    end
+    @available_templates = ["Beacon Default", org_template, projects_with_respondent_template].flatten.compact - [@project&.name]
   end
 
   def scope_organization
     @organization = Organization.find_by(slug: params[:organization_slug])
+    @organization ||= @project.organization
     @subject ||= @organization
   end
 
