@@ -5,11 +5,14 @@ module Admin
     before_action :enforce_organization_permissions
     before_action :scope_organization, except: [:index]
 
+    breadcrumb "Organizations Admin", :admin_organizations_path
+
     def index
       @organizations = Organization.includes(:account).all.order('name ASC')
     end
 
     def show
+      breadcrumb @organization.name, admin_organization_path(@organization)
       @projects = @organization.projects
     end
 

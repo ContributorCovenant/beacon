@@ -5,11 +5,14 @@ module Admin
     before_action :enforce_project_permissions
     before_action :scope_project, except: [:index]
 
+    breadcrumb "Projects Admin", :admin_projects_path
+
     def index
       @projects = Project.all.includes(:account).order('name ASC')
     end
 
     def show
+      breadcrumb @project.name, admin_project_path(@project)
       issues = @project.issues.order("created_at DESC")
       @total_issues = issues.count
       @submitted_issues = issues.select{ |issue| issue.aasm_state == "submitted" }

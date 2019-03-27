@@ -36,7 +36,7 @@ class AbuseReport < ApplicationRecord
   end
 
   def project
-    @project ||= abuse_report_subject.project
+    @project ||= abuse_report_subject&.project
   end
 
   def reportee=(account)
@@ -44,11 +44,11 @@ class AbuseReport < ApplicationRecord
   end
 
   def reportee
-    @reportee ||= abuse_report_subject.account
+    @reportee ||= abuse_report_subject&.account
   end
 
   def issue
-    @issue ||= abuse_report_subject.issue
+    @issue ||= abuse_report_subject&.issue
   end
 
   def kind

@@ -32,12 +32,14 @@ class InvitationsController < ApplicationController
       redirect_to root_path
     end
 
-    if verify_recaptcha(model: invitation) && invitation.save
+    recaptcha_success = verify_recaptcha(model: invitation)
+    if recaptcha_success && invitation.save
       flash[:info] = "Invitation sent."
       InvitationsMailer.with(
         invitation: invitation
       ).send_invitation.deliver_now
     else
+      ActivityLoggingService.log(current_account, :recaptcha_failures) unless recaptcha_success
       flash[:error] = invitation.errors.full_messages
     end
     redirect_to project_moderators_path(project) if project

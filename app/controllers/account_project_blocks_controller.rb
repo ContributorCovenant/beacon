@@ -15,8 +15,8 @@ class AccountProjectBlocksController < ApplicationController
       account_id: block_params[:account_id],
       reason: block_params[:reason]
     )
-
     if @block.save
+      ActivityLoggingService.log(Account.find(block_params[:account_id]), :times_blocked)
       if block_params[:report_for_abuse]
         @account = Account.find(block_params[:account_id])
         @account.update_attributes(

@@ -46,6 +46,7 @@ class ProjectsController < ApplicationController
     end
     if @project.save
       Role.create(project_id: @project.id, account_id: current_account.id, is_owner: true)
+      ActivityLoggingService.log(current_account, :projects_created)
       redirect_to @project
     else
       flash[:error] = @project.errors.full_messages
@@ -188,7 +189,7 @@ class ProjectsController < ApplicationController
 
   def scope_project
     @project = Project.find_by(slug: params[:slug]) || Project.find_by(slug: params[:project_slug])
-    render_not_found unless @project
+    render_not_found && return unless @project
     @settings = @project.project_setting
     @issues = @project.issues
   end

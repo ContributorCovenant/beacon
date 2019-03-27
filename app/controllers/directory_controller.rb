@@ -16,6 +16,7 @@ class DirectoryController < ApplicationController
       @consequences = @project.consequence_guide_from_org_or_project.consequences
       @report = TransparencyReportingService.new(@project)
     else
+      ActivityLoggingService.log(current_account, :four_o_fours) if current_account
       redirect_to directory_path
     end
   end
