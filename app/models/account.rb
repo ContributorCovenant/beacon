@@ -129,7 +129,7 @@ class Account < ApplicationRecord
   end
 
   def reputation
-    "good"
+    ReputationService.reputation(account_activity_log)
   end
 
   def submitted_abuse_report_for?(account)
