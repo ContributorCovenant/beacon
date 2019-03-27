@@ -10,7 +10,7 @@
       </li>
       <% @page_index.each do |i| %>
         <li class="page-item <%= @current_index == i ? 'active' : '' %>">
-          <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+          <a class="page-link" href="?page=<%= i %>"><%= i.upcase %></a>
         </li>
       <% end %>
       <li class="page-item">

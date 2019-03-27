@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_26_234755) do
+ActiveRecord::Schema.define(version: 2019_03_27_010650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -324,9 +324,11 @@ ActiveRecord::Schema.define(version: 2019_03_26_234755) do
     t.integer "duration"
     t.string "frequency"
     t.string "attendees"
+    t.string "sort_key", default: ""
     t.index ["account_id"], name: "index_projects_on_account_id"
     t.index ["organization_id"], name: "index_projects_on_organization_id"
     t.index ["slug"], name: "index_projects_on_slug", unique: true
+    t.index ["sort_key"], name: "index_projects_on_sort_key"
   end
 
   create_table "respondent_templates", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

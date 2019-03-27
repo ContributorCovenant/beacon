@@ -3,7 +3,7 @@ class DirectoryController < ApplicationController
   breadcrumb "Directory", :directory_path
 
   def index
-    @page_index = Project.for_directory.pluck(:name).map(&:first).uniq
+    @page_index = Project.for_directory.pluck(:sort_key).uniq
     return unless @current_index = params[:page] || @page_index.first
     @previous_index = @page_index[@page_index.index(@current_index) - 1]
     @next_index = @page_index[@page_index.index(@current_index) - 1]
