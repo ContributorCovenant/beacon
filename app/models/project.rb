@@ -21,11 +21,13 @@ class Project < ApplicationRecord
   has_many :surveys, dependent: :destroy
 
   before_create :set_slug
+  before_create :set_sort_key
+
   after_create :make_settings
   after_create :create_consequence_guide
 
-  scope :for_directory, -> { where(public: true, setup_complete: true, is_flagged: false).order("name ASC") }
-  scope :starting_with, ->(letter) { where("name ILIKE ?", letter + '%') }
+  scope :for_directory, -> { where(public: true, setup_complete: true, is_flagged: false).order("sort_key ASC") }
+  scope :starting_with, ->(letter) { where(sort_key: letter) }
 
   def accepting_issues?
     public? && !paused?
@@ -176,6 +178,10 @@ class Project < ApplicationRecord
 
   def create_consequence_guide
     ConsequenceGuide.create(project_id: id)
+  end
+
+  def set_sort_key
+    self.sort_key = name[0].downcase
   end
 
   def set_slug
