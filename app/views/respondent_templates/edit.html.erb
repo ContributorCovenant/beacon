@@ -8,7 +8,7 @@
 
   <div class="col">
     <% url = project_respondent_template_path(@project, @template) if @project.present? %>
-    <% url = organization_respondent_template_path(@organization, @template) if @organization.present? %>
+    <% url ||= organization_respondent_template_path(@organization, @template) if @organization.present? %>
     <%= form_for @template, url: url do |f| %>
       <div class="form-group">
         <%= f.text_area :text, class: "form-control", rows: 20 %>
@@ -36,7 +36,7 @@
     <p>You can customize your respondent template from Beacon defaults or another one of your projects, or create your own.</p>
 
     <% url = project_clone_respondent_template_path(@project) if @project.present? %>
-    <% url = organization_clone_respondent_template_path(@organization) if @organization.present? %>
+    <% url ||= organization_clone_respondent_template_path(@organization) if @organization.present? %>
     <%= form_for @template, url: url do |f| %>
       <div class="form-group col-sm-6">
         <%= f.label :clone_from %>

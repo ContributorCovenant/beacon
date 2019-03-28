@@ -7,8 +7,11 @@
 <div class="row">
 
   <div class="col">
-    <% url = project_respondent_template_path(@project) if @project.present? %>
-    <% url = organization_respondent_template_path(@organization) if @organization.present? %>
+    <% if @project.present? %>
+      <% url = project_respondent_template_path(@project)  %>
+    <% else %>
+      <% url ||= organization_respondent_template_path(@organization) %>
+    <% end %>
     <%= form_for @template, url: url do |f| %>
       <div class="form-group">
         <%= f.text_area :text, class: "form-control", rows: 20 %>
@@ -24,9 +27,10 @@
     <h2>Cloning a Template</h2>
     <p>You can customize your respondent template from Beacon defaults or another one of your projects, or create your own.</p>
 
-    <% url = project_clone_respondent_template_path(@project) if @project.present? %>
-    <% url = organization_clone_respondent_template_path(@organization) if @organization.present? %>
-    <%= form_for @template, url: url do |f| %>
+    <% clone_url = project_clone_respondent_template_path(@project) if @project.present? %>
+    <% clone_url ||= organization_clone_respondent_template_path(@organization) %>
+    <%= clone_url %>
+    <%= form_for @template, url: clone_url do |f| %>
       <div class="form-group col-sm-6">
         <%= f.label :clone_from %>
         <%= f.select :respondent_template_default_source, @available_templates, class: "form-control", include_blank: "Select..." %>
