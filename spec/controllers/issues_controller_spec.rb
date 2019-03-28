@@ -37,6 +37,7 @@ RSpec.describe IssuesController, type: :controller do
       before do
         allow_any_instance_of(Project).to receive(:accepting_issues?).and_return(true)
         allow(NotificationService).to receive(:notify)
+        allow(Resque).to receive(:enqueue)
       end
 
       it "allows an issue to be opened" do
@@ -50,15 +51,24 @@ RSpec.describe IssuesController, type: :controller do
 
       it "notifies project moderators" do
         controller.sign_in(reporter, scope: :account)
-        post :create, params: {
-          project_slug: project.slug,
-          issue: { description: "My CoC issue description" }
-        }
-        expect(NotificationService).to have_received(:notify).with(
-          account: moderator,
-          project: project,
-          issue_id: Issue.last.id
-        )
+        Resque.inline do
+          post :create, params: {
+            project_slug: project.slug,
+            issue: { description: "My CoC issue description" }
+          }
+          expect(Resque).to have_received(:enqueue).with(
+            NotificationWorker,
+            moderator.id,
+            project.id,
+            issue_id,
+            nil
+          )
+          expect(NotificationService).to have_received(:notify).with(
+            account_id: moderator.id,
+            project_id: project.id,
+            issue_id: Issue.last.id
+          )
+        end
       end
 
     end

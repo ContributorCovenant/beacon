@@ -26,17 +26,18 @@ describe "moderation", type: :feature do
 
     before do
       NotificationService.notify(
-        account: moderator,
-        project: project,
+        account_id: moderator.id,
+        project_id: project.id,
         issue_id: issue.id,
         issue_comment_id: nil
       )
       NotificationService.notify(
-        account: moderator,
-        project: project,
+        account_id: moderator.id,
+        project_id: project.id,
         issue_id: issue.id,
         issue_comment_id: issue_comment.id
       )
+      moderator.reload
     end
 
     it "indicates in the main navigation that there is a new issue in a project" do

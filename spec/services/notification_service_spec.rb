@@ -15,8 +15,8 @@ RSpec.describe NotificationService do
   describe "#notify" do
 
     it "creates a notification" do
-      NotificationService.notify(account: account, project: project, issue_id: issue_1.id)
-      expect(account.notifications.size).to eq(1)
+      NotificationService.notify(account_id: account.id, project_id: project.id, issue_id: issue_1.id)
+      expect(account.reload.notifications.size).to eq(1)
     end
 
   end
@@ -24,10 +24,10 @@ RSpec.describe NotificationService do
   describe "#notified!" do
 
     it "destroys a notification" do
-      NotificationService.notify(account: account, project: project, issue_id: issue_1.id)
-      NotificationService.notify(account: account, project: project, issue_id: issue_2.id)
-      NotificationService.notify(account: account, project: project, issue_id: issue_3.id)
-      NotificationService.notified!(account: account, issue_id: issue_1.id)
+      NotificationService.notify(account_id: account.id, project_id: project.id, issue_id: issue_1.id)
+      NotificationService.notify(account_id: account.id, project_id: project.id, issue_id: issue_2.id)
+      NotificationService.notify(account_id: account.id, project_id: project.id, issue_id: issue_3.id)
+      NotificationService.notified!(account: account.reload, issue_id: issue_1.id)
       account_reloaded = Account.find_by(email: account.email)
       expect(account_reloaded.notifications.size).to eq(2)
     end
