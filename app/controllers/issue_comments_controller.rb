@@ -59,14 +59,14 @@ class IssueCommentsController < ApplicationController
     if @project.moderator?(current_account) && visible_to_reporter?
       email = @issue.reporter.email
       commenter_kind = "moderator"
-      NotificationService.enqueu_notification(account_id: @issue.reporter.id,
+      NotificationService.enqueue_notification(account_id: @issue.reporter.id,
                                               project_id: @project.id,
                                               issue_id: @issue.id,
                                               issue_comment_id: @comment.id)
     elsif @project.moderator?(current_account) && visible_to_respondent?
       email = @issue.respondent.email
       commenter_kind = "moderator"
-      NotificationService.enqueu_notification(account_id: @issue.respondent.id,
+      NotificationService.enqueue_notification(account_id: @issue.respondent.id,
                                               project_id: @project.id,
                                               issue_id: @issue.id,
                                               issue_comment_id: @comment.id)
@@ -88,7 +88,7 @@ class IssueCommentsController < ApplicationController
       end
       @project.moderators.each do |moderator|
         next if moderator == current_account
-        NotificationService.enqueu_notification(account_id: moderator.id,
+        NotificationService.enqueue_notification(account_id: moderator.id,
                                                 project_id: @project.id,
                                                 issue_id: @issue.id,
                                                 issue_comment_id: @comment.id)

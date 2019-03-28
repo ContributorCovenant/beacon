@@ -1,6 +1,6 @@
 class NotificationService
 
-  def self.enqueu_notification(account_id:, project_id:, issue_id:, issue_comment_id: nil)
+  def self.enqueue_notification(account_id:, project_id:, issue_id:, issue_comment_id: nil)
     Resque.enqueue(NotificationWorker, account_id, project_id, issue_id, issue_comment_id)
   end
 
