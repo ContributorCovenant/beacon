@@ -182,7 +182,6 @@ ActiveRecord::Schema.define(version: 2019_03_27_010650) do
     t.string "uid"
     t.string "email"
     t.uuid "account_id"
-    t.string "oauth_token"
     t.string "token_encrypted"
     t.index ["account_id"], name: "index_credentials_on_account_id"
     t.index ["provider", "uid"], name: "index_credentials_on_provider_and_uid", unique: true
@@ -267,14 +266,11 @@ ActiveRecord::Schema.define(version: 2019_03_27_010650) do
     t.string "slug"
     t.text "description"
     t.uuid "account_id"
-    t.datetime "flagged_at"
-    t.text "flagged_reason"
-    t.datetime "confirmed_at"
-    t.string "confirmation_token_url"
     t.string "remote_org_name"
-    t.datetime "created_at", default: "2019-03-16 00:00:00"
-    t.datetime "updated_at", default: "2019-03-16 00:00:00"
+    t.datetime "created_at", default: "2019-03-27 00:00:00"
+    t.datetime "updated_at", default: "2019-03-27 00:00:00"
     t.boolean "is_flagged", default: false
+    t.text "flagged_reason"
     t.index ["account_id"], name: "index_organizations_on_account_id"
   end
 
@@ -319,7 +315,6 @@ ActiveRecord::Schema.define(version: 2019_03_27_010650) do
     t.uuid "organization_id"
     t.string "confirmation_token_url"
     t.string "repo_url"
-    t.datetime "start_date"
     t.boolean "is_event", default: false
     t.integer "duration"
     t.string "frequency"

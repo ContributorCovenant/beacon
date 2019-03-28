@@ -5,16 +5,9 @@ class RespondentTemplatesController < ApplicationController
   before_action :scope_organization
   before_action :enforce_permissions
   before_action :scope_available_templates, except: [:update]
+  before_action :set_breadcrumbs
 
   def new
-    if organization = @organization || @project.organization
-      breadcrumb "Organizations", organizations_path
-      breadcrumb organization.name, organization_path(organization)
-      breadcrumb(@project.name, project_path(@project)) if @project
-    else
-      breadcrumb "Projects", projects_path if @project
-      breadcrumb(@project.name, project_path(@project))
-    end
     if @project
       @template = RespondentTemplate.new(project_id: @project.id)
     else
@@ -25,7 +18,7 @@ class RespondentTemplatesController < ApplicationController
   def create
     if @project
       @template = RespondentTemplate.new(respondent_template_params.merge(project_id: @project.id))
-    elsif @organization
+    else
       @template = RespondentTemplate.new(respondent_template_params.merge(organization_id: @organization.id))
     end
     if @template.save
@@ -38,13 +31,6 @@ class RespondentTemplatesController < ApplicationController
   end
 
   def clone
-    if @organization
-      breadcrumb "Organizations", organizations_path
-      breadcrumb @organization.name, organization_path(@organization)
-    else
-      breadcrumb "Projects", projects_path
-    end
-    breadcrumb @project.name, project_path(@project)
     if existing = @subject.respondent_template
       existing.destroy
     end
@@ -52,7 +38,7 @@ class RespondentTemplatesController < ApplicationController
     if source == "Beacon Default"
       @template = @subject.create_respondent_template(text: RespondentTemplate.beacon_default.text)
     elsif source == "Organization Default"
-      @template = @subject.create_respondent_template(text: @organization&.respondent_template&.text || @project.organization&.respondent_template.text)
+      @template = @subject.create_respondent_template(text: @organization.respondent_template.text || @project.organization.respondent_template.text)
     else
       source = current_account.projects.find_by(name: source).respondent_template
       @template = @subject.create_respondent_template(text: source.text)
@@ -62,14 +48,6 @@ class RespondentTemplatesController < ApplicationController
   end
 
   def edit
-    if organization = @organization || @project.organization
-      breadcrumb "Organizations", organizations_path
-      breadcrumb organization.name, organization_path(organization)
-      breadcrumb(@project.name, project_path(@project)) if @project
-    else
-      breadcrumb "Projects", projects_path if @project
-      breadcrumb(@project.name, project_path(@project))
-    end
     @template = @subject.respondent_template
   end
 
@@ -94,29 +72,41 @@ class RespondentTemplatesController < ApplicationController
   end
 
   def scope_available_templates
-    if @project&.organization
-      projects_with_respondent_template = @project.organization.projects.select(&:respondent_template?).map(&:name)
-    elsif @organization
+    if @organization
       projects_with_respondent_template = @organization.projects.select(&:respondent_template?).map(&:name)
+    else
+      projects_with_respondent_template ||= current_account.personal_projects.select(&:respondent_template?).map(&:name)
     end
-    projects_with_respondent_template ||= current_account.personal_projects.select(&:respondent_template?).map(&:name)
     if @project
       org_template = @project.organization.present? && @project.organization.respondent_template? ? "Organization Default" : nil
-    else
+    elsif @organization.respondent_template?
       org_template = "Organization Default"
+    else
+      org_template = nil
     end
     @available_templates = ["Beacon Default", org_template, projects_with_respondent_template].flatten.compact - [@project&.name]
   end
 
   def scope_organization
-    @organization = Organization.find_by(slug: params[:organization_slug])
-    @organization ||= @project.organization
+    @organization ||= Organization.find_by(slug: params[:organization_slug])
     @subject ||= @organization
   end
 
   def scope_project
-    @project = Project.find_by(slug: params[:project_slug])
+    return unless @project = Project.find_by(slug: params[:project_slug])
+    @organization = @project.organization
     @subject = @project
+  end
+
+  def set_breadcrumbs
+    if organization = @organization || @project.organization
+      breadcrumb "Organizations", organizations_path
+      breadcrumb organization.name, organization_path(organization)
+      breadcrumb(@project.name, project_path(@project)) if @project
+    else
+      breadcrumb "Projects", projects_path if @project
+      breadcrumb(@project.name, project_path(@project))
+    end
   end
 
 end
