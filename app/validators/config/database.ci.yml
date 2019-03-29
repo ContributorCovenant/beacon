@@ -1,0 +1,15 @@
+common: &common
+  host: localhost
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  username: ubuntu
+  min_messages: WARNING
+
+test:
+  database: gregory_test
+  <<: *common
+
+stitchfix_test:
+  database: stitchfix_test
+  <<: *common

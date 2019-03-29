@@ -1,0 +1,12 @@
+---
+:tddium:
+  :ruby_version: "ruby-2.1.0"
+  :bundler_version: 1.3.5
+  :test_pattern:
+    - 'spec/**_spec.rb'
+  :hooks:
+    :worker_setup: bundle exec rake db:test:prepare
+    :post_setup: bundle exec rake assets:precompile
+    :post_build: bundle exec rake tddium:post_build_hook
+  :tests:
+    - bundle exec rake brakeman:run

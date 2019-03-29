@@ -1,0 +1,106 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "124668a97fb004ca4178450e44609456df47bba01689f73f306b471545ece986",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/trigger_style_pass_transaction_success_email_job.rb",
+      "line": 28,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "$stats.count(\"email.#{metric_name}.suppressed\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "TriggerStylePassTransactionSuccessEmailJob",
+        "method": "trigger"
+      },
+      "user_input": "metric_name",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "620cf4ad4a0f924cccf6513b5cf52f5e9c5c9baa829003c7636c16a72261d563",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/trigger_message_job.rb",
+      "line": 58,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "$stats.count(\"email.#{metric_name}.failed\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "TriggerMessageJob",
+        "method": "send_email_and_log"
+      },
+      "user_input": "metric_name",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "621d0ffe73c064c8505e51e83fbf097e5ddd7eca26fa85e434618bacbc3175d8",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/delete_old_responsys_events_job.rb",
+      "line": 21,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "ActiveRecord::Base.connection.execute(\"DELETE FROM responsys_events_copy WHERE id IN (SELECT id FROM responsys_events_copy WHERE created_at < '#{(Time.current - 1.year)}' LIMIT #{batch_size.to_i})\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DeleteOldResponsysEventsJob",
+        "method": "s(:self).perform"
+      },
+      "user_input": "(Time.current - 1.year)",
+      "confidence": "Medium",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "884e4ef7571fc7bc7ef81d442408c0787f0ee2b29e8c3b964fbeda5a8cf3f66f",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/trigger_message_job.rb",
+      "line": 61,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "$stats.count(\"email.no_recipient_found.#{metric_name}.failed\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "TriggerMessageJob",
+        "method": "send_email_and_log"
+      },
+      "user_input": "metric_name",
+      "confidence": "Weak",
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
+      "fingerprint": "f87108fb09d3ee20ba68e632eb2ff74319952fd8b8c47e2241ec51d46bffe9bd",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "app/jobs/trigger_message_job.rb",
+      "line": 55,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "$stats.count(\"email.#{metric_name}.sent\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "TriggerMessageJob",
+        "method": "send_email_and_log"
+      },
+      "user_input": "metric_name",
+      "confidence": "Weak",
+      "note": ""
+    }
+  ],
+  "updated": "2018-11-14 14:16:30 -0700",
+  "brakeman_version": "4.3.1"
+}

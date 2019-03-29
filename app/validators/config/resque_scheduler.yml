@@ -1,0 +1,36 @@
+kill_stale_workers:
+  # Every hour, on the hour.
+  cron: "0 * * * * America/New_York"
+  class: "Resqutils::StaleWorkersKiller"
+  queue: worker_killer
+  description: "Kills any stale workers"
+contact_list_export:
+  # Every hour, at the 30min mark.
+  cron: "30 * * * * America/New_York"
+  class: "ExportContactListJob"
+  queue: export
+  description: "Export to Responsys FTP server"
+contact_list_check_queue:
+  # Every 10 minutes.
+  cron: "*/10 * * * * America/New_York"
+  class: "TrackMostNeededContactUpdates"
+  queue: contact_list_check
+  description: "Check if the contacts queue is empty and begin_update"
+responsys_load:
+  # Every hour, on the hour.
+  cron: "0 * * * * America/New_York"
+  class: "CedFilesPipeline::KickoffPipelineJob"
+  queue: ced_files_pipeline_kickoff_pipeline
+  description: "Download and import Responsys events from FTP"
+delete_old_responsys_events:
+  # Every day, at 6 am.
+  cron: "0 6 * * * America/New_York"
+  class: "DeleteOldResponsysEventsJob"
+  queue: delete_responsys_events
+  description: "Delete Responsys Events that are older than a year"
+monitor_client_item_type_group_spendinesses:
+  # Every hour, on the hour.
+  cron: "0 * * * * America/New_York"
+  class: "MonitorClientItemTypeGroupSpendinessesJob"
+  queue: monitoring
+  description: "Monitor whether client spendiness values are still being written to the shared DB"

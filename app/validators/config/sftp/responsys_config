@@ -1,0 +1,4 @@
+Host files.dc2.responsys.net
+  HostName files.dc2.responsys.net
+  IdentityFile config/sftp/responsysfileserver
+  User stchfx_scp

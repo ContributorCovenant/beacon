@@ -5,6 +5,7 @@ class Issue < ApplicationRecord
   attr_accessor :reporter_id, :project_id
 
   validates_presence_of :description
+  validates :urls, url: true
 
   belongs_to :consequence, optional: true
   belongs_to :reporter_consequence, optional: true, class_name: "Consequence"

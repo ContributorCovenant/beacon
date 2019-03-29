@@ -1,0 +1,49 @@
+use_rw_shared_db: <%= ENV.fetch('USE_RW_SHARED_DB', 'false') %>
+email:
+  from_address: hello@stitchfix.com
+  from_name: Stitch Fix Team
+  delivery_method: :test
+  raise_delivery_errors: false
+  perform_deliveries: false
+  default_url_options:
+    :host: localhost:3000
+welcome_email_series_experiment: <%= ['1','true',].include?(ENV.fetch('FEATURE_FLAG_WELCOME_EMAIL_SERIES_EXPERIMENT', 'false').downcase) %>
+referral_path: /sign_up?referrer_id=
+mobile_service:
+  base_url: <%= ENV.fetch('MOBILE_SERVICE_ENDPOINT', 'http://localhost:5002') %>
+  api_key: <%= ENV.fetch('MOBILE_SERVICE_API_KEY') %>
+styling_fee_service:
+  endpoint: <%= ENV.fetch('STYLING_FEE_SERVICE_ENDPOINT') %>
+  api_key: <%= ENV.fetch('STYLING_FEE_SERVICE_API_KEY') %>
+style_service:
+  endpoint: <%= ENV.fetch('STYLE_SERVICE_ENDPOINT') %>
+  api_key: <%= ENV.fetch('STYLE_SERVICE_API_KEY') %>
+branchio:
+  url_prefix: <%= ENV.fetch('BRANCHIO_URL_PREFIX') %>
+  app_key: <%= ENV.fetch('BRANCHIO_APP_KEY') %>
+survey_service:
+  endpoint: <%= ENV.fetch('SURVEY_SERVICE_ENDPOINT') %>
+  api_key: <%= ENV.fetch('SURVEY_SERVICE_API_KEY') %>
+scheduling_service:
+  endpoint: <%= ENV['SCHEDULING_SERVICE_ENDPOINT'] %>
+  api_key: <%= ENV.fetch('SCHEDULING_SERVICE_API_KEY') %>
+contact_column_builders:
+  include_autoship_pause_fields?: <%= ENV.fetch('INCLUDE_AUTOSHIP_PAUSE_FIELDS', 'true') == 'true' %>
+lahlouh_export:
+  email: <%= ENV.fetch('LAHLOUH_EXPORT_EMAIL', 'Stitchfix@lahlouh.com') %>
+financial_transaction_service:
+  endpoint: <%= ENV.fetch('FINANCIAL_TRANSACTION_SERVICE_ENDPOINT') %>
+  api_key: <%= ENV.fetch('FINANCIAL_TRANSACTION_SERVICE_API_KEY') %>
+style_pass_service:
+  endpoint: <%= ENV.fetch('STYLE_PASS_SERVICE_ENDPOINT') %>
+  api_key: <%= ENV.fetch('STYLE_PASS_SERVICE_API_KEY') %>
+  trace_requests: <%= ENV.fetch('STYLE_PASS_SERVICE_TRACE_REQUESTS', false) %>
+delete_responsys_events:
+  batch_size: <%= ENV.fetch('DELETE_RESPONSYS_EVENTS_BATCH_SIZE') %>
+responsys_ced_file_import:
+  archive_dir: <%= ENV.fetch('RESPONSYS_EVENTS_ARCHIVE_DIR') %>
+  remote_dir: <%= ENV.fetch('RESPONSYS_EVENTS_DIR') %>
+  batch_size: <%= ENV.fetch('RESPONSYS_CED_FILE_BATCH_SIZE', 100000) %>
+referrals_app:
+  endpoint: <%= ENV.fetch('REFERRALS_ENDPOINT') %>
+  api_key: <%= ENV.fetch('REFERRALS_API_KEY') %>
