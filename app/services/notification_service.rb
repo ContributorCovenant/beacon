@@ -28,8 +28,10 @@ class NotificationService
     account.save
   end
 
-  def self.notify_moderators_on_issue_via_sms(project, issue)
+  def self.notify_moderators_on_issue_via_sms(project_id, issue_id)
     client = Twilio::REST::Client.new(Setting.sms(:account_sid), Setting.sms(:auth_token))
+    project = Project.find(project_id)
+    issue = Issue.find(issue_id)
 
     project.moderators.each do |account|
       next unless account.send_sms_on_issue_open
