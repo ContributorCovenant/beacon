@@ -44,7 +44,8 @@ class ConsequencesController < ApplicationController
       :severity,
       :label,
       :action,
-      :consequence
+      :consequence,
+      :email_to_notify
     )
   end
 

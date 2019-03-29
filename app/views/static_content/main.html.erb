@@ -12,7 +12,7 @@
   <div class="row mt-5">
 
     <div class="col-sm">
-      <div class="card mr-5 mt-2" style="height: 14em;"" style="height: 14em;"">
+      <div class="card mr-5 mt-2" style="min-height: 16rem;">
         <div class="card-body">
           <h2 class="card-title">Browse the Directory</h2>
           <p class="card-text">View a directory of <%= @project_count %> events and open source projects that are currently using Beacon.</p>
@@ -24,7 +24,7 @@
     <% if current_account %>
       <% if current_account.can_create_project? %>
         <div class="col-sm">
-          <div class="card mr-5 mt-2" style="height: 14em;"">
+          <div class="card mr-5 mt-2" style="min-height: 16rem;">
             <div class="card-body">
               <h2 class="card-title">Register a Project</h2>
               <p class="card-text">Register and configure a new project on Beacon.</p>
@@ -35,7 +35,7 @@
       <% end %>
       <% if current_account.can_create_organization? %>
         <div class="col-sm">
-          <div class="card mr-5 mt-2" style="height: 14em;"">
+          <div class="card mr-5 mt-2" style="min-height: 16rem;">
             <div class="card-body">
               <h2 class="card-title">Create an Organization</h2>
               <p class="card-text">Manage a portfolio of projects or events.</p>
@@ -47,7 +47,7 @@
 
     <% else %>
       <div class="col-sm">
-        <div class="card mr-5 mt-2" style="height: 14em;"">
+        <div class="card mr-5 mt-2" style="min-height: 16em;">
           <div class="card-body">
             <h2 class="card-title">Register</h2>
             <p class="card-text">Create an account to file a code of conduct issue or to set up your project or event on Beacon.</p>
@@ -57,7 +57,7 @@
       </div>
 
       <div class="col-sm">
-        <div class="card mr-5 mt-2" style="height: 14em;"">
+        <div class="card mr-5 mt-2" style="min-height: 16rem;">
           <div class="card-body">
             <h2 class="card-title">Sign In</h2>
             <p class="card-text">If you already have an account, sign in to access your projects or to open a code of conduct issue.</p>
