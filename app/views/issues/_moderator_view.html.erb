@@ -1,11 +1,15 @@
 <div class="row mt-3">
 
   <div class="col">
-    <div>
-      <div style="mix-blend-mode: exclusion; padding: .25em;">
-        <%= @issue.description %>
-      </div>
+    <div style="mix-blend-mode: exclusion; padding: .25em;">
+      <%= @issue.description %>
     </div>
+    <% if @reporter_consequence %>
+      <p class="mt-5">
+        The reporter identified this as a level <%= @reporter_consequence.severity %>
+        issue (<%= @reporter_consequence.label %>).
+      </p>
+    <% end %>
   </div>
 
   <div class="col" style="border-left: 1px solid #eee;">

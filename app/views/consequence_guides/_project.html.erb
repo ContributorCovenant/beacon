@@ -4,7 +4,7 @@
   <p><b>Important:</b> If you clone the guide from another source, all of your current issues will lose their associated severity.</p>
 
   <%= form_for guide, url: clone_project_consequence_guide_path(@project) do |f| %>
-    <div class="form-group col-sm-6">
+    <div class="form-group">
       <label for="consequence_guide_default_source">Clone from</label>
       <%= f.select :default_source, @available_guides.map(&:titleize), class: "form-control", include_blank: "Select..." %>
     </div>
@@ -35,24 +35,30 @@
     <div class="col">
       <h2>New Consequence</h2>
       <%= form_for guide.consequences.new, url: project_consequence_guide_consequences_path(@project, @guide) do |f| %>
-        <div class="form-group col-sm-6">
+        <div class="form-group">
           <%= f.label :label %><br />
           <%= f.text_field :label, autofocus: true, class: "form-control" %>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group">
           <%= f.label :severity %>
           <%= f.select :severity, severities, class: "form-control" %>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group">
           <%= f.label :action %><br />
           <%= f.text_area :action, class: "form-control" %>
         </div>
 
-        <div class="form-group col-sm-6">
+        <div class="form-group">
           <%= f.label :consequence %><br />
           <%= f.text_area :consequence, class: "form-control" %>
+        </div>
+
+        <div class="form-group">
+          <p>All moderators will be notified when an issue is opened, but if you want an additional notification with this label to go to an external email address, enter it below.</p>
+          <%= f.label :email_to_notify, "Additional email notification to" %><br />
+          <%= f.text_field :email_to_notify, class: "form-control" %>
         </div>
 
         <div class="actions">

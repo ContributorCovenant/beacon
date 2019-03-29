@@ -23,9 +23,23 @@ this project can be found <%= link_to "here", @project.coc_url, target: "_new" %
 <%= form_for @issue, url: project_issues_path(@project) do |f| %>
 
   <div class="form-group">
-    <label>Describe the incident in as much detail as you can.</label><br />
+    <label for="issue_description">Describe the incident in as much detail as you can.</label><br />
     <%= f.text_area :description, class: "form-control", rows: 10 %>
   </div>
+
+  <% if @consequences.any? %>
+    <div class="form-group">
+      <label>Select the corresponding violation type (optional).</label>
+      <div class="input-group mb-3" role="group" aria-label="Violation type">
+        <% @consequences.each do |consequence| %>
+          <div class="input-group-text" style="width: 100%; white-space: normal; text-align: left;">
+            <%= f.radio_button :reporter_consequence_id, consequence.id %>
+            <%= f.label consequence.action, class: "ml-2" %><br />
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 
   <div class="form-group">
     <label>Provide any relevant URLs.</label><br />

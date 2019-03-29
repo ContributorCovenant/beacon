@@ -5,6 +5,11 @@
       <p><%= consequence.action %></p>
       <h3>Consequence</h3>
       <p><%= consequence.consequence %></p>
+      <% if consequence.email_to_notify.present? %>
+        <div class="alert alert-info">
+          <p>An additional notification will be sent to <%= consequence.email_to_notify %> when a reporter selects this level for their issue.</p>
+        </div>
+      <% end %>
       <% if current_account.can_manage_organization_consequence_guide?(@organization) %>
         <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')">Edit</a>
       <% end %>
@@ -35,6 +40,14 @@
           <div class="form-group">
             <%= f.label :consequence %><br />
             <%= f.text_area :consequence, rows: 5, class: "form-control" %>
+          </div>
+
+          <div class="form-group">
+            <p>All moderators will be notified when an issue is opened, but if you
+            want an additional notification with this label to go to an external
+            email address, enter it below.</p>
+            <%= f.label :email_to_notify, "Additional email notification to" %><br />
+            <%= f.text_field :email_to_notify, class: "form-control" %>
           </div>
 
           <div class="actions">

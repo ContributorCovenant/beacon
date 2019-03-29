@@ -17,6 +17,7 @@ class IssuesController < ApplicationController
 
   def new
     @issue = Issue.new(project_id: @project.id, reporter_id: current_account.id)
+    @consequences = @project.consequence_guide.consequences
   end
 
   def create
@@ -82,6 +83,9 @@ class IssuesController < ApplicationController
     @reporter_block = @project.account_project_blocks.find_by(account_id: @issue.reporter.id)
     @respondent_block = @project.account_project_blocks.find_by(account_id: @issue.respondent.try(:id))
 
+    @reporter_consequence = @issue.reporter_consequence
+    @consequence = @issue.consequence
+
     NotificationService.notified!(account: current_account, issue_id: @issue.id)
   end
 
@@ -134,14 +138,23 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
-    params.require(:issue).permit(:description, :resolution_text, :consequence_id, uploads: [], urls: [])
+    params.require(:issue).permit(:description, :reporter_consequence_id, :resolution_text, :consequence_id, uploads: [], urls: [])
   end
 
   def notify_on_new_issue
     @project.moderators.each do |moderator|
-      NotificationService.notify(account_id: moderator.id,
-                                 project_id: @project.id,
-                                 issue_id: @issue.id)
+      NotificationService.notify(
+        account_id: moderator.id,
+        project_id: @project.id,
+        issue_id: @issue.id
+      )
+    end
+    if @issue&.reporter_consequence&.email_to_notify
+      IssueNotificationsMailer.with(
+        email: @issue.reporter_consequence.email_to_notify,
+        project: @project,
+        issue: @issue
+      ).notify_of_new_issue.deliver_now
     end
     IssueNotificationsMailer.with(
       email: @project.moderator_emails,

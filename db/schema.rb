@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_27_010650) do
+ActiveRecord::Schema.define(version: 2019_03_29_010959) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -166,6 +166,7 @@ ActiveRecord::Schema.define(version: 2019_03_27_010650) do
     t.text "consequence", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email_to_notify"
     t.index ["consequence_guide_id"], name: "index_consequences_on_consequence_guide_id"
   end
 
@@ -246,6 +247,7 @@ ActiveRecord::Schema.define(version: 2019_03_27_010650) do
     t.text "resolution_text"
     t.datetime "resolved_at"
     t.uuid "consequence_id"
+    t.uuid "reporter_consequence_id"
   end
 
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -267,8 +269,8 @@ ActiveRecord::Schema.define(version: 2019_03_27_010650) do
     t.text "description"
     t.uuid "account_id"
     t.string "remote_org_name"
-    t.datetime "created_at", default: "2019-03-27 00:00:00"
-    t.datetime "updated_at", default: "2019-03-27 00:00:00"
+    t.datetime "created_at", default: "2019-03-28 00:00:00"
+    t.datetime "updated_at", default: "2019-03-28 00:00:00"
     t.boolean "is_flagged", default: false
     t.text "flagged_reason"
     t.index ["account_id"], name: "index_organizations_on_account_id"
@@ -401,6 +403,7 @@ ActiveRecord::Schema.define(version: 2019_03_27_010650) do
   add_foreign_key "invitations", "projects"
   add_foreign_key "issue_comments", "issues"
   add_foreign_key "issue_events", "issues"
+  add_foreign_key "issues", "consequences", column: "reporter_consequence_id"
   add_foreign_key "notifications", "issue_comments"
   add_foreign_key "notifications", "issues"
   add_foreign_key "notifications", "projects"

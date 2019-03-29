@@ -15,6 +15,7 @@ class TransparencyReportingService
       next unless i.closed_at
       (i.closed_at - i.created_at).to_f / 1.day
     end.compact
+    return unless resolution_days.any?
     (resolution_days.sum / resolution_days.size).to_i
   end
 
