@@ -1,2 +1,0 @@
-# TODO: UPDATE TO LIVE KEY
-BRANCH_IO_APP_KEY = "key_test_efkQXk81Vy9AAC3kqqyY8mbotBb5n5zj"

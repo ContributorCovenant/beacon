@@ -1,6 +1,0 @@
-email:
-  delivery_method: :smtp
-  raise_delivery_errors: true
-  perform_deliveries: true
-  default_url_options:
-    :host: stitchfix.com

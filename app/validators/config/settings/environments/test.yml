@@ -1,4 +1,0 @@
-email:
-  delivery_method: :test
-financial_transaction_service:
-  endpoint: 'http://financial-transaction-service'
