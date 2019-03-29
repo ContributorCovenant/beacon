@@ -94,7 +94,9 @@ class Account < ApplicationRecord
   end
 
   def notifications
-    @notifications ||= Notification.notifications_for_account(self)
+    @notifications ||= Rails.cache.fetch("#{cache_key_with_version}/notifications", expires_in: 6.hours) do
+      Notification.notifications_for_account(self)
+    end
   end
 
   def organizations
