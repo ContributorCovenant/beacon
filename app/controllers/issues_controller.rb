@@ -142,8 +142,9 @@ class IssuesController < ApplicationController
   end
 
   def notify_on_new_issue
-    @project.moderators.each do |moderator|
-      NotificationService.notify(
+    @project.all_moderators.each do |moderator|
+      next if moderator == current_account
+      NotificationService.enqueue_notification(
         account_id: moderator.id,
         project_id: @project.id,
         issue_id: @issue.id
