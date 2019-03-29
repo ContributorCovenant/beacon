@@ -149,6 +149,7 @@ class IssuesController < ApplicationController
         issue_id: @issue.id
       )
     end
+
     if @issue&.reporter_consequence&.email_to_notify
       IssueNotificationsMailer.with(
         email: @issue.reporter_consequence.email_to_notify,
@@ -156,18 +157,21 @@ class IssuesController < ApplicationController
         issue: @issue
       ).notify_of_new_issue.deliver_now
     end
+
     IssueNotificationsMailer.with(
       email: @project.moderator_emails,
       project: @project,
       issue: @issue
     ).notify_of_new_issue.deliver_now
-    NotificationService.enqueue_sms(@project.id, @issue.id)
+
     IssueNotificationsMailer.with(
       email: current_account.email,
       project: @project,
       issue: @issue,
       text: @project.autoresponder.populate_from(issue_url(@issue), project_url(@project))
     ).autoresponder.deliver_now
+
+    NotificationService.enqueue_sms(@project.id, @issue.id)
   end
 
   def notify_on_status_change

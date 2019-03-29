@@ -33,10 +33,9 @@ class NotificationService
     project = Project.find(project_id)
     issue = Issue.find(issue_id)
 
-    project.moderators.each do |account|
+    project.all_moderators.each do |account|
       next unless account.send_sms_on_issue_open
       next unless account.phone_number
-      next unless project.moderator?(account)
 
       begin
         client.messages.create(
