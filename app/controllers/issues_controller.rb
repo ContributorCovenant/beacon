@@ -161,7 +161,7 @@ class IssuesController < ApplicationController
       project: @project,
       issue: @issue
     ).notify_of_new_issue.deliver_now
-    NotificationService.notify_moderators_on_issue_via_sms(@project, @issue)
+    NotificationService.enqueue_sms(@project, @issue)
     IssueNotificationsMailer.with(
       email: current_account.email,
       project: @project,
