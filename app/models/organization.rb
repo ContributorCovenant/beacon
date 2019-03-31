@@ -13,6 +13,7 @@ class Organization < ApplicationRecord
 
   before_create :set_slug
   after_create :create_consequence_guide
+  after_save :update_project_org_names
 
   attr_accessor :default_source
 
@@ -82,6 +83,11 @@ class Organization < ApplicationRecord
 
   def set_slug
     self.slug = name.downcase.gsub(/[^a-z0-9]/i, '_')
+  end
+
+  def update_project_org_names
+    return if projects.first.organization_name == name
+    projects.each{ |project| project.update_attribute(:organization_name, name) }
   end
 
 end
