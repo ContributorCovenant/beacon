@@ -9,4 +9,11 @@ namespace :projects do
   task :sort_keys => :environment do
     Project.all.each{ |project| project.update_attribute(:sort_key, project.name[0].downcase) }
   end
+
+  desc 'Set org name for projects'
+  task :org_name => :environment do
+    Organization.all.each do |org|
+      org.projects.each{ |project| project.update_attribute(:organization_name, org.name) }
+    end
+  end
 end

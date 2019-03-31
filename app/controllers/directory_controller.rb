@@ -20,4 +20,15 @@ class DirectoryController < ApplicationController
       redirect_to directory_path
     end
   end
+
+  def search
+    @page_index = Project.for_directory.pluck(:sort_key).uniq
+    if params[:q].present?
+      @projects = Project.for_directory.where("name ILIKE ? OR organization_name ILIKE ?", "#{params[:q]}%", "#{params[:q]}%")
+    else
+      @projects = []
+    end
+    render :index
+  end
+
 end
