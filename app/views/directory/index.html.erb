@@ -1,8 +1,14 @@
 <% title "Directory" %>
 
 <h1>Beacon Directory</h1>
+<%= form_tag directory_search_path, method: :post, class: "form-inline" do %>
+  <div class="form-group mb-2">
+    <%= text_field_tag :q, nil, autofocus: true, class: "form-control form-control-sm", 'aria-label': "Search" %>
+    <%= submit_tag "Search", class: "btn btn-primary" %>
+  </div>
+<% end %>
 
-<% if @projects %>
+<% if @projects.any? %>
   <nav aria-label="pagination">
     <ul class="pagination">
       <li class="page-item">
@@ -22,16 +28,19 @@
   <% @projects.each_with_index do |project,i| %>
 
     <% float_class = i < @projects.size - 1 ? "float-left" : "float-none" %>
-    <div class="card mb-3 mr-3 <%= float_class %>" style="width: 15rem; height: 15rem">
+    <div class="card mb-3 mr-3 <%= float_class %>" style="width: 15rem; min-height: 15rem">
       <div class="card-body">
         <h2 class="card-title"><%= link_to project.name, directory_project_path(project.slug) %></h2>
         <div class="card-text">
-          <p><%= project.description %></p>
+          <% if org = project.organization %>
+            <p><i><%= org.name %></i></p>
+          <% end %>
+          <p><%= truncate(project.description, length: 60) %></p>
         </div>
       </div>
     </div>
 
   <% end %>
 <% else %>
-  <p>No projects or events available.</p>
+  <p>No projects or events found.</p>
 <% end %>
