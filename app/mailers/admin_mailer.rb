@@ -1,9 +1,9 @@
 class AdminMailer < ApplicationMailer
 
   def notify_on_abuse_report
-    @report = params[:report]
-    @project = params[:project]
-    @reporter = @report.account
+    @report = AbuseReport.find(params[:report_id])
+    @project = Project.find(params[:project_id])
+    @reporter = @report&.account
     mail(to: Setting.emails(:abuse), subject: "Beacon: New Abuse Report")
   end
 
@@ -13,10 +13,10 @@ class AdminMailer < ApplicationMailer
   end
 
   def notify_on_flag_request
-    @reporter = params[:reporter]
-    @account = params[:account]
+    @reporter = Account.find(params[:reporter_id])
+    @account = Account.find(params[:account_id])
     @reason = params[:reason]
-    @report = params[:report]
+    @report = AbuseReport.find(params[:report_id])
     mail(to: Setting.emails(:abuse), subject: "Beacon: New Account Flag Request")
   end
 

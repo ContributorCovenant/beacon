@@ -102,18 +102,18 @@ class IssueCommentsController < ApplicationController
       if unnotified_moderators.any?
         IssueNotificationsMailer.with(
           email: unnotified_moderators.map(&:email),
-          project: @project,
-          issue: @issue,
+          project_id: @project.id,
+          issue_id: @issue.id,
           commenter_kind: commenter_kind
-        ).notify_of_new_comment.deliver_now
+        ).notify_of_new_comment.deliver
       end
     else
       IssueNotificationsMailer.with(
         email: email,
-        project: @project,
-        issue: @issue,
+        project_id: @project.id,
+        issue_id: @issue.id,
         commenter_kind: commenter_kind
-      ).notify_of_new_comment.deliver_now
+      ).notify_of_new_comment.deliver
     end
   end
 

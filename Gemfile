@@ -35,6 +35,7 @@ gem 'premailer-rails'
 gem "puma", "~> 3.11"
 gem "recaptcha"
 gem "resque"
+gem "resque_mailer"
 gem "sass-rails", "~> 5.0"
 gem "sendgrid-ruby"
 gem "sentry-raven"

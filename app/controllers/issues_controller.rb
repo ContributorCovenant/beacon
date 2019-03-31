@@ -155,23 +155,23 @@ class IssuesController < ApplicationController
     if @issue&.reporter_consequence&.email_to_notify
       IssueNotificationsMailer.with(
         email: @issue.reporter_consequence.email_to_notify,
-        project: @project,
-        issue: @issue
-      ).notify_of_new_issue.deliver_now
+        project_id: @project.id,
+        issue_id: @issue.id
+      ).notify_of_new_issue.deliver
     end
 
     IssueNotificationsMailer.with(
       email: @project.moderator_emails,
-      project: @project,
-      issue: @issue
-    ).notify_of_new_issue.deliver_now
+      project_id: @project.id,
+      issue_id: @issue.id
+    ).notify_of_new_issue.deliver
 
     IssueNotificationsMailer.with(
       email: current_account.email,
-      project: @project,
-      issue: @issue,
+      project_id: @project.id,
+      issue_id: @issue.id,
       text: @project.autoresponder.populate_from(issue_url(@issue), project_url(@project))
-    ).autoresponder.deliver_now
+    ).autoresponder.deliver
 
     NotificationService.enqueue_sms(@project.id, @issue.id)
   end
@@ -180,9 +180,9 @@ class IssuesController < ApplicationController
     emails = [@issue.reporter.email, @issue.respondent.try(:email), @project.moderator_emails - [current_account.email]].flatten.compact
     IssueNotificationsMailer.with(
       emails: emails,
-      project: @project,
-      issue: @issue
-    ).notify_on_status_change.deliver_now
+      project_id: @project.id,
+      issue_id: @issue.id
+    ).notify_on_status_change.deliver
   end
 
   def scope_comments

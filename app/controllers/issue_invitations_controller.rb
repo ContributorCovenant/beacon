@@ -22,8 +22,8 @@ class IssueInvitationsController < ApplicationController
         email: account.email,
         project_name: project.name,
         text: project.respondent_template.populate_from(@issue, issue_url(@issue)),
-        issue: @issue
-      ).notify_existing_account_of_issue.deliver_now
+        issue_id: @issue.id
+      ).notify_existing_account_of_issue.deliver
       AccountIssue.create(issue_id: @issue.id, account: account)
       NotificationService.notify(account_id: account.id,
                                  project_id: @project.id,
@@ -38,7 +38,7 @@ class IssueInvitationsController < ApplicationController
         email: account.email,
         project_name: project.name,
         text: project.respondent_template.populate_from(@issue, issue_url(@issue))
-      ).notify_new_account_of_issue.deliver_now
+      ).notify_new_account_of_issue.deliver
     end
     @issue.update_attribute(:respondent_summary, invitation_params[:summary])
     flash[:message] = "The respondent has been notified and invited to comment on this issue."
@@ -54,7 +54,7 @@ class IssueInvitationsController < ApplicationController
       ReporterMailer.with(
         email: account.email,
         project_name: @issue.project.name
-      ).notify_existing_account_of_issue.deliver_now
+      ).notify_existing_account_of_issue.deliver
       AccountIssue.create(issue_id: @issue.id, account: account)
       NotificationService.notify(account: account, project: @project, issue_id: @issue.id)
       @issue.update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(account.id))

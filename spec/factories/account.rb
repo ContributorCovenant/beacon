@@ -23,7 +23,7 @@ FactoryBot.define do
 
     # Kate is a project owner for a medium-sized open source project with several moderators.
     factory :kate do
-      email { "kate@bush.com" }
+      email { "kate.bush@idolhands.com" }
     end
 
     # Peter is a moderator on a large enterprise open source project.
