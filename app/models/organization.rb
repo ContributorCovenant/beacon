@@ -86,6 +86,7 @@ class Organization < ApplicationRecord
   end
 
   def update_project_org_names
+    return unless projects.any?
     return if projects.first.organization_name == name
     projects.each{ |project| project.update_attribute(:organization_name, name) }
   end
