@@ -4,7 +4,7 @@ class RespondentMailer < ApplicationMailer
     @project_name = params[:project_name]
     @email = params[:email]
     @text = params[:text]
-    @issue = params[:issue]
+    @issue = Issue.find(params[:issue_id])
     mail(to: @email, subject: "Beacon: Your attention is needed on a code of conduct issue")
   end
 

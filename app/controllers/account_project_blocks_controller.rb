@@ -66,11 +66,11 @@ class AccountProjectBlocksController < ApplicationController
 
   def notify_on_account_flag_requested
     AdminMailer.with(
-      reporter: current_account,
-      account: @account,
-      report: @report,
+      reporter_id: current_account.id,
+      account_id: @account.id,
+      report_id: @report.id,
       reason: block_params[:reason]
-    ).notify_on_flag_request.deliver_now
+    ).notify_on_flag_request.deliver!
   end
 
   def scope_project

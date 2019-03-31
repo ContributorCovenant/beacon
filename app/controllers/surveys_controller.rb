@@ -56,10 +56,10 @@ class SurveysController < ApplicationController
       NotificationService.notify(account: moderator, project: @project, issue_id: @issue.id)
       IssueNotificationsMailer.with(
         email: moderator.email,
-        project: @project,
-        issue: @issue,
-        survey: @survey
-      ).notify_of_new_survey.deliver_now
+        project_id: @project.id,
+        issue_id: @issue.id,
+        survey_id: @survey.id
+      ).notify_of_new_survey.deliver!
     end
   end
 

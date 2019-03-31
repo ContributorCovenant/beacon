@@ -28,7 +28,7 @@ class ContactMessagesController < ApplicationController
   def notify_on_new_contact_message
     AdminMailer.with(
       contact_message: @contact_message
-    ).notify_on_new_contact_message.deliver_now
+    ).notify_on_new_contact_message.deliver!
   end
 
 end

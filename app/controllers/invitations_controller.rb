@@ -36,8 +36,8 @@ class InvitationsController < ApplicationController
     if recaptcha_success && invitation.save
       flash[:info] = "Invitation sent."
       InvitationsMailer.with(
-        invitation: invitation
-      ).send_invitation.deliver_now
+        invitation_id: invitation.id
+      ).send_invitation.deliver!
     else
       ActivityLoggingService.log(current_account, :recaptcha_failures) unless recaptcha_success
       flash[:error] = invitation.errors.full_messages
