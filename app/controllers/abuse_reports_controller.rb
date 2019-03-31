@@ -24,7 +24,7 @@ class AbuseReportsController < ApplicationController
       AdminMailer.with(
         report_id: report.id,
         project_id: @project.id
-      ).notify_on_abuse_report.deliver!
+      ).notify_on_abuse_report.deliver
     end
     flash[:message] = "Your report has been sent to Beacon administrative staff for review."
     redirect_to root_path

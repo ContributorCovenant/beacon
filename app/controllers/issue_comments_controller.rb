@@ -105,7 +105,7 @@ class IssueCommentsController < ApplicationController
           project_id: @project.id,
           issue_id: @issue.id,
           commenter_kind: commenter_kind
-        ).notify_of_new_comment.deliver!
+        ).notify_of_new_comment.deliver
       end
     else
       IssueNotificationsMailer.with(
@@ -113,7 +113,7 @@ class IssueCommentsController < ApplicationController
         project_id: @project.id,
         issue_id: @issue.id,
         commenter_kind: commenter_kind
-      ).notify_of_new_comment.deliver!
+      ).notify_of_new_comment.deliver
     end
   end
 

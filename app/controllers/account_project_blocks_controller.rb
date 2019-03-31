@@ -70,7 +70,7 @@ class AccountProjectBlocksController < ApplicationController
       account_id: @account.id,
       report_id: @report.id,
       reason: block_params[:reason]
-    ).notify_on_flag_request.deliver!
+    ).notify_on_flag_request.deliver
   end
 
   def scope_project

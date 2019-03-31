@@ -157,21 +157,21 @@ class IssuesController < ApplicationController
         email: @issue.reporter_consequence.email_to_notify,
         project_id: @project.id,
         issue_id: @issue.id
-      ).notify_of_new_issue.deliver!
+      ).notify_of_new_issue.deliver
     end
 
     IssueNotificationsMailer.with(
       email: @project.moderator_emails,
       project_id: @project.id,
       issue_id: @issue.id
-    ).notify_of_new_issue.deliver!
+    ).notify_of_new_issue.deliver
 
     IssueNotificationsMailer.with(
       email: current_account.email,
       project_id: @project.id,
       issue_id: @issue.id,
       text: @project.autoresponder.populate_from(issue_url(@issue), project_url(@project))
-    ).autoresponder.deliver!
+    ).autoresponder.deliver
 
     NotificationService.enqueue_sms(@project.id, @issue.id)
   end
@@ -182,7 +182,7 @@ class IssuesController < ApplicationController
       emails: emails,
       project_id: @project.id,
       issue_id: @issue.id
-    ).notify_on_status_change.deliver!
+    ).notify_on_status_change.deliver
   end
 
   def scope_comments

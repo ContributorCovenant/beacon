@@ -37,7 +37,7 @@ class InvitationsController < ApplicationController
       flash[:info] = "Invitation sent."
       InvitationsMailer.with(
         invitation_id: invitation.id
-      ).send_invitation.deliver!
+      ).send_invitation.deliver
     else
       ActivityLoggingService.log(current_account, :recaptcha_failures) unless recaptcha_success
       flash[:error] = invitation.errors.full_messages

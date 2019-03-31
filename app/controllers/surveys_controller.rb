@@ -59,7 +59,7 @@ class SurveysController < ApplicationController
         project_id: @project.id,
         issue_id: @issue.id,
         survey_id: @survey.id
-      ).notify_of_new_survey.deliver!
+      ).notify_of_new_survey.deliver
     end
   end
 
