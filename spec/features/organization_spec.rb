@@ -4,10 +4,6 @@ describe "organization management", type: :feature do
 
   let(:maintainer) { FactoryBot.create(:danielle) }
 
-  before do
-    allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
-  end
-
   it "lets a user create an organization" do
     login_as(maintainer, scope: :account)
     visit root_path
@@ -25,6 +21,7 @@ describe "organization management", type: :feature do
   context "existing organization" do
 
     let!(:organization) { FactoryBot.create(:organization, name: "Umbrella Corporation", account: maintainer) }
+    let!(:project)      { FactoryBot.create(:project, account: maintainer, organization: organization) }
 
     before do
       Role.create(account_id: maintainer.id, organization_id: organization.id, is_owner: true)
@@ -92,6 +89,56 @@ describe "organization management", type: :feature do
       click_on("Create Project")
       expect(page).to have_content("Umbrella Corporation: My Project 1")
       expect(Project.last.organization_id).to eq(organization.id)
+    end
+
+    context "owners and moderators" do
+
+      before do
+        allow_any_instance_of(InvitationsController).to receive(:verify_recaptcha).and_return(true)
+      end
+
+      let(:moderator) { FactoryBot.create(:kate) }
+
+      it "lets a user invite a moderator" do
+        login_as(maintainer, scope: :account)
+        visit organization_path(organization)
+        click_on "Owners and Moderators"
+        fill_in "invitation_email", with: moderator.email
+        click_on "Invite Moderator"
+        expect(moderator.invitations.count > 0).to be_truthy
+      end
+
+      it "lets a user invite a co-owner" do
+        login_as(maintainer, scope: :account)
+        visit organization_path(organization)
+        click_on "Owners and Moderators"
+        fill_in "invitation_email", with: moderator.email
+        check "invitation_is_owner"
+        click_on "Invite Moderator"
+        expect(moderator.invitations.count > 0).to be_truthy
+      end
+
+      it "lets an invited moderator join an organization" do
+        Invitation.create(account: moderator, organization: organization, email: moderator.email)
+        login_as(moderator, scope: :account)
+        visit invitations_path
+        click_on "Accept"
+        expect(page).to have_content("You have accepted the invitation")
+        expect(page).to have_content("My Projects")
+        expect(page).to have_content(project.name)
+        expect(organization.moderator?(moderator)).to be_truthy
+      end
+
+      it "lets an invited owner join an organization" do
+        Invitation.create(account: moderator, organization: organization, email: moderator.email, is_owner: true)
+        login_as(moderator, scope: :account)
+        visit invitations_path
+        click_on "Accept"
+        expect(page).to have_content("You have accepted the invitation")
+        expect(page).to have_content(organization.name)
+        expect(organization.owner?(moderator)).to be_truthy
+      end
+
     end
 
   end

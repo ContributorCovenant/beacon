@@ -25,7 +25,6 @@ class InvitationsController < ApplicationController
         invitation_params.merge(
           account_id: current_account.id,
           organization_id: organization.id,
-          is_default_moderator: true
         )
       )
     else
@@ -49,13 +48,22 @@ class InvitationsController < ApplicationController
   def accept
     flash[:info] = "You have accepted the invitation."
     if @invitation.project
-      Role.create(account: current_account, project_id: @invitation.project_id, is_owner: @invitation.is_owner)
+      Role.create(
+        account: current_account,
+        project_id: @invitation.project_id,
+        is_owner: @invitation.is_owner
+      )
       @invitation.destroy
       redirect_to @invitation.project
     elsif @invitation.organization
-      Role.create(account: current_account, organization_id: @invitation.organization_id, is_owner: @invitation.is_owner)
+      Role.create(
+        account: current_account,
+        organization_id: @invitation.organization_id,
+        is_owner: @invitation.is_owner,
+        is_default_moderator: true
+      )
       @invitation.destroy
-      redirect_to @invitation.project if @invitation.is_owner?
+      redirect_to @invitation.organization and return if @invitation.is_owner?
       redirect_to projects_path
     end
   end
