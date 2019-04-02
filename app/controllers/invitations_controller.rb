@@ -63,8 +63,11 @@ class InvitationsController < ApplicationController
         is_default_moderator: true
       )
       @invitation.destroy
-      redirect_to @invitation.organization && return if @invitation.is_owner?
-      redirect_to projects_path
+      if @invitation.is_owner?
+        redirect_to @invitation.organization
+      else
+        redirect_to projects_path
+      end
     end
   end
 
