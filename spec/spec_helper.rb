@@ -11,6 +11,10 @@ RSpec.configure do |config|
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
+  config.before(:each) do
+    allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
+  end
+
   # The settings below are suggested to provide a good initial experience
   # with RSpec, but feel free to customize to your heart's content.
   #   # This allows you to limit a spec run to individual examples or groups

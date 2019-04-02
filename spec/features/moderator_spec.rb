@@ -263,4 +263,55 @@ describe "moderation", type: :feature do
     end
   end
 
+  context "owners and moderators" do
+
+    before do
+      allow_any_instance_of(InvitationsController).to receive(:verify_recaptcha).and_return(true)
+    end
+
+    let(:new_moderator) { FactoryBot.create(:kate) }
+
+    it "lets a user invite a moderator" do
+      login_as(moderator, scope: :account)
+      visit project_path(project)
+      click_on "Moderators"
+      fill_in "invitation_email", with: new_moderator.email
+      click_on "Invite Moderator"
+      expect(page).to have_content("Moderators Awaiting Confirmation")
+      expect(new_moderator.invitations.count > 0).to be_truthy
+    end
+
+    it "lets a user invite a co-owner" do
+      login_as(moderator, scope: :account)
+      visit project_path(project)
+      click_on "Moderators"
+      fill_in "invitation_email", with: new_moderator.email
+      check "invitation_is_owner"
+      click_on "Invite Moderator"
+      expect(page).to have_content("Moderators Awaiting Confirmation")
+      expect(new_moderator.invitations.count > 0).to be_truthy
+    end
+
+    it "lets an invited moderator join a project" do
+      Invitation.create(account: new_moderator, project: project, email: new_moderator.email)
+      login_as(new_moderator, scope: :account)
+      visit invitations_path
+      click_on "Accept"
+      expect(page).to have_content("You have accepted the invitation")
+      expect(page).to have_content(project.name)
+      expect(project.moderator?(new_moderator)).to be_truthy
+    end
+
+    it "lets an invited owner join a project" do
+      Invitation.create(account: new_moderator, project: project, email: new_moderator.email, is_owner: true)
+      login_as(new_moderator, scope: :account)
+      visit invitations_path
+      click_on "Accept"
+      expect(page).to have_content("You have accepted the invitation")
+      expect(page).to have_content(project.name)
+      expect(project.owner?(new_moderator)).to be_truthy
+    end
+
+  end
+
 end

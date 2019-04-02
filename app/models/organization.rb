@@ -47,6 +47,10 @@ class Organization < ApplicationRecord
     !!is_flagged
   end
 
+  def moderator?(account)
+    moderators.include?(account)
+  end
+
   def moderators
     roles.where("is_default_moderator = ? OR is_owner = ?", true, true).map(&:account)
   end
