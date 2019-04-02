@@ -24,7 +24,7 @@ class InvitationsController < ApplicationController
       invitation = Invitation.new(
         invitation_params.merge(
           account_id: current_account.id,
-          organization_id: organization.id,
+          organization_id: organization.id
         )
       )
     else
@@ -63,7 +63,7 @@ class InvitationsController < ApplicationController
         is_default_moderator: true
       )
       @invitation.destroy
-      redirect_to @invitation.organization and return if @invitation.is_owner?
+      redirect_to @invitation.organization && return if @invitation.is_owner?
       redirect_to projects_path
     end
   end

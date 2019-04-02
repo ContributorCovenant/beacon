@@ -28,7 +28,7 @@ class ConsequencesController < ApplicationController
   end
 
   def destroy
-    @guide.consequences.find(:id).destroy
+    @guide.consequences.find(params[:id]).destroy
     if organization = @guide.organization
       redirect_to organization_consequence_guide_path(organization)
     else
