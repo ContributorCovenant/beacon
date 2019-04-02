@@ -105,6 +105,7 @@ describe "organization management", type: :feature do
         click_on "Owners and Moderators"
         fill_in "invitation_email", with: moderator.email
         click_on "Invite Moderator"
+        expect(page).to have_content("Moderators Awaiting Confirmation")
         expect(moderator.invitations.count > 0).to be_truthy
       end
 
@@ -115,6 +116,7 @@ describe "organization management", type: :feature do
         fill_in "invitation_email", with: moderator.email
         check "invitation_is_owner"
         click_on "Invite Moderator"
+        expect(page).to have_content("Moderators Awaiting Confirmation")
         expect(moderator.invitations.count > 0).to be_truthy
       end
 
