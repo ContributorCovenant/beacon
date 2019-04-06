@@ -15,6 +15,15 @@ describe "the reporting process", type: :feature do
     Autoresponder.create(project: project, text: "Foo")
   end
 
+  it "lets a reporter register" do
+    visit new_account_registration_path
+    fill_in "Email", with: "jones@idolhands.com"
+    fill_in "Password", with: "123456789abc"
+    fill_in "Password confirmation", with: "123456789abc"
+    click_button "Sign Up"
+    expect(page).to have_content "message with a confirmation link"
+  end
+
   it "enables a reporter to sign in" do
     visit new_account_session_path
     fill_in "Email", with: reporter.email

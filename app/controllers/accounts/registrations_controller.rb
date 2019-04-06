@@ -63,10 +63,10 @@ module Accounts
     def check_captcha
       return if verify_recaptcha
 
-      self.resource = resource_class.new sign_up_params
+      resource = resource_class.new sign_up_params
       resource.validate
       set_minimum_password_length
-      respond_with resource
+      redirect_to new_account_registration_path(resource)
     end
   end
 

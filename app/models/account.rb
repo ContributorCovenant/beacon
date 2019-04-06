@@ -180,6 +180,7 @@ class Account < ApplicationRecord
   end
 
   def normalize_email
+    return unless email.present?
     normalized = Normailize::EmailAddress.new(self.email).normalized_address
     self.normalized_email = normalized.gsub(/\+.+\@/, "@")
   end
