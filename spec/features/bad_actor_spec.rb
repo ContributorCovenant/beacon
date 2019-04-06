@@ -13,7 +13,7 @@ describe "the registration process", type: :feature do
     fill_in "Email", with: "donnie@madeupdomainxxx.com"
     fill_in "Password", with: "passwordpassword"
     fill_in "Password confirmation", with: "passwordpassword"
-    click_button "Sign up"
+    click_button "Sign Up"
     expect(page).to have_content "Email is invalid"
   end
 
@@ -26,7 +26,7 @@ describe "the registration process", type: :feature do
     fill_in "Email", with: "donnie+1@gmail.com"
     fill_in "Password", with: "passwordpassword"
     fill_in "Password confirmation", with: "passwordpassword"
-    click_button "Sign up"
+    click_button "Sign Up"
     expect(page).to have_content "Email address must be unique"
   end
 
