@@ -56,11 +56,10 @@ class IssuesController < ApplicationController
     if @project.moderator?(current_account) || current_account.is_admin?
       breadcrumb "Projects", projects_path
       breadcrumb "#{@project.name} Issues", project_path(@project)
-      breadcrumb "Issue #{@issue.issue_number}", issue_path(@issue)
     else
       breadcrumb "My Issues", issues_path
-      breadcrumb "Issue #{@issue.issue_number}", issue_path(@issue)
     end
+    breadcrumb "Issue #{@issue.issue_number}", issue_path(@issue)
 
     @invitation = IssueInvitation.new
     @comment = IssueComment.new
