@@ -79,7 +79,7 @@
       </ul>
     <% end %>
 
-    <% if current_account %>
+    <% if current_account && current_account.can_report_abuse?(@project) %>
       <div class="actions">
         <%= link_to "Report This Project", new_abuse_report_path(project_slug: @project.slug), class: "btn btn-primary" %>
       </div>

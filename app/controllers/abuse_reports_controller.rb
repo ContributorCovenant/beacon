@@ -27,7 +27,7 @@ class AbuseReportsController < ApplicationController
       ).notify_on_abuse_report.deliver
     end
     flash[:message] = "Your report has been sent to Beacon administrative staff for review."
-    redirect_to root_path
+    redirect_to directory_project_path(@project)
   end
 
   private
