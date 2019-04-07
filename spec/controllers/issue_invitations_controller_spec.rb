@@ -6,6 +6,7 @@ RSpec.describe IssueInvitationsController, type: :controller do
 
     let(:moderator)   { FactoryBot.create(:kate) }
     let(:respondent)  { FactoryBot.create(:exene) }
+    let(:reporter)    { FactoryBot.create(:danielle) }
     let(:rando)       { FactoryBot.create(:donnie) }
     let(:project)     { FactoryBot.create(:project, account: moderator) }
     let(:issue)       { Issue.new(id: SecureRandom.uuid, issue_number: 1) }
@@ -28,6 +29,16 @@ RSpec.describe IssueInvitationsController, type: :controller do
           project_slug: project.slug,
           issue_id: 1,
           issue_invitation: { email: respondent.email, summary: "You're invited!" }
+        }
+        expect(response).to have_http_status 302
+      end
+
+      it "allows a moderator to invite a reporter" do
+        controller.sign_in(moderator, scope: :account)
+        post :create, params: {
+          project_slug: project.slug,
+          issue_id: 1,
+          issue_invitation: { reporter_email: reporter.email, summary: "You're invited!" }
         }
         expect(response).to have_http_status 302
       end

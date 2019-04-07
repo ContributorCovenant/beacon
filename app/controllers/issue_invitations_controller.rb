@@ -56,7 +56,7 @@ class IssueInvitationsController < ApplicationController
         project_name: @issue.project.name
       ).notify_existing_account_of_issue.deliver
       AccountIssue.create(issue_id: @issue.id, account: account)
-      NotificationService.notify(account: account, project: @project, issue_id: @issue.id)
+      NotificationService.notify(account_id: account.id, project_id: @project.id, issue_id: @issue.id)
       @issue.update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(account.id))
       flash[:message] = "The reporter has been invited to this issue."
     else

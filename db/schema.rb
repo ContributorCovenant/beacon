@@ -269,8 +269,8 @@ ActiveRecord::Schema.define(version: 2019_03_30_235432) do
     t.text "description"
     t.uuid "account_id"
     t.string "remote_org_name"
-    t.datetime "created_at", default: "2019-04-02 00:00:00"
-    t.datetime "updated_at", default: "2019-04-02 00:00:00"
+    t.datetime "created_at", default: "2019-04-07 00:00:00"
+    t.datetime "updated_at", default: "2019-04-07 00:00:00"
     t.boolean "is_flagged", default: false
     t.text "flagged_reason"
     t.index ["account_id"], name: "index_organizations_on_account_id"

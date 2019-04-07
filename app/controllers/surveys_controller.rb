@@ -53,7 +53,7 @@ class SurveysController < ApplicationController
 
   def send_notifications
     @project.moderators.each do |moderator|
-      NotificationService.notify(account: moderator, project: @project, issue_id: @issue.id)
+      NotificationService.notify(account_id: moderator.id, project_id: @project.id, issue_id: @issue.id)
       IssueNotificationsMailer.with(
         email: moderator.email,
         project_id: @project.id,
