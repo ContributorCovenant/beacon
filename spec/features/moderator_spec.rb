@@ -180,6 +180,14 @@ describe "moderation", type: :feature do
       click_on issue.issue_number
     end
 
+    it "allows a moderator to block a reporter" do
+      click_on "Details"
+      expect(page).to have_content("Reporter Profile")
+      fill_in "account_project_block_reason", with: "This person is harassing us!"
+      click_on "Block"
+      expect(page).to have_content("This account is blocked")
+    end
+
     it "allows the moderator to send a message to a reporter" do
       click_on "Reporter Talk"
       within("#nav-reporter-discussion") do
