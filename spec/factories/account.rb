@@ -16,6 +16,11 @@ FactoryBot.define do
       end
     end
 
+    factory :admin do
+      email { "admin@idolhands.com" }
+      is_admin { true }
+    end
+
     # Danielle is a project maintainer for a small, one-person open source project.
     factory :danielle do
       email { "danielle@dax.com" }

@@ -120,8 +120,9 @@ module Permissions
 
   def can_report_abuse?(project)
     return false if is_flagged
-    return false if abuse_reports.submitted.select{ |report| report.project == project }.any?
-    return false if abuse_reports.submitted.count >= Setting.throttling(:max_abuse_reports_per_day)
+    submitted = abuse_reports.submitted
+    return false if submitted.count >= Setting.throttling(:max_abuse_reports_per_day)
+    return false if submitted.map(&:abuse_report_subject).select{ |ars| ars.project_id = project.id }.any?
     true
   end
 

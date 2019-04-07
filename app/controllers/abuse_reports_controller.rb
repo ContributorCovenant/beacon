@@ -5,10 +5,14 @@ class AbuseReportsController < ApplicationController
   before_action :enforce_permissions
 
   def new
+    breadcrumb "Directory", :directory_path
+    breadcrumb @project.name, directory_project_path(@project)
     @abuse_report = AbuseReport.new(account: current_account)
   end
 
   def create
+    breadcrumb "Directory", :directory_path
+    breadcrumb @project.name, directory_project_path(@project)
     if abuse_report_params[:description].empty?
       flash[:error] = "You must provide an explanation."
       redirect_to new_abuse_report_path(project_slug: @project.slug) && return
@@ -27,7 +31,7 @@ class AbuseReportsController < ApplicationController
       ).notify_on_abuse_report.deliver
     end
     flash[:message] = "Your report has been sent to Beacon administrative staff for review."
-    redirect_to root_path
+    redirect_to directory_project_path(@project)
   end
 
   private

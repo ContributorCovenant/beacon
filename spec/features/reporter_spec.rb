@@ -4,6 +4,7 @@ describe "the reporting process", type: :feature do
 
   let(:maintainer) { FactoryBot.create(:danielle) }
   let!(:project) { FactoryBot.create(:project, account: maintainer, public: true) }
+  let!(:another_project) { FactoryBot.create(:project, name: "Theory X", account: maintainer, public: true) }
   let(:reporter) { FactoryBot.create(:ricky) }
 
   before do
@@ -45,6 +46,26 @@ describe "the reporting process", type: :feature do
     fill_in "issue_comment_text", with: "Thanks for looking into this!"
     click_on "Send Message"
     expect(page).to have_content("Thanks")
+  end
+
+  it "lets a reporter report a project for abuse" do
+    login_as(reporter, scope: :account)
+    visit directory_path
+    click_on(project.name)
+    click_on("Report This Project")
+    expect(page).to have_content("Report Abuse: #{project.name}")
+    fill_in "Explanation", with: "This project's name is offensive."
+    click_on "Report Project"
+    expect(page).to have_content("Your report has been sent")
+    expect(page).to have_content(project.name)
+  end
+
+  it "lets a reporter search for a project" do
+    login_as(reporter, scope: :account)
+    visit directory_path
+    fill_in 'q', with: "T"
+    click_on "Search"
+    expect(page).to have_content(another_project.name)
   end
 
 end

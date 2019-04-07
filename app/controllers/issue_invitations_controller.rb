@@ -17,6 +17,7 @@ class IssueInvitationsController < ApplicationController
     normalized_email = Normailize::EmailAddress.new(invitation_params[:email]).normalized_address
     project = @issue.project
 
+    # Invite respondent
     if account = Account.find_by(normalized_email: normalized_email)
       RespondentMailer.with(
         email: account.email,
@@ -58,10 +59,17 @@ class IssueInvitationsController < ApplicationController
       AccountIssue.create(issue_id: @issue.id, account: account)
       NotificationService.notify(account_id: account.id, project_id: @project.id, issue_id: @issue.id)
       @issue.update_attribute(:reporter_encrypted_id, EncryptionService.encrypt(account.id))
-      flash[:message] = "The reporter has been invited to this issue."
     else
-      flash[:error] = "No account found for that email address."
+      IssueInvitation.create(
+        email: normalized_email,
+        issue_encrypted_id: EncryptionService.encrypt(@issue.id)
+      )
+      ReporterMailer.with(
+        email: normalized_email,
+        project_name: @issue.project.name
+      ).notify_new_account_of_issue.deliver
     end
+    flash[:message] = "The reporter has been invited to this issue."
     redirect_to project_issue_path(@project, @issue)
   end
 

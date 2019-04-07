@@ -1,0 +1,20 @@
+<% content_for :title do %>
+  Code of Conduct Enforcement Issue on <%= @project_name %>
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      <p>A code of conduct issue has been opened on your behalf in the <%= @project_name %> project and you
+      have been identified as the reporter.</p>
+      <p>To view the issue and respond, please create an account on Beacon using the button below.
+      After your account is verified, sign in and and click on 'My Issues' in the navigation bar.</p>
+    </columns>
+  </row>
+
+  <row>
+    <columns>
+      <button href="<%= new_account_registration_url %>">Create an Account</button>
+    </columns>
+  </row>
+</container>

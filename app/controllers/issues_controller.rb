@@ -10,6 +10,7 @@ class IssuesController < ApplicationController
   before_action :enforce_issue_creation_permissions, only: [:new, :create]
 
   def index
+    breadcrumb "My Issues", issues_path
     issues = current_account.issues
     @open_issues = issues.select(&:open?)
     @closed_issues = issues - @open_issues
@@ -52,6 +53,14 @@ class IssuesController < ApplicationController
   end
 
   def show
+    if @project.moderator?(current_account) || current_account.is_admin?
+      breadcrumb "Projects", projects_path
+      breadcrumb "#{@project.name} Issues", project_path(@project)
+    else
+      breadcrumb "My Issues", issues_path
+    end
+    breadcrumb "Issue #{@issue.issue_number}", issue_path(@issue)
+
     @invitation = IssueInvitation.new
     @comment = IssueComment.new
     @surveys = @project.surveys.select{ |s| s.issue == @issue }
