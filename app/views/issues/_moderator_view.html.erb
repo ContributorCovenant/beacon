@@ -27,14 +27,15 @@
             <%= @reporter_block.reason %>
           </p>
         <% end %>
-        <%= link_to "Details", project_reporter_path(@project, @issue.reporter.id), class: "btn btn-sm btn-warning" %>
+        <% unless @project.moderator?(@issue.reporter) %>
+          <%= link_to "Details", project_reporter_path(@project, @issue.reporter.id), class: "btn btn-sm btn-warning" %>
+        <% end %>
       </li>
     </ul>
     <% if @project.moderator?(@issue.reporter) %>
       <p>
         This issue was opened by a moderator on someone else's behalf. Use the
-        form below to invite a reporter. Note that the reporter must already
-        have an account in Beacon.
+        form below to invite a reporter.
       </p>
       <%= form_for IssueInvitation.new, url: project_issue_issue_invitations_path(@project, @issue) do |f| %>
         <div class="form-group">

@@ -18,6 +18,7 @@ describe "moderation", type: :feature do
 
   before do
     allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
+    allow_any_instance_of(IssuesController).to receive(:verify_recaptcha).and_return(true)
     Role.create(account_id: moderator.id, project_id: project.id, is_owner: true)
     login_as(moderator, scope: :account)
   end
@@ -174,40 +175,62 @@ describe "moderation", type: :feature do
 
   context "reporter interactions" do
 
-    before do
-      visit projects_path
-      click_on project.name
-      click_on issue.issue_number
-    end
+    context "no reporter" do
 
-    it "allows a moderator to block a reporter" do
-      click_on "Details"
-      expect(page).to have_content("Reporter Profile")
-      fill_in "account_project_block_reason", with: "This person is harassing us!"
-      click_on "Block"
-      expect(page).to have_content("This account is blocked")
-    end
-
-    it "allows the moderator to send a message to a reporter" do
-      click_on "Reporter Talk"
-      within("#nav-reporter-discussion") do
-        fill_in("issue_comment_text", with: "Can you provide some more details?")
+      before do
+        Autoresponder.create(project: project, text: "This is an automated message.")
       end
-      click_on "Send to Reporter"
-      expect(page).to have_content("Can you provide")
+
+      it "allows a moderator to open an issue" do
+        visit projects_path
+        click_on project.name
+        click_on "Open an Issue"
+        expect(page).to have_content("Open an Issue in #{project.name}")
+        fill_in "issue_description", with: "Filing this on behalf of someone else."
+        click_on "Open Issue"
+        expect(page).to have_content("This issue was opened by a moderator on someone else's behalf")
+      end
+
+      it "allows a moderator to invite a reporter" do
+        visit projects_path
+        click_on project.name
+        click_on "Open an Issue"
+        fill_in "issue_description", with: "Filing this on behalf of someone else."
+        click_on "Open Issue"
+        fill_in "issue_invitation_reporter_email", with: "reporter@idolhands.com"
+        click_on "Invite Reporter"
+        expect(page).to have_content("The reporter has been invited to this issue.")
+      end
     end
 
-    it "allows the moderator to see details about the reporter" do
-      click_on "Details"
-      expect(page).to have_content("Reporter Profile for #{reporter.email}")
-      expect(page).to have_content("Issue ##{issue.issue_number}")
-    end
+    context "with a reporter" do
+      before do
+        visit projects_path
+        click_on project.name
+        click_on issue.issue_number
+      end
 
-    it "allows the moderator to block the reporter" do
-      click_on "Details"
-      fill_in "account_project_block_reason", with: "This person is trolling."
-      click_on "Block"
-      expect(page).to have_content("This account is blocked from this project")
+      it "allows the moderator to send a message to a reporter" do
+        click_on "Reporter Talk"
+        within("#nav-reporter-discussion") do
+          fill_in("issue_comment_text", with: "Can you provide some more details?")
+        end
+        click_on "Send to Reporter"
+        expect(page).to have_content("Can you provide")
+      end
+
+      it "allows the moderator to see details about the reporter" do
+        click_on "Details"
+        expect(page).to have_content("Reporter Profile for #{reporter.email}")
+        expect(page).to have_content("Issue ##{issue.issue_number}")
+      end
+
+      it "allows the moderator to block the reporter" do
+        click_on "Details"
+        fill_in "account_project_block_reason", with: "This person is trolling."
+        click_on "Block"
+        expect(page).to have_content("This account is blocked from this project")
+      end
     end
   end
 

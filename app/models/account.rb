@@ -18,10 +18,10 @@ class Account < ApplicationRecord
   validates_uniqueness_of :normalized_email
   validates :email, 'valid_email_2/email': { disposable: true, mx: true }
 
-  has_one  :account_activity_log
-  has_many :abuse_reports
-  has_many :account_issues
-  has_many :account_project_blocks
+  has_one  :account_activity_log, dependent: :destroy
+  has_many :abuse_reports, dependent: :delete_all
+  has_many :account_issues, dependent: :delete_all
+  has_many :account_project_blocks, dependent: :delete_all
   has_many :credentials, inverse_of: :account, dependent: :delete_all
   has_many :roles
 
@@ -168,7 +168,7 @@ class Account < ApplicationRecord
 
     invitations.each do |invitation|
       next unless issue = Issue.find(EncryptionService.decrypt(invitation.issue_encrypted_id))
-
+      NotificationService.notify(account_id: self.id, project_id: invitation.issue.project.id, issue_id: invitation.issue.id, issue_comment_id: nil)
       issue.update_attribute(:respondent_encrypted_id, EncryptionService.encrypt(self.id))
       AccountIssue.create(account_id: self.id, issue_id: issue.id)
       invitation.destroy

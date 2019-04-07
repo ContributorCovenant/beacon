@@ -91,6 +91,17 @@ describe "organization management", type: :feature do
       expect(Project.last.organization_id).to eq(organization.id)
     end
 
+    it "lets an owner edit an organization" do
+      login_as(maintainer, scope: :account)
+      visit root_path
+      click_on("My Organizations")
+      click_on(organization.name)
+      click_on("Edit Organization")
+      fill_in "organization_description", with: "Probably the best OSS org in the world."
+      click_on("Update Organization")
+      expect(page).to have_content("best OSS")
+    end
+
     context "owners and moderators" do
 
       before do
