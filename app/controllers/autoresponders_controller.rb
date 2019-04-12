@@ -5,7 +5,7 @@ class AutorespondersController < ApplicationController
   before_action :scope_project
   before_action :enforce_permissions
   before_action :scope_autoresponder, only: [:edit, :show, :update]
-  before_action :scope_available_sources, only: [:new, :edit]
+  before_action :scope_available_sources, only: [:new, :edit, :clone]
 
   def new
     if organization = @organization || @project.organization
@@ -41,6 +41,7 @@ class AutorespondersController < ApplicationController
       @template = Autoresponder.new(respondent_template_params.merge(organization_id: @organization.id))
     end
     if @template.save
+      flash[:notice] = "You have successfully created an autoresponder."
       redirect_to project_path(@project) if @project
       redirect_to organization_path(@organization) if @organization
     else
@@ -53,17 +54,21 @@ class AutorespondersController < ApplicationController
     if existing = @subject.respondent_template
       existing.destroy
     end
-    source = respondent_template_params[:respondent_template_default_source]
+    source = autoresponder_params[:default_source]
     if source == "Beacon Default"
-      @template = @subject.create_respondent_template(text: RespondentTemplate.beacon_default.text)
+      @template = @subject.create_autoresponder(text: Autoresponder.beacon_default.text)
     elsif source == "Organization Default"
-      @template = @subject.create_respondent_template(text: @organization&.respondent_template&.text || @project.organization.respondent_template.text)
+      @template = @subject.create_autoresponder(text: @organization&.autoresponder&.text || @project.organization.autoresponder.text)
     else
-      source = current_account.projects.find_by(name: source).respondent_template
-      @template = @subject.create_respondent_template(text: source.text)
+      source = current_account.projects.find{ |p| p.name == source }.autoresponder
+      @template = @subject.create_autoresponder(text: source.text)
     end
-    flash[:notice] = "You have successfully updated the respondent template."
-    render :edit
+    flash[:notice] = "You have successfully updated the autoresponder."
+    if @project
+      redirect_to project_autoresponder_path(@project)
+    else
+      redirect_to organization_autoresponder_path(@organization)
+    end
   end
 
   def edit
@@ -71,6 +76,7 @@ class AutorespondersController < ApplicationController
       breadcrumb "Organizations", organizations_path
       breadcrumb organization.name, organization_path(organization)
     else
+      @available_sources = ["Beacon Default", @available_sources].flatten.compact - [@project&.name]
       breadcrumb "Projects", projects_path
     end
     breadcrumb(@project.name, project_path(@project)) if @project
@@ -78,6 +84,7 @@ class AutorespondersController < ApplicationController
 
   def update
     if @autoresponder.update_attributes(autoresponder_params)
+      flash[:notice] = "You have successfully updated the autoresponder."
       redirect_to @subject
     else
       flash[:error] = @autoresponder.errors.full_messages
@@ -92,7 +99,7 @@ class AutorespondersController < ApplicationController
   end
 
   def autoresponder_params
-    params.require(:autoresponder).permit(:text)
+    params.require(:autoresponder).permit(:text, :default_source)
   end
 
   def scope_autoresponder

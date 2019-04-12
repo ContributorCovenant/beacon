@@ -32,8 +32,8 @@ Rails.application.routes.draw do
   resources :issues
 
   resources :organizations, param: :slug do
-    resource :autoresponder
     resources :invitations, only: [:create]
+    resource :autoresponder
     resource :respondent_template
     resource :consequence_guide do
       resources :consequences
@@ -47,6 +47,7 @@ Rails.application.routes.draw do
     post "import_projects_from_github", to: "organizations#import_projects_from_github"
     post "remove_moderator", to: "organizations#remove_moderator"
     post "clone_autoresponder", to: "autoresponders#clone"
+    patch "clone_autoresponder", to: "autoresponders#clone"
     post "clone_respondent_template", to: "respondent_templates#clone"
     patch "clone_respondent_template", to: "respondent_templates#clone"
   end
@@ -78,6 +79,7 @@ Rails.application.routes.draw do
     get "ownership", to: "projects#ownership"
     get "token", to: "projects#token"
     post "clone_autoresponder", to: "autoresponders#clone"
+    patch "clone_autoresponder", to: "autoresponders#clone"
     post "clone_respondent_template", to: "respondent_templates#clone"
     post "remove_moderator", to: "projects#remove_moderator"
     patch "clone_respondent_template", to: "respondent_templates#clone"

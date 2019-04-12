@@ -8,6 +8,8 @@ describe "The project setup process", type: :feature do
   before do
     allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
     Role.create(account_id: maintainer.id, project_id: project.id, is_owner: true)
+    Autoresponder.create(scope: "template", text: "Thank you for opening a code of conduct issue")
+    login_as(maintainer, scope: :account)
   end
 
   context "without an organization" do
@@ -27,7 +29,6 @@ describe "The project setup process", type: :feature do
     end
 
     it "lets a user create a project" do
-      login_as(maintainer, scope: :account)
       visit root_path
       click_on "My Projects"
       click_on("New Project")
@@ -41,7 +42,6 @@ describe "The project setup process", type: :feature do
     end
 
     it "lets a user confirm ownership" do
-      login_as(maintainer, scope: :account)
       visit root_path
       click_on "My Projects"
       click_on(project.name)
@@ -51,7 +51,6 @@ describe "The project setup process", type: :feature do
     end
 
     it "lets a user set up an impact and consequences guide" do
-      login_as(maintainer, scope: :account)
       visit root_path
       click_on "My Projects"
       click_on(project.name)
@@ -69,7 +68,6 @@ describe "The project setup process", type: :feature do
     end
 
     it "lets a user add a respondent template" do
-      login_as(maintainer, scope: :account)
       visit root_path
       click_on "My Projects"
       click_on(project.name)
@@ -83,8 +81,39 @@ describe "The project setup process", type: :feature do
       expect(page).to have_content("You have successfully updated the respondent template.")
     end
 
+    it "lets a user add an autoresponder" do
+      visit root_path
+      click_on "My Projects"
+      click_on(project.name)
+      click_on("Autoresponder")
+      expect(page).to have_content("Clone from")
+      select "Beacon Default", from: "autoresponder_default_source"
+      click_on("Clone")
+      expect(page).to have_content("Thank you for opening")
+      click_on("Edit")
+      fill_in "autoresponder_text", with: "Thanks so much"
+      click_on("Save")
+      expect(page).to have_content("You have successfully updated the autoresponder.")
+    end
+
+    it "lets a user set up an impact and consequences guide" do
+      visit root_path
+      click_on "My Projects"
+      click_on(project.name)
+      click_on("Impact and Consequences")
+      expect(page).to have_content("Clone from")
+      select "Beacon Default", from: "consequence_guide_default_source"
+      click_on("Clone")
+      expect(page).to have_content("Correction")
+      fill_in "consequence_label", with: "Disciplinary Action"
+      select "2", from: "consequence_severity"
+      fill_in "consequence_action", with: "Personal attacks"
+      fill_in "consequence_consequence", with: "Reprimand from moderators"
+      click_on("Update Guide")
+      expect(page).to have_content("Personal attacks")
+    end
+
     it "lets a user modify project settings" do
-      login_as(maintainer, scope: :account)
       visit root_path
       click_on "My Projects"
       click_on(project.name)
@@ -118,7 +147,6 @@ describe "The project setup process", type: :feature do
     end
 
     it "lets a user create a project" do
-      login_as(maintainer, scope: :account)
       visit root_path
       click_on "My Projects"
       click_on("New Project")
@@ -134,7 +162,6 @@ describe "The project setup process", type: :feature do
     end
 
     it "lets a user clone an impact and consequences guide" do
-      login_as(maintainer, scope: :account)
       visit root_path
       click_on "My Projects"
       click_on(org_project.name)
@@ -152,7 +179,6 @@ describe "The project setup process", type: :feature do
     end
 
     it "lets a user clone a respondent template" do
-      login_as(maintainer, scope: :account)
       visit root_path
       click_on "My Projects"
       click_on(org_project.name)
@@ -164,6 +190,21 @@ describe "The project setup process", type: :feature do
       fill_in "respondent_template_text", with: "We are sad to inform you"
       click_on("Save")
       expect(page).to have_content("You have successfully updated the respondent template.")
+    end
+
+    it "lets a user add an autoresponder" do
+      visit root_path
+      click_on "My Projects"
+      click_on(org_project.name)
+      click_on("Autoresponder")
+      expect(page).to have_content("Clone from")
+      select "Beacon Default", from: "autoresponder_default_source"
+      click_on("Clone")
+      expect(page).to have_content("Thank you for opening")
+      click_on("Edit")
+      fill_in "autoresponder_text", with: "Thanks so much"
+      click_on("Save")
+      expect(page).to have_content("You have successfully updated the autoresponder.")
     end
 
   end
