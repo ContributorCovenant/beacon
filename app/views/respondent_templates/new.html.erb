@@ -29,7 +29,6 @@
 
     <% clone_url = project_clone_respondent_template_path(@project) if @project.present? %>
     <% clone_url ||= organization_clone_respondent_template_path(@organization) %>
-    <%= clone_url %>
     <%= form_for @template, url: clone_url do |f| %>
       <div class="form-group col-sm-6">
         <%= f.label :clone_from %>
