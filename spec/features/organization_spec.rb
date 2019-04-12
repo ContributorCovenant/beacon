@@ -2,6 +2,10 @@ require "rails_helper"
 
 describe "organization management", type: :feature do
 
+  before :all do
+    Autoresponder.create(scope: "template", text: "Thank you for opening a code of conduct issue")
+  end
+
   let(:maintainer) { FactoryBot.create(:danielle) }
 
   it "lets a user create an organization" do
@@ -71,6 +75,23 @@ describe "organization management", type: :feature do
       fill_in "respondent_template_text", with: "We are sad to inform you"
       click_on("Save")
       expect(page).to have_content("You have successfully updated the respondent template.")
+    end
+
+    it "lets a user add an autoresponder" do
+      login_as(maintainer, scope: :account)
+      visit root_path
+      click_on("My Organizations")
+      click_on(organization.name)
+      expect(page).to have_content("Setup Checklist")
+      click_on("Autoresponder")
+      expect(page).to have_content("Clone from")
+      select "Beacon Default", from: "autoresponder_default_source"
+      click_on("Clone")
+      expect(page).to have_content("Thank you for opening")
+      click_on("Edit")
+      fill_in "autoresponder_text", with: "Thanks so much"
+      click_on("Save")
+      expect(page).to have_content("You have successfully updated the autoresponder.")
     end
 
     it "lets a user create a project" do

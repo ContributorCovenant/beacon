@@ -36,6 +36,13 @@ class GitlabImportService
         )
       end
 
+      if autoresponder = organization.autoresponder
+        Autoresponder.create(
+          project_id: project.id,
+          text: autoresponder.text
+        )
+      end
+
       project.project_setting.touch
       project.check_setup_complete?
     end

@@ -9,6 +9,10 @@ class Autoresponder < ApplicationRecord
 
   attr_accessor :default_source
 
+  def self.beacon_default
+    find_by(scope: "template")
+  end
+
   def populate_from(issue_url, project_url)
     text.gsub!("[[PROJECT_NAME]]", project.name)
     text.gsub!("[[CODE_OF_CONDUCT_URL]]", project.coc_url)
@@ -22,9 +26,13 @@ class Autoresponder < ApplicationRecord
   def update_org_projects
     return unless organization
     previous_text = changes[:text][0]
-    organization.projects.includes(:autoresponder).map(&:autoresponder).each do |autoresponder|
-      next unless autoresponder.text == previous_text # project has modified it
-      autoresponder.update_attribute(:text, changes[:text][1])
+    organization.projects.includes(:autoresponder).each do |project|
+      if autoresponder = project.autoresponder
+        next unless autoresponder.text == previous_text # project has modified it
+        autoresponder.update_attribute(:text, changes[:text][1])
+      else
+        Autoresponder.create(project_id: project.id, text: changes[:text][1])
+      end
     end
   end
 
