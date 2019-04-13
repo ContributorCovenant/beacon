@@ -1,0 +1,16 @@
+<% title "#{@organization.name}: Settings" %>
+
+<h1><%= @organization.name %></h1>
+
+<%= form_for @organization do |f| %>
+  <div class="form-group col-sm-6">
+    <%= f.check_box :accept_issues_by_email, class: "form-check-input" %>
+    <label class="form-check-label" for="accept_issues_by_email">Accept issues by email</label>
+    <p>Reporters may email <em>projectname@reports.coc-beacon.com</em> to file an issue.</p>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Update Settings", class: "btn btn-primary" %>
+    <%= link_to "Cancel", @organization, class: "btn btn-warning" %>
+  </div>
+<% end %>

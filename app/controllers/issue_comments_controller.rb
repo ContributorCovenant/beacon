@@ -56,9 +56,11 @@ class IssueCommentsController < ApplicationController
   end
 
   def send_notifications
+    comment_text = nil
     if @project.moderator?(current_account) && visible_to_reporter?
       email = @issue.reporter.email
       commenter_kind = "moderator"
+      comment_text = @comment.text if @issue.reporter.is_external_reporter
       NotificationService.enqueue_notification(
         account_id: @issue.reporter.id,
         project_id: @project.id,
@@ -112,7 +114,8 @@ class IssueCommentsController < ApplicationController
         email: email,
         project_id: @project.id,
         issue_id: @issue.id,
-        commenter_kind: commenter_kind
+        commenter_kind: commenter_kind,
+        comment_text: comment_text
       ).notify_of_new_comment.deliver
     end
   end

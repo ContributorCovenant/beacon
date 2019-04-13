@@ -14,6 +14,7 @@ class Organization < ApplicationRecord
   before_create :set_slug
   after_create :create_consequence_guide
   after_save :update_project_org_names
+  after_save :update_project_settings
 
   attr_accessor :default_source
 
@@ -93,6 +94,10 @@ class Organization < ApplicationRecord
     return unless projects.any?
     return if projects.first.organization_name == name
     projects.each{ |project| project.update_attribute(:organization_name, name) }
+  end
+
+  def update_project_settings
+    projects.each{ |project| project.update_attribute(:accept_issues_by_email, accept_issues_by_email) }
   end
 
 end

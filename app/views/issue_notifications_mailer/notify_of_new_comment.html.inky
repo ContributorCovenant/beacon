@@ -11,6 +11,15 @@
     </columns>
   </row>
 
+  <% if @comment.present? %>
+    <row>
+      <columns>
+        <% @comment.split(/\n/).each do |paragraph| %>
+          <p><%= paragraph %></p>
+        <% end %>
+      </columns>
+    </row>
+  <% end %>
   <row>
     <columns>
       <button href="<%= project_issue_url(@project, @issue) %>">View Issue</button>

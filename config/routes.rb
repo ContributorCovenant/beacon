@@ -42,6 +42,7 @@ Rails.application.routes.draw do
       resources :consequences
       patch "clone", to: "consequence_guides#clone"
     end
+    get "settings", to: "organizations#settings"
     get "moderators", to: "organizations#moderators"
     get "import_projects_from_github", to: "organizations#import_projects_from_github"
     get "gitlab_auth_token", to: "organizations#gitlab_auth_token"

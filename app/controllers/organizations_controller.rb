@@ -114,7 +114,8 @@ class OrganizationsController < ApplicationController
       :url,
       :coc_url,
       :description,
-      :remote_org_name
+      :remote_org_name,
+      :accept_issues_by_email
     )
   end
 

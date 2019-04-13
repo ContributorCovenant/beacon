@@ -9,6 +9,7 @@
       <%= @project.name %>
     </h1>
     <p><%= @project.description %></p>
+
     <% if @project.is_event? %>
       <p>This is a <%= @project.duration %>-day event with <%= @project.attendees %> attendees.</p>
 
@@ -29,6 +30,10 @@
         <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-danger" %>
       <% end %>
     </div>
+    <% if @project.accept_issues_by_email %>
+      <h2 class="mt-3">Email Reporting</h2>
+      <p>Reporters may submit an issue to this project by emailing <%= @project.slug %>@reports.coc-beacon.com</p>
+    <% end %>
     <h2 class="mt-3">Project Statistics</h2>
     <ul>
       <% if @report.average_time_to_resolution.present? %>

@@ -23,6 +23,7 @@ class IssueNotificationsMailer < ApplicationMailer
     assign_objects
     @commenter_kind = params[:commenter_kind]
     @email = params[:email]
+    @comment = params[:comment_text]
     mail(to: @email, subject: "Beacon: #{@project.name} Issue ##{@issue.issue_number} issue has a new comment")
   end
 

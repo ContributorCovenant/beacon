@@ -8,9 +8,14 @@ class EmailProcessorService
 
   def process
     return unless project = Project.find_by(slug: email.to.first[:token])
-    notify_reporter(project) && return unless project.accept_issues_by_email?
+    notify_reporter(project) && return unless project.accept_issues_by_email? || project&.organization&.accept_issues_by_email?
     return unless account.can_open_issue_on_project?(project)
-    Issue.create(reporter_id: account.id, project_id: project.id, description: email.body)
+    issue = Issue.create(reporter_id: account.id, project_id: project.id, description: email.body)
+    if email.attachments.any?
+      email.attachments.each do |attachment|
+        issue.uploads << attachment
+      end
+    end
   end
 
   private
