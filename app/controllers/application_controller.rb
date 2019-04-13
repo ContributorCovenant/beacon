@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :set_raven_context
   before_action :configure_permitted_parameters, if: :devise_controller?
 
-  if Rails.env.production?
+  if Rails.env.production? && self.controller_name != "emails"
     http_basic_authenticate_with name: ENV['HTTP_AUTH_USER'], password: ENV['HTTP_AUTH_PASSWORD']
   end
 
