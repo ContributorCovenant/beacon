@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_30_235432) do
+ActiveRecord::Schema.define(version: 2019_04_13_214725) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -110,6 +110,7 @@ ActiveRecord::Schema.define(version: 2019_03_30_235432) do
     t.boolean "authy_enabled", default: false
     t.string "phone_encrypted"
     t.boolean "send_sms_on_issue_open", default: false
+    t.boolean "is_external_reporter", default: false
     t.index ["authy_id"], name: "index_accounts_on_authy_id"
     t.index ["confirmation_token"], name: "index_accounts_on_confirmation_token", unique: true
     t.index ["email"], name: "index_accounts_on_email", unique: true
@@ -269,10 +270,11 @@ ActiveRecord::Schema.define(version: 2019_03_30_235432) do
     t.text "description"
     t.uuid "account_id"
     t.string "remote_org_name"
-    t.datetime "created_at", default: "2019-04-07 00:00:00"
-    t.datetime "updated_at", default: "2019-04-07 00:00:00"
+    t.datetime "created_at", default: "2019-04-13 00:00:00"
+    t.datetime "updated_at", default: "2019-04-13 00:00:00"
     t.boolean "is_flagged", default: false
     t.text "flagged_reason"
+    t.boolean "accept_issues_by_email", default: false
     t.index ["account_id"], name: "index_organizations_on_account_id"
   end
 
@@ -323,6 +325,7 @@ ActiveRecord::Schema.define(version: 2019_03_30_235432) do
     t.string "attendees"
     t.string "sort_key", default: ""
     t.string "organization_name"
+    t.boolean "accept_issues_by_email", default: false
     t.index ["account_id"], name: "index_projects_on_account_id"
     t.index ["name"], name: "index_projects_on_name"
     t.index ["organization_id"], name: "index_projects_on_organization_id"

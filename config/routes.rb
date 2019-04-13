@@ -1,6 +1,9 @@
 require 'resque/server'
 
 Rails.application.routes.draw do
+
+  mount_griddler
+
   devise_for :accounts, controllers: {
     registrations: "accounts/registrations",
     passwords: "accounts/passwords",
