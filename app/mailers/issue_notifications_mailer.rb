@@ -23,7 +23,13 @@ class IssueNotificationsMailer < ApplicationMailer
     assign_objects
     @commenter_kind = params[:commenter_kind]
     @email = params[:email]
-    mail(to: @email, subject: "Beacon: #{@project.name} Issue ##{@issue.issue_number} issue has a new comment")
+    @comment = params[:comment_text]
+    if @comment.present?
+      from = "#{@project.slug}@#{ENV['EMAIL_REPORT_HOST_NAME']}"
+      mail(to: @email, from: from, subject: "Beacon: #{@project.name} Issue ##{@issue.issue_number} has a new comment")
+    else
+      mail(to: @email, subject: "Beacon: #{@project.name} Issue ##{@issue.issue_number} has a new comment")
+    end
   end
 
   def notify_of_new_survey

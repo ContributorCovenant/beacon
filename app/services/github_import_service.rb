@@ -25,7 +25,8 @@ class GithubImportService
         coc_url: coc_url,
         organization_id: organization.id,
         confirmed_at: DateTime.now,
-        public: true
+        public: true,
+        accept_issues_by_email: organization.accept_issues_by_email
       )
       project.consequence_guide.clone_from(organization) if organization.consequence_guide.consequences.any?
       if respondent_template = organization.respondent_template

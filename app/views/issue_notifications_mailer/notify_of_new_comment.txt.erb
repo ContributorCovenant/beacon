@@ -1,11 +1,20 @@
+<% if @comment.present? %>
+-- REPLY ABOVE THIS LINE --
+<% end %>
 New comment on <%= @project.name %> Issue #<%= @issue.issue_number %>
 ----------------------------------------------------------------------
 
 A new comment was made on this issue by a <%= @commenter_kind %>.
 
-You can view the comment in Beacon now:
+<% if @comment.present? %>
+  <% @comment.split(/\n/).each do |paragraph| %>
+<%= paragraph %>
 
-  <%= project_issue_url(@project, @issue) %>
+  <% end %>
+<% else %>
+You can view the comment in Beacon now: <%= project_issue_url(@project, @issue) %>
+<% end %>
+
 
 Thank you,
 The Friendly Beacon Mailer Robot

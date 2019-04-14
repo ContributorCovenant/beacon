@@ -13,4 +13,10 @@ class ReporterMailer < ApplicationMailer
     mail(to: @email, subject: "Beacon: Your attention is needed on a code of conduct issue")
   end
 
+  def notify_not_accepting_email_issue
+    @project = params[:project]
+    @email = params[:email]
+    mail(to: @email, subject: "Beacon: Project Not Accepting Code of Conduct Issues by Email")
+  end
+
 end

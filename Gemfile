@@ -3,9 +3,9 @@
 source "https://rubygems.org"
 git_source(:github){ |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.5.3'
+ruby "2.5.3"
 
-gem 'rails', '~> 5.2.2'
+gem "rails", "~> 5.2.2"
 
 gem "aasm"
 gem "autoprefixer-rails"
@@ -15,23 +15,26 @@ gem "bootstrap-toggle-rails"
 gem "bootswatch"
 gem "coffee-rails", "~> 4.2"
 gem "devise"
-gem 'devise-authy'
+gem "devise-authy"
 gem "dotenv-rails"
-gem 'faker'
+gem "faker"
 gem "fittings"
 gem "gitlab"
 gem "google-cloud-storage", require: false
-gem 'inky-rb', require: 'inky'
+gem "griddler"
+gem "griddler-mailgun"
+gem "inky-rb", require: "inky"
 gem "jbuilder", "~> 2.5"
 gem "jquery-rails"
 gem "loaf"
+gem "mailgun-ruby", "~>1.1.6"
 gem "normailize"
 gem "octokit"
 gem "omniauth-github"
 gem "omniauth-gitlab"
 gem "pg"
 gem "popper_js", "~> 1.14.5"
-gem 'premailer-rails'
+gem "premailer-rails"
 gem "puma", "~> 3.11"
 gem "recaptcha"
 gem "resque"

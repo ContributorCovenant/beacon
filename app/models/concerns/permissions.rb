@@ -43,6 +43,7 @@ module Permissions
   end
 
   def can_complete_survey_on_issue?(issue, project)
+    return false if is_external_reporter
     return false unless issue.respondent == self || issue.reporter == self
     return !project.surveys.select{ |s| s.issue == issue }.map(&:account).find{ |account| account == self }.present?
   end
