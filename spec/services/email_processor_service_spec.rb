@@ -34,13 +34,15 @@ describe EmailProcessorService do
 
     describe "process incoming issue comment" do
 
-      let!(:issue) { Issue.create!(
+      let!(:issue) {
+        Issue.create!(
           project_id: project.id,
           reporter_id: moderator.id,
-          description: "Something",
+          description: "Something"
         )
       }
-      let(:email_comment) { FactoryBot.build(
+      let(:email_comment) {
+        FactoryBot.build(
           :email,
           subject: "Beacon: Sample Project Issue ##{issue.issue_number}",
           body: "This is a comment"

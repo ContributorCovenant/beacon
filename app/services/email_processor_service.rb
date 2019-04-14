@@ -4,7 +4,7 @@ class EmailProcessorService
 
   def initialize(email)
     @email = email
-    @project = Project.find_by(slug: email.to.first[:token])
+    @project = Project.find_by(slug: email.to.first[:token].downcase)
   end
 
   def process
@@ -23,10 +23,8 @@ class EmailProcessorService
     else
       issue = Issue.create(reporter_id: account.id, project_id: project.id, description: email.body)
     end
-    if email.attachments.any?
-      email.attachments.each do |attachment|
-        issue.uploads << attachment
-      end
+    email.attachments.each do |attachment|
+      issue.uploads << attachment
     end
   end
 
@@ -66,7 +64,7 @@ class EmailProcessorService
       email: project.moderator_emails,
       project_id: project.id,
       issue_id: issue.id,
-      commenter_kind: "reporter",
+      commenter_kind: "reporter"
     ).notify_of_new_comment.deliver
   end
 

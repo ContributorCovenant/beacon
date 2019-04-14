@@ -99,3 +99,9 @@ Style/NumericPredicate:
 
 Metrics/ModuleLength:
   Enabled: false
+
+Style/BlockDelimiters:
+  Enabled: false
+
+Style/Dir:
+  Enabled: false
