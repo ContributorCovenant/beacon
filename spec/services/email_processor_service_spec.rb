@@ -3,7 +3,6 @@ require 'rails_helper'
 describe EmailProcessorService do
 
   let(:moderator) { FactoryBot.create(:kate) }
-
   let(:email_issue) { FactoryBot.build(:email) }
 
   context "project accepting email issues" do
@@ -17,7 +16,7 @@ describe EmailProcessorService do
       )
     }
 
-    describe "process incoming email" do
+    describe "process incoming issue" do
 
       before do
         EmailProcessorService.new(email_issue).process
@@ -32,6 +31,32 @@ describe EmailProcessorService do
       end
 
     end
+
+    describe "process incoming issue comment" do
+
+      let!(:issue) { Issue.create!(
+          project_id: project.id,
+          reporter_id: moderator.id,
+          description: "Something",
+        )
+      }
+      let(:email_comment) { FactoryBot.build(
+          :email,
+          subject: "Beacon: Sample Project Issue ##{issue.issue_number}",
+          body: "This is a comment"
+        )
+      }
+
+      before do
+        EmailProcessorService.new(email_comment).process
+      end
+
+      it "creates a reporter comment" do
+        expect(project.issues.last.issue_comments.last.text).to eq("This is a comment")
+      end
+
+    end
+
   end
 
   context "project not accepting email issues" do

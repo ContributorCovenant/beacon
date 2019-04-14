@@ -1,3 +1,6 @@
+<% if @comment.present? %>
+-- REPLY ABOVE THIS LINE --
+<% end %>
 <% content_for :title do %>
   New comment on <%= @project.name %> Issue #<%= @issue.issue_number %>
 <% end %>
