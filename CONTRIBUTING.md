@@ -28,7 +28,7 @@ Payment for contributions is contingent on your pull request being approved and 
 ## Requirements for contributions
 
 ### Adding gems
-If you are adding a new gem, be sure to place it in the proper section of the `GEMFILE` in alphabetical order.
+If you are adding a new gem, be sure to place it in the proper section of the `GEMFILE` in no particular order.
 
 ### Adding tests
 Your tests should generally include both unit tests and controller tests (features). Follow the style and pattern of existing specs. If the feature you are working on impacts the workflow of a reporter, respondent, or moderator, be sure to add your feature spec to the corresponding spec file in `spec/features`.
