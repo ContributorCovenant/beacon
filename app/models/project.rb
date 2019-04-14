@@ -194,8 +194,8 @@ class Project < ApplicationRecord
   end
 
   private def name_change_notification
-    if saved_change_to_title?
-      ProjectMailer.name_change(project).deliver_later
+    if saved_change_to_name?
+      ProjectMailer.name_change(project: project).deliver_now
     end
   end
 end
