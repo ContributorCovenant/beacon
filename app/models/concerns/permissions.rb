@@ -21,7 +21,7 @@ module Permissions
   end
 
   def can_block_account?(project)
-    return true if project.moderators.include?(self)
+    return true if project.all_moderators.include?(self)
     false
   end
 
@@ -143,7 +143,7 @@ module Permissions
 
   def can_view_survey_on_issue?(project)
     return true if is_admin?
-    return true if project.moderators.include?(self)
+    return true if project.all_moderators.include?(self)
     false
   end
 
