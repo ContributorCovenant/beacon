@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_13_214725) do
+ActiveRecord::Schema.define(version: 2019_04_14_221727) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -197,6 +197,7 @@ ActiveRecord::Schema.define(version: 2019_04_13_214725) do
     t.boolean "is_owner", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "message"
     t.index ["account_id"], name: "index_invitations_on_account_id"
     t.index ["organization_id"], name: "index_invitations_on_organization_id"
     t.index ["project_id"], name: "index_invitations_on_project_id"
@@ -270,8 +271,8 @@ ActiveRecord::Schema.define(version: 2019_04_13_214725) do
     t.text "description"
     t.uuid "account_id"
     t.string "remote_org_name"
-    t.datetime "created_at", default: "2019-04-13 00:00:00"
-    t.datetime "updated_at", default: "2019-04-13 00:00:00"
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.boolean "is_flagged", default: false
     t.text "flagged_reason"
     t.boolean "accept_issues_by_email", default: false

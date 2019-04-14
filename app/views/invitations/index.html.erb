@@ -7,7 +7,7 @@
 <div class="container">
   <div class="row">
     <% @invitations.each do |invitation| %>
-      <div class="card mb-3 mr-3" style="width: 30%; min-height: 14rem">
+      <div class="card mb-3 mr-3" style="width: 50%; min-height: 14rem">
         <div class="card-body">
           <h2 class="card-title mb-1">
             <%= invitation.subject.name %>
@@ -17,6 +17,9 @@
               <%= invitation.is_owner? ? "become an owner" : "become a moderator" %>
               for <%= invitation.subject.name %>.
             </p>
+            <% if invitation.message %>
+              <p>Message: "<%= invitation.message %>"</p>
+            <% end %>
             <div class="actions">
               <%= button_to "Accept", invitation_accept_path(invitation), class: "btn btn-primary" %>
               <%= button_to "Decline", invitation_reject_path(invitation), class: "btn btn-danger" %>

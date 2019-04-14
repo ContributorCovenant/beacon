@@ -9,8 +9,16 @@
         <%= @inviter_email %> has invited you to join <%= @subject_name %> as
         <%= @invitation.is_owner? ? "an owner" : "a moderator" %>.
       </p>
-    </columns>
-  </row>
+      </columns>
+    </row>
+
+    <% if @message.present? %>
+      <row>
+        <columns>
+          <p>"<%= @message %>"</p>
+        </columns>
+      </row>
+    <% end %>
 
   <row>
     <columns>

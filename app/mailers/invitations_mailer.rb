@@ -6,6 +6,7 @@ class InvitationsMailer < ApplicationMailer
     @organization_name = @invitation.organization&.name
     @inviter_email = @invitation.account.email
     @subject_name = @project_name || @organization_name
+    @message = @invitation.message
     mail(to: @invitation.email, subject: "Beacon: Invitation to Moderate #{@subject_name}")
   end
 
