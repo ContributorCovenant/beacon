@@ -47,6 +47,8 @@ gem "turbolinks", "~> 5"
 gem "twilio-ruby"
 gem "uglifier", ">= 1.3.0"
 gem "valid_email2"
+gem "pry-rails", "~> 0.3.9"
+gem "pry-doc", "~> 1.0"
 
 group :development, :test do
   gem "brakeman"
