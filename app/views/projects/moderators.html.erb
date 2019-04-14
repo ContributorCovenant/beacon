@@ -10,7 +10,7 @@
           <% if @project.owner?(moderator) %>
             (Owner)
           <% end %>
-          <% unless moderator == current_account %>
+          <% if moderator != current_account && current_account.can_remove_moderator?(@project)%>
             <%= button_to "Remove", project_remove_moderator_path(@project), params: { account_id: moderator.id }, class: "btn btn-sm btn-danger" %>
           <% end %>
         </li>
@@ -18,9 +18,12 @@
     </ul>
     <% if @invitations.any? %>
       <h2>Moderators Awaiting Confirmation</h2>
+      <p>URL to share: <%= invitations_url %></p>
       <ul>
         <% @invitations.each do |invitation| %>
-          <li><%= invitation.email %></li>
+          <li>
+            <%= invitation.email %><br />
+          </li>
         <% end %>
       </ul>
     <% end %>
@@ -34,6 +37,10 @@
         <%= f.label :email, for: :email %><br />
         <%= f.text_field :email %>
       </div>
+      <div class="form-group col-sm-6">
+        <%= f.label :message, for: :message %><br />
+        <%= f.text_area :message %>
+      </div>
       <% if current_account.can_manage_project?(@project) %>
         <div class="form-group col-sm-6">
           <%= f.check_box :is_owner, class: "mr-3", aria_label: "Make this account an owner" %>
@@ -45,7 +52,8 @@
         <%= recaptcha_tags %>
       </div>
       <div class="actions">
-        <%= f.submit "Invite Moderator", class: "btn btn-primary" %>
+        <%= f.submit "Invite via Email", class: "btn btn-primary" %>
+        <%= f.submit "Get Invitation Link", class: "btn btn-primary" %>
       </div>
     <% end %>
   </div>

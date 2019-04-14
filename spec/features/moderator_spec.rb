@@ -302,12 +302,13 @@ describe "moderation", type: :feature do
 
     let(:new_moderator) { FactoryBot.create(:kate) }
 
-    it "lets a user invite a moderator" do
+    it "lets a user invite a moderator via email" do
       login_as(moderator, scope: :account)
       visit project_path(project)
       click_on "Moderators"
       fill_in "invitation_email", with: new_moderator.email
-      click_on "Invite Moderator"
+      fill_in "invitation_message", with: "I'd like you to help moderate"
+      click_on "Invite via Email"
       expect(page).to have_content("Moderators Awaiting Confirmation")
       expect(new_moderator.invitations.count > 0).to be_truthy
     end
@@ -317,8 +318,9 @@ describe "moderation", type: :feature do
       visit project_path(project)
       click_on "Moderators"
       fill_in "invitation_email", with: new_moderator.email
+      fill_in "invitation_message", with: "I'd like you to invite you as co-owner"
       check "invitation_is_owner"
-      click_on "Invite Moderator"
+      click_on "Invite via Email"
       expect(page).to have_content("Moderators Awaiting Confirmation")
       expect(new_moderator.invitations.count > 0).to be_truthy
     end
