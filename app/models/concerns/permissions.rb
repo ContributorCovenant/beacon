@@ -96,6 +96,10 @@ module Permissions
     project.moderator?(self)
   end
 
+  def can_remove_moderator?(subject)
+    subject.owner?(self)
+  end
+
   def can_view_organization?(organization)
     organization.owners.include? self
   end

@@ -25,6 +25,7 @@ class ProjectsController < ApplicationController
   end
 
   def remove_moderator
+    render_not_found && return unless current_account.can_remove_moderator?(@project)
     Role.where(account_id: params[:account_id], project_id: @project.id).destroy_all
     redirect_to project_moderators_path
   end
