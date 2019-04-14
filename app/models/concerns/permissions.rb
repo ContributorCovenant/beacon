@@ -27,7 +27,7 @@ module Permissions
 
   def can_comment_on_issue?(issue)
     project = issue.project
-    return true if issue.project.moderators.include?(self)
+    return true if issue.project.all_moderators.include?(self)
     return false if blocked_from_project?(project)
     return true if issue.reporter == self
     return true if issue.respondent == self
