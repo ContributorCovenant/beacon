@@ -2,6 +2,12 @@ class EmailProcessorService
 
   attr_reader :email, :project
 
+  VALID_MIME_TYPES = [
+    "image/gif",
+    "image/jpeg",
+    "image/png"
+  ].freeze
+
   def initialize(email)
     @email = email
     @project = Project.find_by(slug: email.to.first[:token].downcase)
@@ -12,7 +18,7 @@ class EmailProcessorService
     notify_reporter_of_unacceptable_issue && return unless project.accept_issues_by_email? || project&.organization&.accept_issues_by_email?
     return unless account.can_open_issue_on_project?(project)
     if issue_number = email.subject.scan(/Issue \#([0-9]+)/).last&.first
-      issue = project.issues.find{ |i| i.issue_number == issue_number.to_i }
+      return unless issue = project.issues.find{ |i| i.issue_number == issue_number.to_i }
       comment = IssueComment.create(
         issue_id: issue.id,
         commenter_id: account.id,
@@ -24,7 +30,12 @@ class EmailProcessorService
       issue = Issue.create(reporter_id: account.id, project_id: project.id, description: email.body)
     end
     email.attachments.each do |attachment|
-      issue.uploads << attachment
+      next unless VALID_MIME_TYPES.include?(attachment.content_type)
+      issue.uploads.attach(
+        io: attachment,
+        filename: attachment.original_filename,
+        content_type: attachment.content_type
+      )
     end
   end
 
