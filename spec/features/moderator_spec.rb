@@ -231,6 +231,15 @@ describe "moderation", type: :feature do
         click_on "Block"
         expect(page).to have_content("This account is blocked from this project")
       end
+
+      it "allows the moderator to report the reporter for abuse" do
+        click_on "Details"
+        fill_in "account_project_block_reason", with: "This person is trolling."
+        check "account_project_block_report_for_abuse"
+        click_on "Block"
+        expect(page).to have_content("This account is blocked from this project")
+        expect(AbuseReport.count).to eq(1)
+      end
     end
   end
 
