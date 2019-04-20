@@ -32,7 +32,7 @@ class EmailProcessorService
     email.attachments.each do |attachment|
       next unless VALID_MIME_TYPES.include?(attachment.content_type)
       issue.uploads.attach(
-        io: attachment,
+        io: attachment.to_io,
         filename: attachment.original_filename,
         content_type: attachment.content_type
       )
