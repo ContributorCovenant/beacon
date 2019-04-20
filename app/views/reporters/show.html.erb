@@ -36,8 +36,12 @@
       <%= f.label "Reason" %><br />
       <%= f.text_area :reason, class: "form-control" %>
     </div>
+    <div class="form-group col-sm-6">
+      <%= f.check_box :report_for_abuse, class: "form-check-input" %>
+      <label class="form-check-label" for="account_project_block_report_for_abuse">Report account to Beacon admins</label>
+    </div>
     <div class="actions">
-      <%= f.submit "Block", class: "btn btn-danger", confirm: "Are you sure you want to unblock this account?" %>
+      <%= f.submit "Block", class: "btn btn-danger", confirm: "Are you sure you want to block this account?" %>
     </div>
   <% end %>
 </div>
