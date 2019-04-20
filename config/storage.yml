@@ -2,6 +2,12 @@ test:
   service: Disk
   root: <%= Rails.root.join("tmp/storage") %>
 
+heroku:
+  service: Mirror
+  primary: google
+  mirrors:
+    - local
+
 local:
   service: Disk
   root: <%= Rails.root.join("storage") %>

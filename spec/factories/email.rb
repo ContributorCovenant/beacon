@@ -15,16 +15,51 @@ FactoryBot.define do
     body { 'Something bad happened to me while contributing to sample_project.' }
     attachments { [] }
 
-    trait :with_attachment do
+    trait :response_to_issue do
+      subject { 'Re: Issue #101' }
+      body { 'More details' }
+    end
+
+    trait :with_valid_attachment do
       attachments {
         [
           ActionDispatch::Http::UploadedFile.new(
-            filename: 'img.png',
+            filename: 'img_1.png',
             type: 'image/png',
-            tempfile: File.new("#{File.expand_path(File.dirname(__FILE__))}/fixtures/img.png")
+            tempfile: File.new("#{File.expand_path(File.dirname(__FILE__))}/fixtures/img_1.png")
           )
         ]
       }
     end
+
+    trait :with_invalid_attachment do
+      attachments {
+        [
+          ActionDispatch::Http::UploadedFile.new(
+            filename: 'random.csv',
+            type: 'text/csv',
+            tempfile: File.new("#{File.expand_path(File.dirname(__FILE__))}/fixtures/random.csv")
+          )
+        ]
+      }
+    end
+
+    trait :with_valid_and_invalid_attachments do
+      attachments {
+        [
+          ActionDispatch::Http::UploadedFile.new(
+            filename: 'img_2.png',
+            type: 'image/png',
+            tempfile: File.new("#{File.expand_path(File.dirname(__FILE__))}/fixtures/img_2.png")
+          ),
+          ActionDispatch::Http::UploadedFile.new(
+            filename: 'random.csv',
+            type: 'text/csv',
+            tempfile: File.new("#{File.expand_path(File.dirname(__FILE__))}/fixtures/random.csv")
+          )
+        ]
+      }
+    end
+
   end
 end
