@@ -4,7 +4,7 @@ class NotificationService
     Resque.enqueue(NotificationWorker, account_id, project_id, issue_id, issue_comment_id)
   end
 
-  def self.enqueue_sms(project_id, issue_id)
+  def self.enqueue_sms(project_id:, issue_id:)
     Resque.enqueue(SmsNotificationWorker, project_id, issue_id)
   end
 
