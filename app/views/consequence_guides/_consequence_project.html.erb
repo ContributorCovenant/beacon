@@ -1,7 +1,7 @@
 <div id="consequence-<%= consequence.severity %>-show" class="card mb-3 mr-3" style="width: 30rem">
   <div class="card-body">
     <h2 class="card-title">Level <%= consequence.severity %>: <%= consequence.label %></h2>
-    <div class="card-text">
+    <div class="card-text" id="consequence-<%= consequence.severity %>">
       <p><%= consequence.action %></p>
       <h3>Consequence</h3>
       <p><%= consequence.consequence %></p>
@@ -11,7 +11,7 @@
         </div>
       <% end %>
       <% if current_account.can_manage_project_consequence_guide?(@project) %>
-        <a onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')">Edit</a>
+        <button onclick="toggle_show_and_form_views('consequence-<%= consequence.severity %>')" class="btn btn-small">Edit</button>
       <% end %>
     </div>
   </div>
