@@ -12,7 +12,7 @@ FactoryBot.define do
     }
     from { { token: 'reporter', host: 'foo.com', email: 'reporter@foo.com', full: 'Reporter <reporter@foo.com>', name: 'Reporter' } }
     subject { 'CoC Issue' }
-    body { 'Something bad happened to me while contributing to sample_project.' }
+    body { 'Something bad happened to me.' }
     attachments { [] }
 
     trait :response_to_issue do

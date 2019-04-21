@@ -182,7 +182,7 @@ class IssuesController < ApplicationController
       text: @project.autoresponder.populate_from(issue_url(@issue), project_url(@project))
     ).autoresponder.deliver
 
-    NotificationService.enqueue_sms(@project.id, @issue.id)
+    NotificationService.enqueue_sms(project_id: @project.id, issue_id: @issue.id)
   end
 
   def notify_on_status_change
