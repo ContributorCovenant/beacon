@@ -2,9 +2,9 @@ require "rails_helper"
 
 describe "The project setup process", type: :feature do
 
-  let!(:maintainer)   { FactoryBot.create(:danielle) }
-  let!(:moderator)   { FactoryBot.create(:peter) }
-  let!(:project)      { FactoryBot.create(:project, account: maintainer, public: true) }
+  let!(:maintainer) { FactoryBot.create(:danielle) }
+  let!(:moderator) { FactoryBot.create(:peter) }
+  let!(:project) { FactoryBot.create(:project, account: maintainer, public: true) }
 
   before do
     allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }

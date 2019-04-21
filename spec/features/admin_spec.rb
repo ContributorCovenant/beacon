@@ -2,7 +2,7 @@ require "rails_helper"
 
 describe "Admins", type: :feature do
 
-  let!(:admin)   { FactoryBot.create(:admin) }
+  let!(:admin) { FactoryBot.create(:admin) }
   let!(:maintainer) { FactoryBot.create(:danielle) }
   let!(:bad_actor) { FactoryBot.create(:donnie) }
   let!(:project) { FactoryBot.create(:project, account: maintainer, public: true) }
@@ -73,10 +73,11 @@ describe "Admins", type: :feature do
 
   describe "managing organizations" do
 
-    let!(:organization) { Organization.create(
-      name: "My Org",
-      description: "The very best.",
-      account: maintainer
+    let!(:organization) {
+      Organization.create(
+        name: "My Org",
+        description: "The very best.",
+        account: maintainer
       )
     }
 
