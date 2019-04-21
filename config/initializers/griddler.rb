@@ -1,5 +1,5 @@
 Griddler.configure do |config|
-  config.processor_class =IncomingEmailService
+  config.processor_class = IncomingEmailService
   config.email_class = EmailReport
   config.processor_method = :process
   config.reply_delimiter = '-- REPLY ABOVE THIS LINE --'

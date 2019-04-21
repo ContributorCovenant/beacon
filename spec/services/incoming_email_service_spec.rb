@@ -126,7 +126,8 @@ describe IncomingEmailService do
 
       context "with attachment" do
         let(:email_comment) {
-          FactoryBot.build(:email, :response_to_issue, :with_valid_attachment,
+          FactoryBot.build(
+            :email, :response_to_issue, :with_valid_attachment,
             subject: "Beacon: Sample Project Issue ##{issue.issue_number}",
             body: "This is a comment",
             from: {
@@ -147,7 +148,6 @@ describe IncomingEmailService do
 
       end
     end
-
 
     context "project not accepting email issues" do
 

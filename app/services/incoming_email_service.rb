@@ -1,7 +1,7 @@
 # The Griddler handler for processing incoming emails (new issues and issue comments)
 class IncomingEmailService
 
-  attr_reader :email, :project
+  attr_reader :email
 
   VALID_MIME_TYPES = [
     "image/gif",
@@ -15,7 +15,7 @@ class IncomingEmailService
 
   def process
     return unless project
-    if is_comment_on_existing_issue?
+    if comment_on_existing_issue?
       process_comment
     else
       process_new_issue
@@ -58,14 +58,14 @@ class IncomingEmailService
   end
 
   def can_comment_on_issue?
-    return false unless is_comment_on_existing_issue? && account
+    return false unless comment_on_existing_issue? && account
     return false unless issue.reporter == account
     account.can_comment_on_issue?(issue)
   end
 
   def comment
-    return unless is_comment_on_existing_issue? && account
-    comment = IssueComment.create(
+    return unless comment_on_existing_issue? && account
+    @comment ||= IssueComment.create(
       issue_id: issue.id,
       commenter_id: account.id,
       visible_to_reporter: true,
@@ -77,7 +77,7 @@ class IncomingEmailService
     @issue ||= Issue.create(reporter_id: account.id, project_id: project.id, description: email.body)
   end
 
-  def is_comment_on_existing_issue?
+  def comment_on_existing_issue?
     issue_number.present?
   end
 
@@ -155,7 +155,7 @@ class IncomingEmailService
   end
 
   def valid_attachments
-    email.attachments.select{|attachment| VALID_MIME_TYPES.include?(attachment.content_type) }
+    email.attachments.select{ |attachment| VALID_MIME_TYPES.include?(attachment.content_type) }
   end
 
   def validate_can_open_issue_by_email
