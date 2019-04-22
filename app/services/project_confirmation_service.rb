@@ -26,10 +26,12 @@ class ProjectConfirmationService
 
   def confirm_via_oauth
     if method == "github"
-      return false unless repo = github_client.search_repositories(project.repo_name)
+      return false unless repo = github_client.search_repositories(project.repo_name)&.items&.first
+      return false unless repo.owner.id.to_i == credential.uid.to_i
       !repo.fork?
     elsif method == "gitlab"
       return false unless repo = gitlab_client.project(project.repo_name)
+      return false unless repo.owner.id.to_i == credential.uid.to_i
       !repo.respond_to?(:forked_from_project)
     end
   rescue StandardError => e
@@ -38,7 +40,7 @@ class ProjectConfirmationService
   end
 
   def confirm_via_token
-    return true unless Rails.env.production?
+    return true if Rails.env.development?
     token = URI.parse(project.confirmation_token_url).read.chomp
     token =~ /#{project.confirmation_token}/
   rescue StandardError => e

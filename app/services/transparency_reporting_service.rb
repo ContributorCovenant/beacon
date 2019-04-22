@@ -98,8 +98,4 @@ class TransparencyReportingService
     @respondent_surveys ||= project.surveys.respondent
   end
 
-  def total_surveys
-    reporter_surveys.size + respondent_surveys.size
-  end
-
 end

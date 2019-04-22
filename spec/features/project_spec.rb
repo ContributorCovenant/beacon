@@ -2,12 +2,15 @@ require "rails_helper"
 
 describe "The project setup process", type: :feature do
 
-  let!(:maintainer)   { FactoryBot.create(:danielle) }
-  let!(:project)      { FactoryBot.create(:project, account: maintainer, public: true) }
+  let!(:maintainer) { FactoryBot.create(:danielle) }
+  let!(:moderator) { FactoryBot.create(:peter) }
+  let!(:project) { FactoryBot.create(:project, account: maintainer, public: true) }
 
   before do
     allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
+    allow_any_instance_of(ProjectConfirmationService).to receive(:confirm!) { true }
     Role.create(account_id: maintainer.id, project_id: project.id, is_owner: true)
+    Role.create(account_id: moderator.id, project_id: project.id, is_owner: false)
     Autoresponder.create(scope: "template", text: "Thank you for opening a code of conduct issue")
     login_as(maintainer, scope: :account)
   end
@@ -41,7 +44,35 @@ describe "The project setup process", type: :feature do
       expect(page).to have_content("Contributor Covenant")
     end
 
-    it "lets a user confirm ownership" do
+    it "lets a moderator update a project" do
+      visit root_path
+      click_on "My Projects"
+      click_on(project.name)
+      click_on "Edit Project"
+      fill_in "project_description", with: "A code of conduct for online communities"
+      click_on "Update Project"
+      expect(page).to have_content("A code of conduct for online communities")
+    end
+
+    it "lets a moderator pause a project" do
+      visit root_path
+      click_on "My Projects"
+      click_on(project.name)
+      click_on("Pause Issue Reporting")
+      expect(project.reload.accepting_issues?).to be_falsey
+    end
+
+    it "lets a moderator update settings" do
+      visit root_path
+      click_on "My Projects"
+      click_on(project.name)
+      click_on("Project Settings")
+      fill_in "project_setting_rate_per_day", with: "5"
+      click_on("Update Settings")
+      expect(project.reload.project_setting.rate_per_day).to eq(5)
+    end
+
+    it "lets a moderator confirm ownership" do
       visit root_path
       click_on "My Projects"
       click_on(project.name)
@@ -50,35 +81,94 @@ describe "The project setup process", type: :feature do
       expect(page).to have_content("√")
     end
 
-    it "lets a user set up an impact and consequences guide" do
-      visit root_path
-      click_on "My Projects"
-      click_on(project.name)
-      click_on("Impact and Consequences")
-      expect(page).to have_content("Clone from")
-      select "Beacon Default", from: "consequence_guide_default_source"
-      click_on("Clone")
-      expect(page).to have_content("Correction")
-      fill_in "consequence_label", with: "Disciplinary Action"
-      select "2", from: "consequence_severity"
-      fill_in "consequence_action", with: "Personal attacks"
-      fill_in "consequence_consequence", with: "Reprimand from moderators"
-      click_on("Update Guide")
-      expect(page).to have_content("Personal attacks")
+    context "moderators" do
+      before do
+        visit root_path
+        click_on "My Projects"
+        click_on(project.name)
+        click_on("Moderators")
+      end
+
+      it "displays existing moderators" do
+        expect(page).to have_content(maintainer.email)
+        expect(page).to have_content(moderator.email)
+      end
+
+      it "allows a moderator to be removed" do
+        click_on "Remove"
+        expect(page).to_not have_content(moderator.email)
+      end
+
     end
 
-    it "lets a user add a respondent template" do
-      visit root_path
-      click_on "My Projects"
-      click_on(project.name)
-      click_on("Respondent Template")
-      expect(page).to have_content("Clone from")
-      select "Beacon Default", from: "respondent_template_respondent_template_default_source"
-      click_on("Clone")
-      expect(page).to have_content("This is to inform you")
-      fill_in "respondent_template_text", with: "We are sad to inform you"
-      click_on("Save")
-      expect(page).to have_content("You have successfully updated the respondent template.")
+    context "consequences guide" do
+
+      before do
+        visit root_path
+        click_on "My Projects"
+        click_on(project.name)
+        click_on("Impact and Consequences")
+      end
+
+      it "can be cloned" do
+        expect(page).to have_content("Clone from")
+        select "Beacon Default", from: "consequence_guide_default_source"
+        click_on("Clone")
+        expect(page).to have_content("Correction")
+      end
+
+      it "can be created from scratch" do
+        fill_in "consequence_label", with: "Disciplinary Action"
+        select "2", from: "consequence_severity"
+        fill_in "consequence_action", with: "Personal attacks"
+        fill_in "consequence_consequence", with: "Reprimand from moderators"
+        click_on("Update Guide")
+        expect(page).to have_content("Personal attacks")
+      end
+
+      it "can get a new consequence" do
+        fill_in "consequence_label", with: "Disciplinary Action"
+        select "2", from: "consequence_severity"
+        fill_in "consequence_action", with: "Personal attacks"
+        fill_in "consequence_consequence", with: "Reprimand from moderators"
+        click_on("Update Guide")
+        expect(page).to have_content("Personal attacks")
+      end
+
+      it "can add a consequence" do
+        fill_in "consequence_label", with: "Disciplinary Action"
+        select "2", from: "consequence_severity"
+        fill_in "consequence_action", with: "Personal attacks"
+        fill_in "consequence_consequence", with: "Reprimand from moderators"
+        click_on("Update Guide")
+        expect(page).to have_content("Personal attacks")
+      end
+    end
+
+    context "respondent template" do
+      before do
+        visit root_path
+        click_on "My Projects"
+        click_on(project.name)
+        click_on("Respondent Template")
+      end
+
+      it "lets a moderator clone a respondent template" do
+        expect(page).to have_content("Clone from")
+        select "Beacon Default", from: "respondent_template_respondent_template_default_source"
+        click_on("Clone")
+        expect(page).to have_content("This is to inform you")
+        fill_in "respondent_template_text", with: "We are sad to inform you"
+        click_on("Save")
+        expect(page).to have_content("You have successfully updated the respondent template.")
+      end
+
+      it "lets a moderator create a respondent template" do
+        expect(page).to have_content("Clone from")
+        fill_in "respondent_template_text", with: "We are sad to inform you"
+        click_on("Save")
+        expect(page).to have_content("You have successfully created a respondent template.")
+      end
     end
 
     it "lets a user add an autoresponder" do

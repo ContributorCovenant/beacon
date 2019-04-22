@@ -6,7 +6,11 @@ require 'capybara/rspec'
 
 ENV['RAILS_ENV'] ||= 'test'
 
-SimpleCov.start
+SimpleCov.start do
+  add_filter "spec/"
+  add_filter "config/"
+end
+
 SimpleCov.minimum_coverage 85
 require File.expand_path('../config/environment', __dir__)
 # Prevent database truncation if the environment is production

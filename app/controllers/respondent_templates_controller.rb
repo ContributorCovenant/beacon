@@ -22,6 +22,7 @@ class RespondentTemplatesController < ApplicationController
       @template = RespondentTemplate.new(respondent_template_params.merge(organization_id: @organization.id))
     end
     if @template.save
+      flash[:notice] = "You have successfully created a respondent template."
       redirect_to project_path(@project) if @project
       redirect_to organization_path(@organization) if @organization
     else

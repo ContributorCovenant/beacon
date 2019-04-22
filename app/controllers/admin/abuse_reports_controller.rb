@@ -20,16 +20,16 @@ module Admin
 
     def update
       @report.update_attributes(report_params)
-      if params[:flag]
+      case params[:commit]
+      when "Lock Account"
+        @report.reportee.flag!(params[:admin_note])
         @report.resolve!
-        if project = @report.project
-          project.flag!
-        elsif reportee = @report.reportee
-          reportee.flag!
-        end
+      when "Flag Project"
+        @report.project.flag!(params[:admin_note])
+        @report.resolve!
+      when "Dismiss Report"
+        @report.dismiss!
       end
-      @report.resolve! if params[:commit] == "Flag Account" || params[:commit] == "Flag Project"
-      @report.dismiss! if params[:commit] == "Dismiss Report"
       redirect_to admin_abuse_reports_path
     end
 
