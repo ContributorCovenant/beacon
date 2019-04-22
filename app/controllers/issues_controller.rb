@@ -115,7 +115,7 @@ class IssuesController < ApplicationController
   def resolve
     @issue.update_attributes(
       resolution_text: issue_params[:resolution_text],
-      resolved_at: DateTime.now
+      closed_at: DateTime.now
     )
     @issue.resolve!(account_id: current_account.id)
     notify_on_status_change
