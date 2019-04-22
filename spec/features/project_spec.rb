@@ -8,6 +8,7 @@ describe "The project setup process", type: :feature do
 
   before do
     allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
+    allow_any_instance_of(ProjectConfirmationService).to receive(:confirm!) { true }
     Role.create(account_id: maintainer.id, project_id: project.id, is_owner: true)
     Role.create(account_id: moderator.id, project_id: project.id, is_owner: false)
     Autoresponder.create(scope: "template", text: "Thank you for opening a code of conduct issue")
