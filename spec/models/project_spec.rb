@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Project, type: :model  do
+RSpec.describe Project, type: :model do
 
   let(:maintainer) { FactoryBot.build(:kate) }
   let(:project){ FactoryBot.create(:project, account: maintainer, name: "We 🖤 Ruby") }
