@@ -187,7 +187,7 @@ class Project < ApplicationRecord
   end
 
   def set_slug
-    self.slug = name.downcase.gsub(/[^a-z0-9]/i, '_')
+    self.slug = name.downcase.gsub(/[^a-z0-9]/i, '_').gsub(Unicode::Emoji::REGEX, '').gsub(/[_]+/, '_')
   end
 
   def make_settings

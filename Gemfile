@@ -48,6 +48,7 @@ gem "sprockets-es6"
 gem "turbolinks", "~> 5"
 gem "twilio-ruby"
 gem "uglifier", ">= 1.3.0"
+gem "unicode-emoji"
 gem "valid_email2"
 
 group :development, :test do
