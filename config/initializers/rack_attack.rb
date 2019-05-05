@@ -26,6 +26,10 @@ class Rack::Attack
     end
   end
 
+  self.blocklisted_response = lambda do
+    [ENV.fetch('THROTTLED_RESPONSE_CODE', 418), {}, ['']]
+  end
+
   self.throttled_response = lambda do
     [ENV.fetch('THROTTLED_RESPONSE_CODE', 418), {}, ['']]
   end
