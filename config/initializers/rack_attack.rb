@@ -26,7 +26,7 @@ class Rack::Attack
     end
   end
 
-  self.throttled_response = lambda do |env|
+  self.throttled_response = lambda do
     [ENV.fetch('THROTTLED_RESPONSE_CODE', 418), {}, ['']]
   end
 end
