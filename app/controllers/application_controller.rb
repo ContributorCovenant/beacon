@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
       params: params.to_json,
       account_id: current_account ? current_account.id : nil
     )
+    SuspiciousActivityLog.throttle(request.remote_ip)
     render "errors/show", status: 404
   end
 
@@ -30,6 +31,7 @@ class ApplicationController < ActionController::Base
       params: params.to_json,
       account_id: current_account ? current_account.id : nil
     )
+    SuspiciousActivityLog.throttle(request.remote_ip)
     render "errors/forbidden", status: :forbidden
   end
 

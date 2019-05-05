@@ -116,4 +116,7 @@ Rails.application.routes.draw do
   post "directory", to: "directory#search", as: :directory_search
   match "directory/:slug", to: "directory#show", via: :get, as: :directory_project
 
+  get "/404", to: "application#render_not_found"
+  get "/403", to: "application#render_forbidden"
+
 end
