@@ -4,7 +4,7 @@ class Rack::Attack
     req.ip unless req.path.start_with?('/assets')
   end
 
-  throttle('logins/ip', limit: 5, period: 20.seconds) do |req|
+  throttle('logins/ip', limit: ENV.fetch('LOGIN_THROTTLE_REQUESTS', 10), period: ENV.fetch('LOGIN_THROTTLE_SECONDS', 20).seconds) do |req|
     if req.path == '/accounts/sign_in' && req.post?
       req.ip
     end
@@ -20,7 +20,7 @@ class Rack::Attack
     request.referer =~ denied_regexp
   end
 
-  throttle("logins/email", limit: 5, period: 20.seconds) do |req|
+  throttle("logins/email", limit: ENV.fetch('LOGIN_THROTTLE_REQUESTS', 10), period: ENV.fetch('LOGIN_THROTTLE_SECONDS', 20).seconds) do |req|
     if req.path == '/accounts/sign_in' && req.post?
       req.params['email'].presence
     end
