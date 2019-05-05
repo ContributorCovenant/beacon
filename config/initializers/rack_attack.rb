@@ -20,7 +20,7 @@ class Rack::Attack
     request.referer =~ denied_regexp
   end
 
-  throttle("logins/email", limit: ENV.fetch('LOGIN_THROTTLE_REQUESTS'.to_i, 10), period: ENV.fetch('LOGIN_THROTTLE_SECONDS', 20).to_i.seconds) do |req|
+  throttle("logins/email", limit: ENV.fetch('LOGIN_THROTTLE_REQUESTS', 10).to_i, period: ENV.fetch('LOGIN_THROTTLE_SECONDS', 20).to_i.seconds) do |req|
     if req.path == '/accounts/sign_in' && req.post?
       req.params['email'].presence
     end
