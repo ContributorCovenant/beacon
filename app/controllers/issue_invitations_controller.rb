@@ -1,5 +1,6 @@
 class IssueInvitationsController < ApplicationController
 
+  before_action :authenticate_account!
   before_action :scope_all
   before_action :enforce_permissions
 
