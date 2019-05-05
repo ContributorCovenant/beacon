@@ -4,4 +4,7 @@
 
 require_relative 'config/environment'
 
+require "rack/attack"
+use Rack::Attack
+
 run Rails.application
