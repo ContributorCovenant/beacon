@@ -52,9 +52,12 @@ class IncomingEmailService
   end
 
   def create_new_account
+    unencrypted_password = SecureRandom.base64
     new_account = candidate_account
+    new_account.password = unencrypted_password
     new_account.skip_confirmation_notification!
     new_account.save
+    RegistrationMailer.welcome(new_account, unencrypted_password).deliver
   end
 
   def can_comment_on_issue?
