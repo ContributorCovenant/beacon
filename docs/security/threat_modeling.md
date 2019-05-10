@@ -14,7 +14,7 @@ In general, Beacon is well-architected to defend this scenario. An outer static-
 
 The accompanying operations strategy is to run as few additional services as possible and to make sure they aren't easily accessible from outside the host.
 
-Overall, this category is likely to be frequent but will not normally require human intervention. As a percentage of attacks, by far the largest mitigation is "don't have a WordPress login URL," followed closely by "don't run PHP."
+Overall, this category is likely to be frequent but will not normally require human intervention. As a percentage of attacks, by far the largest mitigation is "don't have a WordPress login URL."
 
 ## Disgruntled Actors
 
