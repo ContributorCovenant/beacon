@@ -25,4 +25,11 @@ class AdminMailer < ApplicationMailer
     mail(to: Setting.emails(:support), subject: "Beacon: New Project Published (#{@project.name})")
   end
 
+  def notify_on_project_name_change
+    @project = params[:project]
+    @old_name = params[:old_name]
+    @new_name = params[:new_name]
+    mail(to: Setting.emails(:support), subject: "Beacon: Project name changed from #{@old_name} to #{@new_name}")
+  end
+
 end
