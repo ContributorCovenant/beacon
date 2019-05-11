@@ -20,4 +20,9 @@ class AdminMailer < ApplicationMailer
     mail(to: Setting.emails(:abuse), subject: "Beacon: New Account Flag Request")
   end
 
+  def notify_on_project_published
+    @project = params[:project]
+    mail(to: Setting.emails(:support), subject: "Beacon: New Project Published (#{@project.name})")
+  end
+
 end

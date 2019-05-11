@@ -29,10 +29,11 @@ class GitlabImportService
           organization_id: organization.id,
           confirmed_at: DateTime.now,
           public: true,
-          accept_issues_by_email: organization.accept_issues_by_email
+          accept_issues_by_email: organization.accept_issues_by_email,
+          bulk_created: true
         )
       rescue StandardError => e
-        errors << "#{repository.name}: #{e.message}."
+        errors << "#{repository.name} skipped: #{e.message}."
         next
       end
 
