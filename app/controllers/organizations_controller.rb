@@ -33,6 +33,7 @@ class OrganizationsController < ApplicationController
 
   def show
     breadcrumb @organization.name, organization_path(@organization)
+    @issues = ProjectIssue.issues_for_organization(@organization)
     if @organization.projects.count > 12
       @page_index = @organization.projects.order('name ASC').pluck(:name).map(&:first).uniq
       @current_index = params[:page] || @page_index.first

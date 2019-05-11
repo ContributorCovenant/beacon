@@ -54,8 +54,12 @@ class IssuesController < ApplicationController
 
   def show
     if @project.moderator?(current_account) || current_account.is_admin?
-      breadcrumb "Projects", projects_path
-      breadcrumb "#{@project.name} Issues", project_path(@project)
+      if organization = @project.organization
+        breadcrumb organization.name, organization_path(organization)
+      else
+        breadcrumb "Projects", projects_path
+      end
+      breadcrumb @project.name, project_path(@project)
     else
       breadcrumb "My Issues", issues_path
     end
