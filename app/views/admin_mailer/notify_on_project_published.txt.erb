@@ -1,0 +1,12 @@
+New project published: <%= @project.name %>
+
+Created by <%= @project.account.display_name %>:
+
+-------------------------------------------------
+<%= @project.description %>
+-------------------------------------------------
+
+You can view the project in Beacon: <%= admin_project_url(@project) %>
+
+Thank you,
+The Friendly Beacon Mailer Robot

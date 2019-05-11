@@ -1,0 +1,12 @@
+Project name changed
+Owned by <%= @project.account.display_name %>:
+
+-------------------------------------------------
+Old name: <%= @old_name %>
+New name: <%= @new_name %>
+-------------------------------------------------
+
+You can view the project in Beacon: <%= admin_project_url(@project) %>
+
+Thank you,
+The Friendly Beacon Mailer Robot

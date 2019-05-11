@@ -130,8 +130,12 @@ class ProjectsController < ApplicationController
   def update
     project_params.delete(:name)
     previous_repo_url = @project.repo_url.to_s
+    previous_project_name = @project.name
     if @project.update_attributes(project_params)
       @project.unconfirm_ownership! if previous_repo_url != project_params[:repo_url].to_s
+      if project_params[:name] != previous_project_name && @project.public?
+        AdminMailer.with(project: @project, old_name: previous_project_name, new_name: project_params[:name]).notify_on_project_name_change.deliver
+      end
       flash[:notice] = 'The project was successfully updated.'
       redirect_to @project
     else

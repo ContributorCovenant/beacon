@@ -127,7 +127,12 @@ class Project < ApplicationRecord
     complete ||= false unless coc_url.present?
     complete ||= false unless autoresponder?
     complete = complete.nil? ? true : false
-    update_attribute(:setup_complete, complete) unless setup_complete == complete
+    if setup_complete != complete
+      update_attribute(:setup_complete, complete)
+      if complete && !bulk_created?
+        AdminMailer.with(project: self).notify_on_project_published.deliver
+      end
+    end
     return complete
   end
 

@@ -1,0 +1,18 @@
+<% content_for :title do %>
+  Project Name Changed
+<% end %>
+
+<container style="margin-top: 2em;">
+  <row>
+    <columns>
+      Old name: <%= @old_name %><br />
+      New name: <%= @new_name %><br />
+    </columns>
+  </row>
+
+  <row>
+    <columns>
+      <button href="<%= admin_project_url(@project) %>">View Project</button>
+    </columns>
+  </row>
+</container>

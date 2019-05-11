@@ -17,17 +17,26 @@ class GithubImportService
     repositories.each do |repository|
       next if Project.find_by(name: [repository.name, repository.name.titleize])
       coc_url = organization.coc_url.present? && organization.coc_url || repository.code_of_conduct&.html_url || ""
-      project = Project.create!(
-        name: repository.name.titleize,
-        url: repository.html_url,
-        description: repository.description || "",
-        account_id: organization.account_id,
-        coc_url: coc_url,
-        organization_id: organization.id,
-        confirmed_at: DateTime.now,
-        public: true,
-        accept_issues_by_email: organization.accept_issues_by_email
-      )
+      errors = ""
+
+      begin
+        project = Project.create!(
+          name: repository.name.titleize,
+          url: repository.html_url,
+          description: repository.description || "",
+          account_id: organization.account_id,
+          coc_url: coc_url,
+          organization_id: organization.id,
+          confirmed_at: DateTime.now,
+          public: true,
+          accept_issues_by_email: organization.accept_issues_by_email,
+          bulk_created: true
+        )
+      rescue StandardError => e
+        errors << "#{repository.name} skipped: #{e.message}."
+        next
+      end
+
       project.consequence_guide.clone_from(organization) if organization.consequence_guide.consequences.any?
       if respondent_template = organization.respondent_template
         RespondentTemplate.create(
@@ -44,9 +53,7 @@ class GithubImportService
       project.project_setting.touch
       project.check_setup_complete?
     end
-    return { success: true, count: organization.projects.count - starting_count }
-  rescue StandardError => e
-    return { success: false, error: e }
+    return { success: true, count: organization.projects.count - starting_count, error: errors }
   end
 
   private
