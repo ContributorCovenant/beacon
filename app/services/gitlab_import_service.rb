@@ -11,22 +11,30 @@ class GitlabImportService
 
   def import_projects
     starting_count = organization.projects.count
-
+    errors = ""
     repositories.each do |repository|
       next unless repository_is_in_org?(repository)
       next if Project.find_by(name: [repository.name, repository.name.titleize])
 
-      project = Project.create!(
-        name: repository.name.titleize,
-        url: repository.web_url,
-        description: "",
-        account_id: organization.account_id,
-        coc_url: organization.coc_url || "",
-        organization_id: organization.id,
-        confirmed_at: DateTime.now,
-        public: true,
-        accept_issues_by_email: organization.accept_issues_by_email
-      )
+      coc_url = organization.coc_url.present? && organization.coc_url
+      coc_url ||= coc_url(repository)
+
+      begin
+        project = Project.create!(
+          name: repository.name.titleize,
+          url: repository.web_url,
+          description: repository.description || repository.name.titleize,
+          account_id: organization.account_id,
+          coc_url: coc_url,
+          organization_id: organization.id,
+          confirmed_at: DateTime.now,
+          public: true,
+          accept_issues_by_email: organization.accept_issues_by_email
+        )
+      rescue StandardError => e
+        errors << "#{repository.name}: #{e.message}."
+        next
+      end
 
       project.consequence_guide.clone_from(organization) if organization.consequence_guide.consequences.any?
 
@@ -47,9 +55,7 @@ class GitlabImportService
       project.project_setting.touch
       project.check_setup_complete?
     end
-    return { success: true, count: organization.projects.count - starting_count }
-  rescue StandardError => e
-    return { success: false, error: e }
+    return { success: true, count: organization.reload.projects.count - starting_count, error: errors }
   end
 
   private
@@ -59,6 +65,13 @@ class GitlabImportService
       endpoint: "https://gitlab.com/api/v4/",
       private_token: account.gitlab_token
     )
+  end
+
+  def coc_url(repository)
+    client.file_contents(repository.id, "CODE_OF_CONDUCT.md")
+    repository.readme_url.gsub("README", "CODE_OF_CONDUCT")
+  rescue GitLab::Error::NotFound
+    ""
   end
 
   def repositories

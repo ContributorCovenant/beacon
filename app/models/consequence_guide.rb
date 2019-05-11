@@ -9,7 +9,12 @@ class ConsequenceGuide < ApplicationRecord
   def clone_from(source)
     return if source == self
     consequences.destroy_all
-    source.consequences.each do |consequence|
+    if source.is_a?(ConsequenceGuide)
+      consequences = source.consequences
+    else
+      consequences = source.consequence_guide&.consequences
+    end
+    consequences.each do |consequence|
       Consequence.create(
         consequence_guide_id: id,
         severity: consequence.severity,
