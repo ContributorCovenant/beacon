@@ -77,9 +77,9 @@ class OrganizationsController < ApplicationController
 
   def import_projects_from_gitlab
     current_account.update_gitlab_token(params[:token])
-    results = GitlabImportService.new(account, @organization).import_projects
+    results = GitlabImportService.new(current_account, @organization).import_projects
     if results[:success]
-      flash[:info] = "Successfully imported #{results[:count]} project(s)."
+      flash[:info] = "Successfully imported #{results[:count]} project(s). #{results[:error]}"
     else
       flash[:error] = "Could not import projects: #{results[:error]}."
     end
