@@ -5,6 +5,12 @@ class ProjectIssue < ApplicationRecord
 
   attr_accessor :issue_id
 
+  def self.issues_for_organization(organization)
+    encrypted_issue_ids = where(project_id: organization.projects.map(&:id)).pluck(:issue_encrypted_id)
+    issue_ids = encrypted_issue_ids.map{ |id| EncryptionService.decrypt(id) }
+    Issue.where(id: issue_ids)
+  end
+
   def self.issues_for_project(project_id)
     encrypted_issue_ids = where(project_id: project_id).pluck(:issue_encrypted_id)
     issue_ids = encrypted_issue_ids.map{ |id| EncryptionService.decrypt(id) }
