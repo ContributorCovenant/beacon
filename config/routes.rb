@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   mount_griddler
 
   devise_for :accounts, controllers: {
+    sessions: "accounts/sessions",
     registrations: "accounts/registrations",
     passwords: "accounts/passwords",
     omniauth_callbacks: 'accounts/omniauth_callbacks',
