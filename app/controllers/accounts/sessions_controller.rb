@@ -4,7 +4,7 @@ module Accounts
   class SessionsController < Devise::SessionsController
     # before_action :configure_sign_in_params, only: [:create]
 
-    PROXY_HEADERS = %w(FORWARDED X_FORWARDED_FOR VIA USERAGENT_VIA PROXY_CONNECTION XPROXY_CONNECTION PC_REMOTE_ADDR CLIENT_IP)
+    PROXY_HEADERS = %w(FORWARDED X_FORWARDED_FOR VIA USERAGENT_VIA PROXY_CONNECTION XPROXY_CONNECTION PC_REMOTE_ADDR CLIENT_IP).freeze
 
     # GET /resource/sign_in
     # def new

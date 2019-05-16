@@ -24,8 +24,8 @@ RSpec.describe Accounts::SessionsController, type: :controller do
 
       it "permits login with no disallowed headers" do
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
-            "account[password]" => "1234567891011",
+          "account[email]" => "danielle@dax.com",
+          "account[password]" => "1234567891011"
         }
         expect(controller.current_account).to be_truthy
       end
@@ -34,8 +34,8 @@ RSpec.describe Accounts::SessionsController, type: :controller do
       # test this.
       it "does not allow login with an incorrect password" do
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
-            "account[password]" => "7",
+          "account[email]" => "danielle@dax.com",
+          "account[password]" => "7"
         }
         expect(controller.current_account).to be_falsy
       end
@@ -44,17 +44,17 @@ RSpec.describe Accounts::SessionsController, type: :controller do
       # test this.
       it "does not allow login with no password" do
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
+          "account[email]" => "danielle@dax.com"
         }
         expect(controller.current_account).to be_falsy
       end
 
       it "allows login with an X-FORWARDED-FOR header" do
         # RSpec isn't passing headers in the POST: https://github.com/rspec/rspec-rails/issues/1655
-        request.headers.merge!({ "X-FORWARDED-FOR" => "some.domain.com" })
+        request.headers["X-FORWARDED-FOR"] = "some.domain.com"
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
-            "account[password]" => "1234567891011",
+          "account[email]" => "danielle@dax.com",
+          "account[password]" => "1234567891011"
         }
         expect(controller.current_account).to be_truthy
       end
@@ -69,8 +69,8 @@ RSpec.describe Accounts::SessionsController, type: :controller do
 
       it "permits login with no disallowed headers" do
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
-            "account[password]" => "1234567891011",
+          "account[email]" => "danielle@dax.com",
+          "account[password]" => "1234567891011"
         }
         expect(controller.current_account).to be_truthy
       end
@@ -79,8 +79,8 @@ RSpec.describe Accounts::SessionsController, type: :controller do
       # test this.
       it "does not allow login with an incorrect password" do
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
-            "account[password]" => "7",
+          "account[email]" => "danielle@dax.com",
+          "account[password]" => "7"
         }
         expect(controller.current_account).to be_falsy
       end
@@ -89,7 +89,7 @@ RSpec.describe Accounts::SessionsController, type: :controller do
       # test this.
       it "does not allow login with no password" do
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
+          "account[email]" => "danielle@dax.com"
         }
         expect(controller.current_account).to be_falsy
       end
@@ -104,10 +104,10 @@ RSpec.describe Accounts::SessionsController, type: :controller do
 
       it "does not allow login with an X-FORWARDED-FOR header" do
         # RSpec isn't passing headers in the POST: https://github.com/rspec/rspec-rails/issues/1655
-        request.headers.merge!({ "X-FORWARDED-FOR" => "some.domain.com" })
+        request.headers["X-FORWARDED-FOR"] = "some.domain.com"
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
-            "account[password]" => "1234567891011",
+          "account[email]" => "danielle@dax.com",
+          "account[password]" => "1234567891011"
         }
         expect(controller.current_account).to be_falsy
       end
@@ -122,17 +122,17 @@ RSpec.describe Accounts::SessionsController, type: :controller do
 
       it "does not allow login via Tor exit node" do
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
-            "account[password]" => "1234567891011",
+          "account[email]" => "danielle@dax.com",
+          "account[password]" => "1234567891011"
         }
         expect(controller.current_account).to be_falsy
       end
 
       it "does not allow login via Tor exit node with Proxy headers" do
-        request.headers.merge!({ "X-FORWARDED-FOR" => "some.domain.com" })
+        request.headers["X-FORWARDED-FOR"] = "some.domain.com"
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
-            "account[password]" => "1234567891011",
+          "account[email]" => "danielle@dax.com",
+          "account[password]" => "1234567891011"
         }
         expect(controller.current_account).to be_falsy
       end
@@ -142,13 +142,13 @@ RSpec.describe Accounts::SessionsController, type: :controller do
       before do
         allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_PROXY").and_return("true")
         allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_TOR").and_return("true")
-        allow(Tor::DNSEL).to receive(:include?).and_return(nil)  # This happens on timeout/error in Tor DNSEL
+        allow(Tor::DNSEL).to receive(:include?).and_return(nil) # This happens on timeout/error in Tor DNSEL
       end
 
       it "allows login when Tor status is unknown" do
         post :create, params: {
-            "account[email]" => "danielle@dax.com",
-            "account[password]" => "1234567891011",
+          "account[email]" => "danielle@dax.com",
+          "account[password]" => "1234567891011"
         }
         expect(controller.current_account).to be_truthy
       end
