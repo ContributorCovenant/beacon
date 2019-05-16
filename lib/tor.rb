@@ -108,45 +108,41 @@ module Tor
       target_port = options[:port] || TARGET_PORT
       [source_addr, target_port, target_addr, DNS_SUFFIX].join('.')
     end
-    class << self
-      alias hostname dnsname
+    class << self; alias hostname dnsname; end
 
-      protected
-
-      ##
-      # Resolves `host` into an IPv4 address using Ruby's default resolver.
-      #
-      # Optionally returns the IPv4 address with its octet order reversed.
-      #
-      # @example
-      #   Tor::DNSEL.getaddress("ruby-lang.org")  #=> "221.186.184.68"
-      #   Tor::DNSEL.getaddress("1.2.3.4")        #=> "1.2.3.4"
-      #   Tor::DNSEL.getaddress("1.2.3.4", true)  #=> "4.3.2.1"
-      #
-      # @param  [String, #to_s] host
-      # @param  [Boolean]       reversed
-      # @return [String]
-      def getaddress(host, reversed = false)
-        host =
-          case host.to_s
-          when Resolv::IPv6::Regex
-            raise ArgumentError, "not an IPv4 address: #{host}"
-          when Resolv::IPv4::Regex
-            host.to_s
-          else
-            begin
-              RESOLVER.each_address(host.to_s) do |addr|
-                return addr.to_s if addr.to_s =~ Resolv::IPv4::Regex
-              end
-              raise Resolv::ResolvError, "no address for #{host}"
-            rescue NoMethodError
-              # This is a workaround for Ruby bug #2614:
-              # @see http://redmine.ruby-lang.org/issues/show/2614
-              raise Resolv::ResolvError, "no address for #{host}"
+    ##
+    # Resolves `host` into an IPv4 address using Ruby's default resolver.
+    #
+    # Optionally returns the IPv4 address with its octet order reversed.
+    #
+    # @example
+    #   Tor::DNSEL.getaddress("ruby-lang.org")  #=> "221.186.184.68"
+    #   Tor::DNSEL.getaddress("1.2.3.4")        #=> "1.2.3.4"
+    #   Tor::DNSEL.getaddress("1.2.3.4", true)  #=> "4.3.2.1"
+    #
+    # @param  [String, #to_s] host
+    # @param  [Boolean]       reversed
+    # @return [String]
+    def self.getaddress(host, reversed = false)
+      host =
+        case host.to_s
+        when Resolv::IPv6::Regex
+          raise ArgumentError, "not an IPv4 address: #{host}"
+        when Resolv::IPv4::Regex
+          host.to_s
+        else
+          begin
+            RESOLVER.each_address(host.to_s) do |addr|
+              return addr.to_s if addr.to_s =~ Resolv::IPv4::Regex
             end
+            raise Resolv::ResolvError, "no address for #{host}"
+          rescue NoMethodError
+            # This is a workaround for Ruby bug #2614:
+            # @see http://redmine.ruby-lang.org/issues/show/2614
+            raise Resolv::ResolvError, "no address for #{host}"
           end
-        reversed ? host.split('.').reverse.join('.') : host
-      end
+        end
+      reversed ? host.split('.').reverse.join('.') : host
     end
   end
 end
