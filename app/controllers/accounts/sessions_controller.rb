@@ -24,7 +24,7 @@ module Accounts
       # Since this happens after signin, we could set this per-organization in
       # the future. Some organizations allow or require employees to use
       # an HTTP proxy.
-      if ENV["BEACON_BLOCK_LOGIN_VIA_PROXY"]
+      if ENV["BLOCK_LOGIN_VIA_PROXY"]
         header_names = request.headers.to_h.keys.map { |k| k.upcase.tr("-", "_").gsub(/^HTTP_/, "") }
         bad_headers = PROXY_HEADERS & header_names
         unless bad_headers.empty?
@@ -48,7 +48,7 @@ module Accounts
 
       # This, too, could easily be set per-organization. It is not clear that it should
       # be, though.
-      if ENV["BEACON_BLOCK_LOGIN_VIA_TOR"]
+      if ENV["BLOCK_LOGIN_VIA_TOR"]
         if Tor::DNSEL.include?(current_account.current_sign_in_ip)
           # This is a correct login but it occurred via a Tor exit node, which isn't allowed.
           # Since we don't want mysterious failures for honest users, we don't just return a normal

@@ -18,8 +18,8 @@ RSpec.describe Accounts::SessionsController, type: :controller do
 
     context "attempted non-Tor login while not checking login via proxies or Tor exit nodes" do
       before do
-        allow(ENV).to receive(:[]).with("BEACON_BLOCK_LOGIN_VIA_PROXY").and_return(nil)
-        allow(ENV).to receive(:[]).with("BEACON_BLOCK_LOGIN_VIA_TOR").and_return(nil)
+        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_PROXY").and_return(nil)
+        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_TOR").and_return(nil)
       end
 
       it "permits login with no disallowed headers" do
@@ -62,8 +62,8 @@ RSpec.describe Accounts::SessionsController, type: :controller do
 
     context "attempted non-Tor login while disallowing login via proxies and Tor exit nodes" do
       before do
-        allow(ENV).to receive(:[]).with("BEACON_BLOCK_LOGIN_VIA_PROXY").and_return("true")
-        allow(ENV).to receive(:[]).with("BEACON_BLOCK_LOGIN_VIA_TOR").and_return("true")
+        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_PROXY").and_return("true")
+        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_TOR").and_return("true")
         allow(Tor::DNSEL).to receive(:include?).and_return(false) # Not a Tor exit node
       end
 
@@ -97,8 +97,8 @@ RSpec.describe Accounts::SessionsController, type: :controller do
 
     context "attempted login via proxy, while disallowing proxy and Tor login" do
       before do
-        allow(ENV).to receive(:[]).with("BEACON_BLOCK_LOGIN_VIA_PROXY").and_return("true")
-        allow(ENV).to receive(:[]).with("BEACON_BLOCK_LOGIN_VIA_TOR").and_return("true")
+        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_PROXY").and_return("true")
+        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_TOR").and_return("true")
         allow(Tor::DNSEL).to receive(:include?).and_return(false) # Not a Tor exit node
       end
 
@@ -115,8 +115,8 @@ RSpec.describe Accounts::SessionsController, type: :controller do
 
     context "attempted login via Tor exit node while that's forbidden" do
       before do
-        allow(ENV).to receive(:[]).with("BEACON_BLOCK_LOGIN_VIA_PROXY").and_return("true")
-        allow(ENV).to receive(:[]).with("BEACON_BLOCK_LOGIN_VIA_TOR").and_return("true")
+        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_PROXY").and_return("true")
+        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_TOR").and_return("true")
         allow(Tor::DNSEL).to receive(:include?).and_return(true)
       end
 
@@ -140,8 +140,8 @@ RSpec.describe Accounts::SessionsController, type: :controller do
 
     context "attempted login via any node when Tor DNSEL is down" do
       before do
-        allow(ENV).to receive(:[]).with("BEACON_BLOCK_LOGIN_VIA_PROXY").and_return("true")
-        allow(ENV).to receive(:[]).with("BEACON_BLOCK_LOGIN_VIA_TOR").and_return("true")
+        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_PROXY").and_return("true")
+        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_TOR").and_return("true")
         allow(Tor::DNSEL).to receive(:include?).and_return(nil)  # This happens on timeout/error in Tor DNSEL
       end
 
