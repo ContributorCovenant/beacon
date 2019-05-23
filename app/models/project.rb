@@ -136,7 +136,7 @@ class Project < ApplicationRecord
     return complete
   end
 
-  def show_in_directory?
+  def publicly_accessible?
     return false unless public?
     return false unless setup_complete?
     return false if is_flagged

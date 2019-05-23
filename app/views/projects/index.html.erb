@@ -25,7 +25,7 @@
             <p><%= project.description %></p>
             <p>
               Visibility:
-              <% if project.show_in_directory? %>
+              <% if project.publicly_accessible? %>
                 <span class="badge badge-pill badge-success">Public</span>
               <% else %>
                 <span class="badge badge-pill badge-danger">Private</span>

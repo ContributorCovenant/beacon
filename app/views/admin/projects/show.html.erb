@@ -121,8 +121,8 @@
               <% end %>
             </li>
             <li>
-              Visible in Directory
-              <% if @project.show_in_directory? %>
+              Publicly Accessible
+              <% if @project.publicly_accessible? %>
                 <span class="badge badge-pill badge-success">
                   √
                 </span>
@@ -144,8 +144,11 @@
           <ul>
             <li><%= link_to "Home page", @project.url, target: "_new" %></li>
             <li><%= link_to "Code of conduct", @project.coc_url, target: "_new" %></li>
-            <% if @project.public? %>
-              <li><%= link_to "View in Directory", directory_project_path(@project.slug) %></li>
+            <% if @project.publicly_accessible? %>
+              <li>
+                <%= link_to "Public Page", directory_project_path(@project.slug) %><br />
+                <%= directory_project_path(@project.slug) %>
+              </li>
             <% end %>
           </ul>
         </div>
@@ -157,7 +160,7 @@
   <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-profile-tab">
     <table class="table">
       <tr>
-        <th scope="row">Show in Project Directory</th>
+        <th scope="row">Publicly Accessible</th>
         <td>
           <% if @project.public? %>
             <span class="badge badge-success">Yes</span>
@@ -167,7 +170,7 @@
         </td>
       </tr>
       <tr>
-        <th scope="row">Show Issues Report in Project Directory</th>
+        <th scope="row">Show Issues Report on Project Page</th>
         <td>
           <% if @settings.publish_stats? %>
             <span class="badge badge-success">Yes</span>

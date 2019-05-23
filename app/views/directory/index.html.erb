@@ -1,6 +1,6 @@
 <% title "Directory" %>
 
-<h1>Beacon Directory</h1>
+<h1>Search Results</h1>
 <%= form_tag directory_search_path, method: :post, class: "form-inline" do %>
   <div class="form-group mb-2">
     <%= text_field_tag :q, nil, autofocus: true, class: "form-control form-control-sm", 'aria-label': "Search" %>
@@ -9,22 +9,6 @@
 <% end %>
 
 <% if @projects.any? %>
-  <nav aria-label="pagination">
-    <ul class="pagination">
-      <li class="page-item">
-        <%= link_to "Previous", directory_path(params: { page: @previous_index }), class: "page-link" %>
-      </li>
-      <% @page_index.each do |i| %>
-        <li class="page-item <%= @current_index == i ? 'active' : '' %>">
-          <a class="page-link" href="?page=<%= i %>"><%= i.upcase %></a>
-        </li>
-      <% end %>
-      <li class="page-item">
-        <%= link_to "Next", directory_path(params: { page: @next_index }), class: "page-link" %>
-      </li>
-    </ul>
-  </nav>
-
   <% @projects.each_with_index do |project,i| %>
 
     <% float_class = i < @projects.size - 1 ? "float-left" : "float-none" %>

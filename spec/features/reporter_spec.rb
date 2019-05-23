@@ -9,7 +9,7 @@ describe "the reporting process", type: :feature do
 
   before do
     allow_any_instance_of(ValidEmail2::Address).to receive(:valid_mx?) { true }
-    allow_any_instance_of(Project).to receive(:show_in_directory?).and_return(true)
+    allow_any_instance_of(Project).to receive(:publicly_accessible?).and_return(true)
     allow_any_instance_of(Accounts::RegistrationsController).to receive(:verify_recaptcha).and_return(true)
     allow_any_instance_of(IssuesController).to receive(:verify_recaptcha).and_return(true)
     Role.create(account_id: maintainer.id, project_id: project.id, is_owner: true)
@@ -35,9 +35,7 @@ describe "the reporting process", type: :feature do
 
   it "lets a reporter open an issue" do
     login_as(reporter, scope: :account)
-    visit directory_path
-    expect(page).to have_content(project.name)
-    click_on(project.name)
+    visit directory_project_path(project)
     click_on("Open an Issue")
     expect(page).to have_content("Open an Issue in #{project.name}")
     fill_in "issue_description", with: "So this is what happened."
@@ -50,8 +48,7 @@ describe "the reporting process", type: :feature do
 
   it "lets a reporter report a project for abuse" do
     login_as(reporter, scope: :account)
-    visit directory_path
-    click_on(project.name)
+    visit directory_project_path(project)
     click_on("Report This Project")
     expect(page).to have_content("Report Abuse: #{project.name}")
     fill_in "Explanation", with: "This project's name is offensive."
@@ -62,7 +59,7 @@ describe "the reporting process", type: :feature do
 
   it "lets a reporter search for a project" do
     login_as(reporter, scope: :account)
-    visit directory_path
+    visit root_path
     fill_in 'q', with: "T"
     click_on "Search"
     expect(page).to have_content(another_project.name)

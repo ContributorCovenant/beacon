@@ -6,10 +6,6 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item nav-link">
-        <%= link_to "Directory", directory_path %>
-      </li>
-
       <% if current_account && current_account.can_access_admin_dashboard? %>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Admin</a>
@@ -30,16 +26,20 @@
         </li>
       <% end %>
       <% if current_account %>
-        <li class="nav-item nav-link">
-          <%= link_to "My Organizations", organizations_path %>
-        </li>
-        <li class="nav-item nav-link">
-          <%= link_to "My Projects", projects_path %>
-          <% count = current_account.notifications.where(project_id: current_account.projects.map(&:id)).count %>
-          <% if count > 0 %>
-            <span class="badge badge-pill badge-danger"><%= count %></span>
-          <% end %>
-        </li>
+        <% if current_account.organizations.any? %>
+          <li class="nav-item nav-link">
+            <%= link_to "My Organizations", organizations_path %>
+          </li>
+        <% end %>
+        <% if current_account.personal_projects.any? %>
+          <li class="nav-item nav-link">
+            <%= link_to "My Projects", projects_path %>
+            <% count = current_account.notifications.where(project_id: current_account.projects.map(&:id)).count %>
+            <% if count > 0 %>
+              <span class="badge badge-pill badge-danger"><%= count %></span>
+            <% end %>
+          </li>
+        <% end %>
         <% if current_account.issues.any? %>
           <li class="nav-item nav-link">
             <%= link_to "My Issues", issues_path %>

@@ -10,6 +10,25 @@
     </h1>
     <p><%= @project.description %></p>
 
+    <div class="actions">
+      <% if current_account.can_manage_project?(@project) %>
+        <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning" %>
+      <% end %>
+      <% if current_account.can_open_issue_on_project?(@project) %>
+        <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-danger" %>
+      <% end %>
+    </div>
+
+    <% if @project.publicly_accessible? %>
+      <h2 class="mt-3">Profile Page</h2>
+      <p>
+        This <%= @project.is_event? ? "event's" : "project's" %> profile page is available at
+        <%= link_to directory_project_url(@project), directory_project_path(@project) %>.
+        This is the URL that reporters will access to file code of conduct issues.
+        It is recommended that you add this URL to your official code of conduct.
+      </p>
+    <% end %>
+
     <% if @project.is_event? %>
       <p>This is a <%= @project.duration %>-day event with <%= @project.attendees %> attendees.</p>
 
@@ -22,14 +41,6 @@
         </div>
       <% end %>
     <% end %>
-    <div class="actions">
-      <% if current_account.can_manage_project?(@project) %>
-        <%= link_to "Edit Project", edit_project_path(@project), class: "btn btn-warning" %>
-      <% end %>
-      <% if current_account.can_open_issue_on_project?(@project) %>
-        <%= link_to "Open an Issue", new_project_issue_path(@project), class: "btn btn-danger" %>
-      <% end %>
-    </div>
     <% if @project.accept_issues_by_email %>
       <h2 class="mt-3">Email Reporting</h2>
       <p>Reporters may submit an issue to this project by emailing <%= @project.slug %>@reports.coc-beacon.com</p>
@@ -62,17 +73,17 @@
     </ul>
     <% if @project.show_transparency_report? %>
       <% if @report.suitable_for_public? %>
-        <p>These statistics are visible in your project's directory page. To change
+        <p>These statistics are visible in your project's profile page. To change
         this setting, click on 'Project Settings' and uncheck the 'Publish project
-        statistics in Directory' checkbox.</p>
+        statistics' checkbox.</p>
       <% else %>
         <p>Although you have enabled transparency reporting in your project's
-        directory page, there is not yet enough data to display.</p>
+        profile page, there is not yet enough data to display.</p>
       <% end %>
     <% else %>
-      <p>Transparency reporting for this project's directory page is currently
+      <p>Transparency reporting for this project's profile page is currently
       not enabled. To make this report visible, click on 'Project Settings' and
-      enable the 'Publish project statistics in Directory' checkbox.</p>
+      enable the 'Publish project statistics' checkbox.</p>
     <% end %>
 
   </div>
@@ -181,11 +192,10 @@
               </li>
               <li>
                 <% if current_account.can_manage_project?(@project) %>
-                  <%= link_to "Visible in Directory", project_settings_path(@project)  %>
+                  <%= link_to "Public", project_settings_path(@project)  %>
                 <% else %>
-                  Visible in Directory
                 <% end %>
-                <% if @project.show_in_directory? %>
+                <% if @project.publicly_accessible? %>
                   <span class="badge badge-pill badge-success">
                     √
                   </span>
@@ -213,7 +223,7 @@
             </li>
             <% if @project.public? %>
               <li>
-                <%= link_to "View in Directory", directory_project_path(@project.slug) %>
+                <%= link_to "Profile Page", directory_project_path(@project.slug) %>
               </li>
             <% end %>
             <li>
