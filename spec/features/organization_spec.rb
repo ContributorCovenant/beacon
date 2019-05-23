@@ -11,7 +11,6 @@ describe "organization management", type: :feature do
   it "lets a user create an organization" do
     login_as(maintainer, scope: :account)
     visit root_path
-    click_on("My Organizations")
     click_on("New Organization")
     expect(page).to have_content("Create an Organization")
     fill_in "Name", with: "Umbrella Corporation"

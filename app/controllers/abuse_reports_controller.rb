@@ -5,13 +5,11 @@ class AbuseReportsController < ApplicationController
   before_action :enforce_permissions
 
   def new
-    breadcrumb "Directory", :directory_path
     breadcrumb @project.name, directory_project_path(@project)
     @abuse_report = AbuseReport.new(account: current_account)
   end
 
   def create
-    breadcrumb "Directory", :directory_path
     breadcrumb @project.name, directory_project_path(@project)
     if abuse_report_params[:description].empty?
       flash[:error] = "You must provide an explanation."

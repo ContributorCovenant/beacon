@@ -5,17 +5,17 @@
 <%= form_for @settings, url: project_settings_path do |f| %>
 
   <div class="form-group col-sm-6">
-    <%= f.label :include_in_directory, "Make Project Public in Project Directory" %>
+    <%= f.label :include_in_directory, "Make Project Public" %>
     <%= f.check_box :include_in_directory, class: "toggle", :data => { :toggle => 'toggle' } %>
   </div>
 
   <div class="form-group col-sm-6">
-    <%= f.label :publish_stats, "Publish Issue Statistics in Directory" %>
+    <%= f.label :publish_stats, "Publish Issue Statistics" %>
     <%= f.check_box :publish_stats, class: "toggle", :data => { :toggle => 'toggle' } %>
   </div>
 
   <div class="form-group col-sm-6">
-    <%= f.label :show_moderator_names, "Show Moderator Names or Emails in Directory" %>
+    <%= f.label :show_moderator_names, "Show Moderator Names or Emails" %>
     <%= f.check_box :show_moderator_names, class: "toggle", :data => { :toggle => 'toggle' } %>
   </div>
 

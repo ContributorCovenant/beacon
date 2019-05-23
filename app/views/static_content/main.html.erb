@@ -11,23 +11,27 @@
 <div class="container-fluid">
   <div class="row mt-5">
 
-    <div class="col-sm">
-      <div class="card mr-5 mt-2" style="min-height: 16rem;">
-        <div class="card-body">
-          <h2 class="card-title">Browse the Directory</h2>
-          <p class="card-text">View a directory of <%= @project_count %> events and open source projects that are currently using Beacon.</p>
-          <%= link_to "View Directory", directory_path, class: "btn btn-primary" %>
-        </div>
-      </div>
-    </div>
-
     <% if current_account %>
+      <div class="col-sm">
+          <div class="card mr-5 mt-2" style="min-height: 18rem;">
+            <div class="card-body">
+              <h2 class="card-title">Search the Directory</h2>
+              <p class="card-text">Search across <%= @project_count %> events and open source projects that are currently using Beacon. From the project or event page, you can view details and open an issue.</p>
+              <%= form_tag directory_search_path, method: :post, class: "form-inline" do %>
+                <div class="form-group mb-2">
+                  <%= text_field_tag :q, nil, autofocus: true, class: "form-control form-control-sm", 'aria-label': "Search" %>
+                  <%= submit_tag "Search", class: "btn btn-primary" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+      </div>
       <% if current_account.can_create_project? %>
         <div class="col-sm">
-          <div class="card mr-5 mt-2" style="min-height: 16rem;">
+          <div class="card mr-5 mt-2" style="min-height: 18rem;">
             <div class="card-body">
               <h2 class="card-title">Register a Project</h2>
-              <p class="card-text">Register and configure a new project on Beacon.</p>
+              <p class="card-text">Register and configure a new project or event on Beacon.</p>
               <%= link_to "New Project", new_project_path, class: "btn btn-warning" %>
             </div>
           </div>
@@ -35,7 +39,7 @@
       <% end %>
       <% if current_account.can_create_organization? %>
         <div class="col-sm">
-          <div class="card mr-5 mt-2" style="min-height: 16rem;">
+          <div class="card mr-5 mt-2" style="min-height: 18rem;">
             <div class="card-body">
               <h2 class="card-title">Create an Organization</h2>
               <p class="card-text">Manage a portfolio of projects or events.</p>

@@ -113,7 +113,6 @@ Rails.application.routes.draw do
     end
   end
 
-  get "directory", to: "directory#index"
   post "directory", to: "directory#search", as: :directory_search
   match "directory/:slug", to: "directory#show", via: :get, as: :directory_project
 
