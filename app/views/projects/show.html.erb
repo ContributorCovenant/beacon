@@ -20,9 +20,9 @@
     </div>
 
     <% if @project.publicly_accessible? %>
-      <h2 class="mt-3">Public Page</h2>
+      <h2 class="mt-3">Profile Page</h2>
       <p>
-        This <%= @project.is_event? ? "event's" : "project's" %> public page is available at
+        This <%= @project.is_event? ? "event's" : "project's" %> profile page is available at
         <%= link_to directory_project_url(@project), directory_project_path(@project) %>.
         This is the URL that reporters will access to file code of conduct issues.
         It is recommended that you add this URL to your official code of conduct.
@@ -73,15 +73,15 @@
     </ul>
     <% if @project.show_transparency_report? %>
       <% if @report.suitable_for_public? %>
-        <p>These statistics are visible in your project's public page. To change
+        <p>These statistics are visible in your project's profile page. To change
         this setting, click on 'Project Settings' and uncheck the 'Publish project
         statistics' checkbox.</p>
       <% else %>
         <p>Although you have enabled transparency reporting in your project's
-        public page, there is not yet enough data to display.</p>
+        profile page, there is not yet enough data to display.</p>
       <% end %>
     <% else %>
-      <p>Transparency reporting for this project's public page is currently
+      <p>Transparency reporting for this project's profile page is currently
       not enabled. To make this report visible, click on 'Project Settings' and
       enable the 'Publish project statistics' checkbox.</p>
     <% end %>
@@ -223,7 +223,7 @@
             </li>
             <% if @project.public? %>
               <li>
-                <%= link_to "Public Page", directory_project_path(@project.slug) %>
+                <%= link_to "Profile Page", directory_project_path(@project.slug) %>
               </li>
             <% end %>
             <li>
