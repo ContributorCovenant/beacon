@@ -270,35 +270,35 @@
 
 <ul class="nav nav-tabs mt-5 mb-3 responsive" id="nav-tab" role="tablist">
   <li class="nav-item"><a class="nav-link active" id="nav-newissues-tab" data-toggle="pill" href="#nav-newissues" role="tab" aria-controls="nav-newissues" aria-selected="true">
-    New Issues <span class="badge badge-pill badge-danger"><%= @issues.submitted.size %></span>
+    New Issues <span class="badge badge-pill badge-danger"><%= @submitted_issues.size %></span>
   </a></li>
   <li class="nav-item"><a class="nav-link " id="nav-acknowledgedissues-tab" data-toggle="pill" href="#nav-acknowledgedissues" role="tab" aria-controls="nav-acknowledgedissues" aria-selected="false">
-    In Progress <span class="badge badge-pill badge-warning"><%= @issues.acknowledged.size + @issues.reopened.size %></span>
+    In Progress <span class="badge badge-pill badge-warning"><%= @acknowledged_issues.size %></span>
   </a></li>
   <li class="nav-item"><a class="nav-link " id="nav-resolvedissues-tab" data-toggle="pill" href="#nav-resolvedissues" role="tab" aria-controls="nav-resolvedissues" aria-selected="false">
-    Resolved <span class="badge badge-pill badge-light"><%= @issues.resolved.size %></span>
+    Resolved <span class="badge badge-pill badge-light"><%= @resolved_issues.size %></span>
   </a></li>
   <li class="nav-item"><a class="nav-link " id="nav-dismissedissues-tab" data-toggle="pill" href="#nav-dismissedissues" role="tab" aria-controls="nav-dismissedissues" aria-selected="false">
-    Dismissed <span class="badge badge-pill badge-dark"><%= @issues.dismissed.size %></span>
+    Dismissed <span class="badge badge-pill badge-dark"><%= @dismissed_issues.size %></span>
   </a></li>
 </ul>
 
 <div class="tab-content responsive" id="nav-tabContent">
 
   <div class="tab-pane fade show active" id="nav-newissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
-    <%= render partial: "issues", locals: { issues: @issues.submitted } %>
+    <%= render partial: "issues", locals: { issues: @submitted_issues } %>
   </div>
 
   <div class="tab-pane fade" id="nav-acknowledgedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
-    <%= render partial: "issues", locals: { issues: @issues.acknowledged + @issues.reopened } %>
+    <%= render partial: "issues", locals: { issues: @acknowledged_issues } %>
   </div>
 
   <div class="tab-pane fade" id="nav-resolvedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
-    <%= render partial: "issues", locals: { issues: @issues.resolved } %>
+    <%= render partial: "issues", locals: { issues: @resolved_issues } %>
   </div>
 
   <div class="tab-pane fade" id="nav-dismissedissues" role="tabpanel" aria-labelledby="nav-newissues-tab">
-    <%= render partial: "issues", locals: { issues: @issues.dismissed } %>
+    <%= render partial: "issues", locals: { issues: @dismissed_issues } %>
   </div>
 
 </div>

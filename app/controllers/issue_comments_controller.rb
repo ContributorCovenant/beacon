@@ -90,10 +90,11 @@ class IssueCommentsController < ApplicationController
 
     if email == @project.moderator_emails
       unnotified_moderators = @project.all_moderators.reject do |moderator|
-        moderator.notification_on_issue_of_kind?(@issue.id, commenter_kind)
+        moderator.notification_on_issue_of_kind?(@issue.id, commenter_kind) || @issue.blocked_moderator?(moderator)
       end
       @project.all_moderators.each do |moderator|
         next if moderator == current_account
+        next if @issue.blocked_moderator?(moderator)
         NotificationService.enqueue_notification(
           account_id: moderator.id,
           project_id: @project.id,

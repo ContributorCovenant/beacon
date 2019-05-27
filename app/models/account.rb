@@ -40,6 +40,10 @@ class Account < ApplicationRecord
     self.email
   end
 
+  def encrypted_id
+    EncryptionService.encrypt(self.id)
+  end
+
   def flag!(reason)
     self.update_attributes(
       is_flagged: true,

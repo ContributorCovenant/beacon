@@ -48,6 +48,13 @@ module Permissions
     return !project.surveys.select{ |s| s.issue == issue }.map(&:account).find{ |account| account == self }.present?
   end
 
+  def can_invite_moderator?(subject)
+    return false if subject.is_a?(Organization) && !subject.owner?(self)
+    return true if subject.is_a?(Project) && subject.organization && subject.organization.owner?(self)
+    return false if subject.is_a?(Project) && !subject.owner?(self)
+    return true
+  end
+
   def can_invite_respondent?(issue)
     issue.project.moderator?(self)
   end
@@ -137,6 +144,7 @@ module Permissions
 
   def can_view_issue?(issue)
     project = issue.project
+    return false if issue.blocked_moderator?(self)
     return true if is_admin?
     return true if project.moderator?(self)
     return false if blocked_from_project?(project)

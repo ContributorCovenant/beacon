@@ -85,9 +85,9 @@ class InvitationsController < ApplicationController
 
   def enforce_create_permissions
     if @project
-      render_forbidden && return unless @project.owner?(current_account)
+      render_forbidden && return unless current_account.can_invite_moderator?(@project)
     elsif @organization
-      render_forbidden && return unless @organization.owner?(current_account)
+      render_forbidden && return unless current_account.can_invite_moderator?(@organization)
     else
       render_forbidden && return
     end
