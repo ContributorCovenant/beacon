@@ -1,7 +1,20 @@
 <div class="row mt-3">
 
   <div class="col">
-    <div style="mix-blend-mode: exclusion; padding: .25em;">
+    <% if @issue.moderator_blocks.any? %>
+      <p>
+        <b>Important:</b> The reporter has specifically requested that the following
+        moderators not be involved in resolving this issue, due to a potential
+        conflict of interest:
+      </p>
+
+      <ul>
+        <% @issue.blocked_moderators.each do |moderator| %>
+          <li><%= moderator.display_name %></li>
+        <% end %>
+      </ul>
+    <% end %>
+    <div>
       <%= @issue.description %>
     </div>
     <% if @reporter_consequence %>
