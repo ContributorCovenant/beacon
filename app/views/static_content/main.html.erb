@@ -19,7 +19,7 @@
               <p class="card-text">Search across <%= @project_count %> events and open source projects that are currently using Beacon. From the project or event page, you can view details and open an issue.</p>
               <%= form_tag directory_search_path, method: :post, class: "form-inline" do %>
                 <div class="form-group mb-2">
-                  <%= text_field_tag :q, nil, autofocus: true, class: "form-control form-control-sm", 'aria-label': "Search" %>
+                  <%= text_field_tag :q, nil, class: "form-control form-control-sm", 'aria-label': "Search" %>
                   <%= submit_tag "Search", class: "btn btn-primary" %>
                 </div>
               <% end %>
