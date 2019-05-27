@@ -152,12 +152,21 @@ class IssuesController < ApplicationController
   end
 
   def issue_params
-    params.require(:issue).permit(:description, :reporter_consequence_id, :resolution_text, :consequence_id, uploads: [], urls: [])
+    params.require(:issue).permit(
+      :description,
+      :reporter_consequence_id,
+      :resolution_text,
+      :consequence_id,
+      uploads: [],
+      urls: [],
+      blocked_moderator_ids: []
+    )
   end
 
   def notify_on_new_issue
     @project.all_moderators.each do |moderator|
       next if moderator == current_account
+      next if @issue.blocked_moderator?(moderator)
       NotificationService.enqueue_notification(
         account_id: moderator.id,
         project_id: @project.id,

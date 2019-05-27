@@ -40,6 +40,10 @@ class Account < ApplicationRecord
     self.email
   end
 
+  def encrypted_id
+    EncryptionService.encrypt(self.id)
+  end
+
   def flag!(reason)
     self.update_attributes(
       is_flagged: true,
@@ -127,7 +131,7 @@ class Account < ApplicationRecord
   end
 
   def projects
-    (personal_projects + organization_projects).uniq.sort_by(&:name)
+    (personal_projects + organization_projects + roles.map(&:project).compact).uniq.sort_by(&:name)
   end
 
   def reputation

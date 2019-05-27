@@ -29,32 +29,35 @@
     <% end %>
   </div>
 
-  <div class="col">
-    <h2>Invite a New Moderator</h2>
+  <% if current_account.can_invite_moderator?(@project) %>
 
-    <%= form_for @invitation, url: project_invitations_path(@project) do |f| %>
-      <div class="form-group col-sm-6">
-        <%= f.label :email, for: :email %><br />
-        <%= f.text_field :email %>
-      </div>
-      <div class="form-group col-sm-6">
-        <%= f.label :message, for: :message %><br />
-        <%= f.text_area :message %>
-      </div>
-      <% if current_account.can_manage_project?(@project) %>
+    <div class="col">
+      <h2>Invite a New Moderator</h2>
+
+      <%= form_for @invitation, url: project_invitations_path(@project) do |f| %>
         <div class="form-group col-sm-6">
-          <%= f.check_box :is_owner, class: "mr-3", aria_label: "Make this account an owner" %>
-          <label class="form-check-label" for="invitation_is_owner">Make Co-Owner</label>
+          <%= f.label :email, for: :email %><br />
+          <%= f.text_field :email %>
+        </div>
+        <div class="form-group col-sm-6">
+          <%= f.label :message, for: :message %><br />
+          <%= f.text_area :message %>
+        </div>
+        <% if current_account.can_manage_project?(@project) %>
+          <div class="form-group col-sm-6">
+            <%= f.check_box :is_owner, class: "mr-3", aria_label: "Make this account an owner" %>
+            <label class="form-check-label" for="invitation_is_owner">Make Co-Owner</label>
+          </div>
+        <% end %>
+        <div class="form-group">
+          <%= flash[:recaptcha_error] %>
+          <%= recaptcha_tags %>
+        </div>
+        <div class="actions">
+          <%= f.submit "Invite via Email", class: "btn btn-primary" %>
+          <%= f.submit "Get Invitation Link", class: "btn btn-primary" %>
         </div>
       <% end %>
-      <div class="form-group">
-        <%= flash[:recaptcha_error] %>
-        <%= recaptcha_tags %>
-      </div>
-      <div class="actions">
-        <%= f.submit "Invite via Email", class: "btn btn-primary" %>
-        <%= f.submit "Get Invitation Link", class: "btn btn-primary" %>
-      </div>
-    <% end %>
-  </div>
+    </div>
+  <% end %>
 </div>

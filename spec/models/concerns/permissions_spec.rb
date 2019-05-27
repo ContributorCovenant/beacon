@@ -113,6 +113,22 @@ RSpec.describe Permissions do
     end
   end
 
+  describe "#can_invite_moderator?" do
+
+    it "allows an organization owner" do
+      expect(kate.can_invite_moderator?(organization)).to be_truthy
+    end
+
+    it "allows a project owner" do
+      expect(kate.can_invite_moderator?(public_project)).to be_truthy
+    end
+
+    it "disallows a non-owner moderator" do
+      expect(peter.can_invite_moderator?(public_project)).to be_falsey
+    end
+
+  end
+
   describe "#can_open_issue_on_project?" do
 
     context "public project" do
@@ -213,6 +229,11 @@ RSpec.describe Permissions do
 
     it "allows a project moderator" do
       expect(kate.can_view_issue?(issue)).to be_truthy
+    end
+
+    it "disallows a blocked moderator" do
+      ModeratorBlock.create(issue: issue, account: kate)
+      expect(kate.can_view_issue?(issue)).to be_falsey
     end
 
     it "allows a reporter" do

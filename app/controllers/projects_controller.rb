@@ -196,6 +196,10 @@ class ProjectsController < ApplicationController
     @project = Project.find_by(slug: params[:slug]) || Project.find_by(slug: params[:project_slug])
     render_not_found && return unless @project
     @settings = @project.project_setting
-    @issues = @project.issues
+    issues = @project.issues.select{ |i| current_account.can_view_issue?(i) }
+    @submitted_issues = issues.select{ |i| i.aasm_state == "submitted" }
+    @acknowledged_issues = issues.select{ |i| i.aasm_state == "acknowledged" || i.aasm_state == "reopened" }
+    @resolved_issues = issues.select{ |i| i.aasm_state == "resolved" }
+    @dismissed_issues = issues.select{ |i| i.aasm_state == "dismissed" }
   end
 end

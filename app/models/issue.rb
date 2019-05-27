@@ -2,13 +2,15 @@ class Issue < ApplicationRecord
 
   include AASM
 
-  attr_accessor :reporter_id, :project_id
+  attr_accessor :reporter_id, :project_id, :blocked_moderator_ids
 
   validates_presence_of :description
   validates :urls, url: true
+  validates_with IssueModeratorsValidator
 
   belongs_to :consequence, optional: true
   belongs_to :reporter_consequence, optional: true, class_name: "Consequence"
+  has_many :moderator_blocks
   has_many :issue_events, dependent: :destroy
   has_many :issue_comments, dependent: :destroy
   has_many :notifications, dependent: :destroy
@@ -19,6 +21,7 @@ class Issue < ApplicationRecord
   before_create :set_issue_number
   after_create :set_reporter_encrypted_id
   after_create :set_project_encrypted_id
+  after_create :block_moderators
 
   scope :past_24_hours, -> { where("created_at >= ?", Time.zone.now - 24.hours) }
 
@@ -46,6 +49,14 @@ class Issue < ApplicationRecord
     event :reopen do
       transitions from: [:dismissed, :resolved], to: :reopened
     end
+  end
+
+  def blocked_moderators
+    @blocked_moderators ||= moderator_blocks.map(&:account)
+  end
+
+  def blocked_moderator?(account)
+    blocked_moderators.include?(account)
   end
 
   def comments_visible_to_reporter
@@ -85,6 +96,13 @@ class Issue < ApplicationRecord
   end
 
   private
+
+  def block_moderators
+    return unless self.blocked_moderator_ids
+    self.blocked_moderator_ids.reject(&:empty?).each do |id|
+      ModeratorBlock.create(issue_id: self.id, account_id: EncryptionService.decrypt(id))
+    end
+  end
 
   def validate_upload_file_type_and_size
     if uploads.count > 5

@@ -22,7 +22,7 @@ class Project < ApplicationRecord
   has_many :moderators, through: :roles, source: :account
   has_many :surveys, dependent: :destroy
 
-  before_create :set_slug
+  before_save :set_slug
   before_create :set_sort_key
 
   after_create :make_settings

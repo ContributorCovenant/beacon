@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_11_174056) do
+ActiveRecord::Schema.define(version: 2019_05_27_195251) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -252,6 +252,13 @@ ActiveRecord::Schema.define(version: 2019_05_11_174056) do
     t.uuid "reporter_consequence_id"
   end
 
+  create_table "moderator_blocks", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "issue_id"
+    t.uuid "account_id"
+    t.index ["account_id"], name: "index_moderator_blocks_on_account_id"
+    t.index ["issue_id"], name: "index_moderator_blocks_on_issue_id"
+  end
+
   create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "project_id"
     t.uuid "issue_id"
@@ -412,6 +419,8 @@ ActiveRecord::Schema.define(version: 2019_05_11_174056) do
   add_foreign_key "issue_comments", "issues"
   add_foreign_key "issue_events", "issues"
   add_foreign_key "issues", "consequences", column: "reporter_consequence_id"
+  add_foreign_key "moderator_blocks", "accounts"
+  add_foreign_key "moderator_blocks", "issues"
   add_foreign_key "notifications", "issue_comments"
   add_foreign_key "notifications", "issues"
   add_foreign_key "notifications", "projects"
