@@ -30,9 +30,10 @@ services:
   resque:
     build:
       context: .
+      target: dev
     command: bundle exec rake resque:work QUEUE='*'
     volumes:
-      - .:/myapp
+      - .:/beacon
       - bundle:/bundle
     depends_on:
       - db
