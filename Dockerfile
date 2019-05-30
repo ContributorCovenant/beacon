@@ -1,4 +1,4 @@
-FROM ruby:2.5.3-alpine AS dev
+FROM ruby:2.6.3-alpine AS dev
 COPY .build-deps /
 RUN cat .build-deps | xargs apk add
 WORKDIR /beacon
