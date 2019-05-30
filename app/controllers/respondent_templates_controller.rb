@@ -39,7 +39,9 @@ class RespondentTemplatesController < ApplicationController
     if source == "Beacon Default"
       @template = @subject.create_respondent_template(text: RespondentTemplate.beacon_default.text)
     elsif source == "Organization Default"
-      @template = @subject.create_respondent_template(text: @organization.respondent_template.text || @project.organization.respondent_template.text)
+      @template = @subject.create_respondent_template(
+        text: @organization.respondent_template.text || @project.organization.respondent_template.text
+      )
     else
       source = current_account.projects.find_by(name: source).respondent_template
       @template = @subject.create_respondent_template(text: source.text)
@@ -79,13 +81,17 @@ class RespondentTemplatesController < ApplicationController
       projects_with_respondent_template ||= current_account.personal_projects.select(&:respondent_template?).map(&:name)
     end
     if @project
-      org_template = @project.organization.present? && @project.organization.respondent_template? ? "Organization Default" : nil
+      org_template = @project.organization&.respondent_template? ? "Organization Default" : nil
     elsif @organization.respondent_template?
       org_template = "Organization Default"
     else
       org_template = nil
     end
-    @available_templates = ["Beacon Default", org_template, projects_with_respondent_template].flatten.compact - [@project&.name]
+    @available_templates = [
+      "Beacon Default",
+      org_template,
+      projects_with_respondent_template
+    ].flatten.compact - [@project&.name]
   end
 
   def scope_organization

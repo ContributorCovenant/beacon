@@ -4,10 +4,12 @@ class Rack::Attack
     req.ip unless req.path.start_with?('/assets')
   end
 
-  throttle('logins/ip', limit: ENV.fetch('LOGIN_THROTTLE_REQUESTS', 10).to_i, period: ENV.fetch('LOGIN_THROTTLE_SECONDS', 20).to_i.seconds) do |req|
-    if req.path == '/accounts/sign_in' && req.post?
-      req.ip
-    end
+  throttle(
+    'logins/ip',
+    limit: ENV.fetch('LOGIN_THROTTLE_REQUESTS', 10).to_i,
+    period: ENV.fetch('LOGIN_THROTTLE_SECONDS', 20).to_i.seconds
+  ) do |req|
+    req.ip if req.path == '/accounts/sign_in' && req.post?
   end
 
   blocklist("block ip") do |req|
@@ -20,10 +22,12 @@ class Rack::Attack
     request.referer =~ denied_regexp
   end
 
-  throttle("logins/email", limit: ENV.fetch('LOGIN_THROTTLE_REQUESTS', 10).to_i, period: ENV.fetch('LOGIN_THROTTLE_SECONDS', 20).to_i.seconds) do |req|
-    if req.path == '/accounts/sign_in' && req.post?
-      req.params['email'].presence
-    end
+  throttle(
+    "logins/email",
+    limit: ENV.fetch('LOGIN_THROTTLE_REQUESTS', 10).to_i,
+    period: ENV.fetch('LOGIN_THROTTLE_SECONDS', 20).to_i.seconds
+  ) do |req|
+    req.params['email'].presence if req.path == '/accounts/sign_in' && req.post?
   end
 
   self.blocklisted_response = lambda do

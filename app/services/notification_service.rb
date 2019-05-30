@@ -38,8 +38,12 @@ class NotificationService
       next unless account.phone_number
 
       begin
+        body = "Issue #{issue.issue_number} has been opened on the"\
+               " #{project.name} project."\
+               " Please sign in to Beacon to review the issue."
+
         client.messages.create(
-          body: "Issue #{issue.issue_number} has been opened on the #{project.name} project. Please sign in to Beacon to review the issue.",
+          body: body,
           to: account.phone_number,
           from: Setting.sms(:from)
         )

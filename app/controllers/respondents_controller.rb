@@ -11,7 +11,8 @@ class RespondentsController < ApplicationController
     breadcrumb @project.name, project_path(@project)
     @display_name = @project.project_setting.allow_anonymous_issues ? "Anonymous" : @actor.email
     @blocked = @project.account_project_blocks.where(account_id: @actor.id).any?
-    @block = @project.account_project_blocks.find_by(account_id: @actor.id) || @project.account_project_blocks.build(account_id: @actor.id)
+    @block = @project.account_project_blocks.find_by(account_id: @actor.id) ||
+             @project.account_project_blocks.build(account_id: @actor.id)
   end
 
   private

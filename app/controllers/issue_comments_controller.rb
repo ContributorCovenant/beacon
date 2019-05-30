@@ -48,11 +48,15 @@ class IssueCommentsController < ApplicationController
   end
 
   def visible_to_reporter?
-    current_account == @issue.reporter || (@project.moderator?(current_account) && comment_params[:visible_to_reporter] == '1')
+    current_account == @issue.reporter ||
+      (@project.moderator?(current_account) &&
+        comment_params[:visible_to_reporter] == '1')
   end
 
   def visible_to_respondent?
-    current_account == @issue.respondent || (@project.moderator?(current_account) && comment_params[:visible_to_respondent] == '1')
+    current_account == @issue.respondent ||
+      (@project.moderator?(current_account) &&
+        comment_params[:visible_to_respondent] == '1')
   end
 
   def send_notifications

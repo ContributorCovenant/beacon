@@ -25,6 +25,17 @@ describe "organization management", type: :feature do
 
     let!(:organization) { FactoryBot.create(:organization, name: "Umbrella Corporation", account: maintainer) }
     let!(:project)      { FactoryBot.create(:project, account: maintainer, organization: organization) }
+    let(:consequence) do
+      "A private, written warning from a moderator,"\
+      " with clarity of violation and explanation of why the"\
+      " behavior was inappropriate."
+    end
+
+    let(:action) do
+      "Use of inappropriate language, such as profanity,"\
+      " or other behavior deemed unprofessional or unwelcome"\
+      " in the community."
+    end
 
     before do
       Role.create(account_id: maintainer.id, organization_id: organization.id, is_owner: true)
@@ -32,8 +43,8 @@ describe "organization management", type: :feature do
       guide.consequences.create(
         severity: 1,
         label: "Correction",
-        action: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional or unwelcome in the community.",
-        consequence: "A private, written warning from a moderator, with clarity of violation and explanation of why the behavior was inappropriate."
+        action: action,
+        consequence: consequence
       )
       RespondentTemplate.create(
         is_beacon_default: true,
