@@ -6,7 +6,9 @@ class AccountProjectBlock < ApplicationRecord
 
   def issues
     project_issues = project.issues
-    project_issues.select{ |issue| issue.reporter == account } + project_issues.select{ |issue| issue.respondent == account }
+    project_issues.select do |issue|
+      issue.reporter == account || issue.respondent == account
+    end
   end
 
 end

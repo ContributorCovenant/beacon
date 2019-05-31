@@ -171,9 +171,20 @@ class Account < ApplicationRecord
     return unless invitations = IssueInvitation.where(email: self.normalized_email)
 
     invitations.each do |invitation|
-      next unless issue = Issue.find(EncryptionService.decrypt(invitation.issue_encrypted_id))
-      NotificationService.notify(account_id: self.id, project_id: invitation.issue.project.id, issue_id: invitation.issue.id, issue_comment_id: nil)
-      issue.update_attribute(:respondent_encrypted_id, EncryptionService.encrypt(self.id))
+      next unless issue = invitation.issue
+
+      NotificationService.notify(
+        account_id: self.id,
+        project_id: invitation.issue.project.id,
+        issue_id: invitation.issue.id,
+        issue_comment_id: nil
+      )
+
+      issue.update_attribute(
+        :respondent_encrypted_id,
+        EncryptionService.encrypt(self.id)
+      )
+
       AccountIssue.create(account_id: self.id, issue_id: issue.id)
       invitation.destroy
     end

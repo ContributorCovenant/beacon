@@ -58,7 +58,10 @@ class AutorespondersController < ApplicationController
     if source == "Beacon Default"
       @template = @subject.create_autoresponder(text: Autoresponder.beacon_default.text)
     elsif source == "Organization Default"
-      @template = @subject.create_autoresponder(text: @organization&.autoresponder&.text || @project.organization.autoresponder.text)
+      @template = @subject.create_autoresponder(
+        text: @organization&.autoresponder&.text ||
+          @project.organization.autoresponder.text
+      )
     else
       source = current_account.projects.find{ |p| p.name == source }.autoresponder
       @template = @subject.create_autoresponder(text: source.text)

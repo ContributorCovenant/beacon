@@ -17,7 +17,11 @@ class DirectoryController < ApplicationController
 
   def search
     if params[:q].present?
-      @projects = Project.for_directory.where("name ILIKE ? OR organization_name ILIKE ?", "#{params[:q]}%", "#{params[:q]}%")
+      @projects = Project.for_directory.where(
+        "name ILIKE ? OR organization_name ILIKE ?",
+        "#{params[:q]}%",
+        "#{params[:q]}%"
+      )
     else
       @projects = []
     end
