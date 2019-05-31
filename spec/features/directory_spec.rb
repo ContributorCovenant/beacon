@@ -3,12 +3,38 @@ require "rails_helper"
 describe "the directory", type: :feature do
 
   let(:maintainer) { FactoryBot.create(:danielle) }
-  let!(:project_1) { FactoryBot.create(:project, name: "Beacon Project", account: maintainer, public: true) }
-  let!(:project_2) { FactoryBot.create(:project, name: "Contributor Covenant", account: maintainer, public: true) }
-  let!(:project_3) { FactoryBot.create(:project, name: "Zellophane", organization_name: "ZebraCom", account: maintainer, public: true) }
+  let!(:project_1) do
+    FactoryBot.create(
+      :project,
+      name: "Beacon Project",
+      account: maintainer,
+      public: true
+    )
+  end
+
+  let!(:project_2) do
+    FactoryBot.create(
+      :project,
+      name: "Contributor Covenant",
+      account: maintainer,
+      public: true
+    )
+  end
+
+  let!(:project_3) do
+    FactoryBot.create(
+      :project,
+      name: "Zellophane",
+      organization_name: "ZebraCom",
+      account: maintainer,
+      public: true
+    )
+  end
 
   before do
-    allow_any_instance_of(Project).to receive(:publicly_accessible?).and_return(true)
+    allow_any_instance_of(Project)
+      .to receive(:publicly_accessible?)
+      .and_return(true)
   end
 
   it "allows search by project name" do

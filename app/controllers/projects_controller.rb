@@ -134,7 +134,11 @@ class ProjectsController < ApplicationController
     if @project.update_attributes(project_params)
       @project.unconfirm_ownership! if previous_repo_url != project_params[:repo_url].to_s
       if project_params[:name] != previous_project_name && @project.public?
-        AdminMailer.with(project: @project, old_name: previous_project_name, new_name: project_params[:name]).notify_on_project_name_change.deliver
+        AdminMailer.with(
+          project: @project,
+          old_name: previous_project_name,
+          new_name: project_params[:name]
+        ).notify_on_project_name_change.deliver
       end
       flash[:notice] = 'The project was successfully updated.'
       redirect_to @project
@@ -156,7 +160,11 @@ class ProjectsController < ApplicationController
   private
 
   def enforce_existing_project_permissions
-    render_forbidden && return unless current_account.can_manage_project?(@project) || current_account.can_moderate_project?(@project)
+    unless current_account.can_manage_project?(@project) ||
+           current_account.can_moderate_project?(@project)
+      render_forbidden &&
+        return
+    end
   end
 
   def enforce_project_creation_permissions

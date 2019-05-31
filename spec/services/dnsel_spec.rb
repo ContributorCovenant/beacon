@@ -58,7 +58,13 @@ describe Tor::DNSEL do
 
   describe "Tor::DNSEL.dnsname with a target IP address and port" do
     it "returns the correct DNS name" do
-      expect Tor::DNSEL.dnsname('1.2.3.4', addr: '8.8.4.4', port: 25) == '4.3.2.1.25.4.4.8.8.ip-port.exitlist.torproject.org'
+      expect(
+        Tor::DNSEL.dnsname(
+          '1.2.3.4',
+          addr: '8.8.4.4',
+          port: 25
+        ) == '4.3.2.1.25.4.4.8.8.ip-port.exitlist.torproject.org'
+      )
     end
   end
 

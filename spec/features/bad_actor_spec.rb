@@ -58,8 +58,13 @@ describe "reporting a project for abuse" do
 
   let(:honest_maintainer) { FactoryBot.create(:danielle) }
   let(:alt_right_dudebro) { FactoryBot.create(:michael) }
-  let(:abuse_reports) { Array.new(Setting.throttling(:max_abuse_reports_per_day), AbuseReport.new(aasm_state: "submitted", project: Project.new)) }
   let(:project) { FactoryBot.create(:project, account: honest_maintainer) }
+  let(:abuse_reports) do
+    Array.new(
+      Setting.throttling(:max_abuse_reports_per_day),
+      AbuseReport.new(aasm_state: "submitted", project: Project.new)
+    )
+  end
 
   it "requires a logged in user" do
     visit new_abuse_report_path

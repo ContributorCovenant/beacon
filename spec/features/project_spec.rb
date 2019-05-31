@@ -17,13 +17,25 @@ describe "The project setup process", type: :feature do
 
   context "without an organization" do
 
+    let(:consequence) do
+      "A private, written warning from a moderator,"\
+      " with clarity of violation and explanation of why the"\
+      " behavior was inappropriate."
+    end
+
+    let(:action) do
+      "Use of inappropriate language, such as profanity,"\
+      " or other behavior deemed unprofessional or unwelcome"\
+      " in the community."
+    end
+
     before do
       guide = ConsequenceGuide.create(scope: "template")
       guide.consequences.create(
         severity: 1,
         label: "Correction",
-        action: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional or unwelcome in the community.",
-        consequence: "A private, written warning from a moderator, with clarity of violation and explanation of why the behavior was inappropriate."
+        action: action,
+        consequence: consequence
       )
       RespondentTemplate.create(
         is_beacon_default: true,
@@ -219,6 +231,17 @@ describe "The project setup process", type: :feature do
 
     let!(:organization) { FactoryBot.create(:organization, account: maintainer) }
     let!(:org_project)  { FactoryBot.create(:project, account_id: maintainer.id, organization_id: organization.id) }
+    let(:consequence) do
+      "A private, written warning from a moderator,"\
+      " with clarity of violation and explanation of why the"\
+      " behavior was inappropriate."
+    end
+
+    let(:action) do
+      "Use of inappropriate language, such as profanity,"\
+      " or other behavior deemed unprofessional or unwelcome"\
+      " in the community."
+    end
 
     before do
       Role.create(account_id: maintainer.id, organization_id: organization.id, is_owner: true)
@@ -227,8 +250,8 @@ describe "The project setup process", type: :feature do
       guide.consequences.create!(
         severity: 1,
         label: "Correction",
-        action: "Use of inappropriate language, such as profanity, or other behavior deemed unprofessional or unwelcome in the community.",
-        consequence: "A private, written warning from a moderator, with clarity of violation and explanation of why the behavior was inappropriate."
+        action: action,
+        consequence: consequence
       )
       RespondentTemplate.create(
         organization_id: organization.id,

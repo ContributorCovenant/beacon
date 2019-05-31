@@ -10,7 +10,17 @@ FactoryBot.define do
         }
       ]
     }
-    from { { token: 'reporter', host: 'foo.com', email: 'reporter@foo.com', full: 'Reporter <reporter@foo.com>', name: 'Reporter' } }
+
+    from {
+      {
+        token: 'reporter',
+        host: 'foo.com',
+        email: 'reporter@foo.com',
+        full: 'Reporter <reporter@foo.com>',
+        name: 'Reporter'
+      }
+    }
+
     subject { 'CoC Issue' }
     body { 'Something bad happened to me.' }
     attachments { [] }

@@ -67,7 +67,13 @@ RSpec.describe ProjectConfirmationService do
       context "success" do
         before do
           allow(service).to receive(:github_client).and_return(client)
-          allow(client).to receive(:search_repositories).and_return(Hashie::Mash.new(items: [owner: { id: github_credential.uid }, fork: false]))
+          allow(client)
+            .to receive(:search_repositories)
+            .and_return(
+              Hashie::Mash.new(
+                items: [owner: { id: github_credential.uid }, fork: false]
+              )
+            )
         end
         it "confirms if the project matches the credential" do
           expect(service.confirm!).to be_truthy
@@ -77,7 +83,13 @@ RSpec.describe ProjectConfirmationService do
       context "failure" do
         before do
           allow(service).to receive(:github_client).and_return(client)
-          allow(client).to receive(:search_repositories).and_return(Hashie::Mash.new(items: [owner: { id: 789 }, fork: false]))
+          allow(client)
+            .to receive(:search_repositories)
+            .and_return(
+              Hashie::Mash.new(
+                items: [owner: { id: 789 }, fork: false]
+              )
+            )
         end
         it "rejects if the project matches the credential" do
           expect(service.confirm!).to be_falsey

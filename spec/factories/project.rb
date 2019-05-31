@@ -14,7 +14,9 @@ FactoryBot.define do
     url { "http://example.com/#{generate(:project_slug)}" }
     coc_url { "http://example.com/#{generate(:project_slug)}/conduct/" }
     description { "A sample project." }
+
     public { true }
+
     setup_complete { true }
   end
 end
