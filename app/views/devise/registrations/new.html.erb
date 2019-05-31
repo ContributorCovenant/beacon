@@ -8,7 +8,7 @@
     <div class="col-sm">
 
       <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-        <%= devise_error_messages!.gsub(/^.+\^/,'').html_safe %>
+        <%= render "devise/shared/error_messages" %>
 
         <div class="form-group">
           <%= f.label :name %><br />
