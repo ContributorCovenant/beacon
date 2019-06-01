@@ -30,7 +30,7 @@ module Accounts
       set_flash_message!(:notice, :signed_in)
       sign_in(resource_name, resource)
 
-      if ENV["BLOCK_LOGIN_VIA_PROXY"]
+      if ENV["BLOCK_LOGIN_VIA_PROXY"] == "true"
         header_names = request.headers.to_h.keys.map { |k| k.upcase.tr("-", "_").gsub(/^HTTP_/, "") }
         bad_headers = PROXY_HEADERS & header_names
         unless bad_headers.empty?
