@@ -15,6 +15,14 @@ class RespondentTemplatesController < ApplicationController
     end
   end
 
+  def show
+    if @project
+      @template = @project.respondent_template
+    else
+      @template = @organization.respondent_template
+    end
+  end
+
   def create
     if @project
       @template = RespondentTemplate.new(respondent_template_params.merge(project_id: @project.id))

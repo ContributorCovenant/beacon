@@ -57,7 +57,7 @@
             </li>
             <li>
               <% if @organization.respondent_template %>
-                <%= link_to "Respondent Template", edit_organization_respondent_template_path(@organization, @organization.respondent_template) %>
+                <%= link_to "Respondent Template", organization_respondent_template_path(@organization) %>
                 <% if !@organization.setup_complete? %>
                   <span class="badge badge-pill badge-success">
                     √
