@@ -1,0 +1,33 @@
+<% title "#{@subject.name}: Edit Respondent Template" %>
+
+<h1>Respondent Contact Template</h1>
+
+<p>This template will be used when you first contact the respondent of an issue.</p>
+
+<div class="row">
+
+  <div class="col">
+    <textarea disabled="disabled" rows="25" cols="50"><%= @template.text %></textarea>
+    <div class="actions">
+      <% if (@subject.is_a? Project) && current_account.can_manage_project_respondent_template?(@subject) %>
+        <%= link_to "Edit", edit_project_respondent_template_path(@subject), class: "btn btn-primary" %>
+      <% elsif (@subject.is_a? Organization) && current_account.can_manage_organization_respondent_template?(@subject) %>
+        <%= link_to "Edit", edit_organization_respondent_template_path(@subject), class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="col">
+    <h2>Tags</h2>
+    <p>The following tags will be auto-populated from your project and the issue when you contact a respondent:</p>
+
+    <ul>
+      <li>[[PROJECT_NAME]]</li>
+      <li>[[CODE_OF_CONDUCT_URL]]</li>
+      <li>[[VIOLATION_EXAMPLE]]: The example from the impact and consequence guide corresponding to the level of the issue.</li>
+      <li>[[CONSEQUENCE]]: The relevant consequence corresponding to the level of the issue's impact.</li>
+      <li>[[ISSUE_URL]]</li>
+    </ul>
+  </div>
+
+</div>
