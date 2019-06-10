@@ -160,7 +160,7 @@
               <li>
                 <% if @project.respondent_template? %>
                 <% if current_account.can_manage_project?(@project) %>
-                  <%= link_to "Respondent Template", project_respondent_template_path(@project, @project.respondent_template) %>
+                  <%= link_to "Respondent Template", project_respondent_template_path(@project) %>
                 <% else %>
                   Respondent Template
                 <% end %>
@@ -252,7 +252,7 @@
               <% end %>
               <% if @project.respondent_template? %>
                 <li>
-                  <%= link_to "Respondent Template", edit_project_respondent_template_path(@project, @project.respondent_template) %>
+                  <%= link_to "Respondent Template", project_respondent_template_path(@project, @project.respondent_template) %>
                 </li>
               <% end %>
             <% end %>
