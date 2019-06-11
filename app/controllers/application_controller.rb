@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
   breadcrumb 'Home', :root_path
 
   def render_not_found
+    params.delete(:password)
     ActivityLoggingService.log(current_account, :four_o_fours) if current_account
     SuspiciousActivityLog.create(
       controller: self.class.to_s,
@@ -24,6 +25,7 @@ class ApplicationController < ActionController::Base
   end
 
   def render_forbidden
+    params.delete(:password)
     SuspiciousActivityLog.create(
       controller: self.class.to_s,
       action: action_name,
