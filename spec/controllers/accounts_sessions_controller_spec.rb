@@ -95,24 +95,6 @@ RSpec.describe Accounts::SessionsController, type: :controller do
       end
     end
 
-    context "attempted login via proxy, while disallowing proxy and Tor login" do
-      before do
-        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_PROXY").and_return("true")
-        allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_TOR").and_return("true")
-        allow(Tor::DNSEL).to receive(:include?).and_return(false) # Not a Tor exit node
-      end
-
-      it "does not allow login with an X-FORWARDED-FOR header" do
-        # RSpec isn't passing headers in the POST: https://github.com/rspec/rspec-rails/issues/1655
-        request.headers["X-FORWARDED-FOR"] = "some.domain.com"
-        post :create, params: {
-          "account[email]" => "danielle@dax.com",
-          "account[password]" => "1234567891011"
-        }
-        expect(controller.current_account).to be_falsy
-      end
-    end
-
     context "attempted login via Tor exit node while that's forbidden" do
       before do
         allow(ENV).to receive(:[]).with("BLOCK_LOGIN_VIA_PROXY").and_return("true")
