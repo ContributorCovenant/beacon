@@ -4,17 +4,6 @@ module Accounts
   class SessionsController < Devise::SessionsController
     # before_action :configure_sign_in_params, only: [:create]
 
-    PROXY_HEADERS = %w(
-      FORWARDED
-      X_FORWARDED_FOR
-      VIA
-      USERAGENT_VIA
-      PROXY_CONNECTION
-      XPROXY_CONNECTION
-      PC_REMOTE_ADDR
-      CLIENT_IP
-    ).freeze
-
     # GET /resource/sign_in
     # def new
     #   super
@@ -29,29 +18,6 @@ module Accounts
       self.resource = warden.authenticate!(auth_options)
       set_flash_message!(:notice, :signed_in)
       sign_in(resource_name, resource)
-
-      if ENV["BLOCK_LOGIN_VIA_PROXY"]
-        header_names = request.headers.to_h.keys.map { |k| k.upcase.tr("-", "_").gsub(/^HTTP_/, "") }
-        bad_headers = PROXY_HEADERS & header_names
-        unless bad_headers.empty?
-          # This is a correct login but it occurred via an HTTP proxy, which isn't allowed.
-          # Since we don't want mysterious failures for honest users, we don't just return a normal
-          # your-password-was-wrong login failure.
-          #
-          # The tradeoff here is that it's possible to try to brute-force passwords from
-          # a proxy or exit node since incorrect passwords can be distinguished from
-          # "no login via Tor/Proxy" responses. So it's more important to prevent
-          # brute-forcing via bcrypt, strong passwords and/or throttling.
-          #
-          # If we checked this *before* login, we would want to handle this
-          # differently - render_forbidden adds a suspicious activity log to the
-          # database, which can facilitate a DOS if it can be done without an
-          # account.
-          Rails.logger.info("Blocked login by proxy")
-          sign_out
-          return render_forbidden
-        end
-      end
 
       if ENV["BLOCK_LOGIN_VIA_TOR"]
         if Tor::DNSEL.include?(current_account.current_sign_in_ip)
