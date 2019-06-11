@@ -108,7 +108,7 @@ module Permissions
   end
 
   def can_view_organization?(organization)
-    organization.owners.include? self
+    organization.owners.include?(self) || organization.moderators.include?(self)
   end
 
   def can_manage_organization?(organization)
