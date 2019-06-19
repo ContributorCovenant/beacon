@@ -27,3 +27,7 @@ You can show your support for Beacon and help fund its development through [mont
 
 ## Contributing
 We welcome contributions involving code, documentation, or design. If you'd like to contribute, please check out [our guide to contributing](https://github.com/ContributorCovenant/beacon/blob/release/CONTRIBUTING.md).
+
+## License
+
+The Beacon project is available under the [Apache 2.0 public license](LICENSE).
