@@ -13,7 +13,7 @@ Beacon was created with the goal of bringing this potential to every open source
 Beacon will be provided in a software-as-a-service (SaaS) model to reduce friction for getting started, so that maintainers can focus on managing their projects and communities with a minimum of setup.
 
 ## Feature Map
-A list of existing and planned features for Beacon can be found [here](https://github.com/ContributorCovenant/beacon/blob/release/feature_map.md).
+A list of existing and planned features for Beacon can be found [here](feature_map.md).
 
 ## Milestones
 
@@ -26,4 +26,12 @@ A list of existing and planned features for Beacon can be found [here](https://g
 You can show your support for Beacon and help fund its development through [monthly contributions to our Patreon](https://www.patreon.com/cocbeacon) or a [one-time donation to our fundraiser](https://www.gofundme.com/coc-beacon).
 
 ## Contributing
-We welcome contributions involving code, documentation, or design. If you'd like to contribute, please check out [our guide to contributing](https://github.com/ContributorCovenant/beacon/blob/release/CONTRIBUTING.md).
+We welcome contributions involving code, documentation, or design. If you'd like to contribute, please check out [our guide to contributing](CONTRIBUTING.md).
+
+## License
+
+The Beacon project is available under the [Apache License Version 2.0](LICENSE).
+
+## Code of Conduct
+
+The CoC is available [here](CODE_OF_CONDUCT.md). It was adapted from the [Contributor Covenant](https://www.contributor-covenant.org), [version 1.4](https://www.contributor-covenant.org/version/1/4/code-of-conduct.html).
