@@ -124,7 +124,7 @@
 
 <h1 class="float-left mt-5 mr-3">Projects</h1>
 
-<% if @organization.setup_complete?
+<% if @organization.setup_complete? %>
   <% if current_account.can_manage_organization?(@organization) %>
     <div class="actions ml-3 mt-5 mb-3">
       <%= link_to "New Project", new_project_path(organization_id: @organization.id), class: "btn btn-primary" %>
