@@ -124,19 +124,23 @@
 
 <h1 class="float-left mt-5 mr-3">Projects</h1>
 
-<% if @organization.setup_complete? && current_account.can_manage_organization?(@organization) %>
-  <div class="actions ml-3 mt-5 mb-3">
-    <%= link_to "New Project", new_project_path(organization_id: @organization.id), class: "btn btn-primary" %>
-    <% if current_account.credentials.find_by(provider: "github") %>
-      <%= link_to "Import Projects from GitHub", organization_github_auth_token_path(@organization), class: "btn btn-primary" %>
+<% if @organization.setup_complete?
+  <% if current_account.can_manage_organization?(@organization) %>
+    <div class="actions ml-3 mt-5 mb-3">
+      <%= link_to "New Project", new_project_path(organization_id: @organization.id), class: "btn btn-primary" %>
+      <% if current_account.credentials.find_by(provider: "github") %>
+        <%= link_to "Import Projects from GitHub", organization_github_auth_token_path(@organization), class: "btn btn-primary" %>
+      <% end %>
+      <% if current_account.credentials.find_by(provider: "gitlab") %>
+        <%= link_to "Import Projects from GitLab", organization_gitlab_auth_token_path(@organization), class: "btn btn-primary" %>
+      <% end %>
+    </div>
+    <% unless current_account.credentials.any? %>
+      <p>To import projects from GitHub or GitLab, <%= link_to "your Beacon account", edit_account_registration_path(current_account) %> must be linked to one of these providers.</p>
     <% end %>
-    <% if current_account.credentials.find_by(provider: "gitlab") %>
-      <%= link_to "Import Projects from GitLab", organization_gitlab_auth_token_path(@organization), class: "btn btn-primary" %>
-    <% end %>
-  </div>
-  <% unless current_account.credentials.any? %>
-    <p>To import projects from GitHub or GitLab, <%= link_to "your Beacon account", edit_account_registration_path(current_account) %> must be linked to one of these providers.</p>
   <% end %>
+<% else %>
+  <p>You can create or import projects once you have completed all the steps to set up this organization.</p>
 <% end %>
 
 <div class="container">
