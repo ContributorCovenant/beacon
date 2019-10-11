@@ -95,11 +95,16 @@ class Project < ApplicationRecord
   end
 
   def owner?(account)
-    roles.where(is_owner: true, account_id: account.id).any?
+    owners.include?(account)
   end
 
   def owners
-    roles.where(is_owner: true).includes(:account).map(&:account) + [account]
+    project_owners = roles.where(is_owner: true).includes(:account).map(&:account)
+    if self.organization
+      organization.owners + project_owners + [account]
+    else
+      project_owners + [account]
+    end
   end
 
   def ownership_confirmed?
