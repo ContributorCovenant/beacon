@@ -181,6 +181,7 @@ describe "organization management", type: :feature do
         expect(page).to have_content("You have accepted the invitation")
         expect(page).to have_content(organization.name)
         expect(organization.owner?(moderator)).to be_truthy
+        expect(project.owner?(moderator)).to be_truthy
       end
 
     end
