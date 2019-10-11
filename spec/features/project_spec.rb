@@ -227,7 +227,7 @@ describe "The project setup process", type: :feature do
 
   end
 
-  context "with an available organizations" do
+  context "with an available organization" do
 
     let!(:organization) { FactoryBot.create(:organization, account: maintainer) }
     let!(:org_project)  { FactoryBot.create(:project, account_id: maintainer.id, organization_id: organization.id) }
