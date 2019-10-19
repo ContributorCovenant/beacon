@@ -85,8 +85,7 @@ class Project < ApplicationRecord
   end
 
   def organization_consequence_guide
-    return unless organization
-    organization.consequence_guide
+    @organization_consequence_guide ||= organization && organization.consequence_guide
   end
 
   def organization_moderators
@@ -190,7 +189,7 @@ class Project < ApplicationRecord
 
   def create_consequence_guide
     guide = ConsequenceGuide.create(project_id: id)
-    guide.clone_from(organization.consequence_guide) if self.organization
+    guide.clone_from(organization_consequence_guide) if organization_consequence_guide
     true
   end
 
