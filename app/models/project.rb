@@ -84,7 +84,7 @@ class Project < ApplicationRecord
   end
 
   def organization_consequence_guide
-    @organization_consequence_guide ||= organization && organization.consequence_guide
+    @organization_consequence_guide ||= organization&.consequence_guide
   end
 
   def organization_moderators
@@ -187,7 +187,7 @@ class Project < ApplicationRecord
   private
 
   def create_consequence_guide
-    guide = ConsequenceGuide.create(project_id: id)
+    ConsequenceGuide.create(project_id: id)
   end
 
   def set_sort_key
