@@ -60,7 +60,7 @@ class Project < ApplicationRecord
   end
 
   def consequence_guide?
-    @has_consequence_guide = organization_consequence_guide.present?
+    @has_consequence_guide = organization_consequence_guide.consequences.any?
     @has_consequence_guide ||= consequence_guide.consequences.any?
   end
 
@@ -189,7 +189,9 @@ class Project < ApplicationRecord
   private
 
   def create_consequence_guide
-    ConsequenceGuide.create(project_id: id)
+    guide = ConsequenceGuide.create(project_id: id)
+    guide.clone_from(organization.consequence_guide) if self.organization
+    true
   end
 
   def set_sort_key
