@@ -60,7 +60,6 @@ class Project < ApplicationRecord
   end
 
   def consequence_guide?
-    @has_consequence_guide = organization_consequence_guide.present?
     @has_consequence_guide ||= consequence_guide.consequences.any?
   end
 
@@ -85,8 +84,7 @@ class Project < ApplicationRecord
   end
 
   def organization_consequence_guide
-    return unless organization
-    organization.consequence_guide
+    @organization_consequence_guide ||= organization&.consequence_guide
   end
 
   def organization_moderators

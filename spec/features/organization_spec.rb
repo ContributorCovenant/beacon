@@ -119,7 +119,9 @@ describe "organization management", type: :feature do
       select "Umbrella Corporation", from: "project_organization_id"
       click_on("Create Project")
       expect(page).to have_content("Umbrella Corporation: My Project 1")
-      expect(Project.last.organization_id).to eq(organization.id)
+      project = Project.last
+      expect(project.organization_id).to eq(organization.id)
+      expect(project.consequence_guide.consequences.first).to eq(organization.consequence_guide.consequences.first)
     end
 
     it "lets an owner edit an organization" do
