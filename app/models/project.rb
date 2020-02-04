@@ -27,6 +27,7 @@ class Project < ApplicationRecord
 
   after_create :make_settings
   after_create :create_consequence_guide
+  after_commit :name_change_notification
 
   scope :for_directory, -> { where(public: true, setup_complete: true, is_flagged: false).order("sort_key ASC") }
   scope :starting_with, ->(letter) { where(sort_key: letter) }
@@ -200,5 +201,11 @@ class Project < ApplicationRecord
 
   def make_settings
     create_project_setting
+  end
+
+  private def name_change_notification
+    if saved_change_to_name?
+      ProjectMailer.name_change(id: id, previous_name: name_before_last_save).deliver_now
+    end
   end
 end

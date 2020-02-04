@@ -37,3 +37,6 @@ en:
           attributes:
             normalized_email:
               taken: "^Email address must be unique."
+  project_mailer:
+    name_change_notification:
+      subject: "Beacon: A project name was set"
